@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tito_app/widgets/login/basic_login.dart';
+import 'package:tito_app/widgets/login/signup.dart';
 
 class LoginMain extends StatelessWidget {
   const LoginMain({super.key});
@@ -25,6 +26,14 @@ class LoginMain extends StatelessWidget {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (ctx) => const BasicLogin(),
+        ),
+      );
+    }
+
+    void _goSignuUp() {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (ctx) => const Signup(),
         ),
       );
     }
@@ -99,6 +108,21 @@ class LoginMain extends StatelessWidget {
                       color: Colors.white,
                       fontWeight: FontWeight.bold),
                 ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('아직 회원이 아니신가요?'),
+                  TextButton(
+                      onPressed: _goSignuUp,
+                      child: const Text(
+                        '회원가입',
+                        style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ))
+                ],
               ),
             ],
           ),

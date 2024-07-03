@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tito_app/models/login_info.dart';
 
-final emailProvider = StateProvider<String>((ref) => '');
-final passwordProvider = StateProvider<String>((ref) => '');
-final isLoggedInProvider = StateProvider<bool>((ref) => false);
+final loginInfoProvider = StateProvider<LoginInfo?>((ref) => null);

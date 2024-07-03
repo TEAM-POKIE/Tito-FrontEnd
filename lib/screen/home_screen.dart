@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tito_app/widgets/mypage/mypage.dart';
 import 'package:tito_app/widgets/reuse/bottombar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -7,6 +8,14 @@ class HomeScreen extends StatefulWidget {
   State<StatefulWidget> createState() {
     return _HomeScreenState();
   }
+}
+
+void _goMyPage(BuildContext context) {
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (ctx) => const Mypage(),
+    ),
+  );
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -31,7 +40,9 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: Image.asset('assets/images/notification.png'),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                _goMyPage(context);
+              },
               icon: Image.asset('assets/images/mypage.png'),
             ),
           ],
