@@ -16,7 +16,7 @@ class Mypage extends ConsumerWidget {
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
-        title: const Text('마이페이지'),
+        title: const Text('마이페이지렁이빨빠지면아파요'),
       ),
       body: Text(
         '${loginInfo?.nickname}',
