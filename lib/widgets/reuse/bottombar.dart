@@ -26,10 +26,24 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   ];
 
   void _onItemTapped(int index) {
-    if (ref.read(selectedIndexProvider.notifier).state == index) return;
+    // && 리스트 -> 홈 화면이 이동이 안 되고 있었음
+    // if (ref.read(selectedIndexProvider.notifier).state == index) return;
+
+    // if (index == 1 || index == 4) {
+    //   ref.read(selectedIndexProvider.notifier).state = index;
+    //   Navigator.of(context).pushReplacement(
+    //     MaterialPageRoute(builder: (ctx) => _widgetOptions[index]),
+    //   );
+    // } else {
+    //   Navigator.of(context).push(
+    //     MaterialPageRoute(builder: (ctx) => _widgetOptions[index]),
+    //   );
+    // }
+    final currentIndex = ref.read(selectedIndexProvider.notifier).state;
+    if (currentIndex == index) return;
+    ref.read(selectedIndexProvider.notifier).state = index;
 
     if (index == 1 || index == 4) {
-      ref.read(selectedIndexProvider.notifier).state = index;
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (ctx) => _widgetOptions[index]),
       );
@@ -39,6 +53,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
       );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -81,11 +96,13 @@ class _BottomBarState extends ConsumerState<BottomBar> {
             label: 'AI 주제',
           ),
           BottomNavigationBarItem(
+            //&& 리스트 까맣게 채워진 거 수정함
             icon: Image.asset(
-              'assets/images/bottombar/board.png',
+              _selectedIndex == 4 
+              ? 'assets/images/bottombar/board_select.png'
+              : 'assets/images/bottombar/board.png',
               width: 24,
               height: 24,
-              color: _selectedIndex == 4 ? Colors.black : null,
             ),
             label: '게시판',
           ),
