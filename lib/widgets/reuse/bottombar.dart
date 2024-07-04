@@ -107,10 +107,9 @@ class _BottomBarState extends ConsumerState<BottomBar> {
             label: '게시판',
           ),
         ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+        currentIndex: _selectedIndex,        onTap: _onItemTapped,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: (_selectedIndex == 1 || _selectedIndex == 4)
+        selectedItemColor: (_selectedIndex == 0 || _selectedIndex == 1 || _selectedIndex == 4)
             ? Colors.black
             : Colors.grey,
         unselectedItemColor: Colors.grey,
