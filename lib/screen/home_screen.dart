@@ -48,29 +48,32 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-      ),      
-      body: Column(
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(10.0),
-            child: SearchBar(
-              leading: Icon(Icons.search),
-              hintText: '토론 검색어를 입력하세요',
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: 20,
-              itemBuilder: (context,index) {
-                return ListTile(
-                  title: Text('Item $index'),
-                );
-              },
-            ),
-          ),
-          const BottomBar()
-        ],
       ),
+      body: const BottomBar(),      
+      // body: Container(
+      //   child: Column(
+      //     children: [
+      //       const Padding(
+      //         padding: EdgeInsets.all(10.0),
+      //         child: SearchBar(
+      //           leading: Icon(Icons.search),
+      //           hintText: '토론 검색어를 입력하세요',
+      //         ),
+      //       ),
+      //       Expanded(
+      //         child: ListView.builder(
+      //           itemCount: 20,
+      //           itemBuilder: (context,index) {
+      //             return ListTile(
+      //               title: Text('Item $index'),
+      //             );
+      //           },
+      //         ),
+      //       ),
+      //       const BottomBar()
+    //       ],
+    //     ),
+    //   ),
     );
   }
 }
