@@ -1,1 +1,0 @@
- C:\\Users\\hosje\\tito_demo\\TiTo-FrontEnd\\.dart_tool\\flutter_build\\f7221cd5182c6f2a105c39c3aa96878d\\native_assets.yaml: 
