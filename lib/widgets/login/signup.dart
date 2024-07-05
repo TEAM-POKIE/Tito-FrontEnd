@@ -60,7 +60,7 @@ class _SignUpState extends State<Signup> {
                 ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return '닉네임을 입력해주세요';
+                    return '닉네임을 입력해주세요.';
                   }
 
                   return null;
