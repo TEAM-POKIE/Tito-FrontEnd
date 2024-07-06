@@ -54,7 +54,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     final int _selectedIndex = ref.watch(selectedIndexProvider);
@@ -98,20 +97,22 @@ class _BottomBarState extends ConsumerState<BottomBar> {
           BottomNavigationBarItem(
             //&& 리스트 까맣게 채워진 거 수정함
             icon: Image.asset(
-              _selectedIndex == 4 
-              ? 'assets/images/bottombar/board_select.png'
-              : 'assets/images/bottombar/board.png',
+              _selectedIndex == 4
+                  ? 'assets/images/bottombar/board_select.png'
+                  : 'assets/images/bottombar/board.png',
               width: 24,
               height: 24,
             ),
             label: '게시판',
           ),
         ],
-        currentIndex: _selectedIndex,        onTap: _onItemTapped,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: (_selectedIndex == 0 || _selectedIndex == 1 || _selectedIndex == 4)
-            ? Colors.black
-            : Colors.grey,
+        selectedItemColor:
+            (_selectedIndex == 0 || _selectedIndex == 1 || _selectedIndex == 4)
+                ? Colors.black
+                : Colors.grey,
         unselectedItemColor: Colors.grey,
       ),
     );
