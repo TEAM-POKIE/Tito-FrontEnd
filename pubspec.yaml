@@ -68,6 +68,7 @@ flutter:
     - assets/images/google.png
     - assets/images/apple.png
     - assets/images/notification.png
+    - assets/images/hotlist.png
     - assets/images/mypage.png
     - assets/images/bottombar/ai.png
     - assets/images/bottombar/board.png

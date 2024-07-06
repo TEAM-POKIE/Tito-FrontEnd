@@ -57,64 +57,62 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   @override
   Widget build(BuildContext context) {
     final int _selectedIndex = ref.watch(selectedIndexProvider);
-    return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/images/bottombar/home.png',
-              width: 24,
-              height: 24,
-              color: _selectedIndex == 0 ? Colors.black : null,
-            ),
-            label: '홈',
+    return BottomNavigationBar(
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Image.asset(
+            'assets/images/bottombar/home.png',
+            width: 24,
+            height: 24,
+            color: _selectedIndex == 0 ? Colors.black : null,
           ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/images/bottombar/list.png',
-              width: 24,
-              height: 24,
-              color: _selectedIndex == 1 ? Colors.black : null,
-            ),
-            label: '리스트',
+          label: '홈',
+        ),
+        BottomNavigationBarItem(
+          icon: Image.asset(
+            'assets/images/bottombar/list.png',
+            width: 24,
+            height: 24,
+            color: _selectedIndex == 1 ? Colors.black : null,
           ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/images/bottombar/create.png',
-              width: 24,
-              height: 24,
-            ),
-            label: '개설',
+          label: '리스트',
+        ),
+        BottomNavigationBarItem(
+          icon: Image.asset(
+            'assets/images/bottombar/create.png',
+            width: 24,
+            height: 24,
           ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/images/bottombar/ai.png',
-              width: 24,
-              height: 24,
-            ),
-            label: 'AI 주제',
+          label: '개설',
+        ),
+        BottomNavigationBarItem(
+          icon: Image.asset(
+            'assets/images/bottombar/ai.png',
+            width: 24,
+            height: 24,
           ),
-          BottomNavigationBarItem(
-            //&& 리스트 까맣게 채워진 거 수정함
-            icon: Image.asset(
-              _selectedIndex == 4
-                  ? 'assets/images/bottombar/board_select.png'
-                  : 'assets/images/bottombar/board.png',
-              width: 24,
-              height: 24,
-            ),
-            label: '게시판',
+          label: 'AI 주제',
+        ),
+        BottomNavigationBarItem(
+          //&& 리스트 까맣게 채워진 거 수정함
+          icon: Image.asset(
+            _selectedIndex == 4
+                ? 'assets/images/bottombar/board_select.png'
+                : 'assets/images/bottombar/board.png',
+            width: 24,
+            height: 24,
           ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor:
-            (_selectedIndex == 0 || _selectedIndex == 1 || _selectedIndex == 4)
-                ? Colors.black
-                : Colors.grey,
-        unselectedItemColor: Colors.grey,
-      ),
+          label: '게시판',
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      onTap: _onItemTapped,
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor:
+          (_selectedIndex == 0 || _selectedIndex == 1 || _selectedIndex == 4)
+              ? Colors.black
+              : Colors.grey,
+      unselectedItemColor: Colors.grey,
     );
   }
 }
