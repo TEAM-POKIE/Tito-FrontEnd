@@ -17,7 +17,7 @@ class BottomBar extends ConsumerStatefulWidget {
 }
 
 class _BottomBarState extends ConsumerState<BottomBar> {
-  static const List<Widget> _widgetOptions = <Widget>[
+  static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     ListScreen(),
     DebateCreate(),
@@ -26,19 +26,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   ];
 
   void _onItemTapped(int index) {
-    // && 리스트 -> 홈 화면이 이동이 안 되고 있었음
-    // if (ref.read(selectedIndexProvider.notifier).state == index) return;
-
-    // if (index == 1 || index == 4) {
-    //   ref.read(selectedIndexProvider.notifier).state = index;
-    //   Navigator.of(context).pushReplacement(
-    //     MaterialPageRoute(builder: (ctx) => _widgetOptions[index]),
-    //   );
-    // } else {
-    //   Navigator.of(context).push(
-    //     MaterialPageRoute(builder: (ctx) => _widgetOptions[index]),
-    //   );
-    // }
     final currentIndex = ref.read(selectedIndexProvider.notifier).state;
     if (currentIndex == index) return;
     ref.read(selectedIndexProvider.notifier).state = index;
@@ -96,7 +83,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
             label: 'AI 주제',
           ),
           BottomNavigationBarItem(
-            //&& 리스트 까맣게 채워진 거 수정함
             icon: Image.asset(
               _selectedIndex == 4 
               ? 'assets/images/bottombar/board_select.png'

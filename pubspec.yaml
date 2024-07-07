@@ -39,6 +39,7 @@ dependencies:
   uuid: ^4.4.0
   intl: ^0.19.0
   http: ^1.2.1
+  get: ^4.6.6
 
 dev_dependencies:
   flutter_test:
@@ -75,6 +76,7 @@ flutter:
     - assets/images/bottombar/home.png
     - assets/images/bottombar/list.png
     - assets/images/bottombar/board_select.png
+    - assets/images/ai_purple.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
