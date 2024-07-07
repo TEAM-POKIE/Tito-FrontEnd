@@ -41,7 +41,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     final int _selectedIndex = ref.watch(selectedIndexProvider);
