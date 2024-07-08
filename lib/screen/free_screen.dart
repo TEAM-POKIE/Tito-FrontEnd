@@ -14,9 +14,13 @@ class _FreeScreenState extends State<FreeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ììœ ê²Œì‹œíŒ'),
+        title: const Text('??œ ê²Œì‹œ?Œ',
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
       ),
-      body: const BottomBar(),
+      body: const Column(
+        
+        //BottomBar(),
+      ) 
     );
   }
 }

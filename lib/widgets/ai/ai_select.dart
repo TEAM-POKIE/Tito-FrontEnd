@@ -153,7 +153,7 @@ class _AiSelectState extends State<AiSelect> {
                   fixedSize: Size(170,60),
                 ),
                           child: const Text(
-                  '토론', style: TextStyle (color:Colors.white,
+                  '토론 생성', style: TextStyle (color:Colors.white,
                   fontSize: 18),),
                 ),
                 SizedBox(width: 13,),
@@ -164,7 +164,7 @@ class _AiSelectState extends State<AiSelect> {
                   fixedSize: Size(170,60),
                   ),
                           child: const Text(
-                  '자게', style: TextStyle (color:Colors.white,
+                  '게시글 생성', style: TextStyle (color:Colors.white,
                   fontSize: 18),),
                 ),
               ],

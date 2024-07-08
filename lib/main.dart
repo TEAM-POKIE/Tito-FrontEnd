@@ -6,10 +6,10 @@ void main() {
   runApp(
     const ProviderScope(
       child: MaterialApp(
-        home: Scaffold(
-          body: LoginScreen(),
-        ),
-        //home: LoginScreen(),
+        // home: Scaffold(
+        //   body: LoginScreen(),
+        // ),
+        home: LoginScreen(),
       ),
     ),
   );
