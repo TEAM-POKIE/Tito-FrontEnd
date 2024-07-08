@@ -13,14 +13,15 @@ class _FreeScreenState extends State<FreeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('??œ ê²Œì‹œ?Œ',
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-      ),
-      body: const Column(
-        
-        //BottomBar(),
-      ) 
-    );
+        appBar: AppBar(
+          title: const Text(
+            '?ï¿½ï¿½?ï¿½ï¿½ê²Œì‹œ?ï¿½ï¿½',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ),
+        body: const Column(
+
+            //BottomBar(),
+            ));
   }
 }

@@ -146,9 +146,6 @@ class _ListScreenState extends State<ListScreen> {
                                                   width: constraints.maxWidth *
                                                       0.8,
                                                   child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
                                                     children: [
                                                       Text(
                                                         titles[index],
