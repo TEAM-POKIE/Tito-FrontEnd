@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:tito_app/screen/list_screen.dart';
 import 'package:tito_app/widgets/mypage/mypage.dart';
 import 'package:tito_app/widgets/reuse/bottombar.dart';
-import 'package:tito_app/widgets/reuse/searchbar.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tito_app/models/list_info.dart';
 import 'dart:convert';
