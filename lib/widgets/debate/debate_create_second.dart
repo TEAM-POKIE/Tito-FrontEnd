@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/provider/debate_provider.dart';
-import 'package:tito_app/screen/home_screen.dart';
+import 'package:tito_app/provider/login_provider.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:tito_app/provider/nav_provider.dart';
+import 'package:tito_app/screen/list_screen.dart';
+import 'package:tito_app/widgets/debate/debate_writer.dart';
 
 class DebateCreateSecond extends ConsumerStatefulWidget {
   const DebateCreateSecond({super.key});
@@ -15,24 +20,53 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
   var myArguments = '';
   var opponentArguments = '';
 
-  void _createDebateRoom() {
+  void _createDebateRoom() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
     _formKey.currentState!.save();
+    final loginInfo = ref.read(loginInfoProvider);
+    ref.read(debateInfoProvider.notifier).updateDebateInfo(
+          myArgument: myArguments,
+          opponentArgument: opponentArguments,
+        );
 
-    final debateInfo = ref.read(debateInfoProvider.notifier);
-    debateInfo.updateDebateInfo(
-      myArgument: myArguments,
-      opponentArgument: opponentArguments,
-    );
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => const HomeScreen()),
-      (Route<dynamic> route) => false,
-    );
-    // 다음 동작 처리 (예: 다음 페이지로 이동 등)
+    final url =
+        Uri.https('tito-f8791-default-rtdb.firebaseio.com', 'debate_list.json');
+    final debateInfo = ref.read(debateInfoProvider);
+    final currentTime = DateTime.now().toIso8601String();
+
+    final response = await http.post(url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          'title': debateInfo?.title,
+          'category': debateInfo?.category,
+          'myArgument': debateInfo?.myArgument,
+          'myId': loginInfo?.email,
+          'opponentArgument': debateInfo?.opponentArgument,
+          'opponentId': debateInfo?.opponentId,
+          'debateState': debateInfo?.debateState,
+          'timestamp': currentTime,
+        }));
+
+    if (response.statusCode == 200) {
+      final responseData = json.decode(response.body);
+      final debateId = responseData['name']; // Firebase에서 생성된 debateId
+
+      ref.read(selectedIndexProvider.notifier).state = 1;
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+            builder: (context) => DebateWriter(debateId: debateId)),
+        (Route<dynamic> route) => false,
+      );
+    } else {
+      // 에러 처리
+      print('Failed to create debate room: ${response.body}');
+    }
   }
 
   @override

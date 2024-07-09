@@ -9,14 +9,22 @@ class DebateInfoNotifier extends StateNotifier<DebateInfo?> {
       {String? id,
       String? title,
       String? myArgument,
+      String? myId,
       String? opponentArgument,
+      String? opponentId,
+      String? debateState,
+      String? time,
       String? category}) {
     state = DebateInfo(
       id: id ?? state?.id ?? '',
       title: title ?? state?.title ?? '',
       myArgument: myArgument ?? state?.myArgument ?? '',
+      myId: myId ?? state?.myId ?? '',
+      opponentId: opponentId ?? state?.opponentId ?? '',
+      debateState: debateState ?? state?.debateState ?? '',
       opponentArgument: opponentArgument ?? state?.opponentArgument ?? '',
       category: category ?? state?.category ?? '',
+      time: time ?? state?.time ?? '',
     );
   }
 }

@@ -26,11 +26,18 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
 
     // title 값을 저장
     ref.read(debateInfoProvider.notifier).updateDebateInfo(
-          title: title,
-          category: labels[selectedIndex],
-          myArgument: '',
-          opponentArgument: '',
-        );
+        title: title,
+        category: labels[selectedIndex],
+        myArgument: '',
+        opponentArgument: '',
+        opponentId: '',
+        myId: '',
+        time: '',
+        debateState: '토론 참여가능');
+
+    if (!context.mounted) {
+      return;
+    }
 
     Navigator.of(context).push(
       MaterialPageRoute(
