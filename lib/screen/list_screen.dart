@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:tito_app/widgets/debate/chat.dart';
 import 'package:tito_app/widgets/debate/debate_guest.dart';
 import 'package:tito_app/widgets/debate/debate_writer.dart';
 import 'dart:convert';
@@ -208,6 +209,20 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                   MaterialPageRoute(
                                     builder: (context) =>
                                         DebateGuest(debateId: debate['id']),
+                                  ),
+                                );
+                              } else if ((loginInfo?.email == debate['myId'] ||
+                                      loginInfo?.email ==
+                                          debate['opponentId']) &&
+                                  debate['debateState'] == '토론 중') {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Chat(
+                                      id: debate['id'],
+                                      myId: debate['myId'],
+                                      opponentId: debate['opponentId'],
+                                    ),
                                   ),
                                 );
                               }
