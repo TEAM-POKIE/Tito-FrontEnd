@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-
 import 'package:http/http.dart' as http;
+import 'package:tito_app/widgets/reuse/notification.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -24,7 +24,13 @@ class _SignUpState extends State<Signup> {
     _formKey.currentState!.save();
     final url = Uri.https(
         'tito-f8791-default-rtdb.firebaseio.com', 'login_id_list.json');
+
     if (isVaild) {
+      // initState에서 실행하던 초기화 코드
+      FlutterLocalNotification.init();
+      await Future.delayed(const Duration(seconds: 1),
+          FlutterLocalNotification.requestNotificationPermission());
+
       final response = await http.post(url,
           headers: {
             'Content-Type': 'application/json',
@@ -34,9 +40,11 @@ class _SignUpState extends State<Signup> {
             'email': _email,
             'password': _password,
           }));
+
       if (!context.mounted) {
         return;
       }
+
       Navigator.of(context).pop(widget);
     }
   }
@@ -83,11 +91,6 @@ class _SignUpState extends State<Signup> {
                   if (value == null || value.trim().isEmpty) {
                     return '이메일을 입력해주세요';
                   }
-                  // 이메일 형식 확인
-                  // final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
-                  // if (!emailRegex.hasMatch(value)) {
-                  //   return '유효한 이메일 주소를 입력해주세요';
-                  // }
                   return null;
                 },
                 onSaved: (value) {
@@ -107,9 +110,6 @@ class _SignUpState extends State<Signup> {
                   if (value == null || value.trim().isEmpty) {
                     return '비밀번호를 입력해주세요';
                   }
-                  // if (value.length < 8) {
-                  //   return '비밀번호는 8자 이상이어야 합니다';
-                  // }
                   return null;
                 },
                 onSaved: (value) {
@@ -126,7 +126,6 @@ class _SignUpState extends State<Signup> {
                   minimumSize: const Size(300, 60),
                   padding: const EdgeInsets.symmetric(
                       horizontal: 20, vertical: 10), // 버튼 내부의 패딩 설정
-                  // 텍스트 스타일 설정
                 ),
                 child: const Text(
                   '회원가입',
@@ -136,29 +135,6 @@ class _SignUpState extends State<Signup> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     TextButton(
-              //       onPressed: () {},
-              //       child: const Text(
-              //         '이메일로 가입',
-              //         style: TextStyle(
-              //             color: Color(0xff8E48F8),
-              //             fontWeight: FontWeight.bold),
-              //       ),
-              //     ),
-              //     const Text('|'),
-              //     TextButton(
-              //       onPressed: () {},
-              //       child: const Text(
-              //         '비밀번호 찾기',
-              //         style: TextStyle(
-              //             color: Colors.black, fontWeight: FontWeight.bold),
-              //       ),
-              //     ),
-              //   ],
-              // ),
             ],
           ),
         ),
