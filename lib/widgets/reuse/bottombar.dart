@@ -4,7 +4,7 @@ import 'package:tito_app/screen/home_screen.dart';
 import 'package:tito_app/screen/list_screen.dart';
 import 'package:tito_app/widgets/debate/debate_create.dart';
 import 'package:tito_app/widgets/ai/ai_create.dart';
-import 'package:tito_app/screen/free_screen.dart';
+import 'package:tito_app/screen/free_screen.dart';  
 import 'package:tito_app/provider/nav_provider.dart';
 
 class BottomBar extends ConsumerStatefulWidget {

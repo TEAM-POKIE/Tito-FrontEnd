@@ -203,7 +203,7 @@ class _ListScreenState extends State<ListScreen> {
                 const SizedBox(height: 20),
                 const Expanded(
                   child: BottomBar(),
-                )
+                ),
               ],
             ),
     );
