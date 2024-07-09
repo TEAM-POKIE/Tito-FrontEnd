@@ -162,7 +162,6 @@ class _FreeScreenState extends State<FreeScreen> {
               // 검색창
               Padding(
                 padding: EdgeInsets.all(30.0),
-                //child: CustomSearchBar(),
               ),
               // 게시물 카드
               PostCard(),
