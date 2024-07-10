@@ -1,43 +1,83 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:tito_app/provider/login_provider.dart';
+import 'dart:async';
 
-class Chat extends StatefulWidget {
+class Chat extends ConsumerStatefulWidget {
   final String myId;
   final String opponentId;
   final String id;
 
-  const Chat(
-      {super.key,
-      required this.id,
-      required this.myId,
-      required this.opponentId});
+  const Chat({
+    super.key,
+    required this.id,
+    required this.myId,
+    required this.opponentId,
+  });
 
   @override
   _ChatState createState() => _ChatState();
 }
 
-class _ChatState extends State<Chat> {
+class _ChatState extends ConsumerState<Chat> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
+  final ScrollController _scrollController = ScrollController();
   List<Map<String, dynamic>> _messages = [];
+  Timer? _timer;
+  String? _currentDate;
 
   @override
   void initState() {
     super.initState();
     _fetchMessages();
     _requestFocus();
+    _startPolling();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _startPolling() {
+    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
+      _fetchMessages();
+    });
   }
 
   Future<void> _fetchMessages() async {
-    final url =
-        Uri.https('tito-f8791-default-rtdb.firebaseio.com', 'chat_list.json');
+    final url = Uri.https('tito-f8791-default-rtdb.firebaseio.com',
+        'chat_list/${widget.id}.json');
 
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
+      final Map<String, dynamic>? data = json.decode(response.body);
+      final List<Map<String, dynamic>> loadedMessages = [];
+
+      if (data != null) {
+        data.forEach((key, value) {
+          loadedMessages.add({
+            'text': value['text'] ?? '',
+            'senderId': value['senderId'] ?? '',
+            'timestamp': value['timestamp'] ?? '',
+          });
+        });
+      }
+
       setState(() {
-        _messages = List<Map<String, dynamic>>.from(json.decode(response.body));
+        _messages = loadedMessages;
+        if (_messages.isNotEmpty) {
+          final DateTime messageTime =
+              DateTime.parse(_messages.first['timestamp'] ?? '');
+          _currentDate =
+              '${messageTime.year}-${messageTime.month}-${messageTime.day}';
+          _scrollToBottom();
+        }
       });
     } else {
       // 에러 처리
@@ -45,20 +85,30 @@ class _ChatState extends State<Chat> {
     }
   }
 
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      }
+    });
+  }
+
   Future<void> _sendMessage() async {
+    final loginInfo = ref.watch(loginInfoProvider);
     if (_controller.text.trim().isEmpty) {
       return;
     }
 
     final newMessage = {
       'text': _controller.text.trim(),
+      'senderId': loginInfo?.email ?? '',
       'aId': widget.myId,
-      'brId': widget.opponentId,
+      'bId': widget.opponentId,
       'timestamp': DateTime.now().toIso8601String(),
     };
 
-    final url =
-        Uri.https('tito-f8791-default-rtdb.firebaseio.com', 'chat_list.json');
+    final url = Uri.https('tito-f8791-default-rtdb.firebaseio.com',
+        'chat_list/${widget.id}.json');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -67,9 +117,16 @@ class _ChatState extends State<Chat> {
 
     if (response.statusCode == 200) {
       setState(() {
-        _messages.insert(0, newMessage);
+        _messages.add(newMessage);
         _controller.clear();
         _focusNode.requestFocus(); // 메시지를 보낸 후에도 키보드가 열리도록 유지
+
+        // 날짜 업데이트
+        final DateTime messageTime = DateTime.parse(
+            newMessage['timestamp'] ?? DateTime.now().toIso8601String());
+        _currentDate =
+            '${messageTime.year}-${messageTime.month}-${messageTime.day}';
+        _scrollToBottom();
       });
     }
   }
@@ -144,20 +201,28 @@ class _ChatState extends State<Chat> {
                 ),
               ),
               const SizedBox(height: 16),
-              const Center(
-                child: Text(
-                  '2024년 6월 15일',
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
-                ),
-              ),
               Expanded(
                 child: ListView.builder(
-                  reverse: true,
-                  itemCount: _messages.length,
+                  controller: _scrollController,
+                  itemCount: _messages.length + 1, // 메시지 개수 + 1 (날짜)
                   itemBuilder: (context, index) {
-                    final message = _messages[index];
+                    if (index == 0) {
+                      // 날짜를 첫 번째 아이템으로 표시
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: Text(
+                            _currentDate ?? '',
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                          ),
+                        ),
+                      );
+                    }
+
+                    final message = _messages[index - 1]; // 메시지 인덱스는 1부터 시작
                     final isMyMessage = message['senderId'] == widget.myId;
-                    final messageTime = DateTime.parse(message['timestamp']);
+                    final messageTime = DateTime.parse(message['timestamp'] ??
+                        DateTime.now().toIso8601String());
                     final formattedTime = TimeOfDay.fromDateTime(messageTime)
                         .format(context)
                         .toString();
@@ -231,6 +296,8 @@ class _ChatState extends State<Chat> {
                             borderSide: BorderSide.none,
                           ),
                         ),
+                        onSubmitted: (value) =>
+                            _sendMessage(), // 엔터키를 누르면 메시지를 보냄
                       ),
                     ),
                     const SizedBox(width: 8),
