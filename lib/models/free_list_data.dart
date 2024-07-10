@@ -71,7 +71,7 @@ class PostCard extends StatelessWidget {
                       AssetImage('assets/images/usericon.png'),
                       radius: 13.0,
                 ),
-                SizedBox(width: 8.0),
+                SizedBox(width: 15.0),
                 Text('타카', style: TextStyle(fontSize: 16)),
               ],
             ),

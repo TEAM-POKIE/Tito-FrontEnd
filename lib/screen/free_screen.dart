@@ -1,145 +1,13 @@
+//######ListView ver######
 import 'package:flutter/material.dart';
-import 'package:tito_app/widgets/reuse/bottombar.dart';
-import 'package:tito_app/widgets/reuse/testscreen.dart';
-import 'package:tito_app/models/free_list_data.dart';
+import 'package:get/get.dart';
+import 'package:tito_app/screen/free_screen_detail.dart';
+import 'package:tito_app/screen/free_screen_write.dart';
 import 'package:tito_app/widgets/reuse/search_bar.dart';
+import 'package:tito_app/widgets/reuse/bottombar.dart';
 
-class FreeScreen extends StatefulWidget {
-  const FreeScreen({super.key});
-
-  @override
-  _FreeScreenState createState() => _FreeScreenState();
-}
-
-class _FreeScreenState extends State<FreeScreen> {
-  String result = '';
-  bool isMetric = true;
-  bool isImperial = false;
-  late List<bool> isSelected;
-
-  @override
-  void initState() {
-    super.initState();
-    isSelected = [isMetric, isImperial];
-  }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       title: const Text(
-  //         '자유게시판',
-  //         style: TextStyle(
-  //           fontSize: 18,
-  //           fontWeight: FontWeight.bold,
-  //         ),
-  //       ),
-  //     ),
-  //     body: Column(
-  //       children: [
-  //         const SearchBar(),
-  //         Expanded(
-  //           child: ListView.separated(
-  //             itemCount: posts.length,
-  //             separatorBuilder: (BuildContext context, int index) => Divider(),
-  //             itemBuilder: (BuildContext context, int index) {
-  //               Post post = posts[index];
-
-  //               return Container(
-  //                 padding: EdgeInsets.all(16),
-  //                 child: Column(
-  //                   crossAxisAlignment: CrossAxisAlignment.start,
-  //                   children: [
-  //                     Text(
-  //                       post.title,
-  //                       style: TextStyle(
-  //                           fontSize: 18, fontWeight: FontWeight.bold),
-  //                     ),
-  //                     SizedBox(height: 10.0),
-  //                     Row(
-  //                       children: [
-  //                         CircleAvatar(
-  //                           backgroundImage: AssetImage(
-  //                             'assets/images/user.png',
-  //                           ), // 사용자 이미지
-  //                         ),
-  //                         SizedBox(width: 10.0),
-  //                         Text(post.username, style: TextStyle(fontSize: 14)),
-  //                         Spacer(),
-  //                         Text(post.timeAgo,
-  //                             style:
-  //                                 TextStyle(fontSize: 12, color: Colors.grey)),
-  //                       ],
-  //                     ),
-  //                     SizedBox(height: 12.0),
-  //                     // 게시물 내용
-  //                     Text(
-  //                       post.content,
-  //                       style: TextStyle(fontSize: 16),
-  //                     ),
-  //                     SizedBox(height: 8.0),
-  //                     // 투표 버튼
-  //                     // ElevatedButton(
-  //                     //   onPressed: () {},
-  //                     //   style: ElevatedButton.styleFrom(
-  //                     //     primary: Colors.purple,
-  //                     //   ),
-  //                     // ),
-  //                     // child: Text('투표  10명 투표 참여'),
-  //                     // ),
-  //                     SizedBox(height: 8.0),
-  //                     // 좋아요, 조회수, 댓글 수]
-  //                     Row(
-  //                       children: [
-  //                         Text(
-  //                           '좋아요 ${post.likes}',
-  //                           style: TextStyle(fontSize: 12, color: Colors.grey),
-  //                         ),
-  //                         SizedBox(width: 30),
-  //                         Text(
-  //                           '조회수 ${post.views}',
-  //                           style: TextStyle(fontSize: 12, color: Colors.grey),
-  //                         ),
-  //                         SizedBox(width: 30),
-  //                         Text(
-  //                           '댓글 ${post.comments}',
-  //                           style: TextStyle(fontSize: 12, color: Colors.grey),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                     ToggleButtons(
-  //                       children: [
-  //                         Padding(
-  //                           padding: EdgeInsets.symmetric(horizontal: 16),
-  //                           child: Text(
-  //                             '좋아요',
-  //                             style: TextStyle(fontSize: 14),
-  //                           ),
-  //                         ),
-  //                         Padding(
-  //                           padding: EdgeInsets.symmetric(
-  //                             horizontal: 16,
-  //                           ),
-  //                           child: Text(
-  //                             '댓글 달기',
-  //                             style: TextStyle(fontSize: 14),
-  //                           ),
-  //                         )
-  //                       ],
-  //                       isSelected: isSelected,
-  //                       onPressed: toggleSelect,
-  //                     ),
-  //                   ],
-  //                 ),
-  //               );
-  //             },
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //     bottomNavigationBar: const BottomBar(),
-  //   );
-  // }
+class FreeScreen extends StatelessWidget {
+  final List<String> posts = List.generate(20, (index) => "Post $index");
 
   @override
   Widget build(BuildContext context) {
@@ -155,30 +23,161 @@ class _FreeScreenState extends State<FreeScreen> {
       ),
       body: Stack(
         children: [
-          //CustomSearchBar(),
-          ListView(
+          Column(
             children: [
-              CustomSearchBar(),
-              // 검색창
               Padding(
-                padding: EdgeInsets.all(30.0),
+                padding: const EdgeInsets.all(8.0),
+                child: CustomSearchBar(),
               ),
-              // 게시물 카드
-              PostCard(),
-              PostCard(),
-              // 아래 ElevatedButton은 삭제됨
+              const SizedBox(height: 8.0),
+              Container(
+                height: 1.0,
+                color: Colors.grey[300],
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: posts.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: const Row(
+                        children: [
+                          Text(
+                            '애인의 우정 여행 어떻게 생각해??',
+                            style: TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.bold),
+                          ),
+                          Spacer(),
+                          Text(
+                            '1분 전',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey,
+                            ),
+                          )
+                        ],
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 15.0,
+                          ),
+                          const Row(
+                            children: [
+                              SizedBox(
+                                width: 3.0,
+                              ),
+                              CircleAvatar(
+                                backgroundImage:
+                                    AssetImage('assets/images/usericon.png'),
+                                radius: 13.0,
+                              ),
+                              SizedBox(
+                                width: 8.0,
+                              ),
+                              Text('타카'),
+                            ],
+                          ),
+                          const SizedBox(height: 20.0),
+                          const Text(
+                              '연애중에 고민이 생겼어\n사귄지 1년 정도 됐는데 애인이 우정 여행을 간다는데'),
+                          const SizedBox(height: 8.0),
+                          Row(
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {},
+                                child: Text('투표'),
+                              ),
+                              SizedBox(width: 8.0),
+                              Text('10명 투표 참여'),
+                            ],
+                          ),
+                          const SizedBox(height: 8.0),
+                          const Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                '좋아요 12     조회수 32     댓글 9',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 15.0),
+                          Container(
+                            height: 1.0,
+                            color: Colors.grey[300],
+                          ),
+                          Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment.spaceEvenly, //가로축을 균등하게 하는 것
+                            children: [
+                              TextButton.icon(
+                                onPressed: () {},
+                                icon: Image.asset('assets/images/like_btn.png',
+                                    width: 18),
+                                label: const Text(
+                                  '좋아요',
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ),
+                              Container(
+                                height: 24.0,
+                                width: 1.0,
+                                color: Colors.grey,
+                              ),
+                              TextButton.icon(
+                                onPressed: () {},
+                                icon: Image.asset(
+                                    'assets/images/comment_btn.png',
+                                    width: 18),
+                                label: const Text(
+                                  '댓글 달기',
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            height: 1.0,
+                            color: Colors.grey[300],
+                          ),
+                          SizedBox(height: 10.0),
+                        ],
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  FreeScreenDetail(post: posts[index]),
+                            ));
+                      },
+                    );
+                  },
+                ),
+              ),
             ],
           ),
           Positioned(
-            bottom: 20,
+            bottom: 13,
             right: 20,
             child: ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FreeScreenWrite(),
+                  ),
+                );
+              },
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF111111),
                   foregroundColor: const Color(0xFFDCF333)),
-              icon: Icon(Icons.edit, size: 16),
-              label: Text('글쓰기'),
+              icon: const Icon(Icons.edit, size: 16),
+              label: const Text('글쓰기'),
             ),
           ),
         ],
@@ -186,17 +185,92 @@ class _FreeScreenState extends State<FreeScreen> {
       bottomNavigationBar: const BottomBar(),
     );
   }
-
-  void toggleSelect(value) {
-    if (value == 0) {
-      isMetric = true;
-      isImperial = false;
-    } else {
-      isMetric = false;
-      isImperial = true;
-    }
-    setState(() {
-      isSelected = [isMetric, isImperial];
-    });
-  }
 }
+
+
+//#######Card Ver######
+// import 'package:flutter/material.dart';
+// import 'package:tito_app/widgets/reuse/bottombar.dart';
+// import 'package:tito_app/widgets/reuse/testscreen.dart';
+// import 'package:tito_app/models/free_list_data.dart';
+// import 'package:tito_app/widgets/reuse/search_bar.dart';
+
+// class FreeScreen extends StatefulWidget {
+//   const FreeScreen({super.key});
+
+//   @override
+//   _FreeScreenState createState() => _FreeScreenState();
+// }
+
+// class _FreeScreenState extends State<FreeScreen> {
+//   String result = '';
+//   bool isMetric = true;
+//   bool isImperial = false;
+//   late List<bool> isSelected;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     isSelected = [isMetric, isImperial];
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text(
+//           '자유게시판',
+//           style: TextStyle(
+//             fontSize: 19,
+//             fontWeight: FontWeight.bold,
+//           ),
+//         ),
+//       ),
+//       body: Stack(
+//         children: [
+//           //CustomSearchBar(),
+//           ListView(
+//             children: [
+//               CustomSearchBar(),
+//               // 검색창
+//               Padding(
+//                 padding: EdgeInsets.all(30.0),
+//               ),
+//               // 게시물 카드
+//               PostCard(),
+//               PostCard(),
+//               // 아래 ElevatedButton은 삭제됨
+//             ],
+//           ),
+//           Positioned(
+//             bottom: 20,
+//             right: 20,
+//             child: ElevatedButton.icon(
+//               onPressed: () {},
+//               style: ElevatedButton.styleFrom(
+//                   backgroundColor: const Color(0xFF111111),
+//                   foregroundColor: const Color(0xFFDCF333)),
+//               icon: Icon(Icons.edit, size: 16),
+//               label: Text('글쓰기'),
+//             ),
+//           ),
+//         ],
+//       ),
+//       bottomNavigationBar: const BottomBar(),
+//     );
+//   }
+
+//   void toggleSelect(value) {
+//     if (value == 0) {
+//       isMetric = true;
+//       isImperial = false;
+//     } else {
+//       isMetric = false;
+//       isImperial = true;
+//     }
+//     setState(() {
+//       isSelected = [isMetric, isImperial];
+//     });
+//   }
+// }
+

@@ -78,6 +78,8 @@ flutter:
     - assets/images/bottombar/list.png
     - assets/images/bottombar/board_select.png
     - assets/images/ai_purple.png
+    - assets/images/like_btn.png
+    - assets/images/comment_btn.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

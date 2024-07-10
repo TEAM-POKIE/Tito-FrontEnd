@@ -5,7 +5,7 @@ class CustomSearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        width: 360,
+        width: 375,
         child: TextField(
           decoration: InputDecoration(
             filled: true,
