@@ -219,6 +219,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => Chat(
+                                      title: debate['title'],
                                       id: debate['id'],
                                       myId: debate['myId'],
                                       opponentId: debate['opponentId'],

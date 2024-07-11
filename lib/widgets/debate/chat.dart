@@ -9,12 +9,14 @@ class Chat extends ConsumerStatefulWidget {
   final String myId;
   final String opponentId;
   final String id;
+  final String title;
 
   const Chat({
     super.key,
     required this.id,
     required this.myId,
     required this.opponentId,
+    required this.title,
   });
 
   @override
@@ -142,7 +144,7 @@ class _ChatState extends ConsumerState<Chat> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: const Text('외계인 있다? 없다?'),
+        title: Text(widget.title),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
