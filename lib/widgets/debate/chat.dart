@@ -52,7 +52,7 @@ class _ChatState extends ConsumerState<Chat> {
   }
 
   Future<void> _fetchMessages() async {
-    final url = Uri.https('tito-f8791-default-rtdb.firebaseio.com',
+    final url = Uri.https('pokeeserver-default-rtdb.firebaseio.com',
         'chat_list/${widget.id}.json');
 
     final response = await http.get(url);
@@ -109,7 +109,7 @@ class _ChatState extends ConsumerState<Chat> {
       'timestamp': DateTime.now().toIso8601String(),
     };
 
-    final url = Uri.https('tito-f8791-default-rtdb.firebaseio.com',
+    final url = Uri.https('pokeeserver-default-rtdb.firebaseio.com',
         'chat_list/${widget.id}.json');
     final response = await http.post(
       url,
@@ -168,7 +168,7 @@ class _ChatState extends ConsumerState<Chat> {
                 width: double.infinity,
                 padding: const EdgeInsets.all(16.0),
                 color: const Color(0xffE5E5E5),
-                child: Column(
+                child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
@@ -220,7 +220,6 @@ class _ChatState extends ConsumerState<Chat> {
                         ),
                       );
                     }
-
                     final message = _messages[index - 1]; // 메시지 인덱스는 1부터 시작
                     final isMyMessage = message['senderId'] == widget.myId;
                     final messageTime = DateTime.parse(message['timestamp'] ??

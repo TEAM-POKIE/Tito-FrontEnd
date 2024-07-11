@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void fetchTitles() async {
     try {
       final url = Uri.https(
-          'tito-f8791-default-rtdb.firebaseio.com', 'live_debate_list.json');
+          'pokeeserver-default-rtdb.firebaseio.com', 'live_debate_list.json');
       final response = await http.get(url);
       if (response.statusCode != 200) {
         throw Exception('Failed to load data');
@@ -96,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void hotList() async {
     try {
       final hotUrl = Uri.https(
-          'tito-f8791-default-rtdb.firebaseio.com', 'hot_debate_list.json');
+          'pokeeserver-default-rtdb.firebaseio.com', 'hot_debate_list.json');
       final response = await http.get(hotUrl);
       if (response.statusCode != 200) {
         throw Exception('Failed to load data');

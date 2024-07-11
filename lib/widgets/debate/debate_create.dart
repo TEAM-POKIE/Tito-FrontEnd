@@ -72,11 +72,12 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(labels.length, (index) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
                     child: SizedBox(
-                      width: 70,
+                      width: 65,
                       child: ElevatedButton(
                         onPressed: () {
                           setState(() {

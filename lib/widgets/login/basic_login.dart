@@ -30,7 +30,7 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
 
     try {
       final url = Uri.https(
-          'tito-f8791-default-rtdb.firebaseio.com', 'login_id_list.json');
+          'pokeeserver-default-rtdb.firebaseio.com', 'login_id_list.json');
       final response = await http.get(url);
       if (response.statusCode != 200) {
         throw Exception('Failed to load data');

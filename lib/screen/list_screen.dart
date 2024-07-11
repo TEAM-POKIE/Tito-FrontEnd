@@ -34,8 +34,8 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   }
 
   Future<List<Map<String, dynamic>>> fetchDebateList() async {
-    final url =
-        Uri.https('tito-f8791-default-rtdb.firebaseio.com', 'debate_list.json');
+    final url = Uri.https(
+        'pokeeserver-default-rtdb.firebaseio.com', 'debate_list.json');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {

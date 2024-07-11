@@ -23,7 +23,7 @@ class _SignUpState extends State<Signup> {
     final isVaild = _formKey.currentState!.validate();
     _formKey.currentState!.save();
     final url = Uri.https(
-        'tito-f8791-default-rtdb.firebaseio.com', 'login_id_list.json');
+        'pokeeserver-default-rtdb.firebaseio.com', 'login_id_list.json');
 
     if (isVaild) {
       // initState에서 실행하던 초기화 코드

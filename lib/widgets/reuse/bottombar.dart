@@ -26,19 +26,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   ];
   var preIndex = 0;
   void _onItemTapped(int index) {
-    // && 리스트 -> 홈 화면이 이동이 안 되고 있었음
-    // if (ref.read(selectedIndexProvider.notifier).state == index) return;
-
-    // if (index == 1 || index == 4) {
-    //   ref.read(selectedIndexProvider.notifier).state = index;
-    //   Navigator.of(context).pushReplacement(
-    //     MaterialPageRoute(builder: (ctx) => _widgetOptions[index]),
-    //   );
-    // } else {
-    //   Navigator.of(context).push(
-    //     MaterialPageRoute(builder: (ctx) => _widgetOptions[index]),
-    //   );
-    // }
     final preIndex = ref.read(selectedIndexProvider.notifier).state;
 
     if (preIndex == index) return;

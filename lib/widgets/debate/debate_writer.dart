@@ -30,8 +30,8 @@ class _DebateWriterState extends ConsumerState<DebateWriter> {
   }
 
   Future<DebateInfo?> fetchDebateInfo(String debateId) async {
-    final url = Uri.https(
-        'tito-f8791-default-rtdb.firebaseio.com', 'debate_list/$debateId.json');
+    final url = Uri.https('pokeeserver-default-rtdb.firebaseio.com',
+        'debate_list/$debateId.json');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -46,8 +46,8 @@ class _DebateWriterState extends ConsumerState<DebateWriter> {
   }
 
   Future<void> _updateDebateState(String debateId) async {
-    final url = Uri.https(
-        'tito-f8791-default-rtdb.firebaseio.com', 'debate_list/$debateId.json');
+    final url = Uri.https('pokeeserver-default-rtdb.firebaseio.com',
+        'debate_list/$debateId.json');
 
     final response = await http.patch(
       url,
