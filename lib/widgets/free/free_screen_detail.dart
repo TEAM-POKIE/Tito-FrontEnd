@@ -4,7 +4,7 @@ import 'package:tito_app/widgets/free/vote.dart';
 
 class FreeScreenDetail extends StatelessWidget {
   final FreeScreenItem item;
-  //final String postId;
+  final String postId;
 
   FreeScreenDetail({required this.item});
 
