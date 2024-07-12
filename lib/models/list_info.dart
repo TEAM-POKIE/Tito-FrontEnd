@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class ListBanner {
   const ListBanner({
     required this.id,
