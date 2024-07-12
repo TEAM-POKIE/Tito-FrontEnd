@@ -1,25 +1,15 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:tito_app/models/freescreen_item.dart';
 import 'package:tito_app/widgets/free/free_screen_detail.dart';
 import 'package:tito_app/widgets/free/free_screen_write.dart';
 import 'package:tito_app/widgets/free/like_button.dart';
 import 'package:tito_app/widgets/reuse/search_bar.dart';
 import 'package:tito_app/widgets/reuse/bottombar.dart';
-import 'package:tito_app/widgets/free/like_button.dart';
 import 'package:tito_app/provider/app_state.dart';
 import 'package:provider/provider.dart';
-
 import 'package:tito_app/widgets/free/comment_button.dart';
-
-
-//상태관리 
-//보이는 것만 랜더링된다면 훨씬 더 성능이 좋겠지
-
-
-
 
 class FreeScreen extends StatefulWidget {
   const FreeScreen({super.key});
@@ -52,13 +42,11 @@ class _FreeScreenState extends State<FreeScreen> {
           title: itemData['title'],
           content: itemData['content'],
           timestamp: DateTime.parse(itemData['timestamp']),
-          //likes: itemData['likes'] ?? 0, // 좋아요 수 추가
         );
         loadedItems.add(item);
       }
       setState(() {
         _freescreenitem = loadedItems.reversed.toList();
-        // 데이터를 역순으로 정렬하여 상태에 저장
       });
     }
   }
@@ -76,7 +64,6 @@ class _FreeScreenState extends State<FreeScreen> {
 
     setState(() {
       _freescreenitem.insert(0, newItem);
-      // 새 게시글을 리스트의 맨 앞에 추가
     });
   }
 
@@ -142,7 +129,6 @@ class _FreeScreenState extends State<FreeScreen> {
                 child: ListView.builder(
                   itemCount: _freescreenitem.length,
                   itemBuilder: (ctx, index) {
-                  
                     final item = _freescreenitem[index];
                     return ListTile(
                       title: Row(
@@ -243,7 +229,8 @@ class _FreeScreenState extends State<FreeScreen> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => FreeScreenDetail(item: item),
+                            builder: (context) =>
+                                FreeScreenDetail(item: item, postId: item.id),
                           ),
                         );
                       },

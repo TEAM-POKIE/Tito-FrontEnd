@@ -6,7 +6,7 @@ class FreeScreenDetail extends StatelessWidget {
   final FreeScreenItem item;
   final String postId;
 
-  FreeScreenDetail({required this.item});
+  FreeScreenDetail({required this.item, required this.postId, super.key});
 
   String timeAgo(DateTime dateTime) {
     final duration = DateTime.now().difference(dateTime);
@@ -82,19 +82,18 @@ class FreeScreenDetail extends StatelessWidget {
             const SizedBox(height: 40.0),
             const Row(
               children: [
-                const Text(
+                Text(
                   '좋아요',
                   style: TextStyle(color: Colors.grey),
                 ),
-                const SizedBox(width: 4),
+                SizedBox(width: 4),
                 Text('12'),
-                const SizedBox(width: 16),
-                const Text('조회수', style: TextStyle(color: Colors.grey)),
-                const SizedBox(width: 4),
+                SizedBox(width: 16),
+                Text('조회수', style: TextStyle(color: Colors.grey)),
+                SizedBox(width: 4),
                 Text('32'),
                 Spacer(),
                 //Icon(Icons.favorite_border),
-              
               ],
             ),
           ],
