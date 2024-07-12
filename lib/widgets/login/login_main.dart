@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tito_app/widgets/login/basic_login.dart';
 import 'package:tito_app/widgets/login/signup.dart';
 
@@ -23,19 +24,11 @@ class LoginMain extends StatelessWidget {
     ];
 
     void _goBasicLogin() {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (ctx) => const BasicLogin(),
-        ),
-      );
+      context.push('/basicLogin');
     }
 
     void _goSignuUp() {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (ctx) => const Signup(),
-        ),
-      );
+      context.push('/signup');
     }
 
     return Scaffold(

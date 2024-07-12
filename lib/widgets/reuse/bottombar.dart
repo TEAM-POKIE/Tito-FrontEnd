@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tito_app/screen/home_screen.dart';
-import 'package:tito_app/screen/list_screen.dart';
-import 'package:tito_app/widgets/debate/debate_create.dart';
-import 'package:tito_app/widgets/ai/ai_create.dart';
-import 'package:tito_app/screen/free_screen.dart';  
+import 'package:go_router/go_router.dart';
 import 'package:tito_app/provider/nav_provider.dart';
 
 class BottomBar extends ConsumerStatefulWidget {
@@ -17,31 +13,25 @@ class BottomBar extends ConsumerStatefulWidget {
 }
 
 class _BottomBarState extends ConsumerState<BottomBar> {
-  static List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(),
-    ListScreen(),
-    DebateCreate(),
-    AiCreate(),
-    FreeScreen(),
-  ];
-  var preIndex = 0;
   void _onItemTapped(int index) {
-    final preIndex = ref.read(selectedIndexProvider.notifier).state;
-
-    if (preIndex == index) return;
-    ref.read(selectedIndexProvider.notifier).state = index;
-
-    if (index == 1 || index == 4) {
-      ref.read(selectedIndexProvider.notifier).state = index;
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => _widgetOptions[index]),
-        (Route<dynamic> route) => false,
-      );
+    final notifier = ref.read(selectedIndexProvider.notifier);
+    if (index == 2) {
+      context.push('/debate_create').then((_) {});
+    } else if (index == 3) {
+      context.push('/ai_create').then((_) {});
     } else {
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (ctx) => _widgetOptions[index]),
-      );
+      notifier.state = index;
+      switch (index) {
+        case 0:
+          context.go('/home');
+          break;
+        case 1:
+          context.go('/list');
+          break;
+        case 4:
+          context.go('/free');
+          break;
+      }
     }
   }
 
@@ -85,7 +75,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
           label: 'AI 주제',
         ),
         BottomNavigationBarItem(
-          //&& 리스트 까맣게 채워진 거 수정함
           icon: Image.asset(
             _selectedIndex == 4
                 ? 'assets/images/bottombar/board_select.png'

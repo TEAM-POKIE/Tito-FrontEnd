@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:tito_app/provider/debate_provider.dart';
 import 'package:tito_app/provider/login_provider.dart';
-import 'dart:async';
+import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:web_socket_channel/status.dart' as status;
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:grouped_list/grouped_list.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class Chat extends ConsumerStatefulWidget {
   final String myId;
@@ -26,60 +30,64 @@ class Chat extends ConsumerStatefulWidget {
 class _ChatState extends ConsumerState<Chat> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
-  final ScrollController _scrollController = ScrollController();
-  List<Map<String, dynamic>> _messages = [];
-  Timer? _timer;
-  String? _currentDate;
+  late WebSocketChannel _channel;
+  List<types.Message> _messages = [];
+  bool _isFirstMessage = true;
 
   @override
   void initState() {
     super.initState();
+    _channel = WebSocketChannel.connect(Uri.parse('ws://localhost:4040/ws'));
+    _channel.stream.listen(_onReceiveMessage);
     _fetchMessages();
     _requestFocus();
-    _startPolling();
   }
 
   @override
   void dispose() {
-    _timer?.cancel();
+    _channel.sink.close(status.goingAway);
     super.dispose();
   }
 
-  void _startPolling() {
-    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
-      _fetchMessages();
+  void _onReceiveMessage(dynamic message) {
+    final decodedMessage = json.decode(message);
+    final types.Message chatMessage = types.TextMessage(
+      author: types.User(id: decodedMessage['senderId'] ?? ''),
+      createdAt:
+          DateTime.parse(decodedMessage['timestamp']).millisecondsSinceEpoch,
+      id: decodedMessage['id'] ?? '',
+      text: decodedMessage['text'] ?? '',
+    );
+
+    setState(() {
+      _messages.insert(0, chatMessage);
     });
   }
 
   Future<void> _fetchMessages() async {
     final url = Uri.https('pokeeserver-default-rtdb.firebaseio.com',
         'chat_list/${widget.id}.json');
-
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
       final Map<String, dynamic>? data = json.decode(response.body);
-      final List<Map<String, dynamic>> loadedMessages = [];
+      final List<types.Message> loadedMessages = [];
 
       if (data != null) {
         data.forEach((key, value) {
-          loadedMessages.add({
-            'text': value['text'] ?? '',
-            'senderId': value['senderId'] ?? '',
-            'timestamp': value['timestamp'] ?? '',
-          });
+          loadedMessages.add(types.TextMessage(
+            author: types.User(id: value['senderId'] ?? ''),
+            createdAt:
+                DateTime.parse(value['timestamp'] ?? '').millisecondsSinceEpoch,
+            id: key ?? '',
+            text: value['text'] ?? '',
+          ));
         });
       }
 
       setState(() {
-        _messages = loadedMessages;
-        if (_messages.isNotEmpty) {
-          final DateTime messageTime =
-              DateTime.parse(_messages.first['timestamp'] ?? '');
-          _currentDate =
-              '${messageTime.year}-${messageTime.month}-${messageTime.day}';
-          _scrollToBottom();
-        }
+        // 오래된 메시지가 위로 가도록 순서를 뒤집어 설정
+        _messages = loadedMessages.reversed.toList();
       });
     } else {
       // 에러 처리
@@ -87,60 +95,89 @@ class _ChatState extends ConsumerState<Chat> {
     }
   }
 
-  void _scrollToBottom() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
-        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-      }
-    });
-  }
-
   Future<void> _sendMessage() async {
-    final loginInfo = ref.watch(loginInfoProvider);
     if (_controller.text.trim().isEmpty) {
       return;
     }
-
+    final loginInfo = ref.read(loginInfoProvider);
+    final debateInfo = ref.read(debateInfoProvider);
     final newMessage = {
       'text': _controller.text.trim(),
-      'senderId': loginInfo?.email ?? '',
-      'aId': widget.myId,
-      'bId': widget.opponentId,
+      'AId': widget.myId,
+      'BId': widget.opponentId,
       'timestamp': DateTime.now().toIso8601String(),
+      'id': DateTime.now().millisecondsSinceEpoch.toString(),
     };
 
+    _channel.sink.add(json.encode(newMessage));
+
+    if (_isFirstMessage) {
+      // 토론방 생성
+      final url = Uri.https(
+          'pokeeserver-default-rtdb.firebaseio.com', 'debate_list.json');
+      final currentTime = DateTime.now().toIso8601String();
+
+      final response = await http.post(url,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: json.encode({
+            'title': debateInfo?.title ?? '',
+            'category': debateInfo?.category ?? '',
+            'myArgument': debateInfo?.myArgument ?? '',
+            'myId': loginInfo?.email ?? '',
+            'opponentArgument': debateInfo?.opponentArgument ?? '',
+            'opponentId': debateInfo?.opponentId ?? '',
+            'debateState': debateInfo?.debateState ?? '',
+            'timestamp': currentTime,
+          }));
+
+      if (response.statusCode == 200) {
+        _isFirstMessage = false;
+        print('Debate room created successfully.');
+      } else {
+        // 에러 처리
+        print('Failed to create debate room: ${response.body}');
+      }
+    }
+
+    setState(() {
+      _messages.add(
+        types.TextMessage(
+          author: types.User(id: widget.myId),
+          createdAt: DateTime.now().millisecondsSinceEpoch,
+          id: newMessage['id'] ?? '', // 기본값 설정
+          text: newMessage['text'] ?? '', // 기본값 설정
+        ),
+      );
+    });
+
+    // 메시지를 Firebase에 저장
     final url = Uri.https('pokeeserver-default-rtdb.firebaseio.com',
         'chat_list/${widget.id}.json');
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode(newMessage),
-    );
+    await http.post(url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          'senderId': loginInfo?.email ?? '',
+          'text': newMessage['text'] ?? '',
+          'timestamp': newMessage['timestamp'],
+        }));
 
-    if (response.statusCode == 200) {
-      setState(() {
-        _messages.add(newMessage);
-        _controller.clear();
-        _focusNode.requestFocus(); // 메시지를 보낸 후에도 키보드가 열리도록 유지
-
-        // 날짜 업데이트
-        final DateTime messageTime = DateTime.parse(
-            newMessage['timestamp'] ?? DateTime.now().toIso8601String());
-        _currentDate =
-            '${messageTime.year}-${messageTime.month}-${messageTime.day}';
-        _scrollToBottom();
-      });
-    }
+    _controller.clear();
+    _focusNode.requestFocus(); // 메시지를 보낸 후에도 키보드가 열리도록 유지
   }
 
   void _requestFocus() {
-    Future.delayed(Duration(milliseconds: 300), () {
+    Future.delayed(const Duration(milliseconds: 300), () {
       FocusScope.of(context).requestFocus(_focusNode);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final loginInfo = ref.read(loginInfoProvider);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -173,58 +210,54 @@ class _ChatState extends ConsumerState<Chat> {
                   children: [
                     Row(
                       children: [
-                        const Icon(Icons.chat_bubble_outline,
-                            color: Colors.black),
-                        const SizedBox(width: 8),
-                        const Text(
+                        Icon(Icons.chat_bubble_outline, color: Colors.black),
+                        SizedBox(width: 8),
+                        Text(
                           '상대의 의견을 반박하며 토론을 시작해보세요!',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),
+                          style: TextStyle(color: Colors.black, fontSize: 16),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8),
                     Row(
                       children: [
-                        const Icon(Icons.hourglass_bottom, color: Colors.brown),
-                        const SizedBox(width: 8),
+                        Icon(Icons.hourglass_bottom, color: Colors.brown),
+                        SizedBox(width: 8),
                         Text(
                           '7:20 남았어요!',
-                          style: TextStyle(
-                            color: const Color(0xff8E48F8),
-                            fontSize: 16,
-                          ),
+                          style:
+                              TextStyle(color: Color(0xff8E48F8), fontSize: 16),
                         ),
                       ],
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               Expanded(
-                child: ListView.builder(
-                  controller: _scrollController,
-                  itemCount: _messages.length + 1, // 메시지 개수 + 1 (날짜)
-                  itemBuilder: (context, index) {
-                    if (index == 0) {
-                      // 날짜를 첫 번째 아이템으로 표시
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Text(
-                            _currentDate ?? '',
-                            style: TextStyle(fontSize: 16, color: Colors.grey),
-                          ),
-                        ),
-                      );
-                    }
-                    final message = _messages[index - 1]; // 메시지 인덱스는 1부터 시작
-                    final isMyMessage = message['senderId'] == widget.myId;
-                    final messageTime = DateTime.parse(message['timestamp'] ??
-                        DateTime.now().toIso8601String());
-                    final formattedTime = TimeOfDay.fromDateTime(messageTime)
+                child: GroupedListView<types.Message, DateTime>(
+                  elements: _messages,
+                  groupBy: (message) => DateTime(
+                    DateTime.fromMillisecondsSinceEpoch(message.createdAt!)
+                        .year,
+                    DateTime.fromMillisecondsSinceEpoch(message.createdAt!)
+                        .month,
+                    DateTime.fromMillisecondsSinceEpoch(message.createdAt!).day,
+                  ),
+                  groupHeaderBuilder: (types.Message message) => Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Text(
+                        '${DateTime.fromMillisecondsSinceEpoch(message.createdAt!).year}-${DateTime.fromMillisecondsSinceEpoch(message.createdAt!).month}-${DateTime.fromMillisecondsSinceEpoch(message.createdAt!).day}',
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                  itemBuilder: (context, types.Message message) {
+                    final isMyMessage = message.author.id == loginInfo?.email;
+                    final formattedTime = TimeOfDay.fromDateTime(
+                            DateTime.fromMillisecondsSinceEpoch(
+                                message.createdAt!))
                         .format(context)
                         .toString();
 
@@ -241,9 +274,7 @@ class _ChatState extends ConsumerState<Chat> {
                               : MainAxisAlignment.start,
                           children: [
                             if (!isMyMessage)
-                              CircleAvatar(
-                                child: Icon(Icons.person),
-                              ),
+                              CircleAvatar(child: Icon(Icons.person)),
                             if (!isMyMessage) const SizedBox(width: 8),
                             Container(
                               constraints: BoxConstraints(maxWidth: 250),
@@ -258,7 +289,7 @@ class _ChatState extends ConsumerState<Chat> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(message['text']),
+                                  Text((message as types.TextMessage).text),
                                   SizedBox(height: 5),
                                   Text(
                                     formattedTime,
@@ -270,14 +301,15 @@ class _ChatState extends ConsumerState<Chat> {
                             ),
                             if (isMyMessage) const SizedBox(width: 8),
                             if (isMyMessage)
-                              CircleAvatar(
-                                child: Icon(Icons.person),
-                              ),
+                              CircleAvatar(child: Icon(Icons.person)),
                           ],
                         ),
                       ),
                     );
                   },
+                  useStickyGroupSeparators: true,
+                  floatingHeader: true,
+                  order: GroupedListOrder.ASC,
                 ),
               ),
               Padding(
@@ -287,7 +319,7 @@ class _ChatState extends ConsumerState<Chat> {
                     Expanded(
                       child: TextField(
                         controller: _controller,
-                        focusNode: _focusNode, // 포커스 노드를 텍스트 필드에 연결
+                        focusNode: _focusNode,
                         decoration: InputDecoration(
                           hintText: '상대 의견 작성 타임이에요!',
                           fillColor: Colors.grey[200],
@@ -297,8 +329,7 @@ class _ChatState extends ConsumerState<Chat> {
                             borderSide: BorderSide.none,
                           ),
                         ),
-                        onSubmitted: (value) =>
-                            _sendMessage(), // 엔터키를 누르면 메시지를 보냄
+                        onSubmitted: (value) => _sendMessage(),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -310,30 +341,6 @@ class _ChatState extends ConsumerState<Chat> {
                 ),
               ),
             ],
-          ),
-          Positioned(
-            right: 16.0,
-            bottom: 80.0,
-            child: Container(
-              alignment: Alignment.bottomRight,
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: TextButton(
-                onPressed: () {},
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Image.asset('assets/images/timingBell.png'),
-                    const Text(
-                      '타이밍 벨',
-                      style: TextStyle(color: Color(0xffDCF333)),
-                    ),
-                  ],
-                ),
-              ),
-            ),
           ),
         ],
       ),

@@ -1,6 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tito_app/widgets/debate/debate_create_second.dart';
+import 'package:go_router/go_router.dart';
+
+import 'package:percent_indicator/percent_indicator.dart';
 
 import 'package:tito_app/provider/debate_provider.dart';
 
@@ -39,24 +43,33 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
       return;
     }
 
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (ctx) => const DebateCreateSecond(),
-      ),
-    );
+    context.push('/debate_create_second');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40.0), // 원하는 여백 크기
-          child: LinearProgressIndicator(
-            value: 0.5,
-            backgroundColor: Colors.grey,
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.purple),
-          ), //나중에 마무리
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                child: LinearPercentIndicator(
+                  width: 200,
+                  animation: true,
+                  animationDuration: 1000,
+                  lineHeight: 5.0,
+                  percent: 0.5,
+                  linearStrokeCap: LinearStrokeCap.butt,
+                  progressColor: const Color(0xff8E48F8),
+                  backgroundColor: Colors.grey,
+                  barRadius: Radius.circular(10),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
       body: Padding(

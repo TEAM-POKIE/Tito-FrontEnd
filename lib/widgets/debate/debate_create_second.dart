@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/provider/debate_provider.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tito_app/provider/login_provider.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:tito_app/provider/nav_provider.dart';
-import 'package:tito_app/screen/list_screen.dart';
-import 'package:tito_app/widgets/debate/debate_writer.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class DebateCreateSecond extends ConsumerStatefulWidget {
   const DebateCreateSecond({super.key});
@@ -20,7 +17,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
   var myArguments = '';
   var opponentArguments = '';
 
-  void _createDebateRoom() async {
+  void _navigateToChat(BuildContext context) {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -32,41 +29,14 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
           opponentArgument: opponentArguments,
         );
 
-    final url = Uri.https(
-        'pokeeserver-default-rtdb.firebaseio.com', 'debate_list.json');
     final debateInfo = ref.read(debateInfoProvider);
-    final currentTime = DateTime.now().toIso8601String();
 
-    final response = await http.post(url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: json.encode({
-          'title': debateInfo?.title,
-          'category': debateInfo?.category,
-          'myArgument': debateInfo?.myArgument,
-          'myId': loginInfo?.email,
-          'opponentArgument': debateInfo?.opponentArgument,
-          'opponentId': debateInfo?.opponentId,
-          'debateState': debateInfo?.debateState,
-          'timestamp': currentTime,
-        }));
-
-    if (response.statusCode == 200) {
-      final responseData = json.decode(response.body);
-      final debateId = responseData['name']; // Firebase에서 생성된 debateId
-
-      ref.read(selectedIndexProvider.notifier).state = 1;
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-            builder: (context) => DebateWriter(debateId: debateId)),
-        (Route<dynamic> route) => false,
-      );
-    } else {
-      // 에러 처리
-      print('Failed to create debate room: ${response.body}');
-    }
+    context.go('/chat', extra: {
+      'title': debateInfo?.title ?? '',
+      'id': '',
+      'myId': loginInfo?.email ?? '',
+      'opponentId': debateInfo?.opponentId ?? '',
+    });
   }
 
   @override
@@ -74,13 +44,26 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
     final debateInfo = ref.watch(debateInfoProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40.0), // 원하는 여백 크기
-          child: LinearProgressIndicator(
-            value: 1,
-            backgroundColor: Colors.grey,
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.purple),
-          ), // 나중에 마무리
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                child: LinearPercentIndicator(
+                  width: 200,
+                  animation: true,
+                  animationDuration: 200,
+                  lineHeight: 5.0,
+                  percent: 1,
+                  linearStrokeCap: LinearStrokeCap.butt,
+                  progressColor: const Color(0xff8E48F8),
+                  backgroundColor: Colors.grey,
+                  barRadius: const Radius.circular(10),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
       body: Padding(
@@ -152,7 +135,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: _createDebateRoom,
+                  onPressed: () => _navigateToChat(context),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff8E48F8),
                     shape: RoundedRectangleBorder(
@@ -161,7 +144,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                   ),
                   child: const Text(
-                    '토론방 개설',
+                    '토론방으로 이동',
                     style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
                 ),

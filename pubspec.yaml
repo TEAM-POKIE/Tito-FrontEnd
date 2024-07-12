@@ -45,6 +45,9 @@ dependencies:
   flutter_chat_ui: ^1.6.14
   grouped_list: ^6.0.0
   provider: ^6.0.0
+  web_socket_channel: ^3.0.0
+  percent_indicator: ^4.2.3
+  flutter_chat_types: ^3.6.2
 
 dev_dependencies:
   flutter_test:
