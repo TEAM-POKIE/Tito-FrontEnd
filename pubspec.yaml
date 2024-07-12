@@ -41,6 +41,9 @@ dependencies:
   http: ^1.2.1
   get: ^4.6.6
   flutter_local_notifications: ^17.2.1+1
+  go_router: ^14.2.1
+  flutter_chat_ui: ^1.6.14
+  grouped_list: ^6.0.0
 
 dev_dependencies:
   flutter_test:
