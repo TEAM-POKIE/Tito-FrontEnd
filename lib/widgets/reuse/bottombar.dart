@@ -24,7 +24,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
     AiCreate(),
     FreeScreen(),
   ];
-
+  var preIndex = 0;
   void _onItemTapped(int index) {
     // && 리스트 -> 홈 화면이 이동이 안 되고 있었음
     // if (ref.read(selectedIndexProvider.notifier).state == index) return;
@@ -39,13 +39,17 @@ class _BottomBarState extends ConsumerState<BottomBar> {
     //     MaterialPageRoute(builder: (ctx) => _widgetOptions[index]),
     //   );
     // }
-    final currentIndex = ref.read(selectedIndexProvider.notifier).state;
-    if (currentIndex == index) return;
+    final preIndex = ref.read(selectedIndexProvider.notifier).state;
+
+    if (preIndex == index) return;
     ref.read(selectedIndexProvider.notifier).state = index;
 
     if (index == 1 || index == 4) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (ctx) => _widgetOptions[index]),
+      ref.read(selectedIndexProvider.notifier).state = index;
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => _widgetOptions[index]),
+        (Route<dynamic> route) => false,
       );
     } else {
       Navigator.of(context).push(
@@ -56,7 +60,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
-    final int _selectedIndex = ref.watch(selectedIndexProvider);
+    final int _selectedIndex = ref.watch(selectedIndexProvider.notifier).state;
     return BottomNavigationBar(
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(

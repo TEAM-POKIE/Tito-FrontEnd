@@ -7,6 +7,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tito_app/models/list_info.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:tito_app/widgets/reuse/search_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -172,6 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
+                        CustomSearchBar(),
                         Column(
                           children: [
                             SizedBox(

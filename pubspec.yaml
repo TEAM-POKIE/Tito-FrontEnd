@@ -40,6 +40,8 @@ dependencies:
   intl: ^0.19.0
   http: ^1.2.1
   get: ^4.6.6
+  flutter_local_notifications: ^17.2.1+1
+  provider: ^6.0.0
 
 dev_dependencies:
   flutter_test:
@@ -78,7 +80,11 @@ flutter:
     - assets/images/bottombar/list.png
     - assets/images/bottombar/board_select.png
     - assets/images/ai_purple.png
+    - assets/images/alarm.png
+    - assets/images/sendArrow.png
+    - assets/images/timingBell.png
     - assets/images/like_btn.png
+    - assets/images/liked_btn.png
     - assets/images/comment_btn.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

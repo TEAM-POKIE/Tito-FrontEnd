@@ -7,12 +7,12 @@ void main() {
   runApp(
     const ProviderScope(
       child: MaterialApp(
-        // home: Scaffold(
-        //   body: LoginScreen(),
-        // ),
-        home: LoginScreen(),
+        home: Scaffold(
+          body: LoginScreen(),
+        ),
+        //home: LoginScreen(),
       ),
     ),
-  );
+  ); 
 }
 //현재 home을 Scaffold로 감싸니까 이상해서 그냥 LoginScreen()으로 바로 연결함

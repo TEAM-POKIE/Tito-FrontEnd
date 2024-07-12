@@ -114,14 +114,15 @@ class LoginMain extends StatelessWidget {
                 children: [
                   const Text('아직 회원이 아니신가요?'),
                   TextButton(
-                      onPressed: _goSignuUp,
-                      child: const Text(
-                        '회원가입',
-                        style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold),
-                      ))
+                    onPressed: _goSignuUp,
+                    child: const Text(
+                      '회원가입',
+                      style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ],
               ),
             ],
