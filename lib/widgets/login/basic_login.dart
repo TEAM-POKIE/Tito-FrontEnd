@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/models/login_info.dart';
 import 'package:tito_app/provider/login_provider.dart';
-import 'package:tito_app/screen/home_screen.dart';
-import 'package:tito_app/widgets/login/signup.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 
 class BasicLogin extends ConsumerStatefulWidget {
@@ -30,7 +29,7 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
 
     try {
       final url = Uri.https(
-          'tito-f8791-default-rtdb.firebaseio.com', 'login_id_list.json');
+          'pokeeserver-default-rtdb.firebaseio.com', 'login_id_list.json');
       final response = await http.get(url);
       if (response.statusCode != 200) {
         throw Exception('Failed to load data');
@@ -59,11 +58,7 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
 
       if (loggedInUser != null) {
         ref.read(loginInfoProvider.notifier).state = loggedInUser;
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
-          (Route<dynamic> route) => false,
-        );
+        context.go('/home'); // HomeScreen으로 이동
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -80,11 +75,8 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
     }
   }
 
-  void _goSignuUp() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const Signup()),
-    );
+  void _goSignUp() {
+    context.push('/signup'); // Signup 화면으로 이동
   }
 
   @override
@@ -96,7 +88,7 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: Form(
-          key: _formKey, // Form에 key 설정
+          key: _formKey,
           child: Column(
             children: [
               TextFormField(
@@ -143,8 +135,8 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
                   minimumSize: const Size(300, 60),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 10), // 버튼 내부의 패딩 설정
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 ),
                 child: const Text(
                   '로그인',
@@ -158,7 +150,7 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(
-                    onPressed: _goSignuUp,
+                    onPressed: _goSignUp,
                     child: const Text(
                       '이메일로 가입',
                       style: TextStyle(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:tito_app/widgets/reuse/notification.dart';
 
@@ -23,13 +24,13 @@ class _SignUpState extends State<Signup> {
     final isVaild = _formKey.currentState!.validate();
     _formKey.currentState!.save();
     final url = Uri.https(
-        'tito-f8791-default-rtdb.firebaseio.com', 'login_id_list.json');
+        'pokeeserver-default-rtdb.firebaseio.com', 'login_id_list.json');
 
     if (isVaild) {
       // initState에서 실행하던 초기화 코드
-      FlutterLocalNotification.init();
-      await Future.delayed(const Duration(seconds: 1),
-          FlutterLocalNotification.requestNotificationPermission());
+      // FlutterLocalNotification.init();
+      // await Future.delayed(const Duration(seconds: 1),
+      //     FlutterLocalNotification.requestNotificationPermission());
 
       final response = await http.post(url,
           headers: {
@@ -45,7 +46,7 @@ class _SignUpState extends State<Signup> {
         return;
       }
 
-      Navigator.of(context).pop(widget);
+      context.pop();
     }
   }
 

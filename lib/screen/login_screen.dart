@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:tito_app/widgets/login/login_main.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
-  void _goLoginMain(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (ctx) => const LoginMain(),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
+    void _goLoginMain() {
+      context.push('/basicLogin');
+    }
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -47,7 +45,7 @@ class LoginScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 24), // 기본 텍스트 스타일
               ),
               ElevatedButton(
-                onPressed: () => _goLoginMain(context),
+                onPressed: _goLoginMain,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
                   minimumSize: const Size(300, 60),

@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:tito_app/widgets/debate/chat.dart';
-import 'package:tito_app/widgets/debate/debate_guest.dart';
-import 'package:tito_app/widgets/debate/debate_writer.dart';
+
 import 'dart:convert';
 import 'package:tito_app/widgets/reuse/search_bar.dart';
 import 'package:tito_app/provider/login_provider.dart';
-import 'package:tito_app/widgets/reuse/bottombar.dart';
 
 class ListScreen extends ConsumerStatefulWidget {
   const ListScreen({super.key});
@@ -34,8 +32,8 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   }
 
   Future<List<Map<String, dynamic>>> fetchDebateList() async {
-    final url =
-        Uri.https('tito-f8791-default-rtdb.firebaseio.com', 'debate_list.json');
+    final url = Uri.https(
+        'pokeeserver-default-rtdb.firebaseio.com', 'debate_list.json');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -198,8 +196,12 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        DebateWriter(debateId: debate['id']),
+                                    builder: (context) => Chat(
+                                      title: debate['title'],
+                                      id: debate['id'],
+                                      myId: debate['myId'],
+                                      opponentId: debate['opponentId'],
+                                    ),
                                   ),
                                 );
                               } else if (loginInfo?.email != debate['myId'] &&
@@ -207,8 +209,12 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        DebateGuest(debateId: debate['id']),
+                                    builder: (context) => Chat(
+                                      title: debate['title'],
+                                      id: debate['id'],
+                                      myId: debate['myId'],
+                                      opponentId: debate['opponentId'],
+                                    ),
                                   ),
                                 );
                               } else if ((loginInfo?.email == debate['myId'] ||
@@ -219,6 +225,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => Chat(
+                                      title: debate['title'],
                                       id: debate['id'],
                                       myId: debate['myId'],
                                       opponentId: debate['opponentId'],
@@ -279,7 +286,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: const BottomBar(),
     );
   }
 }
