@@ -11,6 +11,8 @@ import 'package:tito_app/provider/app_state.dart';
 import 'package:provider/provider.dart';
 import 'package:tito_app/widgets/free/comment_button.dart';
 
+import 'package:go_router/go_router.dart';
+
 class FreeScreen extends StatefulWidget {
   const FreeScreen({super.key});
 
@@ -52,11 +54,7 @@ class _FreeScreenState extends State<FreeScreen> {
   }
 
   void _addPost() async {
-    final newItem = await Navigator.of(context).push<FreeScreenItem>(
-      MaterialPageRoute(
-        builder: (ctx) => FreeScreenWrite(),
-      ),
-    );
+    final newItem = await context.push<FreeScreenItem>('/write');
 
     if (newItem == null) {
       return;
@@ -65,6 +63,10 @@ class _FreeScreenState extends State<FreeScreen> {
     setState(() {
       _freescreenitem.insert(0, newItem);
     });
+  }
+
+  void _navigateToDetail(String id) {
+    context.push('/detail/$id');
   }
 
   void _removePost(FreeScreenItem item) {
@@ -226,14 +228,7 @@ class _FreeScreenState extends State<FreeScreen> {
                           const SizedBox(height: 10.0),
                         ],
                       ),
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                FreeScreenDetail(item: item, postId: item.id),
-                          ),
-                        );
-                      },
+                      onTap: () => _navigateToDetail(item.id),
                     );
                   },
                 ),
