@@ -9,14 +9,13 @@ class CustomSearchBar extends StatelessWidget {
         child: TextField(
           decoration: InputDecoration(
             filled: true,
-            fillColor: Color.fromARGB(246, 214, 214, 214), // 더 밝은 배경색
+            fillColor: Color(0xFFF6F6F6), // 더 밝은 배경색
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(25.0),
                 borderSide: BorderSide.none),
             hintText: '검색어를 입력하세요',
             hintStyle: const TextStyle(
               fontSize: 16,
-              fontFamily: 'Pretendard',
               color: Color.fromARGB(255, 130, 130, 130),
             ),
             prefixIcon: const Icon(Icons.search,
