@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tito_app/src/widgets/login/login_main.dart';
+
 import 'package:go_router/go_router.dart';
-import 'package:tito_app/core/constants/colors.dart';
+import 'package:tito_app/core/constants/style.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});

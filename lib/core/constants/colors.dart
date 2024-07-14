@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+part of 'style.dart';
 
 class ColorSystem {
   const ColorSystem._();
