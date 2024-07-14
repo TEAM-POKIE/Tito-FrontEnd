@@ -1,16 +1,6 @@
 # tito_app
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+## Resolving Errors
+  RenderBox was not laid out 
+* Flutter 레이아웃 시스템에서 위젯이 예상대로 배치되지 않았을 때 나타난다.
+  - 주로 ListView, GridView, Column과 같은 scroll이 가능한 위젯 내부에 고정된 크기가 없는 위젯을 배치할 때 발생함
