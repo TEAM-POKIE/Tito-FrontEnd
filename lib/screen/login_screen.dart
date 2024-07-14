@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tito_app/widgets/login/login_main.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tito_app/src/constants/colors.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -14,7 +15,8 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          color: Color(0xff8E48F8), // 배경색을 보라색으로 설정
+          //color: Color(0xff8E48F8), // 배경색을 보라색으로 설정
+          color: ColorSystem.purple,
         ),
         child: Center(
           child: Column(
