@@ -16,6 +16,7 @@ class CustomSearchBar extends StatelessWidget {
             hintText: '검색어를 입력하세요',
             hintStyle: const TextStyle(
               fontSize: 16,
+              fontFamily: 'Pretendard',
               color: Color.fromARGB(255, 130, 130, 130),
             ),
             prefixIcon: const Icon(Icons.search,
