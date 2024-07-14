@@ -9,7 +9,7 @@ class CustomSearchBar extends StatelessWidget {
         child: TextField(
           decoration: InputDecoration(
             filled: true,
-            fillColor: Color.fromARGB(246, 214, 214, 214), // 더 밝은 배경색
+            fillColor: Color(0xFFF6F6F6), // 더 밝은 배경색
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(25.0),
                 borderSide: BorderSide.none),

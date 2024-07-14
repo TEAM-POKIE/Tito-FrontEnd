@@ -14,7 +14,7 @@ import 'package:tito_app/widgets/reuse/bottombar.dart';
 import 'package:tito_app/widgets/debate/chat.dart';
 
 final GoRouter router = GoRouter(
-  //이 부분 없으니까 처음 화면 그냥 보라색으로 뜨는 경우도 있음. 초기화면 지정해 놓은 부분
+  //이 부분 없으니까 처음 화면 그냥 보라색으로 뜨는 경우도 있음. 초기화면 지정해 놓은 부분이야
   initialLocation: '/',
   routes: [
     StatefulShellRoute.indexedStack(
