@@ -34,8 +34,6 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
         category: labels[selectedIndex],
         myArgument: '',
         opponentArgument: '',
-        opponentId: '',
-        myId: '',
         time: '',
         debateState: '토론 참여가능');
 
@@ -128,6 +126,7 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
               ),
               const SizedBox(height: 20),
               TextFormField(
+                autocorrect: false,
                 decoration: InputDecoration(
                   hintText: '입력하세요',
                   fillColor: Colors.grey[200],

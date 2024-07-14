@@ -63,20 +63,11 @@ final GoRouter router = GoRouter(
           const NoTransitionPage(child: DebateCreateSecond()),
     ),
     GoRoute(
-      path: '/chat',
+      path: '/chat/:id',
       builder: (context, state) {
-        final params = state.extra as Map<String, dynamic>?;
-        // final params = state.extra as Map<String, dynamic>;
+        final id = state.pathParameters['id']!;
         return Chat(
-          // title: params['title'],
-          // id: params['id'],
-          // myId: params['myId'],
-          // opponentId: params['opponentId'],
-
-          title: params != null ? params['title'] ?? 'Default Title' : 'Default Title',
-          id: params != null ? params['id'] ?? 'default_id' : 'default_id',
-          myId: params != null ? params['myId'] ?? 'default_myId' : 'default_myId',
-          opponentId: params != null ? params['opponentId'] ?? 'default_opponentId' : 'default_opponentId',
+          id: id,
         );
       },
     ),
