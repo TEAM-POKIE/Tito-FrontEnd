@@ -197,10 +197,17 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => Chat(
-                                      title: debate['title'],
-                                      id: debate['id'],
-                                      myId: debate['myId'],
-                                      opponentId: debate['opponentId'],
+                                      // title: debate['title'],
+                                      // id: debate['id'],
+                                      // myId: debate['myId'],
+                                      // opponentId: debate['opponentId'],
+
+                                      // ?? 연산자는 왼쪽 피연산자가 null 또는 undefined인 경우에만 오른쪽 피연산자를 반환
+                                      title: debate['title'] ?? 'Default Title',
+                                      id: debate['id'] ?? 'default_id',
+                                      myId: debate['myId'] ?? 'default_myId',
+                                      opponentId: debate['opponentId'] ??
+                                          'default_opponentId',
                                     ),
                                   ),
                                 );
@@ -210,10 +217,15 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => Chat(
-                                      title: debate['title'],
-                                      id: debate['id'],
-                                      myId: debate['myId'],
-                                      opponentId: debate['opponentId'],
+                                      // title: debate['title'],
+                                      // id: debate['id'],
+                                      // myId: debate['myId'],
+                                      // opponentId: debate['opponentId'],
+                                      title: debate['title'] ?? 'Default Title',
+                                      id: debate['id'] ?? 'default_id',
+                                      myId: debate['myId'] ?? 'default_myId',
+                                      opponentId: debate['opponentId'] ??
+                                          'default_opponentId',
                                     ),
                                   ),
                                 );
@@ -225,10 +237,15 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => Chat(
-                                      title: debate['title'],
-                                      id: debate['id'],
-                                      myId: debate['myId'],
-                                      opponentId: debate['opponentId'],
+                                      // title: debate['title'],
+                                      // id: debate['id'],
+                                      // myId: debate['myId'],
+                                      // opponentId: debate['opponentId'],
+                                      title: debate['title'] ?? 'Default Title',
+                                      id: debate['id'] ?? 'default_id',
+                                      myId: debate['myId'] ?? 'default_myId',
+                                      opponentId: debate['opponentId'] ??
+                                          'default_opponentId',
                                     ),
                                   ),
                                 );

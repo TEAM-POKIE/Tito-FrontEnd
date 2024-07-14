@@ -14,6 +14,8 @@ import 'package:tito_app/widgets/reuse/bottombar.dart';
 import 'package:tito_app/widgets/debate/chat.dart';
 
 final GoRouter router = GoRouter(
+  //이 부분 없으니까 처음 화면 그냥 보라색으로 뜨는 경우도 있음. 초기화면 지정해 놓은 부분
+  initialLocation: '/',
   routes: [
     StatefulShellRoute.indexedStack(
       builder: (context, state, child) {
@@ -23,6 +25,8 @@ final GoRouter router = GoRouter(
         );
       },
       branches: [
+        //여러 개의 StatefulShellBranch를 포함
+        //각 브랜치는 하나의 경로 집합
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -61,22 +65,30 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/chat',
       builder: (context, state) {
-        final params = state.extra as Map<String, dynamic>;
+        final params = state.extra as Map<String, dynamic>?;
+        // final params = state.extra as Map<String, dynamic>;
         return Chat(
-          title: params['title'],
-          id: params['id'],
-          myId: params['myId'],
-          opponentId: params['opponentId'],
+          // title: params['title'],
+          // id: params['id'],
+          // myId: params['myId'],
+          // opponentId: params['opponentId'],
+
+          title: params != null ? params['title'] ?? 'Default Title' : 'Default Title',
+          id: params != null ? params['id'] ?? 'default_id' : 'default_id',
+          myId: params != null ? params['myId'] ?? 'default_myId' : 'default_myId',
+          opponentId: params != null ? params['opponentId'] ?? 'default_opponentId' : 'default_opponentId',
         );
       },
+    ),
+
+    //초기화면 지정하는 부분
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
       path: '/ai_create',
       builder: (context, state) => AiCreate(),
-    ),
-    GoRoute(
-      path: '/',
-      builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
       path: '/signup',
