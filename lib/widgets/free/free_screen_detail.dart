@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tito_app/models/freescreen_item.dart';
 import 'package:tito_app/widgets/free/vote.dart';
+import 'package:go_router/go_router.dart';
+import 'dart:async';
+
 
 class FreeScreenDetail extends StatelessWidget {
   final FreeScreenItem item;

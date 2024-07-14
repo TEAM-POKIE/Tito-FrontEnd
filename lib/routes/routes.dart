@@ -12,6 +12,7 @@ import 'package:tito_app/widgets/login/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:tito_app/widgets/reuse/bottombar.dart';
 import 'package:tito_app/widgets/debate/chat.dart';
+import 'package:tito_app/widgets/free/free_screen_write.dart';
 
 final GoRouter router = GoRouter(
   //이 부분 없으니까 처음 화면 그냥 보라색으로 뜨는 경우도 있음. 초기화면 지정해 놓은 부분이야
@@ -48,6 +49,10 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: '/free',
               builder: (context, state) => FreeScreen(),
+            ),
+            GoRoute(
+              path: '/write',
+              builder: (context, state) => FreeScreenWrite(),
             ),
           ],
         ),

@@ -10,18 +10,19 @@ import 'package:tito_app/widgets/reuse/bottombar.dart';
 import 'package:tito_app/provider/app_state.dart';
 import 'package:provider/provider.dart';
 import 'package:tito_app/widgets/free/comment_button.dart';
-
 import 'package:go_router/go_router.dart';
+import 'dart:async';
 
 class FreeScreen extends StatefulWidget {
   const FreeScreen({super.key});
 
   @override
-  State<FreeScreen> createState() => _FreeScreenState();
+  _FreeScreenState createState() => _FreeScreenState();
 }
 
 class _FreeScreenState extends State<FreeScreen> {
   List<FreeScreenItem> _freescreenitem = [];
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -102,7 +103,7 @@ class _FreeScreenState extends State<FreeScreen> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.pop(context);
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
@@ -114,9 +115,7 @@ class _FreeScreenState extends State<FreeScreen> {
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          Column(
+      body:        Column(
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -159,20 +158,20 @@ class _FreeScreenState extends State<FreeScreen> {
                           const SizedBox(
                             height: 15.0,
                           ),
-                          Row(
+                          const Row(
                             children: [
-                              const SizedBox(
+                              SizedBox(
                                 width: 3.0,
                               ),
-                              const CircleAvatar(
+                              CircleAvatar(
                                 backgroundImage:
                                     AssetImage('assets/images/usericon.png'),
                                 radius: 13.0,
                               ),
-                              const SizedBox(
+                              SizedBox(
                                 width: 8.0,
                               ),
-                              const Text('타카'),
+                              Text('타카'),
                             ],
                           ),
                           const SizedBox(height: 20.0),
@@ -192,18 +191,17 @@ class _FreeScreenState extends State<FreeScreen> {
                             ],
                           ),
                           const SizedBox(height: 8.0),
-                          Row(
+                          const Row(
                             children: [
-                              const Text(
+                              Text(
                                 '좋아요',
                                 style: TextStyle(color: Colors.grey),
                               ),
-                              const SizedBox(width: 4),
-                              const SizedBox(width: 16),
-                              const Text('조회수',
-                                  style: TextStyle(color: Colors.grey)),
-                              const SizedBox(width: 4),
-                              const Text('32'),
+                              SizedBox(width: 4),
+                              SizedBox(width: 16),
+                              Text('조회수', style: TextStyle(color: Colors.grey)),
+                              SizedBox(width: 4),
+                              Text('32'),
                             ],
                           ),
                           const SizedBox(height: 15.0),
@@ -235,21 +233,23 @@ class _FreeScreenState extends State<FreeScreen> {
               ),
             ],
           ),
-          Positioned(
-            bottom: 13,
-            right: 20,
-            child: ElevatedButton.icon(
-              onPressed: _addPost,
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF111111),
-                  foregroundColor: const Color(0xFFDCF333)),
-              icon: const Icon(Icons.edit, size: 16),
-              label: const Text('글쓰기'),
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: const BottomBar(),
+          // Positioned(
+          //   bottom: 13,
+          //   right: 20,
+          //   child: ElevatedButton.icon(
+          //     onPressed: _addPost,
+          //     style: ElevatedButton.styleFrom(
+          //         backgroundColor: const Color(0xFF111111),
+          //         foregroundColor: const Color(0xFFDCF333)),
+          //     icon: const Icon(Icons.edit, size: 16),
+          //     label: const Text('글쓰기'),
+          //   ),
+          // ),
+    
+          bottomNavigationBar: const BottomBar(),
+  
+    
     );
   }
 }
+      

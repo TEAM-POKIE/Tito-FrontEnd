@@ -37,7 +37,7 @@ class Mypage extends ConsumerWidget {
                 CircleAvatar(
                   radius: 35,
                   backgroundImage: AssetImage(
-                      'assets/images/uwericon.png'), //replace with your image asset
+                      'assets/images/usericon.png'), //replace with your image asset
                 ),
                 Positioned(
                   bottom: -5,
