@@ -1,24 +1,30 @@
+import 'dart:ffi';
+
 class DebateInfo {
   const DebateInfo({
     required this.id,
     required this.title,
     required this.myArgument,
     required this.opponentArgument,
-    required this.myId,
-    required this.opponentId,
+    required this.myNick,
+    required this.opponentNick,
+    required this.turnId,
     required this.category,
     required this.debateState,
     required this.time,
+    required this.visibleDebate,
   });
   final String id;
-  final String myId;
-  final String opponentId;
+  final String myNick;
+  final String opponentNick;
   final String title;
   final String myArgument;
   final String opponentArgument;
   final String category;
   final String debateState;
   final String time;
+  final String turnId;
+  final bool visibleDebate;
   factory DebateInfo.fromMap(String id, Map<String, dynamic> data) {
     return DebateInfo(
       id: id,
@@ -26,10 +32,12 @@ class DebateInfo {
       category: data['category'].toString(),
       debateState: data['debateState'].toString(),
       myArgument: data['myArgument'].toString(),
-      myId: data['myId'].toString(),
+      myNick: data['myNick'].toString(),
       opponentArgument: data['opponentArgument'].toString(),
-      opponentId: data['opponentId'].toString(),
+      opponentNick: data['opponentNick'].toString(),
       time: data['timestamp'].toString(),
+      turnId: data['turnId'].toString(),
+      visibleDebate: data['visibleDebate'],
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/models/debate_info.dart';
 
@@ -8,23 +10,27 @@ class DebateInfoNotifier extends StateNotifier<DebateInfo?> {
   void updateDebateInfo(
       {String? id,
       String? title,
+      String? turnId,
       String? myArgument,
-      String? myId,
+      String? myNick,
       String? opponentArgument,
-      String? opponentId,
+      String? opponentNick,
       String? debateState,
       String? time,
+      bool? visibleDebate,
       String? category}) {
     state = DebateInfo(
       id: id ?? state?.id ?? '',
       title: title ?? state?.title ?? '',
       myArgument: myArgument ?? state?.myArgument ?? '',
-      myId: myId ?? state?.myId ?? '',
-      opponentId: opponentId ?? state?.opponentId ?? '',
+      myNick: myNick ?? state?.myNick ?? '',
+      turnId: turnId ?? state?.turnId ?? '',
+      opponentNick: opponentNick ?? state?.opponentNick ?? '',
       debateState: debateState ?? state?.debateState ?? '',
       opponentArgument: opponentArgument ?? state?.opponentArgument ?? '',
       category: category ?? state?.category ?? '',
       time: time ?? state?.time ?? '',
+      visibleDebate: visibleDebate ?? state?.visibleDebate ?? false,
     );
   }
 }

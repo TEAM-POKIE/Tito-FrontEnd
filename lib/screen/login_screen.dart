@@ -8,7 +8,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void _goLoginMain() {
-      context.push('/basicLogin');
+      context.push('/login');
     }
 
     return Scaffold(

@@ -48,6 +48,9 @@ dependencies:
   web_socket_channel: ^3.0.0
   percent_indicator: ^4.2.3
   flutter_chat_types: ^3.6.2
+  animated_text_kit: ^4.2.2
+  bubble: ^1.2.1
+  speech_balloon: ^0.0.4
 
 dev_dependencies:
   flutter_test:
@@ -92,6 +95,8 @@ flutter:
     - assets/images/like_btn.png
     - assets/images/liked_btn.png
     - assets/images/comment_btn.png
+    - assets/images/info.png
+    - assets/images/chatprofile.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

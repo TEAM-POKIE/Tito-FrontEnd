@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:tito_app/widgets/debate/chat.dart';
-
 import 'dart:convert';
 import 'package:tito_app/widgets/reuse/search_bar.dart';
 import 'package:tito_app/provider/login_provider.dart';
+import 'package:go_router/go_router.dart';
+import 'dart:async';
 
 class ListScreen extends ConsumerStatefulWidget {
   const ListScreen({super.key});
@@ -23,15 +23,22 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   int selectedIndex = 0;
   String selectedStatus = '전체';
   String selectedSortOption = '최신순';
-  late Future<List<Map<String, dynamic>>> debateList;
+  List<Map<String, dynamic>> debateList = [];
+  late Timer _timer;
 
   @override
   void initState() {
     super.initState();
-    debateList = fetchDebateList();
+    _fetchDebateList();
   }
 
-  Future<List<Map<String, dynamic>>> fetchDebateList() async {
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void _fetchDebateList() async {
     final url = Uri.https(
         'pokeeserver-default-rtdb.firebaseio.com', 'debate_list.json');
     final response = await http.get(url);
@@ -54,7 +61,10 @@ class _ListScreenState extends ConsumerState<ListScreen> {
         });
       }
 
-      return list;
+      setState(() {
+        list = list.where((debate) => debate['visibleDebate'] == true).toList();
+        debateList = list;
+      });
     } else {
       throw Exception('Failed to load debate list');
     }
@@ -84,6 +94,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                       onPressed: () {
                         setState(() {
                           selectedIndex = index;
+                          _fetchDebateList();
                         });
                       },
                       style: ElevatedButton.styleFrom(
@@ -120,6 +131,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                         onTap: () {
                           setState(() {
                             selectedStatus = statuses[index];
+                            _fetchDebateList();
                           });
                         },
                         child: Text(
@@ -149,8 +161,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                 onChanged: (String? newValue) {
                   setState(() {
                     selectedSortOption = newValue!;
-                    debateList =
-                        fetchDebateList(); // 정렬 옵션을 적용하여 리스트를 다시 가져옵니다.
+                    _fetchDebateList(); // 정렬 옵션을 적용하여 리스트를 다시 가져옵니다.
                   });
                 },
                 items:
@@ -165,122 +176,76 @@ class _ListScreenState extends ConsumerState<ListScreen> {
           ),
           const SizedBox(height: 20),
           Expanded(
-            child: FutureBuilder<List<Map<String, dynamic>>>(
-              future: debateList,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('No data available'));
-                } else {
-                  final debates = snapshot.data!;
-                  return ListView.builder(
-                    itemCount: debates.length,
-                    itemBuilder: (context, index) {
-                      final debate = debates[index];
+            child: ListView.builder(
+              itemCount: debateList.length,
+              itemBuilder: (context, index) {
+                final debate = debateList[index];
 
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 5),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: ListTile(
-                            onTap: () {
-                              if (loginInfo?.email == debate['myId'] &&
-                                  debate['debateState'] == '토론 참여가능') {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Chat(
-                                      title: debate['title'],
-                                      id: debate['id'],
-                                      myId: debate['myId'],
-                                      opponentId: debate['opponentId'],
-                                    ),
-                                  ),
-                                );
-                              } else if (loginInfo?.email != debate['myId'] &&
-                                  debate['debateState'] == '토론 참여가능') {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Chat(
-                                      title: debate['title'],
-                                      id: debate['id'],
-                                      myId: debate['myId'],
-                                      opponentId: debate['opponentId'],
-                                    ),
-                                  ),
-                                );
-                              } else if ((loginInfo?.email == debate['myId'] ||
-                                      loginInfo?.email ==
-                                          debate['opponentId']) &&
-                                  debate['debateState'] == '토론 중') {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Chat(
-                                      title: debate['title'],
-                                      id: debate['id'],
-                                      myId: debate['myId'],
-                                      opponentId: debate['opponentId'],
-                                    ),
-                                  ),
-                                );
-                              }
-                            },
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 4),
-                                  decoration: BoxDecoration(
-                                    color: debate['debateState'] == '토론 중'
-                                        ? Colors.purple[100]
-                                        : Colors.grey[200],
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Text(
-                                    debate['debateState'] ?? '상태 없음',
-                                    style: TextStyle(
-                                      color: debate['debateState'] == '토론 중'
-                                          ? Colors.purple
-                                          : Colors.grey,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  debate['title'] ?? 'No title',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  '승률 ${debate['myArgument'] ?? '정보 없음'} VS ${debate['opponentArgument'] ?? '정보 없음'}',
-                                ),
-                              ],
+                return Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ListTile(
+                      onTap: () {
+                        final debateState = debate['debateState'] ?? '';
+
+                        if (debate['id'] != null) {
+                          if (debateState == '토론 참여가능' ||
+                              debateState == '토론 중') {
+                            context.push('/chat/${debate['id']}');
+                          }
+                        } else {
+                          print('Invalid ID for Chat page.');
+                        }
+                      },
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: debate['debateState'] == '토론 중'
+                                  ? Colors.purple[100]
+                                  : Colors.grey[200],
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            trailing: Image.asset(
-                              'assets/images/hotlist.png', // Add your image path here
-                              width: 40,
-                              height: 40,
+                            child: Text(
+                              debate['debateState'] ?? '상태 없음',
+                              style: TextStyle(
+                                color: debate['debateState'] == '토론 중'
+                                    ? Colors.purple
+                                    : Colors.grey,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  );
-                }
+                          const SizedBox(height: 5),
+                          Text(
+                            debate['title'] ?? 'No title',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            '승률 ${debate['myArgument'] ?? '정보 없음'} VS ${debate['opponentArgument'] ?? '정보 없음'}',
+                          ),
+                        ],
+                      ),
+                      trailing: Image.asset(
+                        'assets/images/hotlist.png', // Add your image path here
+                        width: 40,
+                        height: 40,
+                      ),
+                    ),
+                  ),
+                );
               },
             ),
           ),

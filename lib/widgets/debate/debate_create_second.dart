@@ -4,6 +4,8 @@ import 'package:tito_app/provider/debate_provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/provider/login_provider.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class DebateCreateSecond extends ConsumerStatefulWidget {
   const DebateCreateSecond({super.key});
@@ -17,26 +19,59 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
   var myArguments = '';
   var opponentArguments = '';
 
-  void _navigateToChat(BuildContext context) {
+  Future<String> _createDebateRoom() async {
+    final debateInfo = ref.read(debateInfoProvider);
+    final loginInfo = ref.read(loginInfoProvider);
+    final url = Uri.https(
+        'pokeeserver-default-rtdb.firebaseio.com', 'debate_list.json');
+    final response = await http.post(url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          'title': debateInfo?.title ?? '',
+          'category': debateInfo?.category ?? '',
+          'myArgument': debateInfo?.myArgument ?? '',
+          'myNick': loginInfo?.nickname ?? '',
+          'turnId': '',
+          'opponentArgument': debateInfo?.opponentArgument ?? '',
+          'opponentNick': debateInfo?.opponentNick ?? '',
+          'debateState': debateInfo?.debateState ?? '',
+          'timestamp': DateTime.now().toIso8601String(),
+          'visibleDebate': false,
+        }));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return data['name']; // Firebase는 새로 생성된 리소스의 키를 'name' 필드로 반환합니다.
+    } else {
+      throw Exception('Failed to create debate room');
+    }
+  }
+
+  void _navigateToChat(BuildContext context) async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
     _formKey.currentState!.save();
     final loginInfo = ref.read(loginInfoProvider);
+
     ref.read(debateInfoProvider.notifier).updateDebateInfo(
           myArgument: myArguments,
           opponentArgument: opponentArguments,
+          myNick: loginInfo!.nickname,
         );
 
-    final debateInfo = ref.read(debateInfoProvider);
+    try {
+      final newChatId = await _createDebateRoom();
+      final debateInfo = ref.read(debateInfoProvider);
 
-    context.go('/chat', extra: {
-      'title': debateInfo?.title ?? '',
-      'id': '',
-      'myId': loginInfo?.email ?? '',
-      'opponentId': debateInfo?.opponentId ?? '',
-    });
+      context.push('/chat/$newChatId');
+    } catch (e) {
+      print('Error creating debate room: $e');
+      // Handle error appropriately
+    }
   }
 
   @override
@@ -86,6 +121,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
               ),
               const SizedBox(height: 20),
               TextFormField(
+                autocorrect: false,
                 decoration: InputDecoration(
                   hintText: '입력하세요',
                   fillColor: Colors.grey[200],
@@ -112,6 +148,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
               ),
               const SizedBox(height: 20),
               TextFormField(
+                autocorrect: false,
                 decoration: InputDecoration(
                   hintText: '입력하세요',
                   fillColor: Colors.grey[200],
