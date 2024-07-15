@@ -159,20 +159,20 @@ class _FreeScreenState extends State<FreeScreen> {
                           const SizedBox(
                             height: 15.0,
                           ),
-                          Row(
+                          const Row(
                             children: [
-                              const SizedBox(
+                              SizedBox(
                                 width: 3.0,
                               ),
-                              const CircleAvatar(
+                              CircleAvatar(
                                 backgroundImage:
                                     AssetImage('assets/images/usericon.png'),
                                 radius: 13.0,
                               ),
-                              const SizedBox(
+                              SizedBox(
                                 width: 8.0,
                               ),
-                              const Text('타카'),
+                              Text('타카'),
                             ],
                           ),
                           const SizedBox(height: 20.0),

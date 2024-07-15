@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:tito_app/core/constants/style.dart';
 import 'dart:convert';
 import 'package:tito_app/src/widgets/reuse/search_bar.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
@@ -90,6 +91,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: SizedBox(
                     height: 40,
+                    width: (MediaQuery.of(context).size.width - 40) * 0.2,
                     child: ElevatedButton(
                       onPressed: () {
                         setState(() {
@@ -112,6 +114,8 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                       ),
                       child: Text(
                         labels[index],
+                        style: TextStyle(fontSize: 10),
+                        // style: FontSystem.KR10B,
                       ),
                     ),
                   ),

@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
-import 'package:tito_app/src/viewModel/homeViewModel/home_viewModel.dart';
-
-final homeViewModelProvider = StateNotifierProvider<HomeViewmodel, HomeState>(
-  (ref) => HomeViewmodel(),
-);
+import 'package:tito_app/core/provider/home_state_provider.dart';
 
 class HomeView extends ConsumerWidget {
   const HomeView({super.key});
