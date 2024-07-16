@@ -1,21 +1,19 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/turn_provider.dart';
-import 'package:tito_app/src/widgets/reuse/debate_popup.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/src/data/models/types.dart' as types;
 import 'package:tito_app/core/constants/api_path.dart';
 
-// Chat state class
 class ChatState {
   final List<types.Message> messages;
   final bool isFirstMessage;
   final String fadeText;
   final String roomId;
-
   final Map<String, dynamic>? debateData;
 
   ChatState({
@@ -49,10 +47,14 @@ class ChatViewModel extends StateNotifier<ChatState> {
   final FocusNode focusNode = FocusNode();
 
   late WebSocketChannel channel;
+  late StreamController<List<types.Message>> _messagesController;
 
   ChatViewModel(this.ref, String roomId) : super(ChatState(roomId: roomId)) {
+    _messagesController = StreamController<List<types.Message>>.broadcast();
     _init();
   }
+
+  Stream<List<types.Message>> get messagesStream => _messagesController.stream;
 
   void _init() {
     channel = WebSocketChannel.connect(Uri.parse('ws://localhost:4040/ws'));
@@ -66,6 +68,7 @@ class ChatViewModel extends StateNotifier<ChatState> {
     controller.dispose();
     focusNode.dispose();
     channel.sink.close();
+    _messagesController.close();
     super.dispose();
   }
 
@@ -79,9 +82,11 @@ class ChatViewModel extends StateNotifier<ChatState> {
       text: decodedMessage['text'] ?? '',
     );
 
+    final updatedMessages = [chatMessage, ...state.messages];
     state = state.copyWith(
-      messages: [chatMessage, ...state.messages],
+      messages: updatedMessages,
     );
+    _messagesController.add(updatedMessages);
   }
 
   Future<void> _fetchMessages() async {
@@ -98,9 +103,14 @@ class ChatViewModel extends StateNotifier<ChatState> {
         ));
       });
 
+      final updatedMessages = loadedMessages.reversed.toList();
       state = state.copyWith(
-        messages: loadedMessages.reversed.toList(),
+        messages: updatedMessages,
       );
+      _messagesController.add(updatedMessages);
+    } else {
+      // 데이터가 없을 경우에도 스트림에 빈 리스트를 추가
+      _messagesController.add(state.messages);
     }
   }
 
@@ -165,17 +175,19 @@ class ChatViewModel extends StateNotifier<ChatState> {
         }
       }
 
+      final updatedMessages = [
+        ...state.messages,
+        types.TextMessage(
+          author: types.User(id: loginInfo.nickname),
+          createdAt: DateTime.now().millisecondsSinceEpoch,
+          id: newMessage['id'] ?? '',
+          text: newMessage['text'] ?? '',
+        ),
+      ];
       state = state.copyWith(
-        messages: [
-          ...state.messages,
-          types.TextMessage(
-            author: types.User(id: loginInfo.nickname),
-            createdAt: DateTime.now().millisecondsSinceEpoch,
-            id: newMessage['id'] ?? '',
-            text: newMessage['text'] ?? '',
-          ),
-        ],
+        messages: updatedMessages,
       );
+      _messagesController.add(updatedMessages);
 
       final chatData = {
         'senderId': loginInfo.nickname,
@@ -188,32 +200,6 @@ class ChatViewModel extends StateNotifier<ChatState> {
 
   Future<void> sendMessage() async {
     await _sendMessage();
-  }
-
-  Future<bool> showDebatePopup(BuildContext context) async {
-    final loginInfo = ref.read(loginInfoProvider);
-    if (loginInfo == null) {
-      return false;
-    }
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return DebatePopup(
-          debateId: state.roomId,
-          nick: loginInfo.nickname,
-          onUpdate: (opponentNick) {
-            state = state.copyWith(
-              debateData: {
-                ...?state.debateData,
-                'opponentNick': opponentNick,
-              },
-            );
-          },
-        );
-      },
-    );
-
-    return result ?? false; // return false if result is null
   }
 
   void back(BuildContext context) {

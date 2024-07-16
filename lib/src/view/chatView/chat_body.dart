@@ -21,8 +21,10 @@ class ChatBody extends ConsumerWidget {
         ChatViewDetails(id: id), // id 전달
         const SizedBox(height: 16),
         Expanded(
-          child: ChatListView(id: id), // id 전달
+          child: ChatListView(id: id),
         ),
+        // id 전달
+
         const SizedBox(height: 16),
         ChatSpeechBubble(id: id),
         ChatBottomDetail(id: id), // id 전달

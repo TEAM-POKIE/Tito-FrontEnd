@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/provider/chat_state_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/core/provider/turn_provider.dart';
 import 'package:tito_app/src/data/models/login_info.dart';
 import 'package:tito_app/src/viewModel/chat_viewModel.dart';
 
@@ -17,13 +18,16 @@ class ChatBottomDetail extends ConsumerWidget {
     final loginInfo = ref.watch(loginInfoProvider);
     final chatState = ref.watch(chatProviders(id));
     final chatViewModel = ref.read(chatProviders(id).notifier);
+    final turnState = ref.watch(turnProvider.notifier);
+
     switch (chatState.debateData) {
       case null:
-        return Text('s');
+        return const Text('Loading...');
       default:
         return ChatSend(
           chatViewModel: chatViewModel,
           chatState: chatState,
+          turnState: turnState,
           loginInfo: loginInfo!,
         );
     }
@@ -34,13 +38,24 @@ class ChatSend extends StatelessWidget {
   final ChatViewModel chatViewModel;
   final ChatState chatState;
   final LoginInfo loginInfo;
+  final TurnNotifier turnState;
 
   const ChatSend({
     Key? key,
     required this.chatViewModel,
     required this.loginInfo,
     required this.chatState,
+    required this.turnState,
   }) : super(key: key);
+
+  void _handleSendMessage() {
+    if (loginInfo.nickname == chatState.debateData!['myNick']) {
+      turnState.incrementMyTurn();
+    } else {
+      turnState.incrementOpponentTurn();
+    }
+    chatViewModel.sendMessage();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,23 +78,17 @@ class ChatSend extends StatelessWidget {
                 ),
               ),
               onSubmitted: (value) {
-                chatViewModel.sendMessage();
+                if (chatState.debateData!['turnId'] != loginInfo.nickname) {
+                  _handleSendMessage();
+                }
               },
             ),
           ),
           const SizedBox(width: 8),
           IconButton(
-            onPressed: () async {
-              if (chatState.debateData?['opponentNick'] == '' &&
-                  chatState.debateData?['myNick'] != loginInfo.nickname) {
-                final popupResult =
-                    await chatViewModel.showDebatePopup(context);
-                if (popupResult) {
-                  await chatViewModel.sendMessage();
-                }
-              } else if (chatState.debateData!['turnId'] !=
-                  loginInfo.nickname) {
-                chatViewModel.sendMessage();
+            onPressed: () {
+              if (chatState.debateData!['turnId'] != loginInfo.nickname) {
+                _handleSendMessage();
               }
             },
             icon: Image.asset('assets/images/sendArrow.png'),

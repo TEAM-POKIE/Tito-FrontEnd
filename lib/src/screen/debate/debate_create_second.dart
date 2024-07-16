@@ -7,6 +7,8 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:tito_app/core/provider/turn_provider.dart';
+
 class DebateCreateSecond extends ConsumerStatefulWidget {
   const DebateCreateSecond({super.key});
 
@@ -21,7 +23,9 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
 
   Future<String> _createDebateRoom() async {
     final debateInfo = ref.read(debateInfoProvider);
+    final turnState = ref.watch(turnProvider.notifier);
     final loginInfo = ref.read(loginInfoProvider);
+    turnState.resetTurn();
     final url = Uri.https(
         'pokeeserver-default-rtdb.firebaseio.com', 'debate_list.json');
     final response = await http.post(url,

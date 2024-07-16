@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/constants/style.dart';
 
 import 'package:tito_app/core/provider/chat_state_provider.dart';
+import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/turn_provider.dart';
 import 'package:tito_app/src/viewModel/chat_viewModel.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -17,26 +18,45 @@ class ChatViewDetails extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final chatState = ref.watch(chatProviders(id));
-    final turnIndex = ref.watch(turnProvider.notifier);
-    switch (turnIndex.state) {
-      case 0:
-        return _turn0State(
-          chatState: chatState,
-        );
-      case 1:
-        return _turn1State(
-          chatState: chatState,
-        );
-      default:
-        return Text('안녕');
+    final turnIndex = ref.watch(turnProvider);
+    final loginInfo = ref.watch(loginInfoProvider);
+    final isMyNick = chatState.debateData!['myNick'] == loginInfo!.nickname;
+
+    if (isMyNick) {
+      switch (turnIndex.myTurn) {
+        case 0:
+          return _text(
+            chatState: chatState,
+          );
+
+        case 1:
+          return _turn1State(
+            chatState: chatState,
+          );
+        default:
+          return const Text('잘못된 상태입니다.');
+      }
+    } else {
+      switch (turnIndex.opponentTurn) {
+        case 0:
+          return _turn1State(
+            chatState: chatState,
+          );
+        case 1:
+          return _turn1State(
+            chatState: chatState,
+          );
+        default:
+          return const Text('잘못된 상태입니다.');
+      }
     }
   }
 }
 
-class _turn0State extends StatelessWidget {
+class _text extends StatelessWidget {
   final ChatState chatState;
 
-  const _turn0State({Key? key, required this.chatState});
+  const _text({Key? key, required this.chatState});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -64,54 +84,64 @@ class _turn1State extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: (MediaQuery.of(context).size.height - 500) * 0.7,
+      height: (MediaQuery.of(context).size.height - 500) * 0.8,
       padding: const EdgeInsets.all(16.0),
       color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Image.asset('assets/images/chatprofile.png'),
-              const SizedBox(width: 8),
-              Text(
-                chatState.debateData!['myNick'],
-                style: const TextStyle(color: Colors.black, fontSize: 16),
-              ),
-              const SizedBox(width: 8),
-              const Text(
-                ':',
-                style: TextStyle(color: Colors.black, fontSize: 16),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                chatState.debateData!['myArgument'] ?? '',
-                style: const TextStyle(color: Colors.black, fontSize: 16),
-              ),
-            ],
+          Container(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Image.asset(
+                  'assets/images/chatCuteIcon.png',
+                ),
+                const SizedBox(width: 8),
+                const Text(
+                  '상대의 의견',
+                  style: FontSystem.KR16R,
+                ),
+                const SizedBox(width: 8),
+                const Text(
+                  ':',
+                  style: TextStyle(color: Colors.black, fontSize: 16),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  chatState.debateData!['myArgument'] ?? '',
+                  style: FontSystem.KR16R,
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 8),
-          Row(
-            children: [
-              Image.asset('assets/images/chatprofile.png'),
-              const SizedBox(width: 8),
-              Text(
-                chatState.debateData!['opponentNick'] != ''
-                    ? chatState.debateData!['opponentNick']
-                    : '당신의 의견',
-                style: const TextStyle(color: Colors.black, fontSize: 16),
-              ),
-              const SizedBox(width: 8),
-              const Text(
-                ':',
-                style: TextStyle(color: Colors.black, fontSize: 16),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                chatState.debateData!['opponentArgument'] ?? '',
-                style: const TextStyle(color: Colors.black, fontSize: 16),
-              ),
-            ],
+          Container(
+            padding: const EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              color: ColorSystem.lightPurple,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              children: [
+                Image.asset('assets/images/chatCuteIconPurple.png'),
+                const SizedBox(width: 8),
+                const Text(
+                  '당신의 의견',
+                  style: FontSystem.KR16R,
+                ),
+                const SizedBox(width: 8),
+                const Text(
+                  ':',
+                  style: TextStyle(color: Colors.black, fontSize: 16),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  chatState.debateData!['opponentArgument'] ?? '',
+                  style: FontSystem.KR16R,
+                ),
+              ],
+            ),
           ),
         ],
       ),
