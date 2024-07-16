@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/provider/chat_state_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:tito_app/core/provider/turn_provider.dart';
 import 'package:tito_app/src/data/models/login_info.dart';
 import 'package:tito_app/src/viewModel/chat_viewModel.dart';
+import 'package:tito_app/src/viewModel/popup_viewModel.dart';
 
 class ChatBottomDetail extends ConsumerWidget {
   final String id;
@@ -19,46 +21,32 @@ class ChatBottomDetail extends ConsumerWidget {
     final chatState = ref.watch(chatProviders(id));
     final chatViewModel = ref.read(chatProviders(id).notifier);
     final turnState = ref.watch(turnProvider.notifier);
+    final turnIndex = ref.watch(turnProvider);
+    final popupViewmodel = ref.watch(popupProvider.notifier);
+    final popupState = ref.watch(popupProvider);
+    void _handleSendMessage() async {
+      if (loginInfo!.nickname != chatState.debateData!['myNick']) {
+        if (turnIndex.opponentTurn == 0) {
+          popupState.buttonStyle = 1;
+          popupState.title = '토론에 참여 하시겠어요?';
+          popupState.imgSrc = 'assets/images/chatIconRight.png';
+          popupState.buttonContentLeft = '토론 참여하기';
+          popupState.content = '작성하신 의견을 전송하면\n토론 개설자에게 보여지고\n토론이 본격적으로 시작돼요!';
+          await popupViewmodel.showDebatePopup(context);
+          if (popupState.title == '토론이 시작 됐어요! 🎵') {
+            turnState.incrementOpponentTurn();
+            chatViewModel.sendMessage();
+          }
+        } else {
+          chatViewModel.sendMessage();
+        }
+      } else {
+        turnState.incrementMyTurn();
 
-    switch (chatState.debateData) {
-      case null:
-        return const Text('Loading...');
-      default:
-        return ChatSend(
-          chatViewModel: chatViewModel,
-          chatState: chatState,
-          turnState: turnState,
-          loginInfo: loginInfo!,
-        );
+        chatViewModel.sendMessage();
+      }
     }
-  }
-}
 
-class ChatSend extends StatelessWidget {
-  final ChatViewModel chatViewModel;
-  final ChatState chatState;
-  final LoginInfo loginInfo;
-  final TurnNotifier turnState;
-
-  const ChatSend({
-    Key? key,
-    required this.chatViewModel,
-    required this.loginInfo,
-    required this.chatState,
-    required this.turnState,
-  }) : super(key: key);
-
-  void _handleSendMessage() {
-    if (loginInfo.nickname == chatState.debateData!['myNick']) {
-      turnState.incrementMyTurn();
-    } else {
-      turnState.incrementOpponentTurn();
-    }
-    chatViewModel.sendMessage();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
@@ -78,7 +66,7 @@ class ChatSend extends StatelessWidget {
                 ),
               ),
               onSubmitted: (value) {
-                if (chatState.debateData!['turnId'] != loginInfo.nickname) {
+                if (chatState.debateData!['turnId'] != loginInfo!.nickname) {
                   _handleSendMessage();
                 }
               },
@@ -87,7 +75,7 @@ class ChatSend extends StatelessWidget {
           const SizedBox(width: 8),
           IconButton(
             onPressed: () {
-              if (chatState.debateData!['turnId'] != loginInfo.nickname) {
+              if (chatState.debateData!['turnId'] != loginInfo!.nickname) {
                 _handleSendMessage();
               }
             },

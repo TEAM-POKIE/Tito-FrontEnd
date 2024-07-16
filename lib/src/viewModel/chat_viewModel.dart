@@ -2,7 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:tito_app/core/provider/turn_provider.dart';
+import 'package:tito_app/src/viewModel/popup_viewModel.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
@@ -12,6 +14,7 @@ import 'package:tito_app/core/constants/api_path.dart';
 class ChatState {
   final List<types.Message> messages;
   final bool isFirstMessage;
+  final bool? isVisible;
   final String fadeText;
   final String roomId;
   final Map<String, dynamic>? debateData;
@@ -21,12 +24,14 @@ class ChatState {
     this.isFirstMessage = true,
     this.fadeText = '첫 채팅을 입력해주세요!',
     this.debateData,
+    this.isVisible = true,
     required this.roomId,
   });
 
   ChatState copyWith({
     List<types.Message>? messages,
     bool? isFirstMessage,
+    bool? isVisible,
     String? fadeText,
     String? roomId,
     Map<String, dynamic>? debateData,
@@ -35,6 +40,7 @@ class ChatState {
       messages: messages ?? this.messages,
       isFirstMessage: isFirstMessage ?? this.isFirstMessage,
       fadeText: fadeText ?? this.fadeText,
+      isVisible: isVisible ?? this.isVisible,
       roomId: roomId ?? this.roomId,
       debateData: debateData ?? this.debateData,
     );
@@ -61,6 +67,15 @@ class ChatViewModel extends StateNotifier<ChatState> {
     channel.stream.listen(_onReceiveMessage);
     _fetchDebateData();
     _fetchMessages();
+    _hideBubbleAfterDelay();
+  }
+
+  void _hideBubbleAfterDelay() {
+    Future.delayed(const Duration(seconds: 5), () {
+      if (mounted) {
+        state = state.copyWith(isVisible: false);
+      }
+    });
   }
 
   @override
