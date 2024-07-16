@@ -12,7 +12,7 @@ final homeViewModelProvider = StateNotifierProvider<HomeViewmodel, HomeState>(
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
-
+  
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final homeState = ref.watch(homeViewModelProvider);

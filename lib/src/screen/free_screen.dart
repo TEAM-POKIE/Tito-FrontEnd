@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:tito_app/src/data/models/freescreen_item.dart';
+import 'package:tito_app/src/view/freeView/free_appbar.dart';
+import 'package:tito_app/src/view/freeView/free_view.dart';
 import 'package:tito_app/src/widgets/free/free_screen_detail.dart';
 import 'package:tito_app/src/widgets/free/free_screen_write.dart';
 import 'package:tito_app/src/widgets/free/like_button.dart';
@@ -99,157 +101,25 @@ class _FreeScreenState extends State<FreeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.arrow_back_ios),
-        ),
-        title: const Text(
-          '자유게시판',
-          style: TextStyle(
-            fontSize: 19,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(80.0),
+        child: FreeAppbar(),
       ),
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CustomSearchBar(),
-              ),
-              const SizedBox(height: 8.0),
-              Container(
-                height: 1.0,
-                color: Colors.grey[300],
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: _freescreenitem.length,
-                  itemBuilder: (ctx, index) {
-                    final item = _freescreenitem[index];
-                    return ListTile(
-                      title: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              item.title,
-                              style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          const Spacer(),
-                          Text(
-                            timeAgo(item.timestamp),
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey,
-                            ),
-                          )
-                        ],
-                      ),
-                      onLongPress: () => _removePost(item),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(
-                            height: 15.0,
-                          ),
-                          Row(
-                            children: [
-                              const SizedBox(
-                                width: 3.0,
-                              ),
-                              const CircleAvatar(
-                                backgroundImage:
-                                    AssetImage('assets/images/usericon.png'),
-                                radius: 13.0,
-                              ),
-                              const SizedBox(
-                                width: 8.0,
-                              ),
-                              const Text('타카'),
-                            ],
-                          ),
-                          const SizedBox(height: 20.0),
-                          Text(
-                            item.content,
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                          const SizedBox(height: 8.0),
-                          Row(
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {},
-                                child: const Text('투표'),
-                              ),
-                              const SizedBox(width: 8.0),
-                              const Text('10명 투표 참여'),
-                            ],
-                          ),
-                          const SizedBox(height: 8.0),
-                          Row(
-                            children: [
-                              const Text(
-                                '좋아요',
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                              const SizedBox(width: 4),
-                              const SizedBox(width: 16),
-                              const Text('조회수',
-                                  style: TextStyle(color: Colors.grey)),
-                              const SizedBox(width: 4),
-                              const Text('32'),
-                            ],
-                          ),
-                          const SizedBox(height: 15.0),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              LikeButton(
-                                postId: item.id,
-                              ),
-                              Container(
-                                height: 24.0,
-                                width: 1.0,
-                                color: Colors.grey,
-                              ),
-                              CommentButton(),
-                            ],
-                          ),
-                          Container(
-                            height: 1.0,
-                            color: Colors.grey[300],
-                          ),
-                          const SizedBox(height: 10.0),
-                        ],
-                      ),
-                      onTap: () => _navigateToDetail(item.id),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-          Positioned(
-            bottom: 13,
-            right: 20,
-            child: ElevatedButton.icon(
-              onPressed: _addPost,
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF111111),
-                  foregroundColor: const Color(0xFFDCF333)),
-              icon: const Icon(Icons.edit, size: 16),
-              label: const Text('글쓰기'),
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: const BottomBar(),
+      body: FreeView(),
     );
   }
+
+  // Positioned(
+  //   bottom: 13,
+  //   right: 20,
+  //   child: ElevatedButton.icon(
+  //     onPressed: () {},
+  //     //onPressed: _addPost,
+  //     style: ElevatedButton.styleFrom(
+  //         backgroundColor: const Color(0xFF111111),
+  //         foregroundColor: const Color(0xFFDCF333)),
+  //     icon: const Icon(Icons.edit, size: 16),
+  //     label: const Text('글쓰기'),
+  //   ),
+  // ),
 }
