@@ -101,6 +101,7 @@ flutter:
     - assets/images/chatCuteIcon.png
     - assets/images/chatCuteIconPurple.png
     - assets/images/chatIconRight.png
+    - assets/images/detailChatIcon.png
     - assets/images/popupTimingBell.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
