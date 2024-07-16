@@ -4,14 +4,14 @@ import 'package:tito_app/src/screen/home_screen.dart';
 import 'package:tito_app/src/screen/list_screen.dart';
 import 'package:tito_app/src/screen/login_screen.dart';
 import 'package:tito_app/src/widgets/ai/ai_create.dart';
-import 'package:tito_app/src/widgets/debate/debate_create.dart';
-import 'package:tito_app/src/widgets/debate/debate_create_second.dart';
-import 'package:tito_app/src/widgets/login/basic_login.dart';
-import 'package:tito_app/src/widgets/login/login_main.dart';
-import 'package:tito_app/src/widgets/login/signup.dart';
+import 'package:tito_app/src/screen/debate/debate_create.dart';
+import 'package:tito_app/src/screen/debate/debate_create_second.dart';
+import 'package:tito_app/src/view/chatView/basic_login.dart';
+import 'package:tito_app/src/screen/login/login_main.dart';
+import 'package:tito_app/src/screen/login/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:tito_app/src/widgets/reuse/bottombar.dart';
-import 'package:tito_app/src/widgets/debate/chat.dart';
+import 'package:tito_app/src/screen/chat.dart';
 
 final GoRouter router = GoRouter(
   //이 부분 없으니까 처음 화면 그냥 보라색으로 뜨는 경우도 있음. 초기화면 지정해 놓은 부분이야

@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tito_app/src/viewModel/homeViewModel/home_viewModel.dart';
-
-final homeViewModelProvider = StateNotifierProvider<HomeViewmodel, HomeState>(
-  (ref) => HomeViewmodel(),
-);
+// import 'package:tito_app/core/provider/home_state_provider.dart';
 
 class HomeAppbar extends ConsumerWidget {
   const HomeAppbar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final homeViewModel = ref.read(homeViewModelProvider.notifier);
-    return // AppBar 높이를 조정
-        AppBar(
+    // final homeViewModel = ref.read(homeViewModelProvider.notifier);
+    return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
       leading: Padding(
@@ -30,7 +25,7 @@ class HomeAppbar extends ConsumerWidget {
         ),
         IconButton(
           onPressed: () {
-            homeViewModel.goMyPage(context);
+            // homeViewModel.goMyPage(context);
           },
           icon: Image.asset('assets/images/mypage.png'),
         ),

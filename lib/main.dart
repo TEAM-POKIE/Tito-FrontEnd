@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/routes/routes.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(SafeArea(
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -16,7 +18,6 @@ class MyApp extends StatelessWidget {
         title: 'Tito',
         theme: ThemeData(
           primarySwatch: Colors.deepPurple,
-          //애플리케이션의 대표 테마 색상 -> const Color(0xFF8E48F8)
         ),
       ),
     );

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:tito_app/core/constants/style.dart';
 
 import 'package:tito_app/core/provider/debate_provider.dart';
 
@@ -61,7 +62,7 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
                   lineHeight: 5.0,
                   percent: 0.5,
                   linearStrokeCap: LinearStrokeCap.butt,
-                  progressColor: const Color(0xff8E48F8),
+                  progressColor: ColorSystem.purple,
                   backgroundColor: Colors.grey,
                   barRadius: Radius.circular(10),
                 ),
@@ -88,7 +89,7 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
                     child: SizedBox(
-                      width: 65,
+                      width: (MediaQuery.of(context).size.width - 80) * 0.2,
                       child: ElevatedButton(
                         onPressed: () {
                           setState(() {
@@ -100,11 +101,11 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
                               const TextStyle(fontWeight: FontWeight.bold),
                           padding: const EdgeInsets.all(0),
                           backgroundColor: selectedIndex == index
-                              ? Colors.black
-                              : Colors.grey[200],
+                              ? ColorSystem.black
+                              : ColorSystem.ligthGrey,
                           foregroundColor: selectedIndex == index
                               ? Colors.white
-                              : const Color.fromARGB(255, 101, 101, 101),
+                              : const Color(0xff6B6B6B),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),
                           ),

@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class DebateInfo {
   const DebateInfo({
     required this.id,
