@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:go_router/go_router.dart';
+
 import 'package:tito_app/src/data/models/list_info.dart';
-import 'package:tito_app/src/screen/list_screen.dart';
-import 'package:tito_app/src/widgets/mypage/mypage.dart';
+import 'package:tito_app/core/constants/api_path.dart';
 
 // State class
 class HomeState {
@@ -53,34 +52,20 @@ class HomeViewmodel extends StateNotifier<HomeState> {
     await hotList();
   }
 
-  void goMyPage(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (ctx) => const Mypage(),
-      ),
-    );
-  }
+  // void goMyPage(BuildContext context) {
+  //  context.push('/mypage')
+  // }
 
   void goListPage(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (ctx) => const ListScreen(),
-      ),
-    );
+    context.push('list');
   }
 
   Future<void> fetchTitles() async {
     try {
-      final url = Uri.https(
-          'pokeeserver-default-rtdb.firebaseio.com', 'live_debate_list.json');
-      final response = await http.get(url);
-      if (response.statusCode != 200) {
-        throw Exception('Failed to load data');
-      }
+      final response = await ApiService.getData('live_debate_list');
 
-      final Map<String, dynamic> listData = json.decode(response.body);
       final List<ListBanner> loadedItems = [];
-      for (final item in listData.entries) {
+      for (final item in response!.entries) {
         loadedItems.add(
           ListBanner(
             id: item.key,
@@ -106,16 +91,10 @@ class HomeViewmodel extends StateNotifier<HomeState> {
 
   Future<void> hotList() async {
     try {
-      final hotUrl = Uri.https(
-          'pokeeserver-default-rtdb.firebaseio.com', 'hot_debate_list.json');
-      final response = await http.get(hotUrl);
-      if (response.statusCode != 200) {
-        throw Exception('Failed to load data');
-      }
+      final response = await ApiService.getData('hot_debate_list');
 
-      final Map<String, dynamic> listData = json.decode(response.body);
       final List<HotList> hotItems = [];
-      for (final item in listData.entries) {
+      for (final item in response!.entries) {
         hotItems.add(
           HotList(
             id: item.key,

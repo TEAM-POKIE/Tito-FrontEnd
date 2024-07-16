@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tito_app/src/widgets/login/basic_login.dart';
-import 'package:tito_app/src/widgets/login/signup.dart';
 
 class LoginMain extends StatelessWidget {
   const LoginMain({super.key});
