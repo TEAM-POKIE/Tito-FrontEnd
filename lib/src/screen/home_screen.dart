@@ -9,7 +9,7 @@ import 'package:tito_app/core/provider/home_state_provider.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
-
+  
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final homeState = ref.watch(homeViewModelProvider);

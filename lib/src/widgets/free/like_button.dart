@@ -36,33 +36,6 @@ class _LikeButtonState extends State<LikeButton> {
   //   }
   // }
 
-  Future<void> _updateLikeCount(String postId, int newCount) async {
-    final url = Uri.https(
-        'pokeeserver-default-rtdb.firebaseio.com', 'posts/$postId/likes.json');
-    final response = await http.put(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode(newCount),
-    );
-    if (response.statusCode == 200) {
-      // setState(() {
-      //   _likeCount = newCount;
-      // });
-      Provider.of<AppState>(context, listen: false)
-          .setLikeCount(postId, newCount);
-    }
-  }
-
-  void _toggleLike() {
-    final appState = Provider.of<AppState>(context, listen: false);
-    final currentCount = appState.getLikeCount(widget.postId);
-    setState(() {
-      _isLiked = !_isLiked;
-      // int newCount = _isLiked ? _likeCount + 1 : _likeCount - 1;
-      int newCount = _isLiked ? currentCount + 1 : currentCount - 1;
-      _updateLikeCount(widget.postId, newCount);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +44,7 @@ class _LikeButtonState extends State<LikeButton> {
       return Column(
         children: [
           TextButton.icon(
-            onPressed: _toggleLike,
+            onPressed: () {},
             icon: _isLiked
                 ? Image.asset('assets/images/liked_btn.png', width: 18)
                 : Image.asset('assets/images/like_btn.png', width: 18),

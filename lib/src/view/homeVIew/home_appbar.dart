@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 // import 'package:tito_app/core/provider/home_state_provider.dart';
 
 class HomeAppbar extends ConsumerWidget {
@@ -25,7 +26,7 @@ class HomeAppbar extends ConsumerWidget {
         ),
         IconButton(
           onPressed: () {
-            // homeViewModel.goMyPage(context);
+            context.go('/mypage');
           },
           icon: Image.asset('assets/images/mypage.png'),
         ),
