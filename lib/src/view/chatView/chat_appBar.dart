@@ -7,9 +7,9 @@ class ChatAppbar extends ConsumerWidget {
   final String id;
 
   const ChatAppbar({
-    Key? key,
+    super.key,
     required this.id,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,7 +28,7 @@ class ChatAppbar extends ConsumerWidget {
 }
 
 class LoadingAppbar extends StatelessWidget {
-  const LoadingAppbar({Key? key}) : super(key: key);
+  const LoadingAppbar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +44,10 @@ class DebateAppbar extends StatelessWidget {
   final String title;
 
   const DebateAppbar({
-    Key? key,
+    super.key,
     required this.chatViewModel,
     required this.title,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

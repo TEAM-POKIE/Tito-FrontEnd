@@ -9,9 +9,9 @@ class ChatListView extends ConsumerWidget {
   final String id;
 
   const ChatListView({
-    Key? key,
+    super.key,
     required this.id,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

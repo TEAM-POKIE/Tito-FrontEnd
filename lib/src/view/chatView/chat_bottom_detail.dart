@@ -4,16 +4,13 @@ import 'package:tito_app/core/provider/chat_state_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:tito_app/core/provider/turn_provider.dart';
-import 'package:tito_app/src/data/models/login_info.dart';
-import 'package:tito_app/src/viewModel/chat_viewModel.dart';
-import 'package:tito_app/src/viewModel/popup_viewModel.dart';
 
 class ChatBottomDetail extends ConsumerWidget {
   final String id;
   const ChatBottomDetail({
-    Key? key,
+    super.key,
     required this.id,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,7 +21,7 @@ class ChatBottomDetail extends ConsumerWidget {
     final turnIndex = ref.watch(turnProvider);
     final popupViewmodel = ref.watch(popupProvider.notifier);
     final popupState = ref.watch(popupProvider);
-    void _handleSendMessage() async {
+    void handleSendMessage() async {
       if (loginInfo!.nickname != chatState.debateData!['myNick']) {
         if (turnIndex.opponentTurn == 0) {
           popupState.buttonStyle = 1;
@@ -67,7 +64,7 @@ class ChatBottomDetail extends ConsumerWidget {
               ),
               onSubmitted: (value) {
                 if (chatState.debateData!['turnId'] != loginInfo!.nickname) {
-                  _handleSendMessage();
+                  handleSendMessage();
                 }
               },
             ),
@@ -76,7 +73,7 @@ class ChatBottomDetail extends ConsumerWidget {
           IconButton(
             onPressed: () {
               if (chatState.debateData!['turnId'] != loginInfo!.nickname) {
-                _handleSendMessage();
+                handleSendMessage();
               }
             },
             icon: Image.asset('assets/images/sendArrow.png'),

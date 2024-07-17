@@ -5,8 +5,13 @@ import 'package:tito_app/src/screen/home_screen.dart';
 import 'package:tito_app/src/screen/list_screen.dart';
 import 'package:tito_app/src/screen/login_screen.dart';
 import 'package:tito_app/src/screen/myPage/change_name.dart';
+import 'package:tito_app/src/screen/myPage/change_password.dart';
 import 'package:tito_app/src/screen/myPage/myPage_main_screen.dart';
-import 'package:tito_app/src/view/freeView/free_write_appbar.dart';
+import 'package:tito_app/src/screen/myPage/my_alarm.dart';
+import 'package:tito_app/src/screen/myPage/my_contact.dart';
+import 'package:tito_app/src/screen/myPage/my_debate.dart';
+import 'package:tito_app/src/screen/myPage/my_like.dart';
+import 'package:tito_app/src/screen/myPage/my_list.dart';
 import 'package:tito_app/src/widgets/ai/ai_create.dart';
 import 'package:tito_app/src/screen/debate/debate_create.dart';
 import 'package:tito_app/src/screen/debate/debate_create_second.dart';
@@ -25,7 +30,7 @@ final GoRouter router = GoRouter(
       builder: (context, state, child) {
         return Scaffold(
           body: child,
-          bottomNavigationBar: BottomBar(),
+          bottomNavigationBar: const BottomBar(),
         );
       },
       branches: [
@@ -43,7 +48,7 @@ final GoRouter router = GoRouter(
           routes: [
             GoRoute(
               path: '/list',
-              builder: (context, state) => ListScreen(),
+              builder: (context, state) => const ListScreen(),
             ),
           ],
         ),
@@ -51,7 +56,7 @@ final GoRouter router = GoRouter(
           routes: [
             GoRoute(
               path: '/free',
-              builder: (context, state) => FreeScreen(),
+              builder: (context, state) => const FreeScreen(),
             ),
           ],
         ),
@@ -59,19 +64,43 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/mypage',
-      builder: (context, state) => MypageMainScreen(),
+      builder: (context, state) => const MypageMainScreen(),
+    ),
+    GoRoute(
+      path: '/mydebate',
+      builder: (context, state) => const MyDebate(),
+    ),
+    GoRoute(
+      path: '/myalarm',
+      builder: (context, state) => const MyAlarm(),
+    ),
+    GoRoute(
+      path: '/mylike',
+      builder: (context, state) => const MyLike(),
+    ),
+    GoRoute(
+      path: '/mylist',
+      builder: (context, state) => const MyList(),
+    ),
+    GoRoute(
+      path: '/contact',
+      builder: (context, state) => const MyContact(),
     ),
     GoRoute(
       path: '/nickname',
-      builder: (context, state) => ChangeName(),
+      builder: (context, state) => const ChangeName(),
+    ),
+    GoRoute(
+      path: '/password',
+      builder: (context, state) => const ChangePassword(),
     ),
     GoRoute(
       path: '/write',
-      builder: (context, state) => FreeWriteScreen(),
+      builder: (context, state) => const FreeWriteScreen(),
     ),
     GoRoute(
       path: '/debate_create',
-      builder: (context, state) => DebateCreate(),
+      builder: (context, state) => const DebateCreate(),
     ),
     GoRoute(
       path: "/debate_create_second",

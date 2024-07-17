@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -64,7 +63,7 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
                   linearStrokeCap: LinearStrokeCap.butt,
                   progressColor: ColorSystem.purple,
                   backgroundColor: Colors.grey,
-                  barRadius: Radius.circular(10),
+                  barRadius: const Radius.circular(10),
                 ),
               ),
             ),

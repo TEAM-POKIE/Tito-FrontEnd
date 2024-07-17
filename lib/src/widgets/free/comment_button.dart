@@ -1,15 +1,15 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
 class CommentButton extends StatefulWidget {
+  const CommentButton({super.key});
+
   @override
   _CommentButtonState createState() => _CommentButtonState();
 }
 
 class _CommentButtonState extends State<CommentButton> {
   final TextEditingController _controller = TextEditingController();
-  bool _isSubmitting = false;
+  final bool _isSubmitting = false;
 
   
   @override
@@ -18,7 +18,7 @@ class _CommentButtonState extends State<CommentButton> {
       children: [
         TextField(
           controller: _controller,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             labelText: '댓글을 입력하세요',
           ),
         ),

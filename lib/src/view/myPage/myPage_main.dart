@@ -1,15 +1,14 @@
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
-import 'package:tito_app/core/routes/routes.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tito_app/src/widgets/mypage/alarm_collect.dart';
-import 'package:tito_app/src/widgets/mypage/contact.dart';
-import 'package:tito_app/src/widgets/mypage/debate_collect.dart';
-import 'package:tito_app/src/widgets/mypage/like_collect.dart';
-import 'package:tito_app/src/widgets/mypage/password_change.dart';
-import 'package:tito_app/src/widgets/mypage/write_collect.dart';
+import 'package:tito_app/src/widgets/reuse/debate_popup.dart';
+import 'package:tito_app/core/provider/popup_provider.dart';
+import 'package:tito_app/src/viewModel/popup_viewModel.dart';
+import 'package:tito_app/core/provider/chat_state_provider.dart';
+import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/core/provider/popup_provider.dart';
+import 'package:tito_app/core/provider/turn_provider.dart';
 
 class MypageMain extends ConsumerWidget {
   const MypageMain({super.key});
@@ -32,19 +31,10 @@ class MypageMain extends ConsumerWidget {
               child: IconButton(
                 iconSize: 30.0,
                 onPressed: () {
-                  // context.go('/nickname');
+                  //context.go('/nickname');
                 },
                 icon: Image.asset('assets/images/changeprofile.png'),
               ),
-              // child: Container(
-              //   width: 24,
-              //   height: 24,
-              //   child: IconButton(
-              //     iconSize:30.0,
-              //     onPressed: () {},
-              //     icon: Image.asset('assets/images/changeprofile.png'),
-              //   ),
-              // ),
             ),
           ],
         ),
@@ -73,13 +63,13 @@ class MypageMain extends ConsumerWidget {
           margin: const EdgeInsets.only(top: 5),
           padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
           decoration: BoxDecoration(
-            color: Color.fromARGB(255, 221, 199, 255),
+            color: const Color.fromARGB(255, 221, 199, 255),
             borderRadius: BorderRadius.circular(10),
           ),
           child: const Text(
             '승률 80%',
             style: TextStyle(
-                color: const Color(0xFF8E48F8), fontWeight: FontWeight.bold),
+                color: Color(0xFF8E48F8), fontWeight: FontWeight.bold),
           ),
         ),
         const SizedBox(height: 10),
@@ -97,7 +87,7 @@ class MypageMain extends ConsumerWidget {
         const Align(
           alignment: Alignment.centerLeft,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
               '내 활동',
               style: TextStyle(fontSize: 15),
@@ -116,12 +106,9 @@ class MypageMain extends ConsumerWidget {
             ),
             child: ListTile(
               title: const Text('내가 참여한 토론'),
-              trailing: Icon(Icons.arrow_forward_ios),
+              trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DebateCollect()),
-                );
+                context.go('/mydebate');
               },
             ),
           ),
@@ -134,13 +121,10 @@ class MypageMain extends ConsumerWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: ListTile(
-              title: Text('내가 쓴 게시글'),
-              trailing: Icon(Icons.arrow_forward_ios),
+              title: const Text('내가 쓴 게시글'),
+              trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => WriteCollect()),
-                );
+                context.go('/mylist');
               },
             ),
           ),
@@ -153,13 +137,10 @@ class MypageMain extends ConsumerWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: ListTile(
-              title: Text('좋아요'),
-              trailing: Icon(Icons.arrow_forward_ios),
+              title: const Text('좋아요'),
+              trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LikeCollect()),
-                );
+                context.go('/mylike');
               },
             ),
           ),
@@ -172,13 +153,10 @@ class MypageMain extends ConsumerWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: ListTile(
-              title: Text('알림'),
-              trailing: Icon(Icons.arrow_forward_ios),
+              title: const Text('알림'),
+              trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AlarmCollect()),
-                );
+                context.go('/myalarm');
               },
             ),
           ),
@@ -193,7 +171,7 @@ class MypageMain extends ConsumerWidget {
         const Align(
           alignment: Alignment.centerLeft,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
               '설정',
               style: TextStyle(fontSize: 15),
@@ -211,13 +189,10 @@ class MypageMain extends ConsumerWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: ListTile(
-              title: Text('비밀번호 수정'),
-              trailing: Icon(Icons.arrow_forward_ios),
+              title: const Text('비밀번호 수정'),
+              trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PasswordChange()),
-                );
+                context.go('/password');
               },
             ),
           ),
@@ -230,13 +205,10 @@ class MypageMain extends ConsumerWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: ListTile(
-              title: Text('문의하기'),
-              trailing: Icon(Icons.arrow_forward_ios),
+              title: const Text('문의하기'),
+              trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Contact()),
-                );
+                context.go('/contact');
               },
             ),
           ),
@@ -249,8 +221,8 @@ class MypageMain extends ConsumerWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: ListTile(
-              title: Text('로그아웃'),
-              trailing: Icon(Icons.arrow_forward_ios),
+              title: const Text('로그아웃'),
+              trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {},
             ),
           ),
@@ -263,9 +235,11 @@ class MypageMain extends ConsumerWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: ListTile(
-              title: Text('회원탈퇴'),
-              trailing: Icon(Icons.arrow_forward_ios),
-              onTap: () {},
+              title: const Text('회원탈퇴'),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () {
+                // 팝업창 띄우기
+              },
             ),
           ),
         ),

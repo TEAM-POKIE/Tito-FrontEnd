@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tito_app/src/data/models/freescreen_info.dart';
-import 'package:tito_app/src/widgets/free/vote.dart';
 
 class FreeScreenDetail extends StatelessWidget {
   final FreeState item;
   final String postId;
 
-  FreeScreenDetail({required this.item, required this.postId, super.key});
+  const FreeScreenDetail({required this.item, required this.postId, super.key});
 
   String timeAgo(DateTime dateTime) {
     final duration = DateTime.now().difference(dateTime);
@@ -52,7 +51,7 @@ class FreeScreenDetail extends StatelessWidget {
                   style: const TextStyle(
                       fontSize: 23, fontWeight: FontWeight.bold),
                 ),
-                Spacer(),
+                const Spacer(),
                 Text(
                   timeAgo(item.timestamp),
                   style: const TextStyle(fontSize: 14, color: Colors.grey),

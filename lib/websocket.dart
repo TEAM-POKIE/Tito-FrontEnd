@@ -2,7 +2,7 @@ import 'dart:io';
 
 void main() {
   // 웹 소켓 서버 포트 설정
-  final int port = 4040;
+  const int port = 4040;
   HttpServer.bind('localhost', port).then((HttpServer server) {
     print('WebSocket listening at ws://localhost:$port');
     server.listen((HttpRequest request) {
