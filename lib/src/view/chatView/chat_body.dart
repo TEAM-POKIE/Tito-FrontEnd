@@ -10,9 +10,9 @@ class ChatBody extends ConsumerWidget {
   final String id;
 
   const ChatBody({
-    Key? key,
+    super.key,
     required this.id,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -6,9 +6,9 @@ class LiveSendView extends ConsumerWidget {
   final String username;
 
   const LiveSendView({
-    Key? key,
+    super.key,
     required this.username,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

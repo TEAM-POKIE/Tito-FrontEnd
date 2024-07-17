@@ -10,11 +10,11 @@ class LiveComment extends ConsumerWidget {
   final ScrollController scrollController;
 
   const LiveComment({
-    Key? key,
+    super.key,
     required this.username,
     required this.id,
     required this.scrollController,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

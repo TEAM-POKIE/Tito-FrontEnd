@@ -36,9 +36,9 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
       }
 
       final Map<String, dynamic> listData = json.decode(response.body);
-      final List<LoginInfo> _loginItems = [];
+      final List<LoginInfo> loginItems = [];
       for (final item in listData.entries) {
-        _loginItems.add(
+        loginItems.add(
           LoginInfo(
               id: item.key,
               nickname: item.value['nickname'],
@@ -48,7 +48,7 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
       }
 
       LoginInfo? loggedInUser;
-      for (final loginItem in _loginItems) {
+      for (final loginItem in loginItems) {
         if (loginItem.email == _enteredEmail &&
             loginItem.password == _enteredPassword) {
           loggedInUser = loginItem;

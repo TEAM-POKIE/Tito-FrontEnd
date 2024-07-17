@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:tito_app/src/widgets/ai/ai_select.dart';
 import 'package:get/get.dart';
 import 'package:tito_app/src/widgets/ai/selection_controller.dart';
 
 class AiCreate extends StatelessWidget {
-  final SelectionController selectionController =
+  SelectionController selectionController =
       Get.put(SelectionController());
+
+  AiCreate({super.key});
 
   Widget _buildGridItem(BuildContext context, String text, int index) {
     return Obx(() {
@@ -153,7 +154,7 @@ class AiCreate extends StatelessWidget {
                       ? () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => AiSelect()),
+                            MaterialPageRoute(builder: (context) => const AiSelect()),
                           );
                         }
                       : null,

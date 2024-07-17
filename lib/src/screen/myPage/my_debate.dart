@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-class DebateCollect extends ConsumerStatefulWidget {
-  const DebateCollect({super.key});
+class MyDebate extends ConsumerStatefulWidget {
+  const MyDebate({super.key});
 
   @override
-  ConsumerState<DebateCollect> createState() {
-    return _DebateCollectState();
+  ConsumerState<MyDebate> createState() {
+    return _MyDebateState();
   }
 }
 
 
-class _DebateCollectState extends ConsumerState<DebateCollect> {
+class _MyDebateState extends ConsumerState<MyDebate> {
   final List<String> sortOptions = ['최신순', '인기순'];
 
   @override
@@ -20,7 +21,7 @@ class _DebateCollectState extends ConsumerState<DebateCollect> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.go('/mypage');
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
@@ -30,12 +31,12 @@ class _DebateCollectState extends ConsumerState<DebateCollect> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: EdgeInsets.all(20.0),
           child: Column(
             children: [
-              const Text(
+              Text(
                 '포키님은 12번의 토론 중\n10번을 이기셨어요!',
                 style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
               ),

@@ -37,7 +37,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
-    final _selectedIndex = ref.watch(selectedIndexProvider.notifier).state;
+    final selectedIndex = ref.watch(selectedIndexProvider.notifier).state;
     return BottomNavigationBar(
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
@@ -45,7 +45,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
             'assets/images/bottombar/home.png',
             width: 24,
             height: 24,
-            color: _selectedIndex == 0 ? Colors.black : null,
+            color: selectedIndex == 0 ? Colors.black : null,
           ),
           label: '홈',
         ),
@@ -54,7 +54,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
             'assets/images/bottombar/list.png',
             width: 24,
             height: 24,
-            color: _selectedIndex == 1 ? Colors.black : null,
+            color: selectedIndex == 1 ? Colors.black : null,
           ),
           label: '리스트',
         ),
@@ -76,7 +76,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
         ),
         BottomNavigationBarItem(
           icon: Image.asset(
-            _selectedIndex == 4
+            selectedIndex == 4
                 ? 'assets/images/bottombar/board_select.png'
                 : 'assets/images/bottombar/board.png',
             width: 24,
@@ -85,11 +85,11 @@ class _BottomBarState extends ConsumerState<BottomBar> {
           label: '게시판',
         ),
       ],
-      currentIndex: _selectedIndex,
+      currentIndex: selectedIndex,
       onTap: _onItemTapped,
       type: BottomNavigationBarType.fixed,
       selectedItemColor:
-          (_selectedIndex == 0 || _selectedIndex == 1 || _selectedIndex == 4)
+          (selectedIndex == 0 || selectedIndex == 1 || selectedIndex == 4)
               ? Colors.black
               : Colors.grey,
       unselectedItemColor: Colors.grey,

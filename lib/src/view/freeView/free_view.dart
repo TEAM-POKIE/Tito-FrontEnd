@@ -1,10 +1,8 @@
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-
+import 'package:tito_app/src/data/models/freescreen_info.dart';
 import 'package:tito_app/src/viewModel/free_viewModel.dart';
 import 'package:tito_app/src/widgets/reuse/search_bar.dart';
-
 import 'package:go_router/go_router.dart';
 
 class FreeView extends ConsumerWidget {
@@ -14,7 +12,7 @@ class FreeView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
-        CustomSearchBar(),
+        const CustomSearchBar(),
         const SizedBox(height: 20),
         Container(
           height: 1.0,
@@ -152,7 +150,7 @@ class FreeView extends ConsumerWidget {
                           const Row(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(left: 15.0),
+                                padding: EdgeInsets.only(left: 15.0),
                                 child: Text(
                                   '좋아요',
                                   style: TextStyle(color: Colors.grey),

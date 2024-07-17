@@ -7,9 +7,9 @@ import 'package:tito_app/core/provider/popup_provider.dart';
 class ChatBottomDetail extends ConsumerWidget {
   final String id;
   const ChatBottomDetail({
-    Key? key,
+    super.key,
     required this.id,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

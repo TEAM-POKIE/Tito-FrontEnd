@@ -12,9 +12,9 @@ class ChatSpeechBubble extends ConsumerStatefulWidget {
   final String id;
 
   const ChatSpeechBubble({
-    Key? key,
+    super.key,
     required this.id,
-  }) : super(key: key);
+  });
 
   @override
   _ChatSpeechBubbleState createState() => _ChatSpeechBubbleState();
@@ -92,12 +92,12 @@ class StaticTextBubble extends StatefulWidget {
   final ChatState chatState;
 
   const StaticTextBubble({
-    Key? key,
+    super.key,
     required this.title,
     required this.width,
     required this.height,
     required this.chatState,
-  }) : super(key: key);
+  });
 
   @override
   _StaticTextBubbleState createState() => _StaticTextBubbleState();
@@ -107,7 +107,7 @@ class _StaticTextBubbleState extends State<StaticTextBubble> {
   @override
   Widget build(BuildContext context) {
     if (widget.chatState.isVisible == false) {
-      return SizedBox.shrink(); // 빈 공간 반환
+      return const SizedBox.shrink(); // 빈 공간 반환
     }
 
     return SpeechBalloon(

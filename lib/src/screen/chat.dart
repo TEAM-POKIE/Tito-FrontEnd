@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_state_provider.dart';
-import 'package:tito_app/core/provider/live_comment.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/src/data/models/login_info.dart';
 import 'package:tito_app/src/view/chatView/chat_appBar.dart';
@@ -47,10 +46,9 @@ class _BasicDebate extends StatelessWidget {
   final String id;
 
   const _BasicDebate({
-    Key? key,
     required this.id,
     required this.chatState,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -74,11 +72,10 @@ class _LiveComment extends StatelessWidget {
   final PanelController _panelController = PanelController();
 
   _LiveComment({
-    Key? key,
     required this.loginInfo,
     required this.id,
     required this.chatState,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -50,11 +50,11 @@ class Message {
 
 class TextMessage extends Message {
   TextMessage({
-    required String id,
-    required User author,
-    required int createdAt,
-    required String text,
-  }) : super(id: id, author: author, createdAt: createdAt, text: text);
+    required super.id,
+    required super.author,
+    required super.createdAt,
+    required super.text,
+  });
 
   factory TextMessage.fromJson(Map<String, dynamic> json) {
     return TextMessage(

@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tito_app/core/provider/app_state.dart';
@@ -7,7 +5,7 @@ import 'package:tito_app/core/provider/app_state.dart';
 class LikeButton extends StatefulWidget {
   final String postId;
 
-  LikeButton({required this.postId});
+  const LikeButton({super.key, required this.postId});
 
   @override
   _LikeButtonState createState() => _LikeButtonState();
@@ -15,7 +13,7 @@ class LikeButton extends StatefulWidget {
 
 class _LikeButtonState extends State<LikeButton> {
   //int _likeCount = 0;
-  bool _isLiked = false;
+  final bool _isLiked = false;
 
   // @override
   // void initState() {

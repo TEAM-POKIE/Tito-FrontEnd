@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 
 class AiSelect extends StatefulWidget {
@@ -97,12 +96,12 @@ class _AiSelectState extends State<AiSelect> {
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
                         '이런 주제는 어때요?',
                         style: TextStyle(fontSize: 17),
                       ),
-                      const SizedBox(
+                      SizedBox(
                         height: 1,
                       ),
                       Text(
@@ -160,21 +159,21 @@ class _AiSelectState extends State<AiSelect> {
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF8E48F8),
-                      fixedSize: Size(170, 60),
+                      fixedSize: const Size(170, 60),
                     ),
                     child: const Text(
                       '토론 생성',
                       style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 13,
                   ),
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF8E48F8),
-                      fixedSize: Size(170, 60),
+                      fixedSize: const Size(170, 60),
                     ),
                     child: const Text(
                       '게시글 생성',

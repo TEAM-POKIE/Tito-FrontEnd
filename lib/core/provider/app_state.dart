@@ -8,7 +8,7 @@ final freeViewModelProvider = StateNotifierProvider<FreeViewmodel, List<FreeStat
 );
 
 class AppState extends ChangeNotifier {
-  Map<String, int> _likeCounts = {};
+  final Map<String, int> _likeCounts = {};
 
   int getLikeCount(String postId) {
     return _likeCounts[postId] ?? 0;

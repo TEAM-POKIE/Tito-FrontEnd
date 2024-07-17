@@ -8,9 +8,9 @@ class ChatListView extends ConsumerStatefulWidget {
   final String id;
 
   const ChatListView({
-    Key? key,
+    super.key,
     required this.id,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<ChatListView> createState() => _ChatListViewState();

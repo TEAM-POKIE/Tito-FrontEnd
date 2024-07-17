@@ -10,9 +10,9 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 class ChatViewDetails extends ConsumerWidget {
   final String id;
   const ChatViewDetails({
-    Key? key,
+    super.key,
     required this.id,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -90,7 +90,7 @@ class ChatViewDetails extends ConsumerWidget {
 class _text extends StatelessWidget {
   final ChatState chatState;
 
-  const _text({Key? key, required this.chatState}) : super(key: key);
+  const _text({required this.chatState});
 
   @override
   Widget build(BuildContext context) {
@@ -121,13 +121,12 @@ class _detailState extends StatelessWidget {
   final String? downTitle;
 
   const _detailState({
-    Key? key,
     required this.chatState,
     required this.upImage,
     required this.upTitle,
     this.downTitle,
     this.downImage,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
