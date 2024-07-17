@@ -22,25 +22,30 @@ class LiveSendView extends ConsumerWidget {
               controller: liveCommentViewModel.controller,
               autocorrect: false,
               decoration: InputDecoration(
-                hintText: '상대 의견 작성 타임이에요!',
+                hintText: '실시간 댓글로 방청자와 소통해보세요!',
                 fillColor: Colors.grey[200],
                 filled: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30.0),
                   borderSide: BorderSide.none,
                 ),
+                contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 10.0),
               ),
               onSubmitted: (value) {
                 liveCommentViewModel.sendMessage(value);
+                liveCommentViewModel.controller.clear();
               },
             ),
           ),
           const SizedBox(width: 8),
           IconButton(
             onPressed: () {
-              liveCommentViewModel.sendMessage(username);
+              liveCommentViewModel
+                  .sendMessage(liveCommentViewModel.controller.text);
+              liveCommentViewModel.controller.clear();
             },
-            icon: Image.asset('assets/images/sendArrow.png'),
+            icon: Icon(Icons.send, color: Theme.of(context).primaryColor),
           ),
         ],
       ),

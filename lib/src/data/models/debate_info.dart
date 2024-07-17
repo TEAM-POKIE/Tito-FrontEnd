@@ -10,6 +10,8 @@ class DebateInfo {
     required this.category,
     required this.debateState,
     required this.time,
+    required this.myTurn,
+    required this.opponentTurn,
     required this.visibleDebate,
   });
   final String id;
@@ -22,6 +24,8 @@ class DebateInfo {
   final String debateState;
   final String time;
   final String turnId;
+  final int myTurn;
+  final int opponentTurn;
   final bool visibleDebate;
   factory DebateInfo.fromMap(String id, Map<String, dynamic> data) {
     return DebateInfo(
@@ -35,6 +39,8 @@ class DebateInfo {
       opponentNick: data['opponentNick'].toString(),
       time: data['timestamp'].toString(),
       turnId: data['turnId'].toString(),
+      myTurn: data['myTurn'],
+      opponentTurn: data['opponentTurn'],
       visibleDebate: data['visibleDebate'],
     );
   }

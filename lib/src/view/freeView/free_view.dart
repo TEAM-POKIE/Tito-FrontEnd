@@ -1,13 +1,10 @@
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:tito_app/src/data/models/freescreen_info.dart';
+
 import 'package:tito_app/src/viewModel/free_viewModel.dart';
 import 'package:tito_app/src/widgets/reuse/search_bar.dart';
-import 'package:tito_app/src/widgets/reuse/bottombar.dart';
-import 'package:tito_app/src/widgets/free/like_button.dart';
-import 'package:tito_app/src/widgets/free/comment_button.dart';
-import 'package:tito_app/core/routes/routes.dart';
+
 import 'package:go_router/go_router.dart';
 
 class FreeView extends ConsumerWidget {

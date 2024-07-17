@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tito_app/core/constants/api_path.dart';
 import 'package:tito_app/core/constants/style.dart';
+import 'package:tito_app/core/provider/chat_state_provider.dart';
+import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tito_app/src/viewModel/chat_viewModel.dart';
 
 class DebatePopup extends ConsumerWidget {
   const DebatePopup({
@@ -86,6 +90,8 @@ class DebatePopup extends ConsumerWidget {
 
   Widget _oneButton(BuildContext context, WidgetRef ref) {
     final popupState = ref.watch(popupProvider);
+
+    final loginInfo = ref.watch(loginInfoProvider);
     final popupViewModel = ref.watch(popupProvider.notifier);
 
     return ElevatedButton(
@@ -96,10 +102,13 @@ class DebatePopup extends ConsumerWidget {
           borderRadius: BorderRadius.circular(25.0),
         ),
       ),
-      onPressed: () {
+      onPressed: () async {
         popupState.buttonStyle = 0;
         popupState.title = '토론이 시작 됐어요! 🎵';
         popupState.content = '서로 존중하는 토론을 부탁드려요!';
+
+        await ApiService.patchData('debate_list/${popupState.roomId}',
+            {'opponentNick': loginInfo!.nickname});
         context.pop();
         popupViewModel.showDebatePopup(context);
       },

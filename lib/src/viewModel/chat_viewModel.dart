@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tito_app/core/provider/chat_state_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
-import 'package:tito_app/core/provider/popup_provider.dart';
-import 'package:tito_app/core/provider/turn_provider.dart';
-import 'package:tito_app/src/viewModel/popup_viewModel.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
@@ -57,17 +55,25 @@ class ChatViewModel extends StateNotifier<ChatState> {
 
   ChatViewModel(this.ref, String roomId) : super(ChatState(roomId: roomId)) {
     _messagesController = StreamController<List<types.Message>>.broadcast();
-    _init();
+    init();
   }
 
   Stream<List<types.Message>> get messagesStream => _messagesController.stream;
 
-  void _init() {
+  void init() {
     channel = WebSocketChannel.connect(Uri.parse('ws://localhost:4040/ws'));
     channel.stream.listen(_onReceiveMessage);
-    _fetchDebateData();
+
+    fetchDebateData();
     _fetchMessages();
     _hideBubbleAfterDelay();
+  }
+
+  Future<List<types.Message>> loadInitialMessages() async {
+    print('Loading initial messages...');
+    await fetchDebateData();
+    await _fetchMessages();
+    return state.messages;
   }
 
   void _hideBubbleAfterDelay() {
@@ -97,7 +103,8 @@ class ChatViewModel extends StateNotifier<ChatState> {
       text: decodedMessage['text'] ?? '',
     );
 
-    final updatedMessages = [chatMessage, ...state.messages];
+    final updatedMessages = [...state.messages, chatMessage];
+    updatedMessages.sort((a, b) => a.createdAt.compareTo(b.createdAt));
     state = state.copyWith(
       messages: updatedMessages,
     );
@@ -105,38 +112,50 @@ class ChatViewModel extends StateNotifier<ChatState> {
   }
 
   Future<void> _fetchMessages() async {
-    final data = await ApiService.getData('chat_list/${state.roomId}');
-    if (data != null) {
-      final loadedMessages = <types.Message>[];
-      data.forEach((key, value) {
-        loadedMessages.add(types.TextMessage(
-          author: types.User(id: value['senderId'] ?? ''),
-          createdAt:
-              DateTime.parse(value['timestamp'] ?? '').millisecondsSinceEpoch,
-          id: key,
-          text: value['text'] ?? '',
-        ));
-      });
+    try {
+      print('Fetching messages...');
+      final data = await ApiService.getData('chat_list/${state.roomId}');
+      if (data != null) {
+        final loadedMessages = <types.Message>[];
+        data.forEach((key, value) {
+          loadedMessages.add(types.TextMessage(
+            author: types.User(id: value['senderId'] ?? ''),
+            createdAt:
+                DateTime.parse(value['timestamp'] ?? '').millisecondsSinceEpoch,
+            id: key,
+            text: value['text'] ?? '',
+          ));
+        });
 
-      final updatedMessages = loadedMessages.reversed.toList();
-      state = state.copyWith(
-        messages: updatedMessages,
-      );
-      _messagesController.add(updatedMessages);
-    } else {
-      // 데이터가 없을 경우에도 스트림에 빈 리스트를 추가
+        final updatedMessages = loadedMessages
+          ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
+        state = state.copyWith(
+          messages: updatedMessages,
+        );
+        _messagesController.add(updatedMessages);
+      } else {
+        print('No messages data found.');
+        _messagesController.add(state.messages);
+      }
+    } catch (e) {
+      print('Error fetching messages: $e');
       _messagesController.add(state.messages);
     }
   }
 
-  Future<void> _fetchDebateData() async {
-    final data = await ApiService.getData('debate_list/${state.roomId}');
-    if (data != null) {
-      state = state.copyWith(
-        debateData: data,
-      );
-    } else {
-      print('Failed to load debate data');
+  Future<void> fetchDebateData() async {
+    try {
+      final data = await ApiService.getData('debate_list/${state.roomId}');
+
+      if (data != null) {
+        state = state.copyWith(
+          debateData: data,
+        );
+      } else {
+        print('Failed to load debate data');
+      }
+    } catch (e) {
+      print('Error fetching debate data: $e');
     }
   }
 
@@ -144,51 +163,32 @@ class ChatViewModel extends StateNotifier<ChatState> {
     if (controller.text.trim().isEmpty) {
       return;
     }
-    final turnIndex = ref.read(turnProvider.notifier);
+
     final loginInfo = ref.read(loginInfoProvider);
-    if (loginInfo == null) {
-      return;
-    }
-    final newMessage = {
-      'text': controller.text.trim(),
-      'timestamp': DateTime.now().toIso8601String(),
-      'id': DateTime.now().millisecondsSinceEpoch.toString(),
-    };
+    final chatState = state;
+    if (loginInfo != null && chatState.debateData != null) {
+      final debateData = chatState.debateData!;
 
-    final updateData = {'turnId': loginInfo.nickname};
-    final isUpdated =
-        await ApiService.patchData('debate_list/${state.roomId}', updateData);
+      int patchDate;
 
-    if (isUpdated) {
-      state = state.copyWith(
-        debateData: {
-          ...?state.debateData,
-          'turnId': loginInfo.nickname,
-        },
-      );
+      if (loginInfo.nickname == debateData['myNick']) {
+        patchDate = ++debateData['myTurn'];
+        await ApiService.patchData(
+            'debate_list/${state.roomId}', {'myTurn': patchDate});
+      } else {
+        patchDate = ++debateData['opponentTurn'];
+        await ApiService.patchData(
+            'debate_list/${state.roomId}', {'opponentTurn': patchDate});
+      }
+
+      final newMessage = {
+        'text': controller.text.trim(),
+        'timestamp': DateTime.now().toIso8601String(),
+        'id': DateTime.now().millisecondsSinceEpoch.toString(),
+      };
 
       controller.clear();
       channel.sink.add(json.encode(newMessage));
-
-      if (state.isFirstMessage) {
-        final visibleDebateData = {'visibleDebate': true};
-        final isVisibleUpdated = await ApiService.patchData(
-            'debate_list/${state.roomId}', visibleDebateData);
-
-        if (isVisibleUpdated) {
-          state = state.copyWith(
-            isFirstMessage: false,
-            fadeText: '첫 채팅 작성을 완료했습니다!\n 토론 참여자를 기다려보세요 !',
-            debateData: {
-              ...?state.debateData,
-              ...visibleDebateData,
-            },
-          );
-          print('Debate room created successfully.');
-        } else {
-          print('Failed to create debate room.');
-        }
-      }
 
       final updatedMessages = [
         ...state.messages,
@@ -199,8 +199,10 @@ class ChatViewModel extends StateNotifier<ChatState> {
           text: newMessage['text'] ?? '',
         ),
       ];
+      updatedMessages.sort((a, b) => a.createdAt.compareTo(b.createdAt));
       state = state.copyWith(
         messages: updatedMessages,
+        debateData: debateData,
       );
       _messagesController.add(updatedMessages);
 
@@ -218,7 +220,9 @@ class ChatViewModel extends StateNotifier<ChatState> {
   }
 
   void back(BuildContext context) {
-    if (state.isFirstMessage) {
+    final chatState = state;
+
+    if (chatState.debateData!['myTurn'] == 0) {
       context.pop(context);
     } else {
       context.go('/list');

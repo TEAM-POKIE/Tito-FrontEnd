@@ -5,7 +5,7 @@ import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:tito_app/src/widgets/reuse/debate_popup.dart';
 
 class PopupState {
-  final String roomId;
+  String roomId;
   final Map<String, dynamic>? debateData;
   int? buttonStyle;
   String? title;
@@ -61,20 +61,17 @@ class PopupViewmodel extends StateNotifier<PopupState> {
   Future<bool> showTimingPopup(
     BuildContext context,
   ) async {
-    final loginInfo = ref.read(loginInfoProvider);
-    final popupState = ref.read(popupProvider);
+    state = state.copyWith(
+      title: '상대방이 타이밍 벨을 울렸어요!',
+      content:
+          '타이밍 벨을 울리시면 상대방의 동의에 따라\n마지막 최후 변론 후 토론이 종료돼요\n상대 거절 시 2턴 후 종료돼요',
+      buttonStyle: 2,
+      buttonContentLeft: "토론 더 할래요",
+      buttonContentRight: '벨 울릴게요',
+      titleLabel: '타이밍 벨',
+      imgSrc: 'assets/images/popupTimingBell.png',
+    );
 
-    popupState.title = '상대방이 타이밍 벨을 울렸어요!';
-    popupState.content =
-        '타이밍 벨을 울리시면 상대방의 동의에 따라\n마지막 최후 변론 후 토론이 종료돼요\n상대 거절 시 2턴 후 종료돼요';
-    popupState.buttonStyle = 2;
-    popupState.buttonContentLeft = "토론 더 할래요";
-    popupState.buttonContentRight = '벨 울릴게요';
-    popupState.titleLabel = '타이밍 벨';
-    popupState.imgSrc = 'assets/images/popupTimingBell.png';
-    if (loginInfo == null) {
-      return false;
-    }
     final result = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {

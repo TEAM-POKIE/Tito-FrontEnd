@@ -5,7 +5,6 @@ import 'package:tito_app/core/provider/chat_state_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:speech_balloon/speech_balloon.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
-import 'package:tito_app/core/provider/turn_provider.dart';
 import 'package:tito_app/src/viewModel/chat_viewModel.dart';
 import 'package:tito_app/src/viewModel/popup_viewModel.dart';
 
@@ -35,10 +34,9 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
     }
 
     final isMyNick = chatState.debateData!['myNick'] == loginInfo.nickname;
-    final turnIndex = ref.watch(turnProvider);
 
     if (isMyNick) {
-      switch (turnIndex.myTurn) {
+      switch (chatState.debateData!['myTurn']) {
         case 0:
           return StaticTextBubble(
             chatState: chatState,
@@ -53,10 +51,13 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
             popupState: popupState,
           );
         default:
-          return const Text('잘못된 상태입니다.');
+          return TimingButton(
+            popupViewModel: popupViewModel,
+            popupState: popupState,
+          );
       }
     } else {
-      switch (turnIndex.opponentTurn) {
+      switch (chatState.debateData!['opponentTurn']) {
         case 0:
           return StaticTextBubble(
             chatState: chatState,
@@ -72,7 +73,13 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
             height: (MediaQuery.of(context).size.height - 450) * 0.2,
           );
         default:
-          return const Text('잘못된 상태입니다.');
+          return StaticTextBubble(
+            chatState: chatState,
+            title: '상대방이 첫 입론을 입력 중입니다',
+            width: (MediaQuery.of(context).size.width - 100) * 0.7,
+            height: (MediaQuery.of(context).size.height - 450) * 0.2,
+          );
+          ;
       }
     }
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/provider/chat_state_provider.dart';
 import 'package:tito_app/src/viewModel/chat_viewModel.dart';
+import 'package:go_router/go_router.dart';
 
 class ChatAppbar extends ConsumerWidget {
   final String id;

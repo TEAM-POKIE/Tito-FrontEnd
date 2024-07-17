@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_state_provider.dart';
@@ -24,18 +25,19 @@ class Chat extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final chatState = ref.watch(chatProviders(id));
     final loginInfo = ref.watch(loginInfoProvider);
-    switch (chatState.debateData) {
-      case null:
-        return _LiveComment(
-          id: id,
-          loginInfo: loginInfo!,
-          chatState: chatState,
-        );
-      default:
-        return _BasicDebate(
-          id: id,
-          chatState: chatState,
-        );
+    if (loginInfo!.nickname == chatState.debateData!['myNick'] ||
+        loginInfo.nickname == chatState.debateData!['opponentNick'] ||
+        chatState.debateData!['opponentNick'] == '') {
+      return _BasicDebate(
+        id: id,
+        chatState: chatState,
+      );
+    } else {
+      return _LiveComment(
+        id: id,
+        loginInfo: loginInfo!,
+        chatState: chatState,
+      );
     }
   }
 }

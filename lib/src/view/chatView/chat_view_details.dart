@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_state_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
-import 'package:tito_app/core/provider/turn_provider.dart';
+
 import 'package:tito_app/src/viewModel/chat_viewModel.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
@@ -17,7 +17,7 @@ class ChatViewDetails extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final chatState = ref.watch(chatProviders(id));
-    final turnIndex = ref.watch(turnProvider);
+
     final loginInfo = ref.watch(loginInfoProvider);
 
     if (chatState.debateData == null || loginInfo == null) {
@@ -28,14 +28,15 @@ class ChatViewDetails extends ConsumerWidget {
     final isMyNick = chatState.debateData!['myNick'] == loginInfo.nickname;
 
     if (isMyNick) {
-      switch (turnIndex.myTurn) {
+      switch (chatState.debateData!['myTurn']) {
         case 0:
           return _text(
             chatState: chatState,
           );
 
         case 1:
-          if (turnIndex.opponentTurn == 0) {
+          if (chatState.debateData!['opponentTurn'] <
+              chatState.debateData!['myTurn']) {
             return _detailState(
               chatState: chatState,
               upImage: 'assets/images/detailChatIcon.png',
@@ -45,14 +46,19 @@ class ChatViewDetails extends ConsumerWidget {
           return _detailState(
             chatState: chatState,
             upImage: 'assets/images/detailChatIcon.png',
-            downImage: 'assets/images/chatCuteIconPurple.png',
-            upTitle: '상대의 의견을 반박하며 토론을 시작해보세요!',
+            upTitle: '${chatState.debateData!['myNick']}님의 반론 타임이에요',
+            downTitle: '⏳ 7:20 남았어요!',
           );
         default:
-          return const Text('잘못된 상태입니다.');
+          return _detailState(
+            chatState: chatState,
+            upImage: 'assets/images/detailChatIcon.png',
+            upTitle: '${chatState.debateData!['myNick']}님의 반론 타임이에요',
+            downTitle: '⏳ 7:20 남았어요!',
+          );
       }
     } else {
-      switch (turnIndex.opponentTurn) {
+      switch (chatState.debateData!['opponentTurn']) {
         case 0:
           return _detailState(
             chatState: chatState,
@@ -65,12 +71,17 @@ class ChatViewDetails extends ConsumerWidget {
         case 1:
           return _detailState(
             chatState: chatState,
-            upImage: 'assets/images/chatCuteIcon.png',
-            downImage: 'assets/images/chatCuteIconPurple.png',
-            upTitle: '상대의 의견',
+            upImage: 'assets/images/detailChatIcon.png',
+            upTitle: '상대 반론 타임이에요!',
+            downTitle: '⏳ 7:20 남았어요!',
           );
         default:
-          return const Text('잘못된 상태입니다.');
+          return _detailState(
+            chatState: chatState,
+            upImage: 'assets/images/detailChatIcon.png',
+            upTitle: '상대 반론 타임이에요!',
+            downTitle: '⏳ 7:20 남았어요!',
+          );
       }
     }
   }
@@ -133,6 +144,10 @@ class _detailState extends StatelessWidget {
               width: MediaQuery.of(context).size.width - 50,
               padding: const EdgeInsets.all(8.0),
               child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: (upImage == 'assets/images/chatCuteIcon.png')
+                    ? MainAxisAlignment.start
+                    : MainAxisAlignment.center,
                 children: [
                   Image.asset(
                     upImage,
@@ -146,7 +161,7 @@ class _detailState extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 3),
           Center(
             child: Container(
               padding: const EdgeInsets.all(8.0),
@@ -158,7 +173,10 @@ class _detailState extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: (upImage == 'assets/images/chatCuteIcon.png')
+                    ? MainAxisAlignment.start
+                    : MainAxisAlignment.center,
                 children: [
                   downImage != null && downImage!.isNotEmpty
                       ? Image.asset(downImage!)
@@ -166,7 +184,9 @@ class _detailState extends StatelessWidget {
                   const SizedBox(width: 8),
                   Text(
                     downTitle ?? '',
-                    style: FontSystem.KR16R,
+                    style: downImage != null && downImage!.isNotEmpty
+                        ? FontSystem.KR16B
+                        : FontSystem.KR16B.copyWith(color: ColorSystem.purple),
                   ),
                 ],
               ),
