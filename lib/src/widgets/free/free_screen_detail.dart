@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tito_app/src/data/models/freescreen_item.dart';
+import 'package:tito_app/src/data/models/freescreen_info.dart';
 import 'package:tito_app/src/widgets/free/vote.dart';
 
 class FreeScreenDetail extends StatelessWidget {
-  final FreeScreenItem item;
+  final FreeState item;
   final String postId;
 
   FreeScreenDetail({required this.item, required this.postId, super.key});

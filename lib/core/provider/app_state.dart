@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:tito_app/src/data/models/freescreen_item.dart';
+import 'package:tito_app/src/data/models/freescreen_info.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tito_app/src/viewModel/free_viewModel.dart';
+
+final freeViewModelProvider = StateNotifierProvider<FreeViewmodel, List<FreeState>>(
+  (ref) => FreeViewmodel(),
+);
 
 class AppState extends ChangeNotifier {
   Map<String, int> _likeCounts = {};
@@ -23,5 +29,3 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 }
-
-//final AppState appState = AppState();

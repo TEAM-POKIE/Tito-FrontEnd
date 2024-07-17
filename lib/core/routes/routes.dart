@@ -1,8 +1,12 @@
 import 'package:go_router/go_router.dart';
-import 'package:tito_app/src/screen/free_screen.dart';
+import 'package:tito_app/src/screen/free/free_screen.dart';
+import 'package:tito_app/src/screen/free/free_write_screen.dart';
 import 'package:tito_app/src/screen/home_screen.dart';
 import 'package:tito_app/src/screen/list_screen.dart';
 import 'package:tito_app/src/screen/login_screen.dart';
+import 'package:tito_app/src/screen/myPage/change_name.dart';
+import 'package:tito_app/src/screen/myPage/myPage_main_screen.dart';
+import 'package:tito_app/src/view/freeView/free_write_appbar.dart';
 import 'package:tito_app/src/widgets/ai/ai_create.dart';
 import 'package:tito_app/src/screen/debate/debate_create.dart';
 import 'package:tito_app/src/screen/debate/debate_create_second.dart';
@@ -52,6 +56,18 @@ final GoRouter router = GoRouter(
           ],
         ),
       ],
+    ),
+    GoRoute(
+      path: '/mypage',
+      builder: (context, state) => MypageMainScreen(),
+    ),
+    GoRoute(
+      path: '/nickname',
+      builder: (context, state) => ChangeName(),
+    ),
+    GoRoute(
+      path: '/write',
+      builder: (context, state) => FreeWriteScreen(),
     ),
     GoRoute(
       path: '/debate_create',
