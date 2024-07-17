@@ -12,7 +12,6 @@ class DebateInfo {
     required this.time,
     required this.myTurn,
     required this.opponentTurn,
-    required this.visibleDebate,
   });
   final String id;
   final String myNick;
@@ -26,7 +25,7 @@ class DebateInfo {
   final String turnId;
   final int myTurn;
   final int opponentTurn;
-  final bool visibleDebate;
+
   factory DebateInfo.fromMap(String id, Map<String, dynamic> data) {
     return DebateInfo(
       id: id,
@@ -41,7 +40,6 @@ class DebateInfo {
       turnId: data['turnId'].toString(),
       myTurn: data['myTurn'],
       opponentTurn: data['opponentTurn'],
-      visibleDebate: data['visibleDebate'],
     );
   }
 }

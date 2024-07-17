@@ -24,7 +24,6 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
   @override
   Widget build(BuildContext context) {
     final chatState = ref.watch(chatProviders(widget.id));
-
     final loginInfo = ref.watch(loginInfoProvider);
     final popupViewModel = ref.read(popupProvider.notifier);
     final popupState = ref.read(popupProvider);
@@ -33,10 +32,23 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
       return const SizedBox.shrink();
     }
 
-    final isMyNick = chatState.debateData!['myNick'] == loginInfo.nickname;
+    final myNick = chatState.debateData?['myNick'];
+    final opponentNick = chatState.debateData?['opponentNick'];
+    final myTurn = chatState.debateData?['myTurn'];
+    final opponentTurn = chatState.debateData?['opponentTurn'];
+    final isMyNick = myNick == loginInfo.nickname;
+
+    if (myNick == null ||
+        opponentNick == null ||
+        myTurn == null ||
+        opponentTurn == null) {
+      return const SizedBox.shrink();
+    }
+
+    String sendNick = isMyNick ? myNick : opponentNick;
 
     if (isMyNick) {
-      switch (chatState.debateData!['myTurn']) {
+      switch (myTurn) {
         case 0:
           return StaticTextBubble(
             chatState: chatState,
@@ -46,18 +58,25 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
           );
 
         case 1:
-          return TimingButton(
-            popupViewModel: popupViewModel,
-            popupState: popupState,
-          );
+          if (opponentTurn == 0) {
+            return const SizedBox(height: 0);
+          } else {
+            return TimingButton(
+              sendNick: sendNick,
+              popupViewModel: popupViewModel,
+              popupState: popupState,
+            );
+          }
+
         default:
           return TimingButton(
+            sendNick: sendNick,
             popupViewModel: popupViewModel,
             popupState: popupState,
           );
       }
     } else {
-      switch (chatState.debateData!['opponentTurn']) {
+      switch (opponentTurn) {
         case 0:
           return StaticTextBubble(
             chatState: chatState,
@@ -65,21 +84,13 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
             width: (MediaQuery.of(context).size.width - 100) * 0.8,
             height: (MediaQuery.of(context).size.height - 450) * 0.3,
           );
-        case 1:
-          return StaticTextBubble(
-            chatState: chatState,
-            title: '상대방이 첫 입론을 입력 중입니다',
-            width: (MediaQuery.of(context).size.width - 100) * 0.7,
-            height: (MediaQuery.of(context).size.height - 450) * 0.2,
-          );
+
         default:
-          return StaticTextBubble(
-            chatState: chatState,
-            title: '상대방이 첫 입론을 입력 중입니다',
-            width: (MediaQuery.of(context).size.width - 100) * 0.7,
-            height: (MediaQuery.of(context).size.height - 450) * 0.2,
+          return TimingButton(
+            sendNick: sendNick,
+            popupViewModel: popupViewModel,
+            popupState: popupState,
           );
-          ;
       }
     }
   }
@@ -106,7 +117,7 @@ class StaticTextBubble extends StatefulWidget {
 class _StaticTextBubbleState extends State<StaticTextBubble> {
   @override
   Widget build(BuildContext context) {
-    if (widget.chatState.isVisible == false) {
+    if (!mounted || widget.chatState.isVisible == false) {
       return const SizedBox.shrink(); // 빈 공간 반환
     }
 
@@ -131,9 +142,14 @@ class _StaticTextBubbleState extends State<StaticTextBubble> {
 class TimingButton extends StatelessWidget {
   final PopupViewmodel popupViewModel;
   final PopupState popupState;
+  final String sendNick;
 
-  const TimingButton(
-      {super.key, required this.popupViewModel, required this.popupState});
+  const TimingButton({
+    super.key,
+    required this.popupViewModel,
+    required this.popupState,
+    required this.sendNick,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -150,6 +166,7 @@ class TimingButton extends StatelessWidget {
             ),
           ),
           onPressed: () {
+            popupState.opponentNick = sendNick;
             popupViewModel.showTimingPopup(context);
           },
           child: Row(

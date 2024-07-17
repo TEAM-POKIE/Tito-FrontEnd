@@ -19,7 +19,7 @@ class ListScreen extends ConsumerStatefulWidget {
 
 class _ListScreenState extends ConsumerState<ListScreen> {
   final List<String> labels = ['연애', '정치', '연예', '자유', '스포츠'];
-  final List<String> statuses = ['전체', '진행중', '투표중', '종료'];
+  final List<String> statuses = ['전체', '토론 중', '토론 종료'];
   final List<String> sortOptions = ['최신순', '인기순'];
   int selectedIndex = 0;
   String selectedStatus = '전체';
@@ -75,11 +75,11 @@ class _ListScreenState extends ConsumerState<ListScreen> {
         });
       }
 
-      setState(() {
-        list =
-            list.where((debate) => debate['visibleDebate'] == false).toList();
-        debateList = list;
-      });
+      if (mounted) {
+        setState(() {
+          debateList = list;
+        });
+      }
     } else {
       throw Exception('Failed to load debate list');
     }
@@ -88,6 +88,23 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   @override
   Widget build(BuildContext context) {
     final loginInfo = ref.watch(loginInfoProvider);
+
+    // 선택된 카테고리와 상태에 따라 필터링된 리스트 생성
+    List<Map<String, dynamic>> filteredDebateList = debateList.where((debate) {
+      final categoryMatch = debate['category'] == labels[selectedIndex];
+      bool statusMatch = true;
+
+      if (selectedStatus == '토론 중') {
+        statusMatch = debate['debateState'] == '토론 참여가능' ||
+            debate['debateState'] == '토론 진행중';
+      } else if (selectedStatus == '토론 종료') {
+        statusMatch =
+            debate['debateState'] == '투표 중' || debate['debateState'] == '투표 완료';
+      }
+
+      return categoryMatch && (statusMatch || selectedStatus == '전체');
+    }).toList();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('토론 리스트'),
@@ -201,9 +218,9 @@ class _ListScreenState extends ConsumerState<ListScreen> {
               onRefresh: _onRefresh,
               onLoading: _onLoading,
               child: ListView.builder(
-                itemCount: debateList.length,
+                itemCount: filteredDebateList.length,
                 itemBuilder: (context, index) {
-                  final debate = debateList[index];
+                  final debate = filteredDebateList[index];
 
                   return Padding(
                     padding:
@@ -219,7 +236,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 
                           if (debate['id'] != null) {
                             if (debateState == '토론 참여가능' ||
-                                debateState == '토론 중') {
+                                debateState == '토론 진행중') {
                               context.push('/chat/${debate['id']}');
                             }
                           } else {

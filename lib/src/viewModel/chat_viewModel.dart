@@ -222,8 +222,8 @@ class ChatViewModel extends StateNotifier<ChatState> {
   void back(BuildContext context) {
     final chatState = state;
 
-    if (chatState.debateData!['myTurn'] == 0) {
-      context.pop(context);
+    if (chatState.debateData?['myTurn'] == 0) {
+      context.pop();
     } else {
       context.go('/list');
     }

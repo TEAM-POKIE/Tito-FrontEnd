@@ -2,13 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tito_app/src/widgets/reuse/debate_popup.dart';
-import 'package:tito_app/core/provider/popup_provider.dart';
-import 'package:tito_app/src/viewModel/popup_viewModel.dart';
-import 'package:tito_app/core/provider/chat_state_provider.dart';
-import 'package:tito_app/core/provider/login_provider.dart';
-import 'package:tito_app/core/provider/popup_provider.dart';
-import 'package:tito_app/core/provider/turn_provider.dart';
 
 class MypageMain extends ConsumerWidget {
   const MypageMain({super.key});

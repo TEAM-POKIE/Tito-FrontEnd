@@ -28,9 +28,11 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
     final chatViewModel = ref.read(chatProviders(widget.id).notifier);
     _initialMessagesFuture = chatViewModel.loadInitialMessages();
     _initialMessagesFuture.then((messages) {
-      setState(() {
-        _messages = messages;
-      });
+      if (mounted) {
+        setState(() {
+          _messages = messages;
+        });
+      }
     });
   }
 
@@ -85,7 +87,7 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
               itemCount: _messages.length,
               itemBuilder: (context, index) {
                 final message = _messages[index];
-                final isMyMessage = message.author.id == loginInfo!.nickname;
+                final isMyMessage = message.author.id == loginInfo?.nickname;
                 final formattedTime = TimeOfDay.fromDateTime(
                         DateTime.fromMillisecondsSinceEpoch(message.createdAt))
                     .format(context);

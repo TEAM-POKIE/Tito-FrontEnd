@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_state_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
-
-import 'package:tito_app/src/viewModel/chat_viewModel.dart';
+import 'package:tito_app/core/provider/timer_provider.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:tito_app/src/viewModel/chat_viewModel.dart';
 
-class ChatViewDetails extends ConsumerWidget {
+class ChatViewDetails extends ConsumerStatefulWidget {
   final String id;
   const ChatViewDetails({
     super.key,
@@ -15,17 +15,35 @@ class ChatViewDetails extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final chatState = ref.watch(chatProviders(id));
+  _ChatViewDetailsState createState() => _ChatViewDetailsState();
+}
 
+class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(timerProvider.notifier).startTimer(); // 타이머 시작
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final chatState = ref.watch(chatProviders(widget.id));
     final loginInfo = ref.watch(loginInfoProvider);
+    final timerState = ref.watch(timerProvider); // 타이머 상태
 
     if (chatState.debateData == null || loginInfo == null) {
-      return const SizedBox
-          .shrink(); // Null check and return an empty widget if needed
+      return const SizedBox.shrink();
     }
 
     final isMyNick = chatState.debateData!['myNick'] == loginInfo.nickname;
+    String formatDuration(Duration duration) {
+      String twoDigits(int n) => n.toString().padLeft(2, '0');
+      String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+      String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+      return "$twoDigitMinutes:$twoDigitSeconds";
+    }
+
+    String remainingTime = formatDuration(timerState.remainingTime);
 
     if (isMyNick) {
       switch (chatState.debateData!['myTurn']) {
@@ -47,15 +65,25 @@ class ChatViewDetails extends ConsumerWidget {
             chatState: chatState,
             upImage: 'assets/images/detailChatIcon.png',
             upTitle: '${chatState.debateData!['myNick']}님의 반론 타임이에요',
-            downTitle: '⏳ 7:20 남았어요!',
+            downTitle: '⏳ $remainingTime 남았어요!',
           );
         default:
-          return _detailState(
-            chatState: chatState,
-            upImage: 'assets/images/detailChatIcon.png',
-            upTitle: '${chatState.debateData!['myNick']}님의 반론 타임이에요',
-            downTitle: '⏳ 7:20 남았어요!',
-          );
+          if (chatState.debateData!['opponentTurn'] ==
+              chatState.debateData!['myTurn']) {
+            return _detailState(
+              chatState: chatState,
+              upImage: 'assets/images/detailChatIcon.png',
+              upTitle: '${chatState.debateData!['myNick']}님의 반론 타임이에요',
+              downTitle: '⏳ $remainingTime 남았어요!',
+            );
+          } else {
+            return _detailState(
+              chatState: chatState,
+              upImage: 'assets/images/detailChatIcon.png',
+              upTitle: '상대 반론 타임이에요!',
+              downTitle: '⏳ $remainingTime 남았어요!',
+            );
+          }
       }
     } else {
       switch (chatState.debateData!['opponentTurn']) {
@@ -66,24 +94,33 @@ class ChatViewDetails extends ConsumerWidget {
             downImage: 'assets/images/chatCuteIconPurple.png',
             upTitle: '상대의 의견 : ${chatState.debateData!['myArgument']}',
             downTitle: '당신의 의견 : ${chatState.debateData!['opponentArgument']}',
-            //opponentArgument,
           );
-        case 1:
-          return _detailState(
-            chatState: chatState,
-            upImage: 'assets/images/detailChatIcon.png',
-            upTitle: '상대 반론 타임이에요!',
-            downTitle: '⏳ 7:20 남았어요!',
-          );
+
         default:
-          return _detailState(
-            chatState: chatState,
-            upImage: 'assets/images/detailChatIcon.png',
-            upTitle: '상대 반론 타임이에요!',
-            downTitle: '⏳ 7:20 남았어요!',
-          );
+          if (chatState.debateData!['opponentTurn'] ==
+              chatState.debateData!['myTurn']) {
+            return _detailState(
+              chatState: chatState,
+              upImage: 'assets/images/detailChatIcon.png',
+              upTitle: '상대 반론 타임이에요!',
+              downTitle: '⏳ $remainingTime 남았어요!',
+            );
+          } else {
+            return _detailState(
+              chatState: chatState,
+              upImage: 'assets/images/detailChatIcon.png',
+              upTitle: '${chatState.debateData!['myNick']}님의 반론 타임이에요',
+              downTitle: '⏳ $remainingTime 남았어요!',
+            );
+          }
       }
     }
+  }
+
+  @override
+  void dispose() {
+    ref.read(timerProvider.notifier).stopTimer(); // 타이머 중지
+    super.dispose();
   }
 }
 

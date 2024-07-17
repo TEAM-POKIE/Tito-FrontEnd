@@ -1,4 +1,3 @@
-// lib/services/api_service.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -50,6 +49,28 @@ class ApiService {
       return true;
     } else {
       print('Failed to post data: ${response.statusCode}');
+      return false;
+    }
+  }
+
+  static Future<bool> sendNotificationToOpponent(
+      String? opponentId, String message) async {
+    if (opponentId == null) {
+      print('opponentId is null');
+      return false;
+    }
+
+    final url = Uri.https(_baseUrl, 'notifications/$opponentId.json');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({'message': message}),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      print('Failed to send notification: ${response.statusCode}');
       return false;
     }
   }

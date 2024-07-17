@@ -24,7 +24,12 @@ class Chat extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final chatState = ref.watch(chatProviders(id));
     final loginInfo = ref.watch(loginInfoProvider);
-    if (loginInfo!.nickname == chatState.debateData!['myNick'] ||
+
+    if (loginInfo == null || chatState.debateData == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (loginInfo.nickname == chatState.debateData!['myNick'] ||
         loginInfo.nickname == chatState.debateData!['opponentNick'] ||
         chatState.debateData!['opponentNick'] == '') {
       return _BasicDebate(
@@ -34,7 +39,7 @@ class Chat extends ConsumerWidget {
     } else {
       return _LiveComment(
         id: id,
-        loginInfo: loginInfo!,
+        loginInfo: loginInfo,
         chatState: chatState,
       );
     }
@@ -58,9 +63,7 @@ class _BasicDebate extends StatelessWidget {
         preferredSize: const Size.fromHeight(60.0),
         child: ChatAppbar(id: id), // id 전달
       ),
-      body: chatState.debateData != null
-          ? ChatBody(id: id)
-          : const Center(child: CircularProgressIndicator()),
+      body: ChatBody(id: id),
     );
   }
 }
@@ -85,42 +88,39 @@ class _LiveComment extends StatelessWidget {
         preferredSize: const Size.fromHeight(80.0),
         child: ChatAppbar(id: id), // id 전달
       ),
-      body: chatState.debateData != null
-          ? SlidingUpPanel(
-              header: Container(
-                width: MediaQuery.of(context).size.width - 40,
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(8.0),
-                child: const Text(
-                  '방청객 실시간 댓글',
-                  style: FontSystem.KR20B,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              controller: _panelController,
-              panelBuilder: (scrollController) => LiveComment(
-                username: loginInfo.nickname,
-                id: id,
-                scrollController: scrollController,
-              ),
-              body: GestureDetector(
-                onTap: () {
-                  _panelController.close();
-                },
-                child: ChatBody(id: id),
-              ),
-              backdropEnabled: true,
-              backdropOpacity: 0.5,
-              minHeight: 40, // 패널의 최소 높이 설정
-              maxHeight:
-                  MediaQuery.of(context).size.height * 0.5, // 패널의 최대 높이 설정
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(24.0),
-                topRight: Radius.circular(24.0),
-              ),
-              isDraggable: true,
-            )
-          : const Center(child: CircularProgressIndicator()),
+      body: SlidingUpPanel(
+        header: Container(
+          width: MediaQuery.of(context).size.width - 40,
+          alignment: Alignment.center,
+          padding: const EdgeInsets.all(8.0),
+          child: const Text(
+            '방청객 실시간 댓글',
+            style: FontSystem.KR20B,
+            textAlign: TextAlign.center,
+          ),
+        ),
+        controller: _panelController,
+        panelBuilder: (scrollController) => LiveComment(
+          username: loginInfo.nickname,
+          id: id,
+          scrollController: scrollController,
+        ),
+        body: GestureDetector(
+          onTap: () {
+            _panelController.close();
+          },
+          child: ChatBody(id: id),
+        ),
+        backdropEnabled: true,
+        backdropOpacity: 0.5,
+        minHeight: 40, // 패널의 최소 높이 설정
+        maxHeight: MediaQuery.of(context).size.height * 0.5, // 패널의 최대 높이 설정
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(24.0),
+          topRight: Radius.circular(24.0),
+        ),
+        isDraggable: true,
+      ),
     );
   }
 }

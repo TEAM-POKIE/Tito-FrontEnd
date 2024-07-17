@@ -15,7 +15,6 @@ class DebateInfoNotifier extends StateNotifier<DebateInfo?> {
       String? opponentNick,
       String? debateState,
       String? time,
-      bool? visibleDebate,
       int? myTurn,
       int? opponentTurn,
       String? category}) {
@@ -32,7 +31,6 @@ class DebateInfoNotifier extends StateNotifier<DebateInfo?> {
       opponentArgument: opponentArgument ?? state?.opponentArgument ?? '',
       category: category ?? state?.category ?? '',
       time: time ?? state?.time ?? '',
-      visibleDebate: visibleDebate ?? state?.visibleDebate ?? false,
     );
   }
 }
