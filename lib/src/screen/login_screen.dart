@@ -8,7 +8,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void _goLoginMain() {
+    void goLoginMain() {
       context.push('/login');
     }
 
@@ -47,7 +47,7 @@ class LoginScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 24), // 기본 텍스트 스타일
               ),
               ElevatedButton(
-                onPressed: _goLoginMain,
+                onPressed: goLoginMain,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
                   minimumSize: const Size(300, 60),

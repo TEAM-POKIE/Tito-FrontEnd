@@ -21,11 +21,11 @@ class LoginMain extends StatelessWidget {
       },
     ];
 
-    void _goBasicLogin() {
+    void goBasicLogin() {
       context.push('/basicLogin');
     }
 
-    void _goSignuUp() {
+    void goSignuUp() {
       context.push('/signup');
     }
 
@@ -77,10 +77,10 @@ class LoginMain extends StatelessWidget {
                     ),
                   ),
                 );
-              }).toList(),
+              }),
               const SizedBox(height: 20), // 버튼들 간의 간격 추가
               ElevatedButton(
-                onPressed: _goBasicLogin,
+                onPressed: goBasicLogin,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
                   minimumSize: const Size(300, 60),
@@ -105,7 +105,7 @@ class LoginMain extends StatelessWidget {
                 children: [
                   const Text('아직 회원이 아니신가요?'),
                   TextButton(
-                    onPressed: _goSignuUp,
+                    onPressed: goSignuUp,
                     child: const Text(
                       '회원가입',
                       style: TextStyle(

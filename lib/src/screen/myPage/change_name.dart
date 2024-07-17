@@ -1,8 +1,8 @@
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/src/widgets/reuse/purple_button.dart';
 
 class ChangeName extends ConsumerWidget {
   const ChangeName({super.key});
@@ -29,7 +29,7 @@ class ChangeName extends ConsumerWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding:const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -37,9 +37,9 @@ class ChangeName extends ConsumerWidget {
             const Text('새로운 닉네임을 수정해주세요.',
                 style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10.0),
-            TextField(
+            const TextField(
               //controller: _titleController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 //hintText: Text('${nickname}'),
                 hintStyle: TextStyle(color: Colors.grey),
                 filled: true,
@@ -49,7 +49,18 @@ class ChangeName extends ConsumerWidget {
                   borderSide: BorderSide.none,
                 ),
               ),
-              style: const TextStyle(color: Colors.black),
+              style: TextStyle(color: Colors.black),
+            ),
+             const Spacer(), // 빈 공간을 채우는 Spacer
+            Container(
+              width: 350,
+              height: 60,
+              child: PurpleButton(
+                text: '완료',
+                onPressed: () {
+                  context.go('/mypage');
+                },
+              ),
             ),
           ],
         ),

@@ -78,7 +78,7 @@ class PopupViewmodel extends StateNotifier<PopupState> {
     final result = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
-        return DebatePopup();
+        return const DebatePopup();
       },
     );
 
@@ -96,10 +96,12 @@ class PopupViewmodel extends StateNotifier<PopupState> {
     final result = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
-        return DebatePopup();
+        return const DebatePopup();
       },
     );
 
     return result ?? false; // return false if result is null
   }
+
+  void showPopup(PopupState popupState) {}
 }

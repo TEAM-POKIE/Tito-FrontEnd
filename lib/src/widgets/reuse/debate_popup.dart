@@ -4,10 +4,11 @@ import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:go_router/go_router.dart';
 
+
 class DebatePopup extends ConsumerWidget {
   const DebatePopup({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -62,7 +62,7 @@ class HomeView extends ConsumerWidget {
                               const SizedBox(height: 10),
                               LayoutBuilder(
                                 builder: (context, constraints) {
-                                  return Container(
+                                  return SizedBox(
                                     width: constraints.maxWidth * 0.8,
                                     child: Column(
                                       crossAxisAlignment:

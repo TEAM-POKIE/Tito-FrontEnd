@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:tito_app/core/constants/style.dart';
 import 'dart:convert';
 import 'package:tito_app/src/widgets/reuse/search_bar.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
@@ -80,7 +79,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
       ),
       body: Column(
         children: [
-          CustomSearchBar(),
+          const CustomSearchBar(),
           const SizedBox(height: 20),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -114,7 +113,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                       ),
                       child: Text(
                         labels[index],
-                        style: TextStyle(fontSize: 10),
+                        style: const TextStyle(fontSize: 10),
                         // style: FontSystem.KR10B,
                       ),
                     ),
