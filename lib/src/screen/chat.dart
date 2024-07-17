@@ -55,7 +55,7 @@ class _BasicDebate extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(80.0),
+        preferredSize: const Size.fromHeight(60.0),
         child: ChatAppbar(id: id), // id 전달
       ),
       body: chatState.debateData != null
