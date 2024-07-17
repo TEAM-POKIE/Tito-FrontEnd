@@ -4,15 +4,17 @@ import 'package:tito_app/core/provider/live_comment.dart';
 
 class LiveSendView extends ConsumerWidget {
   final String username;
+  final String roomId;
 
   const LiveSendView({
     super.key,
     required this.username,
+    required this.roomId,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final liveCommentViewModel = ref.read(liveCommentProvider.notifier);
+    final liveCommentViewModel = ref.read(liveCommentProvider(roomId).notifier);
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
