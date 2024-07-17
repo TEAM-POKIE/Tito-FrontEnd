@@ -1,97 +1,154 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'dart:convert';
-
+import 'package:tito_app/core/constants/style.dart';
+import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:go_router/go_router.dart';
 
 class DebatePopup extends ConsumerWidget {
-  final String debateId;
-  final String nick;
-  final Function onUpdate;
+  const DebatePopup({
+    Key? key,
+  }) : super(key: key);
 
-  DebatePopup(
-      {required this.debateId, required this.nick, required this.onUpdate});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final popupState = ref.watch(popupProvider);
+
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
       ),
       child: Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CircleAvatar(
-                  backgroundColor: Colors.grey[200],
-                  child: Icon(Icons.person, color: Colors.grey),
+                const SizedBox(
+                  width: 35,
                 ),
-                Spacer(),
+                popupState.buttonStyle == 2
+                    ? Row(
+                        children: [
+                          Image.asset(
+                            popupState.imgSrc ?? '',
+                            width: 30,
+                          ),
+                          Text(
+                            popupState.titleLabel ?? '',
+                            style: FontSystem.KR14M
+                                .copyWith(color: ColorSystem.black),
+                          ),
+                        ],
+                      )
+                    : Image.asset(
+                        popupState.imgSrc ?? '',
+                        width: 50,
+                      ),
                 IconButton(
-                  icon: Icon(Icons.close),
-                  onPressed: () => Navigator.of(context).pop(),
+                  iconSize: 25,
+                  icon: const Icon(Icons.close),
+                  onPressed: () => context.pop(),
                 ),
               ],
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
-              '토론에 참여 하시겠어요?',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              popupState.title ?? '',
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
-            Text(
-              '작성하신 의견을 전송하면\n토론 개설자에게 보여지고\n토론이 본격적으로 시작돼요!',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                final url = Uri.https('pokeeserver-default-rtdb.firebaseio.com',
-                    'debate_list/$debateId.json');
-
-                final response = await http.patch(url,
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                    body: json.encode({
-                      'opponentNick': nick,
-                    }));
-
-                if (response.statusCode == 200) {
-                  onUpdate(nick);
-                  context.pop();
-                } else {
-                  print('Failed to update opponentNick: ${response.body}');
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-              ),
-              child: Text('토론 참여하기'),
-            ),
-            SizedBox(height: 20),
+            const SizedBox(height: 10),
             Container(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              width: double.infinity,
-              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width * 0.7,
+              padding: const EdgeInsets.symmetric(vertical: 20),
               decoration: BoxDecoration(
-                color: Color(0xff8E48F8),
+                color: ColorSystem.ligthGrey,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
-                '의견을 작성해보세요 !',
-                style: TextStyle(color: Colors.white),
+                popupState.content ?? '',
+                textAlign: TextAlign.center,
+                style: FontSystem.KR14R,
               ),
             ),
+            const SizedBox(height: 25),
+            if (popupState.buttonStyle == 2)
+              _twoButtons(context, ref)
+            else if (popupState.buttonStyle == 1)
+              _oneButton(context, ref),
+            const SizedBox(height: 10),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _oneButton(BuildContext context, WidgetRef ref) {
+    final popupState = ref.watch(popupProvider);
+    final popupViewModel = ref.watch(popupProvider.notifier);
+
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        fixedSize: Size(MediaQuery.of(context).size.width * 0.7, 45),
+        backgroundColor: ColorSystem.purple,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25.0),
+        ),
+      ),
+      onPressed: () {
+        popupState.buttonStyle = 0;
+        popupState.title = '토론이 시작 됐어요! 🎵';
+        popupState.content = '서로 존중하는 토론을 부탁드려요!';
+        context.pop();
+        popupViewModel.showDebatePopup(context);
+      },
+      child: Text(
+        '토론 참여하기',
+        style: FontSystem.KR14M.copyWith(color: ColorSystem.white),
+      ),
+    );
+  }
+
+  Widget _twoButtons(BuildContext context, WidgetRef ref) {
+    final popupState = ref.watch(popupProvider);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Expanded(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: ColorSystem.purple,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 10),
+            ),
+            onPressed: () {},
+            child: Text(
+              popupState.buttonContentLeft ?? '',
+              style: FontSystem.KR12B.copyWith(color: ColorSystem.white),
+            ),
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: ColorSystem.black,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 10),
+            ),
+            onPressed: () {},
+            child: Text(
+              popupState.buttonContentRight ?? '',
+              style: FontSystem.KR12B.copyWith(color: ColorSystem.white),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

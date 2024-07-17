@@ -98,6 +98,11 @@ flutter:
     - assets/images/comment_btn.png
     - assets/images/info.png
     - assets/images/chatprofile.png
+    - assets/images/chatCuteIcon.png
+    - assets/images/chatCuteIconPurple.png
+    - assets/images/chatIconRight.png
+    - assets/images/detailChatIcon.png
+    - assets/images/popupTimingBell.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
