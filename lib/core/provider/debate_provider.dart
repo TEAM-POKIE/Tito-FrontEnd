@@ -15,11 +15,14 @@ class DebateInfoNotifier extends StateNotifier<DebateInfo?> {
       String? opponentNick,
       String? debateState,
       String? time,
-      bool? visibleDebate,
+      int? myTurn,
+      int? opponentTurn,
       String? category}) {
     state = DebateInfo(
       id: id ?? state?.id ?? '',
       title: title ?? state?.title ?? '',
+      myTurn: myTurn ?? state?.myTurn ?? 0,
+      opponentTurn: opponentTurn ?? state?.opponentTurn ?? 0,
       myArgument: myArgument ?? state?.myArgument ?? '',
       myNick: myNick ?? state?.myNick ?? '',
       turnId: turnId ?? state?.turnId ?? '',
@@ -28,7 +31,6 @@ class DebateInfoNotifier extends StateNotifier<DebateInfo?> {
       opponentArgument: opponentArgument ?? state?.opponentArgument ?? '',
       category: category ?? state?.category ?? '',
       time: time ?? state?.time ?? '',
-      visibleDebate: visibleDebate ?? state?.visibleDebate ?? false,
     );
   }
 }

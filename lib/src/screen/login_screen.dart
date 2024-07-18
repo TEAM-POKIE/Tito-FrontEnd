@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/constants/style.dart';
+import 'package:tito_app/src/widgets/reuse/notification.dart';
+import 'package:tito_app/src/widgets/reuse/notification.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -12,6 +14,9 @@ class LoginScreen extends StatelessWidget {
       context.push('/login');
     }
 
+    FlutterLocalNotification.init();
+    Future.delayed(const Duration(seconds: 1),
+        FlutterLocalNotification.requestNotificationPermission());
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
