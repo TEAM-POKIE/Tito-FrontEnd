@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
+import 'package:tito_app/src/view/myPage/logout_popup.dart';
 import 'package:tito_app/src/widgets/reuse/debate_popup.dart';
 
 class PopupState {
@@ -103,5 +104,35 @@ class PopupViewmodel extends StateNotifier<PopupState> {
     return result ?? false; // return false if result is null
   }
 
-  void showPopup(PopupState popupState) {}
+  // void showPopup(PopupState popupState) {}
+
+  // Future<bool> showLogoutPopup(
+  //   BuildContext context,
+  // ) async {
+  //   final loginInfo = ref.read(loginInfoProvider); //
+  //   final popupState = ref.read(popupProvider); // 팝업 상태 가져오기 로그인 정보 가져오기
+
+  //   // 팝업 상태 설정
+  //   popupState.title = '정말 로그아웃 하시겠습니까?';
+  //   popupState.content =
+  //       '로그아웃 하시면\n추후 앱을 이용하실 때\n다시 로그인을 해야해요\n';
+  //   popupState.buttonStyle = 1;
+  //   popupState.buttonContentLeft = "토론 더 할래요";
+  //   popupState.buttonContentRight = '벨 울릴게요';
+  //   popupState.imgSrc = 'assets/images/chatIconRight.png';
+
+  //   if (loginInfo == null) {
+  //     return false; // 로그인 정보가 없으면 false 반환
+  //   }
+
+  //   // 팝업을 표시하고 결과 반환
+  //   final result = await showDialog<bool>(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return const LogoutPopup();
+  //     },
+  //   );
+
+  //   return result ?? false; // result가 null이면 false 반환
+  // }
 }

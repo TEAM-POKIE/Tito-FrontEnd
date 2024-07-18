@@ -9,16 +9,13 @@ class FreeWriteScreen extends ConsumerWidget {
   
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80.0),
-        child: FreeWriteAppbar(),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          FreeWriteBody(),
-        ],
+    return ProviderScope(
+      child: Scaffold(
+        appBar:const PreferredSize(
+          preferredSize: Size.fromHeight(80.0),
+          child: FreeWriteAppbar(),
+        ),
+        body: FreeWriteBody(),
       ),
     );
   }

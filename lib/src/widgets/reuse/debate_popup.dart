@@ -47,7 +47,7 @@ class DebatePopup extends ConsumerWidget {
                         popupState.imgSrc ?? '',
                         width: 50,
                       ),
-                IconButton(
+                IconButton( 
                   iconSize: 25,
                   icon: const Icon(Icons.close),
                   onPressed: () => context.pop(),
