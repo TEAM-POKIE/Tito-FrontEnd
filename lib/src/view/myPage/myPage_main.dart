@@ -2,6 +2,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tito_app/src/view/myPage/logout_popup.dart';
+import 'package:tito_app/src/widgets/reuse/debate_popup.dart';
+import 'package:tito_app/core/provider/popup_provider.dart';
+import 'package:tito_app/src/viewModel/popup_viewModel.dart';
+import 'package:tito_app/core/provider/chat_state_provider.dart';
+import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/core/provider/popup_provider.dart';
+import 'package:tito_app/src/viewModel/popup_viewModel.dart';
+import 'package:tito_app/src/view/myPage/exit_popup.dart';
 
 class MypageMain extends ConsumerWidget {
   const MypageMain({super.key});
@@ -216,7 +225,9 @@ class MypageMain extends ConsumerWidget {
             child: ListTile(
               title: const Text('로그아웃'),
               trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () {},
+              onTap: () {
+                showLogoutDialog(context);
+              },
             ),
           ),
         ),
@@ -231,7 +242,7 @@ class MypageMain extends ConsumerWidget {
               title: const Text('회원탈퇴'),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
-                // 팝업창 띄우기
+                showExitDialog(context);
               },
             ),
           ),
