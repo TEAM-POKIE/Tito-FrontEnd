@@ -9,7 +9,6 @@ import 'package:tito_app/src/viewModel/popup_viewModel.dart';
 import 'package:tito_app/core/provider/chat_state_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
-import 'package:tito_app/core/provider/turn_provider.dart';
 import 'package:tito_app/src/viewModel/popup_viewModel.dart';
 import 'package:tito_app/src/view/myPage/exit_popup.dart';
 

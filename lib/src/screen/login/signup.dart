@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
-// import 'package:tito_app/src/widgets/reuse/notification.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -27,11 +26,6 @@ class _SignUpState extends State<Signup> {
         'pokeeserver-default-rtdb.firebaseio.com', 'login_id_list.json');
 
     if (isVaild) {
-      // initState에서 실행하던 초기화 코드
-      // FlutterLocalNotification.init();
-      // await Future.delayed(const Duration(seconds: 1),
-      //     FlutterLocalNotification.requestNotificationPermission());
-
       final response = await http.post(url,
           headers: {
             'Content-Type': 'application/json',
