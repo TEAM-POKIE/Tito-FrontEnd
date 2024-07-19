@@ -2,9 +2,23 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tito_app/src/data/models/login_info.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
 import 'package:http/http.dart' as http;
+
+class LiveState {
+  final List<Message> messages;
+  String? userNickname;
+
+  LiveState({this.messages = const [], this.userNickname});
+
+  LiveState copyWith({List<Message>? messages, final String? userNickname}) {
+    return LiveState(
+        messages: messages ?? this.messages,
+        userNickname: userNickname ?? this.userNickname);
+  }
+}
 
 class LiveCommentViewModel extends StateNotifier<LiveState> {
   final WebSocketChannel channel;
@@ -48,8 +62,18 @@ class LiveCommentViewModel extends StateNotifier<LiveState> {
 
   void sendMessage(String message) async {
     if (message.isNotEmpty) {
-      final fullMessage = jsonEncode({'username': 'User', 'message': message});
+      final fullMessage =
+          jsonEncode({'username': state.userNickname, 'message': message});
       channel.sink.add(fullMessage);
+
+      // Local state update for immediate feedback
+      final parsedMessage = _parseMessage(fullMessage);
+      if (parsedMessage != null) {
+        state = state.copyWith(
+          messages: [parsedMessage, ...state.messages],
+        );
+        _messagesController.add(state.messages);
+      }
 
       // Save message to API
       final response = await http.post(
@@ -59,16 +83,7 @@ class LiveCommentViewModel extends StateNotifier<LiveState> {
         body: fullMessage,
       );
 
-      if (response.statusCode == 200) {
-        // Local state update for immediate feedback
-        final parsedMessage = _parseMessage(fullMessage);
-        if (parsedMessage != null) {
-          state = state.copyWith(
-            messages: [parsedMessage, ...state.messages],
-          );
-          _messagesController.add(state.messages);
-        }
-      } else {
+      if (response.statusCode != 200) {
         print('Failed to save message: ${response.statusCode}');
       }
     }
@@ -90,16 +105,6 @@ class LiveCommentViewModel extends StateNotifier<LiveState> {
       print('Error parsing message: $e');
       return null;
     }
-  }
-}
-
-class LiveState {
-  final List<Message> messages;
-
-  LiveState({this.messages = const []});
-
-  LiveState copyWith({List<Message>? messages}) {
-    return LiveState(messages: messages ?? this.messages);
   }
 }
 

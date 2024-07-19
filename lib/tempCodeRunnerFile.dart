@@ -9,9 +9,7 @@ void main() {
 
     server.listen((HttpRequest request) {
       if (request.uri.pathSegments.isNotEmpty &&
-          request.uri.pathSegments[0] == 'ws' &&
-          request.uri.pathSegments.length > 1) {
-        // Ensure there are enough segments
+          request.uri.pathSegments[0] == 'ws') {
         final chatRoomId = request.uri.pathSegments[1];
         WebSocketTransformer.upgrade(request).then((WebSocket websocket) {
           if (!chatRooms.containsKey(chatRoomId)) {
@@ -20,6 +18,7 @@ void main() {
           chatRooms[chatRoomId]!.add(websocket);
           print('Client connected to $chatRoomId: ${websocket.hashCode}');
 
+          // 메시지를 수신했을 때 콘솔에 출력
           websocket.listen((message) {
             print('Received in $chatRoomId: $message');
             for (var client in chatRooms[chatRoomId]!) {
