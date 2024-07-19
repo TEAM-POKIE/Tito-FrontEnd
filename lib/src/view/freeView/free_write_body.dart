@@ -45,6 +45,7 @@ class _FreeWriteBodyState extends ConsumerState<FreeWriteBody> {
       _votingControllers.removeAt(index);
     });
   }
+  
 
   @override
   Widget build(BuildContext context) {

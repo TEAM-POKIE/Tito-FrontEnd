@@ -27,14 +27,15 @@ class FreeView extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: InkWell(
                   onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/write',
+                    context.go('/detail');
+                    // Navigator.pushNamed(
+                    //   context,
+                    //   '/write',
                       // arguments: {
                       //   'title': item['Title'],
                       //   'content': item['content'],
                       // },
-                    );
+                    // );
                   },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,7 +194,9 @@ class FreeView extends ConsumerWidget {
                                 color: Colors.grey,
                               ),
                               TextButton.icon(
-                                onPressed: () {},
+                                onPressed: () {
+                                  context.go('/detail');
+                                },
                                 icon: Image.asset(
                                     'assets/images/comment_btn.png',
                                     width: 18),
