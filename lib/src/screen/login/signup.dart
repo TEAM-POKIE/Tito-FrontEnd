@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
+import 'package:tito_app/core/constants/api_path.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -22,26 +23,18 @@ class _SignUpState extends State<Signup> {
   void _onSignUp() async {
     final isVaild = _formKey.currentState!.validate();
     _formKey.currentState!.save();
-    final url = Uri.https(
-        'pokeeserver-default-rtdb.firebaseio.com', 'login_id_list.json');
-
     if (isVaild) {
-      final response = await http.post(url,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: json.encode({
-            'nickname': _nickname,
-            'email': _email,
-            'password': _password,
-          }));
+      final signUpData = {
+        'nickname': _nickname,
+        'email': _email,
+        'password': _password,
+        'role': 'user',
+      };
 
-      if (!context.mounted) {
-        return;
-      }
-
-      context.pop();
+      await ApiService.postData('/auth/sign-up', signUpData);
     }
+
+    context.pop();
   }
 
   @override
