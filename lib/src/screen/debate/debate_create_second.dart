@@ -39,7 +39,6 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
           'opponentNick': debateInfo?.opponentNick ?? '',
           'debateState': debateInfo?.debateState ?? '',
           'timestamp': DateTime.now().toIso8601String(),
-          'visibleDebate': false,
           'myTurn': 0,
           'opponentTurn': 0,
         }));

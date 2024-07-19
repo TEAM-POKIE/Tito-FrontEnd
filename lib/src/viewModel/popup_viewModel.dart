@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/constants/web_sockey_service.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
-import 'package:tito_app/core/provider/popup_provider.dart';
-import 'package:tito_app/src/view/myPage/logout_popup.dart';
 import 'package:tito_app/src/widgets/reuse/debate_popup.dart';
 
 // PopupState 클래스 정의
@@ -66,10 +64,10 @@ class PopupViewmodel extends StateNotifier<PopupState> {
 
   PopupViewmodel(this.ref) : super(PopupState()) {
     // 웹소켓 서비스 초기화
-    webSocketService = ref.read(webSocketProvider);
-    webSocketService.listen((message) {
-      _handleWebSocketMessage(message);
-    });
+    // webSocketService = ref.read(webSocketProvider);
+    // webSocketService.listen((message) {
+    //   _handleWebSocketMessage(message);
+    // });
   }
 
   // 웹소켓 메시지 처리

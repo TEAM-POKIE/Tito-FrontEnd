@@ -6,6 +6,7 @@ import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/timer_provider.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:tito_app/src/viewModel/chat_viewModel.dart';
+import 'package:speech_balloon/speech_balloon.dart';
 
 class ChatViewDetails extends ConsumerStatefulWidget {
   final String id;
@@ -35,7 +36,6 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
       return const SizedBox.shrink();
     }
 
-    final isMyNick = chatState.debateData!['myNick'] == loginInfo.nickname;
     String formatDuration(Duration duration) {
       String twoDigits(int n) => n.toString().padLeft(2, '0');
       String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
@@ -45,7 +45,7 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
 
     String remainingTime = formatDuration(timerState.remainingTime);
 
-    if (isMyNick) {
+    if (chatState.debateData!['myNick'] == loginInfo.nickname) {
       switch (chatState.debateData!['myTurn']) {
         case 0:
           return _text(
@@ -85,7 +85,8 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
             );
           }
       }
-    } else {
+    } else if (chatState.debateData!['opponentNick'] == '' ||
+        chatState.debateData!['opponentNick'] == loginInfo.nickname) {
       switch (chatState.debateData!['opponentTurn']) {
         case 0:
           return _detailState(
@@ -114,6 +115,13 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
             );
           }
       }
+    } else {
+      return ProfileVsWidget(
+        myNick: chatState.debateData!['myNick'],
+        opponentNick: chatState.debateData!['opponentNick'],
+        myArgument: chatState.debateData!['myArgument'],
+        opponentArgument: chatState.debateData!['opponentArgument'],
+      );
     }
   }
 
@@ -230,6 +238,192 @@ class _detailState extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class ProfileVsWidget extends StatefulWidget {
+  final String myNick;
+  final String myArgument;
+  final String opponentNick;
+  final String opponentArgument;
+  const ProfileVsWidget({
+    required this.myNick,
+    required this.myArgument,
+    required this.opponentNick,
+    required this.opponentArgument,
+  });
+
+  @override
+  State<ProfileVsWidget> createState() => _ProfileVsWidgetState();
+}
+
+class _ProfileVsWidgetState extends State<ProfileVsWidget> {
+  OverlayEntry? _overlayleftEntry;
+  OverlayEntry? _overlayrightEntry;
+
+  bool isUpArrowAtFirstProfile = false;
+  bool isUpArrowAtSecondProfile = false;
+  bool showleftBalloon = false;
+  bool showrightBalloon = false;
+  void _swapButtons() {
+    if (_overlayleftEntry != null) {
+      _overlayleftEntry?.remove();
+      _overlayleftEntry = null;
+    } else {
+      _overlayleftEntry = _createOverlayEntry(widget.myArgument, true);
+      Overlay.of(context).insert(_overlayleftEntry!);
+    }
+    setState(() {
+      isUpArrowAtFirstProfile = !isUpArrowAtFirstProfile;
+
+      showleftBalloon = !showleftBalloon;
+    });
+  }
+
+  void _swapSecondButtons() {
+    if (_overlayrightEntry != null) {
+      _overlayrightEntry?.remove();
+      _overlayrightEntry = null;
+    } else {
+      _overlayrightEntry = _createOverlayEntry(widget.opponentArgument, false);
+      Overlay.of(context).insert(_overlayrightEntry!);
+    }
+    setState(() {
+      isUpArrowAtSecondProfile = !isUpArrowAtSecondProfile;
+      showrightBalloon = !showrightBalloon;
+    });
+  }
+
+  OverlayEntry _createOverlayEntry(String message, bool isLeft) {
+    RenderBox renderBox = context.findRenderObject() as RenderBox;
+
+    var offset = renderBox.localToGlobal(Offset.zero);
+
+    return OverlayEntry(
+      builder: (context) => Positioned(
+        left: isLeft ? offset.dx + 50 : null,
+        right: isLeft ? null : offset.dx + 20,
+        top: offset.dy + 100,
+        child: Material(
+          color: Colors.transparent,
+          child: SpeechBalloon(
+            borderRadius: 8,
+            nipLocation: NipLocation.topRight,
+            nipHeight: 15,
+            color: Colors.purple,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
+              child: Text(
+                message,
+                textAlign: TextAlign.right,
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircleAvatar(
+                  radius: 30,
+                  backgroundImage: AssetImage(
+                      'assets/images/chatCuteIcon.png'), // 첫 번째 프로필 이미지
+                ),
+                SizedBox(height: 8),
+                TextButton(
+                  onPressed: _swapButtons,
+                  child: Row(
+                    children: [
+                      Text(
+                        widget.myNick,
+                        style: TextStyle(fontSize: 14),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                      SizedBox(width: 4),
+                      Image.asset(
+                        isUpArrowAtFirstProfile
+                            ? 'assets/images/ep_arrow-up.png'
+                            : 'assets/images/ep_arrow-down.png',
+                        width: 14,
+                        height: 14,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(width: 16),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.purple,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    '토론 진행중',
+                    style: TextStyle(color: Colors.white, fontSize: 12),
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text('VS',
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              ],
+            ),
+            SizedBox(width: 16),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircleAvatar(
+                  radius: 30,
+                  backgroundImage: AssetImage(
+                      'assets/images/chatCuteIcon.png'), // 두 번째 프로필 이미지
+                ),
+                const SizedBox(height: 8),
+                TextButton(
+                  onPressed: _swapSecondButtons,
+                  child: Row(
+                    children: [
+                      Text(
+                        widget.opponentNick,
+                        style: TextStyle(fontSize: 14),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                      SizedBox(width: 4),
+                      Image.asset(
+                        isUpArrowAtSecondProfile
+                            ? 'assets/images/ep_arrow-up.png'
+                            : 'assets/images/ep_arrow-down.png',
+                        width: 14,
+                        height: 14,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
