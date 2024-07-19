@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/provider/live_comment.dart';
-import 'package:tito_app/core/provider/login_provider.dart';
-import 'package:tito_app/src/viewModel/live_comment_viewModel.dart';
 
 class LiveSendView extends ConsumerWidget {
   final String username;
