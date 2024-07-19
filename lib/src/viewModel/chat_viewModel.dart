@@ -61,7 +61,8 @@ class ChatViewModel extends StateNotifier<ChatState> {
   Stream<List<types.Message>> get messagesStream => _messagesController.stream;
 
   void init() {
-    channel = WebSocketChannel.connect(Uri.parse('ws://localhost:4040/ws'));
+    channel = WebSocketChannel.connect(
+        Uri.parse('ws://10.21.20.62:4040/ws/${state.roomId}'));
     channel.stream.listen(_onReceiveMessage);
 
     fetchDebateData();

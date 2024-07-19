@@ -123,7 +123,6 @@ class DebatePopup extends ConsumerWidget {
   Widget _twoButtons(BuildContext context, WidgetRef ref) {
     final popupState = ref.watch(popupProvider);
     final popupViewModel = ref.watch(popupProvider.notifier);
-    final webSocketService = ref.read(webSocketProvider);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -159,8 +158,8 @@ class DebatePopup extends ConsumerWidget {
             onPressed: () {
               context.pop();
 
-              // 웹소켓을 통해 상대방에게 메시지 전송
-              webSocketService.sendMessage('토론 참여 요청이 있습니다!');
+              // // 웹소켓을 통해 상대방에게 메시지 전송
+              // webSocketService.sendMessage('토론 참여 요청이 있습니다!');
 
               popupViewModel.showDebatePopup(context);
             },

@@ -105,7 +105,8 @@ flutter:
     - assets/images/detailChatIcon.png
     - assets/images/popupTimingBell.png
     - assets/images/changeprofile.png
-
+    - assets/images/ep_arrow-down.png
+    - assets/images/ep_arrow-up.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

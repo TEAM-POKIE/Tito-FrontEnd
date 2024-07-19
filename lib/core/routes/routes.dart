@@ -78,6 +78,7 @@ final GoRouter router = GoRouter(
       path: '/mylike',
       builder: (context, state) => const MyLike(),
     ),
+
     GoRoute(
       path: '/mylist',
       builder: (context, state) => const MyList(),

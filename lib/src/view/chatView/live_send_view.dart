@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/provider/live_comment.dart';
+import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/src/viewModel/live_comment_viewModel.dart';
 
 class LiveSendView extends ConsumerWidget {
   final String username;
@@ -15,6 +17,8 @@ class LiveSendView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final liveCommentViewModel = ref.read(liveCommentProvider(roomId).notifier);
+    final liveState = ref.read(liveCommentProvider(roomId));
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
@@ -43,6 +47,7 @@ class LiveSendView extends ConsumerWidget {
           const SizedBox(width: 8),
           IconButton(
             onPressed: () {
+              liveState.userNickname = username;
               liveCommentViewModel
                   .sendMessage(liveCommentViewModel.controller.text);
               liveCommentViewModel.controller.clear();
