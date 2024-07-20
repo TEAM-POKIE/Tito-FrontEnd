@@ -311,7 +311,7 @@ class _ProfileVsWidgetState extends State<ProfileVsWidget> {
             borderRadius: 8,
             nipLocation: NipLocation.topRight,
             nipHeight: 15,
-            color: Colors.purple,
+            color: ColorSystem.purple,
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
@@ -329,101 +329,106 @@ class _ProfileVsWidgetState extends State<ProfileVsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CircleAvatar(
-                  radius: 30,
-                  backgroundImage: AssetImage(
-                      'assets/images/chatCuteIcon.png'), // 첫 번째 프로필 이미지
+    return Container(
+      color: ColorSystem.white,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircleAvatar(
+                radius: 30,
+                backgroundImage: AssetImage('assets/images/chatCuteIcon.png'),
+              ),
+              TextButton(
+                onPressed: _swapButtons,
+                child: Row(
+                  children: [
+                    Text(
+                      widget.myNick,
+                      style: FontSystem.KR12R,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                    SizedBox(width: 4),
+                    Image.asset(
+                      isUpArrowAtFirstProfile
+                          ? 'assets/images/ep_arrow-up.png'
+                          : 'assets/images/ep_arrow-down.png',
+                      width: 14,
+                      height: 14,
+                    ),
+                  ],
                 ),
-                SizedBox(height: 8),
-                TextButton(
-                  onPressed: _swapButtons,
-                  child: Row(
-                    children: [
-                      Text(
-                        widget.myNick,
-                        style: TextStyle(fontSize: 14),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                      SizedBox(width: 4),
-                      Image.asset(
-                        isUpArrowAtFirstProfile
-                            ? 'assets/images/ep_arrow-up.png'
-                            : 'assets/images/ep_arrow-down.png',
-                        width: 14,
-                        height: 14,
-                      ),
-                    ],
-                  ),
+              ),
+            ],
+          ),
+          SizedBox(width: 16),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Color(0xffE8DAFE),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-              ],
-            ),
-            SizedBox(width: 16),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.purple,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    '토론 진행중',
-                    style: TextStyle(color: Colors.white, fontSize: 12),
-                  ),
+                child: Text(
+                  '토론 진행중',
+                  style: FontSystem.KR14B.copyWith(color: ColorSystem.purple),
                 ),
-                SizedBox(height: 8),
-                Text('VS',
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              ],
-            ),
-            SizedBox(width: 16),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CircleAvatar(
-                  radius: 30,
-                  backgroundImage: AssetImage(
-                      'assets/images/chatCuteIcon.png'), // 두 번째 프로필 이미지
+              ),
+              SizedBox(height: 8),
+              Container(
+                constraints: const BoxConstraints(maxWidth: 250),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                decoration: BoxDecoration(
+                  color: ColorSystem.black,
+                  borderRadius: BorderRadius.circular(12.0),
                 ),
-                const SizedBox(height: 8),
-                TextButton(
-                  onPressed: _swapSecondButtons,
-                  child: Row(
-                    children: [
-                      Text(
-                        widget.opponentNick,
-                        style: TextStyle(fontSize: 14),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                      SizedBox(width: 4),
-                      Image.asset(
-                        isUpArrowAtSecondProfile
-                            ? 'assets/images/ep_arrow-up.png'
-                            : 'assets/images/ep_arrow-down.png',
-                        width: 14,
-                        height: 14,
-                      ),
-                    ],
-                  ),
+                child: Text(
+                  'VS',
+                  style: FontSystem.KR16B.copyWith(color: ColorSystem.white),
                 ),
-              ],
-            ),
-          ],
-        ),
-      ],
+              ),
+            ],
+          ),
+          SizedBox(width: 16),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircleAvatar(
+                radius: 30,
+                backgroundImage: AssetImage(
+                    'assets/images/chatCuteIcon.png'), // 두 번째 프로필 이미지
+              ),
+              TextButton(
+                onPressed: _swapSecondButtons,
+                child: Row(
+                  children: [
+                    Text(
+                      widget.opponentNick,
+                      style: FontSystem.KR12R,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                    SizedBox(width: 4),
+                    Image.asset(
+                      isUpArrowAtSecondProfile
+                          ? 'assets/images/ep_arrow-up.png'
+                          : 'assets/images/ep_arrow-down.png',
+                      width: 14,
+                      height: 14,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
