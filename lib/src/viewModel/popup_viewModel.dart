@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/constants/web_sockey_service.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/src/widgets/reuse/debate_popup.dart';
+import 'package:tito_app/src/widgets/reuse/rule_pop_up.dart';
 
 // PopupState 클래스 정의
 class PopupState {
@@ -77,16 +78,6 @@ class PopupViewmodel extends StateNotifier<PopupState> {
       content: message,
       buttonStyle: 1,
     );
-
-    // 팝업을 띄우는 로직 (예시)
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      showDialog(
-        context: ref.read(navigationContextProvider),
-        builder: (BuildContext context) {
-          return const DebatePopup();
-        },
-      );
-    });
   }
 
   // 타이밍 팝업 띄우기
@@ -129,21 +120,19 @@ class PopupViewmodel extends StateNotifier<PopupState> {
     return result ?? false; // return false if result is null
   }
 
-  // 특정 상태로 팝업 띄우기
-  void showPopup(PopupState popupState) {
-    state = popupState;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      showDialog(
-        context: ref.read(navigationContextProvider),
-        builder: (BuildContext context) {
-          return const DebatePopup();
-        },
-      );
-    });
+  Future<bool> showRulePopup(BuildContext context) async {
+    final loginInfo = ref.read(loginInfoProvider);
+
+    if (loginInfo == null) {
+      return false;
+    }
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return const RulePopUp();
+      },
+    );
+
+    return result ?? false; // return false if result is null
   }
 }
-
-// 네비게이션 컨텍스트 프로바이더 (팝업을 띄우기 위한 컨텍스트 제공)
-final navigationContextProvider = Provider<BuildContext>((ref) {
-  throw UnimplementedError('navigationContextProvider not implemented');
-});
