@@ -21,14 +21,22 @@ class LiveComment extends ConsumerStatefulWidget {
 }
 
 class _LiveCommentState extends ConsumerState<LiveComment> {
-  late Future<void> _initialMessagesFuture;
+  late Future<List<Message>> _initialMessagesFuture;
+  List<Message> _messages = [];
 
   @override
   void initState() {
     super.initState();
     final liveCommentViewModel =
         ref.read(liveCommentProvider(widget.id).notifier);
-    _initialMessagesFuture = liveCommentViewModel.fetchInitialMessages();
+    _initialMessagesFuture = liveCommentViewModel.loadInitialMessages();
+    _initialMessagesFuture.then((messages) {
+      if (mounted) {
+        setState(() {
+          _messages = messages;
+        });
+      }
+    });
   }
 
   @override
@@ -36,7 +44,7 @@ class _LiveCommentState extends ConsumerState<LiveComment> {
     final liveCommentViewModel =
         ref.watch(liveCommentProvider(widget.id).notifier);
 
-    return FutureBuilder<void>(
+    return FutureBuilder<List<Message>>(
       future: _initialMessagesFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -45,30 +53,49 @@ class _LiveCommentState extends ConsumerState<LiveComment> {
           return const Center(child: Text('Error loading messages'));
         }
 
+        if (snapshot.hasData) {
+          _messages = snapshot.data!;
+        }
+
         return Column(
           children: [
             Expanded(
               child: StreamBuilder<List<Message>>(
                 stream: liveCommentViewModel.messagesStream,
                 builder: (context, streamSnapshot) {
-                  if (streamSnapshot.connectionState ==
-                          ConnectionState.waiting &&
-                      !snapshot.hasData) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
-                  } else if (streamSnapshot.hasError) {
-                    return const Center(child: Text('Error loading messages'));
-                  } else if (!streamSnapshot.hasData ||
-                      streamSnapshot.data!.isEmpty) {
-                    return const Center(child: Text('No comments yet'));
+                  } else if (snapshot.hasError) {
+                    return const Center(child: Text('메시지를 불러오는 중 오류가 발생했습니다.'));
                   }
 
-                  final messages = streamSnapshot.data!;
+                  if (streamSnapshot.hasData) {
+                    final newMessages = streamSnapshot.data!;
+                    final messageIds = _messages.map((m) => m.id).toSet();
+                    final nonDuplicateMessages = newMessages
+                        .where((m) => !messageIds.contains(m.id))
+                        .toList();
+                    _messages = [
+                      ..._messages,
+                      ...nonDuplicateMessages,
+                    ];
+                    _messages
+                        .sort((a, b) => a.createdAt.compareTo(b.createdAt));
+                  }
+
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (widget.scrollController.hasClients) {
+                      widget.scrollController.jumpTo(
+                          widget.scrollController.position.maxScrollExtent);
+                    }
+                  });
+
                   return ListView.builder(
                     controller: widget.scrollController,
                     reverse: true,
-                    itemCount: messages.length,
+                    itemCount: _messages.length,
                     itemBuilder: (context, index) {
-                      final message = messages[index];
+                      final message = _messages[index];
                       return Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 4.0, horizontal: 8.0),

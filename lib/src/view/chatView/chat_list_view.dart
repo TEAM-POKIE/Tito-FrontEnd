@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_state_provider.dart';
+import 'package:tito_app/core/provider/live_comment.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/src/data/models/types.dart' as types;
 
@@ -187,7 +189,9 @@ class _AudienceChatListState extends ConsumerState<AudienceChatList> {
     super.initState();
     _scrollController = ScrollController();
     final chatViewModel = ref.read(chatProviders(widget.id).notifier);
+
     _initialMessagesFuture = chatViewModel.loadInitialMessages();
+
     _initialMessagesFuture.then((messages) {
       if (mounted) {
         setState(() {
@@ -244,55 +248,78 @@ class _AudienceChatListState extends ConsumerState<AudienceChatList> {
               }
             });
 
-            return ListView.builder(
-              controller: _scrollController,
-              itemCount: _messages.length,
-              itemBuilder: (context, index) {
-                final message = _messages[index];
-                final isMyMessage =
-                    message.author.id == chatState.debateData!['myNick'];
-                final formattedTime = TimeOfDay.fromDateTime(
-                        DateTime.fromMillisecondsSinceEpoch(message.createdAt))
-                    .format(context);
+            return Container(
+              color: ColorSystem.ligthGrey,
+              child: ListView.builder(
+                controller: _scrollController,
+                itemCount: _messages.length,
+                itemBuilder: (context, index) {
+                  final message = _messages[index];
+                  final isMyMessage =
+                      message.author.id == chatState.debateData!['myNick'];
+                  final formattedTime = TimeOfDay.fromDateTime(
+                          DateTime.fromMillisecondsSinceEpoch(
+                              message.createdAt))
+                      .format(context);
 
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 4.0, horizontal: 8.0),
-                  child: Row(
-                    mainAxisAlignment: isMyMessage
-                        ? MainAxisAlignment.end
-                        : MainAxisAlignment.start,
-                    children: [
-                      if (!isMyMessage)
-                        const CircleAvatar(child: Icon(Icons.person)),
-                      if (!isMyMessage) const SizedBox(width: 8),
-                      Container(
-                        constraints: const BoxConstraints(maxWidth: 250),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 16.0),
-                        decoration: BoxDecoration(
-                          color:
-                              isMyMessage ? Colors.blue[100] : Colors.grey[300],
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text((message as types.TextMessage).text),
-                            const SizedBox(height: 5),
-                            Text(
-                              formattedTime,
-                              style: const TextStyle(
-                                  fontSize: 10, color: Colors.black54),
-                            ),
-                          ],
-                        ),
-                      ),
-                      if (isMyMessage) const SizedBox(width: 8),
-                    ],
-                  ),
-                );
-              },
+                  return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 4.0, horizontal: 8.0),
+                      child: Stack(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: isMyMessage
+                                ? MainAxisAlignment.end
+                                : MainAxisAlignment.start,
+                            children: [
+                              if (!isMyMessage)
+                                const CircleAvatar(child: Icon(Icons.person)),
+                              const SizedBox(width: 8),
+                              Column(
+                                crossAxisAlignment: isMyMessage
+                                    ? CrossAxisAlignment.end
+                                    : CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    constraints:
+                                        const BoxConstraints(maxWidth: 250),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0, horizontal: 16.0),
+                                    decoration: BoxDecoration(
+                                      color: ColorSystem.white,
+                                      borderRadius: BorderRadius.circular(12.0),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text((message as types.TextMessage)
+                                            .text),
+                                        const SizedBox(height: 5),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    formattedTime,
+                                    style: FontSystem.KR10B
+                                        .copyWith(color: ColorSystem.grey),
+                                  ),
+                                ],
+                              ),
+                              if (isMyMessage) const SizedBox(width: 8),
+                              if (isMyMessage)
+                                CircleAvatar(child: Icon(Icons.person)),
+                              const SizedBox(width: 8),
+                            ],
+                          ),
+                        ],
+                      ));
+                },
+              ),
             );
           },
         );
