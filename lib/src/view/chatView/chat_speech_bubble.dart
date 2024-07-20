@@ -57,23 +57,20 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
             height: (MediaQuery.of(context).size.height - 450) * 0.2,
           );
 
-        case 1:
+        default:
           if (opponentTurn == 0) {
-            return const SizedBox(height: 0);
-          } else {
+            SizedBox(
+              width: 0,
+            );
+          }
+          if (opponentTurn >= 3) {
             return TimingButton(
               sendNick: sendNick,
               popupViewModel: popupViewModel,
               popupState: popupState,
             );
           }
-
-        default:
-          return TimingButton(
-            sendNick: sendNick,
-            popupViewModel: popupViewModel,
-            popupState: popupState,
-          );
+          break; // Added break to handle cases where opponentTurn < 1
       }
     } else {
       switch (opponentTurn) {
@@ -86,13 +83,19 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
           );
 
         default:
-          return TimingButton(
-            sendNick: sendNick,
-            popupViewModel: popupViewModel,
-            popupState: popupState,
-          );
+          if (opponentTurn >= 3) {
+            return TimingButton(
+              sendNick: sendNick,
+              popupViewModel: popupViewModel,
+              popupState: popupState,
+            );
+          }
+          break; // Added break to handle cases where opponentTurn < 3
       }
     }
+
+    // Return a default widget if no conditions are met
+    return const SizedBox.shrink();
   }
 }
 
