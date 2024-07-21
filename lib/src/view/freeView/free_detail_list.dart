@@ -1,17 +1,18 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:tito_app/core/provider/freewrite_provider.dart';
+import 'package:tito_app/core/provider/post_provider.dart';
+import 'package:tito_app/core/provider/post_provider.dart';
 
-class FreeDetailList extends ConsumerStatefulWidget {
-  @override
-  _FreeDetailListState createState() => _FreeDetailListState();
-}
+class FreeDetailList extends ConsumerWidget {
+  final Post post;
+  const FreeDetailList({Key? key, required this.post}) : super(key: key);
 
-class _FreeDetailListState extends ConsumerState<FreeDetailList> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final posts = ref.watch(postProvider);
+
     return Column(
-      children: [Text('애인의 우정여행 어떻게 생각해?')],
-    );
+      children: [
+        Text(post.title)]);
   }
 }

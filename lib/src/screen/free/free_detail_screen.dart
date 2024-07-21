@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/src/view/freeView/free_detail_appbar.dart';
-import 'package:tito_app/core/provider/freewrite_provider.dart';
+import 'package:tito_app/core/provider/post_provider.dart';
 import 'package:tito_app/src/view/freeView/free_detail_list.dart';
 
 class FreeDetailScreen extends ConsumerWidget {
-  const FreeDetailScreen({super.key});
-
+  final Post post;
+  const FreeDetailScreen ({Key? key, required this.post}) : super(key: key);
   
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,7 +19,7 @@ class FreeDetailScreen extends ConsumerWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              FreeDetailList(),
+              FreeDetailList(post: post),
             ],
           )
         ),

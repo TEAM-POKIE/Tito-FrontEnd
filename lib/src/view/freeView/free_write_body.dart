@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:tito_app/core/provider/freewrite_provider.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tito_app/core/provider/post_provider.dart';
+import 'package:tito_app/core/provider/voting_provider.dart';
 import 'package:get/get.dart';
 
 class FreeWriteBody extends ConsumerStatefulWidget {
@@ -9,7 +11,6 @@ class FreeWriteBody extends ConsumerStatefulWidget {
 }
 
 class _FreeWriteBodyState extends ConsumerState<FreeWriteBody> {
-  bool _isVotingEnabled = false;
   List<TextEditingController> _votingControllers = [];
   //객체들의 리스트 생성하는 것 -> 텍스트 필드를 한번에 관리하기 위해 사용
 
@@ -21,7 +22,8 @@ class _FreeWriteBodyState extends ConsumerState<FreeWriteBody> {
 
   void _initializeVotingControllers() {
     // 필요한 만큼 TextEditingController를 초기화
-    _votingControllers = List.generate( 2,
+    _votingControllers = List.generate(
+      2,
       (index) => TextEditingController(),
     );
   }
@@ -46,12 +48,14 @@ class _FreeWriteBodyState extends ConsumerState<FreeWriteBody> {
       _votingControllers.removeAt(index);
     });
   }
-  
 
   @override
   Widget build(BuildContext context) {
-    final titleController = ref.watch(freewriteProvider);
-    final contentController = ref.watch(freewriteProvider);
+    ////Provider를 반복해서 관찰하고 상태가 변하면 build를 호출 : ref.watch
+    final titleController = ref.watch(titleControllerProvider);
+    final contentController = ref.watch(contentControllerProvider);
+    final votingState = ref.watch(votingProvider);
+    final votingNotifier = ref.read(votingProvider.notifier);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -127,11 +131,11 @@ class _FreeWriteBodyState extends ConsumerState<FreeWriteBody> {
                       Transform.scale(
                         scale: 1,
                         child: Switch(
-                          value: _isVotingEnabled,
+                          value: votingState.isVotingEnabled,
                           //_isVotingEnaled가 true이면, 스위치가 켜진 상태
                           onChanged: (bool value) {
                             setState(() {
-                              _isVotingEnabled = value;
+                              votingNotifier.toggleVoting(value);
                               if (!value) {
                                 _votingControllers.clear();
                                 //리스트를 비움으로써 컨트롤러 초기화하는 것
@@ -147,7 +151,7 @@ class _FreeWriteBodyState extends ConsumerState<FreeWriteBody> {
                       ),
                     ],
                   ),
-                  if (_isVotingEnabled) ...[
+                  if (votingState.isVotingEnabled) ...[
                     for (int i = 0; i < _votingControllers.length; i++)
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -204,7 +208,16 @@ class _FreeWriteBodyState extends ConsumerState<FreeWriteBody> {
           width: 370,
           height: 60,
           child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                final title = titleController.text;
+                final content = contentController.text;
+
+                if (title.isNotEmpty && content.isNotEmpty) {
+                  final post = Post(title: title, content: content);
+                  ref.read(postProvider.notifier).addPost(post);
+                  context.go('/free');
+                }
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF8E48F8),
                 foregroundColor: Colors.white,

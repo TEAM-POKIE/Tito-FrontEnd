@@ -1,7 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:tito_app/src/data/models/freescreen_info.dart';
+import 'package:tito_app/core/provider/post_provider.dart';
 import 'package:tito_app/src/viewModel/free_viewModel.dart';
+import 'package:tito_app/core/provider/voting_provider.dart';
 import 'package:tito_app/src/widgets/reuse/search_bar.dart';
 import 'package:go_router/go_router.dart';
 
@@ -10,6 +12,9 @@ class FreeView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final posts = ref.watch(postProvider);
+    final votingState = ref.watch(votingProvider);
+
     return Column(
       children: [
         const CustomSearchBar(),
@@ -20,22 +25,14 @@ class FreeView extends ConsumerWidget {
         ),
         Expanded(
           child: ListView.builder(
-            itemCount: freeDummydata.length,
-            itemBuilder: (ctx, index) {
-              final item = freeDummydata[index];
+            itemCount: posts.length,
+            itemBuilder: (contexy, index) {
+              final post = posts[index];
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: InkWell(
                   onTap: () {
-                    context.go('/detail');
-                    // Navigator.pushNamed(
-                    //   context,
-                    //   '/write',
-                      // arguments: {
-                      //   'title': item['Title'],
-                      //   'content': item['content'],
-                      // },
-                    // );
+                    context.go('/detail', extra: post);
                   },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,7 +42,7 @@ class FreeView extends ConsumerWidget {
                           Padding(
                             padding: const EdgeInsets.all(15.0),
                             child: Text(
-                              item.title,
+                              post.title,
                               style: const TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
@@ -94,11 +91,12 @@ class FreeView extends ConsumerWidget {
                             padding: const EdgeInsets.only(
                                 left: 15.0, top: 30.0, bottom: 20.0),
                             child: Text(
-                              item.content,
+                              post.content,
                               style: const TextStyle(fontSize: 16),
                             ),
-                          ),
-                          Row(
+                          ),                            
+                          votingState.isVotingEnabled 
+                          ? Row(
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(
@@ -140,13 +138,14 @@ class FreeView extends ConsumerWidget {
                                             color: Colors.grey[700],
                                           ),
                                         ),
-                                      ),
+                                      ), 
                                     ],
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
+                            ],  
+                          )
+                          : Container(),
                           const SizedBox(height: 8.0),
                           const Row(
                             children: [
