@@ -105,16 +105,20 @@ class DebatePopup extends ConsumerWidget {
         ),
       ),
       onPressed: () async {
-        popupState.buttonStyle = 0;
-        popupState.title = '토론이 시작 됐어요! 🎵';
-        popupState.content = '서로 존중하는 토론을 부탁드려요!';
-        await ApiService.patchData('debate_list/${popupState.roomId}',
-            {'opponentNick': loginInfo!.nickname});
-        context.pop();
-        popupViewModel.showDebatePopup(context);
+        if (popupState.title == '토론에 참여 하시겠어요?') {
+          popupState.buttonStyle = 0;
+          popupState.title = '토론이 시작 됐어요! 🎵';
+          popupState.content = '서로 존중하는 토론을 부탁드려요!';
+          await ApiService.patchData('debate_list/${popupState.roomId}',
+              {'opponentNick': loginInfo!.nickname});
+          context.pop();
+          popupViewModel.showDebatePopup(context);
+        } else if (popupState.title == '토론 시작 시 알림을 보내드릴게요!') {
+          context.pop();
+        }
       },
       child: Text(
-        '토론 참여하기',
+        popupState.buttonContentLeft!,
         style: FontSystem.KR14M.copyWith(color: ColorSystem.white),
       ),
     );

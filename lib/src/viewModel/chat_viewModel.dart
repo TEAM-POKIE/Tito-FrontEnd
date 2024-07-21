@@ -96,6 +96,18 @@ class ChatViewModel extends StateNotifier<ChatState> {
 
   void _onReceiveMessage(dynamic message) {
     final decodedMessage = json.decode(message);
+
+    if (decodedMessage['type'] == 'turnUpdate') {
+      state = state.copyWith(
+        debateData: {
+          ...state.debateData!,
+          'myTurn': decodedMessage['myTurn'],
+          'opponentTurn': decodedMessage['opponentTurn'],
+        },
+      );
+      return;
+    }
+
     final chatMessage = types.TextMessage(
       author: types.User(id: decodedMessage['senderId'] ?? ''),
       createdAt:
@@ -189,7 +201,12 @@ class ChatViewModel extends StateNotifier<ChatState> {
       };
 
       controller.clear();
-      channel.sink.add(json.encode(newMessage));
+      channel.sink.add(json.encode({
+        ...newMessage,
+        'type': 'message',
+        'myTurn': debateData['myTurn'],
+        'opponentTurn': debateData['opponentTurn'],
+      }));
 
       final updatedMessages = [
         ...state.messages,

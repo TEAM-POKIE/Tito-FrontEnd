@@ -1,10 +1,9 @@
 import 'dart:io';
 
 void main() {
-  // 웹 소켓 서버 포트 설정
   const int port = 4040;
   HttpServer.bind(InternetAddress.anyIPv4, port).then((HttpServer server) {
-    print('WebSocket listening at ws://10.21.20.62:$port');
+    print('WebSocket listening at ws://0.0.0.0:$port');
     final Map<String, List<WebSocket>> chatRooms = {};
 
     server.listen((HttpRequest request) {
@@ -18,7 +17,6 @@ void main() {
           chatRooms[chatRoomId]!.add(websocket);
           print('Client connected to $chatRoomId: ${websocket.hashCode}');
 
-          // 메시지를 수신했을 때 콘솔에 출력
           websocket.listen((message) {
             print('Received in $chatRoomId: $message');
             for (var client in chatRooms[chatRoomId]!) {
