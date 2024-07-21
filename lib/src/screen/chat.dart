@@ -37,7 +37,7 @@ class _ChatState extends ConsumerState<Chat> {
     super.initState();
     // WebSocket 서버와 연결 설정
     channel = WebSocketChannel.connect(
-        Uri.parse('ws://localhost:4040/ws/${widget.id}'));
+        Uri.parse('ws://192.168.1.6:4040/ws/${widget.id}'));
 
     // WebSocket 서버로부터 메시지를 받을 때마다 상태 업데이트
     channel.stream.listen((message) {
