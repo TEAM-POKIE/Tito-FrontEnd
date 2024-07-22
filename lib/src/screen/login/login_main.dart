@@ -32,12 +32,6 @@ class LoginMain extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xff8E48F8), // AppBar 배경색 설정
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.arrow_back),
-        ),
       ),
       backgroundColor: const Color(0xff8E48F8), // 배경색을 보라색으로 설정
       body: Container(
