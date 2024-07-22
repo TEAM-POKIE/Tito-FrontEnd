@@ -22,7 +22,7 @@ class HomeAppbar extends ConsumerWidget {
       actions: [
         IconButton(
           onPressed: () {},
-          icon: Image.asset('assets/images/notification.png'),
+          icon: Image.asset('assets/images/alarm_none.png'),
         ),
         IconButton(
           onPressed: () {

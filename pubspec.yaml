@@ -81,16 +81,14 @@ flutter:
     - assets/images/kakao.png
     - assets/images/google.png
     - assets/images/apple.png
-    - assets/images/notification.png
     - assets/images/hotlist.png
     - assets/images/mypage.png
     - assets/images/bottombar/ai.png
-    - assets/images/bottombar/board.png
     - assets/images/bottombar/create.png
     - assets/images/bottombar/home.png
     - assets/images/bottombar/list.png
-    - assets/images/bottombar/board_select.png
     - assets/images/ai_purple.png
+    - assets/images/alarm_none.png
     - assets/images/alarm.png
     - assets/images/sendArrow.png
     - assets/images/timingBell.png
