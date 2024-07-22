@@ -1,6 +1,4 @@
 import 'package:go_router/go_router.dart';
-import 'package:tito_app/src/screen/free/free_screen.dart';
-import 'package:tito_app/src/screen/free/free_write_screen.dart';
 import 'package:tito_app/src/screen/home_screen.dart';
 import 'package:tito_app/src/screen/list_screen.dart';
 import 'package:tito_app/src/screen/login_screen.dart';
@@ -21,8 +19,6 @@ import 'package:tito_app/src/screen/login/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:tito_app/src/widgets/reuse/bottombar.dart';
 import 'package:tito_app/src/screen/chat.dart';
-import 'package:tito_app/src/screen/free/free_detail_screen.dart';
-import 'package:tito_app/core/provider/post_provider.dart';
 
 final GoRouter router = GoRouter(
   //이 부분 없으니까 처음 화면 그냥 보라색으로 뜨는 경우도 있음. 초기화면 지정해 놓은 부분이야
@@ -51,14 +47,6 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: '/list',
               builder: (context, state) => const ListScreen(),
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: '/free',
-              builder: (context, state) => const FreeScreen(),
             ),
           ],
         ),
@@ -96,17 +84,6 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/password',
       builder: (context, state) => const ChangePassword(),
-    ),
-    GoRoute(
-      path: '/write',
-      builder: (context, state) => const FreeWriteScreen(),
-    ),
-    GoRoute(
-      path: '/detail',
-      builder: (context, state) {
-        final post = state.extra as Post; // 'extra'를 사용하여 데이터를 전달합니다.
-            return FreeDetailScreen(post: post);
-      },
     ),
     GoRoute(
       path: '/debate_create',
