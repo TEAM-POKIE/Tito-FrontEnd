@@ -1,6 +1,4 @@
 import 'package:go_router/go_router.dart';
-import 'package:tito_app/src/screen/free/free_screen.dart';
-import 'package:tito_app/src/screen/free/free_write_screen.dart';
 import 'package:tito_app/src/screen/home_screen.dart';
 import 'package:tito_app/src/screen/list_screen.dart';
 import 'package:tito_app/src/screen/login_screen.dart';
@@ -52,14 +50,6 @@ final GoRouter router = GoRouter(
             ),
           ],
         ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: '/free',
-              builder: (context, state) => const FreeScreen(),
-            ),
-          ],
-        ),
       ],
     ),
     GoRoute(
@@ -94,10 +84,6 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/password',
       builder: (context, state) => const ChangePassword(),
-    ),
-    GoRoute(
-      path: '/write',
-      builder: (context, state) => const FreeWriteScreen(),
     ),
     GoRoute(
       path: '/debate_create',
