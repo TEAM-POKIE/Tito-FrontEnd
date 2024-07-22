@@ -55,6 +55,7 @@ dependencies:
   pull_to_refresh: ^2.0.0
   flutter_native_splash: ^2.4.1
   animated_splash_screen: ^1.3.0
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
@@ -113,8 +114,7 @@ flutter:
     - assets/images/ruleBookIcon.png
     - assets/images/splash.png
     - assets/images/splashs.png
-    - assets/images/splashAndroid.png
-    - assets/images/SplashPage.png
+    - assets/images/LogoIcon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
