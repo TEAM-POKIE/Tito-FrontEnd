@@ -29,7 +29,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
           context.go('/list');
           break;
       }
-    }
+    } 
   }
 
   @override
