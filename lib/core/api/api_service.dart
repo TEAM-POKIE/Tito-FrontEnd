@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
+import 'package:tito_app/core/api/multpart_file_with_to_json.dart';
 import 'package:tito_app/src/data/models/login_info.dart';
+import 'package:tito_app/src/data/models/auth_response.dart';
 
 part 'api_service.g.dart';
 
@@ -23,8 +26,17 @@ abstract class ApiService {
   Future<void> signUp(@Body() Map<String, dynamic> signUpData);
 
   @POST("auth/sign-in")
-  Future<Map<String, dynamic>> signIn(@Body() Map<String, dynamic> loginData);
+  Future<AuthResponse> signIn(@Body() Map<String, dynamic> loginData);
 
   @GET("users")
-  Future<Map<String, dynamic>> getUserInfo();
+  Future<LoginInfo> getUserInfo();
+
+  @PATCH("users/{id}")
+  Future<void> updateUserProfile(
+      @Path("id") int id, @Body() Map<String, dynamic> data);
+
+  @POST("upload")
+  @MultiPart()
+  Future<Map<String, dynamic>> uploadImage(
+      @Part() MultipartFileWithToJson file);
 }

@@ -63,6 +63,8 @@ dependencies:
   build_runner: ^2.4.11
   retrofit_generator: ^8.1.2
   json_serializable: ^6.8.0
+  image_picker: ^1.1.2
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:

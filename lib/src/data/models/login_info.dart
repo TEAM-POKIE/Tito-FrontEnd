@@ -21,14 +21,14 @@ class LoginInfo {
 
   factory LoginInfo.fromJson(Map<String, dynamic> json) {
     return LoginInfo(
-      id: json['id'],
-      nickname: json['nickname'],
-      email: json['email'],
-      role: json['role'],
-      profilePicture: json['profilePicture'], // Allow null values
-      createdAt: json['createdAt'],
-      updatedAt: json['updatedAt'],
-      tutorialCompleted: json['tutorialCompleted'],
+      id: json['id'] ?? 0, // Provide a default value if null
+      nickname: json['nickname'] ?? '',
+      email: json['email'] ?? '',
+      role: json['role'] ?? '',
+      profilePicture: json['profilePicture'],
+      createdAt: json['createdAt'] ?? '',
+      updatedAt: json['updatedAt'] ?? '',
+      tutorialCompleted: json['tutorialCompleted'] ?? false,
     );
   }
 
@@ -43,5 +43,27 @@ class LoginInfo {
       'updatedAt': updatedAt,
       'tutorialCompleted': tutorialCompleted,
     };
+  }
+
+  LoginInfo copyWith({
+    int? id,
+    String? nickname,
+    String? email,
+    String? role,
+    String? profilePicture,
+    String? createdAt,
+    String? updatedAt,
+    bool? tutorialCompleted,
+  }) {
+    return LoginInfo(
+      id: id ?? this.id,
+      nickname: nickname ?? this.nickname,
+      email: email ?? this.email,
+      role: role ?? this.role,
+      profilePicture: profilePicture ?? this.profilePicture,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      tutorialCompleted: tutorialCompleted ?? this.tutorialCompleted,
+    );
   }
 }

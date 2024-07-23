@@ -115,6 +115,9 @@ class _SignUpState extends State<Signup> {
                 onPressed: _onSignUp,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
                   minimumSize: const Size(300, 60),
                   padding: const EdgeInsets.symmetric(
                       horizontal: 20, vertical: 10), // 버튼 내부의 패딩 설정

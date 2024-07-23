@@ -43,7 +43,8 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    return _result.data!;
+    var _value = _result.data!.map((k, v) => MapEntry(k, v));
+    return _value;
   }
 
   @override
@@ -72,7 +73,8 @@ class _ApiService implements ApiService {
           _dio.options.baseUrl,
           baseUrl,
         ))));
-    return _result.data!;
+    final _value = _result.data!;
+    return _value;
   }
 
   @override
@@ -101,7 +103,8 @@ class _ApiService implements ApiService {
           _dio.options.baseUrl,
           baseUrl,
         ))));
-    return _result.data!;
+    final _value = _result.data!;
+    return _value;
   }
 
   @override
@@ -130,14 +133,14 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<Map<String, dynamic>> signIn(Map<String, dynamic> loginData) async {
+  Future<AuthResponse> signIn(Map<String, dynamic> loginData) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(loginData);
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<Map<String, dynamic>>(Options(
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AuthResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -153,17 +156,18 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    return _result.data!;
+    final _value = AuthResponse.fromJson(_result.data!);
+    return _value;
   }
 
   @override
-  Future<Map<String, dynamic>> getUserInfo() async {
+  Future<LoginInfo> getUserInfo() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<Map<String, dynamic>>(Options(
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<LoginInfo>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -179,7 +183,68 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    return _result.data!;
+    final _value = LoginInfo.fromJson(_result.data!);
+    return _value;
+  }
+
+  @override
+  Future<void> updateUserProfile(
+    int id,
+    Map<String, dynamic> data,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(data);
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'PATCH',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'users/${id}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+  }
+
+  @override
+  Future<Map<String, dynamic>> uploadImage(MultipartFileWithToJson file) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    _data.fields.add(MapEntry(
+      'file',
+      jsonEncode(file),
+    ));
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<Map<String, dynamic>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+      contentType: 'multipart/form-data',
+    )
+            .compose(
+              _dio.options,
+              'upload',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    var _value = _result.data!.map((k, v) => MapEntry(k, v));
+    return _value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

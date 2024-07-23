@@ -10,7 +10,7 @@ import 'package:tito_app/src/screen/myPage/my_contact.dart';
 import 'package:tito_app/src/screen/myPage/my_debate.dart';
 import 'package:tito_app/src/screen/myPage/my_like.dart';
 import 'package:tito_app/src/screen/myPage/my_list.dart';
-import 'package:tito_app/src/view/splash_screen.dart';
+import 'package:tito_app/splash_screen.dart';
 import 'package:tito_app/src/widgets/ai/ai_create.dart';
 import 'package:tito_app/src/screen/debate/debate_create.dart';
 import 'package:tito_app/src/screen/debate/debate_create_second.dart';

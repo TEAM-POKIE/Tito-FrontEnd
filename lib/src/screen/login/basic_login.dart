@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tito_app/src/data/models/login_info.dart';
+
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
-import 'package:tito_app/src/data/models/auth_response.dart';
 
 class BasicLogin extends ConsumerStatefulWidget {
   const BasicLogin({super.key});
@@ -30,13 +29,10 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
 
     try {
       // 로그인 요청
-      final loginResponse = await ApiService(DioClient.dio).signIn({
+      final authResponse = await ApiService(DioClient.dio).signIn({
         'email': _enteredEmail,
         'password': _enteredPassword,
       });
-
-      // AuthResponse로 변환
-      final authResponse = AuthResponse.fromJson(loginResponse);
 
       // 액세스 토큰 저장
       await DioClient.setToken(authResponse.accessToken.token);
@@ -45,7 +41,7 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
       final userInfoResponse = await ApiService(DioClient.dio).getUserInfo();
 
       // JSON 응답을 LoginInfo 객체로 변환
-      final userInfo = LoginInfo.fromJson(userInfoResponse['data']);
+      final userInfo = userInfoResponse;
 
       // 로그인 정보를 상태로 저장
       ref.read(loginInfoProvider.notifier).state = userInfo;
