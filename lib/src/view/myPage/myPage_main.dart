@@ -123,22 +123,6 @@ class MypageMain extends ConsumerWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: ListTile(
-              title: const Text('내가 쓴 게시글'),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () {
-                context.go('/mylist');
-              },
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: ListTile(
               title: const Text('좋아요'),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
@@ -183,6 +167,7 @@ class MypageMain extends ConsumerWidget {
         const SizedBox(
           height: 15.0,
         ),
+        
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
           child: Container(
@@ -191,10 +176,10 @@ class MypageMain extends ConsumerWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: ListTile(
-              title: const Text('비밀번호 수정'),
+              title: const Text('차단 리스트'),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
-                context.go('/password');
+                context.go('/myblock');
               },
             ),
           ),
