@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tito_app/src/view/splash_screen.dart';
 import 'core/routes/routes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void main() {
+void main() async {
+  SplashScreen();
   runApp(const SafeArea(
     child: MyApp(),
   ));

@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final webSocketProvider =
     Provider.family<WebSocketService, String>((ref, chatRoomId) {
-  return WebSocketService('ws://172.30.1.255:4040/ws/$chatRoomId');
+  return WebSocketService('ws://192.168.1.6:4040/ws/$chatRoomId');
 });
 
 class WebSocketService {

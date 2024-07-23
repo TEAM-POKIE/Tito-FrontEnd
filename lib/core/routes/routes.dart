@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/src/screen/home_screen.dart';
 import 'package:tito_app/src/screen/list_screen.dart';
-import 'package:tito_app/src/screen/login_screen.dart';
+
 import 'package:tito_app/src/screen/myPage/change_name.dart';
 import 'package:tito_app/src/screen/myPage/change_password.dart';
 import 'package:tito_app/src/screen/myPage/myPage_main_screen.dart';
@@ -10,6 +10,7 @@ import 'package:tito_app/src/screen/myPage/my_contact.dart';
 import 'package:tito_app/src/screen/myPage/my_debate.dart';
 import 'package:tito_app/src/screen/myPage/my_like.dart';
 import 'package:tito_app/src/screen/myPage/my_list.dart';
+import 'package:tito_app/src/view/splash_screen.dart';
 import 'package:tito_app/src/widgets/ai/ai_create.dart';
 import 'package:tito_app/src/screen/debate/debate_create.dart';
 import 'package:tito_app/src/screen/debate/debate_create_second.dart';
@@ -20,8 +21,12 @@ import 'package:flutter/material.dart';
 import 'package:tito_app/src/widgets/reuse/bottombar.dart';
 import 'package:tito_app/src/screen/chat.dart';
 
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
+final ValueNotifier<bool> refreshNotifier = ValueNotifier<bool>(false);
 final GoRouter router = GoRouter(
   //이 부분 없으니까 처음 화면 그냥 보라색으로 뜨는 경우도 있음. 초기화면 지정해 놓은 부분이야
+  navigatorKey: rootNavigatorKey,
+  refreshListenable: refreshNotifier,
   initialLocation: '/',
   routes: [
     StatefulShellRoute.indexedStack(
@@ -107,7 +112,11 @@ final GoRouter router = GoRouter(
     //초기화면 지정하는 부분
     GoRoute(
       path: '/',
-      builder: (context, state) => const LoginScreen(),
+      builder: (context, state) => const SplashScreen(),
+    ),
+    GoRoute(
+      path: '/login',
+      builder: (context, state) => const LoginMain(),
     ),
     GoRoute(
       path: '/ai_create',
@@ -120,10 +129,6 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/basicLogin',
       builder: (context, state) => const BasicLogin(),
-    ),
-    GoRoute(
-      path: '/login',
-      builder: (context, state) => const LoginMain(),
     ),
   ],
 );
