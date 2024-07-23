@@ -62,7 +62,7 @@ class ChatViewModel extends StateNotifier<ChatState> {
 
   void init() {
     channel = WebSocketChannel.connect(
-        Uri.parse('ws://10.21.20.62:4040/ws/${state.roomId}'));
+        Uri.parse('ws://192.168.1.6:4040/ws/${state.roomId}'));
     channel.stream.listen(_onReceiveMessage);
 
     fetchDebateData();

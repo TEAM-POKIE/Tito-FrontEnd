@@ -6,7 +6,7 @@ import 'package:web_socket_channel/status.dart' as status;
 final liveCommentProvider =
     StateNotifierProvider.family<LiveCommentViewModel, LiveState, String>(
         (ref, roomId) {
-  final webSocketService = WebSocketService('ws://10.21.20.62:4040/ws/$roomId');
+  final webSocketService = WebSocketService('ws://192.168.1.6:4040/ws/$roomId');
   return LiveCommentViewModel(webSocketService.channel, roomId); // ref 추가
 });
 
