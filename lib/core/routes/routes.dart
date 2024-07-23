@@ -14,7 +14,7 @@ import 'package:tito_app/src/view/splash_screen.dart';
 import 'package:tito_app/src/widgets/ai/ai_create.dart';
 import 'package:tito_app/src/screen/debate/debate_create.dart';
 import 'package:tito_app/src/screen/debate/debate_create_second.dart';
-import 'package:tito_app/src/view/chatView/basic_login.dart';
+import 'package:tito_app/src/screen/login/basic_login.dart';
 import 'package:tito_app/src/screen/login/login_main.dart';
 import 'package:tito_app/src/screen/login/signup.dart';
 import 'package:flutter/material.dart';

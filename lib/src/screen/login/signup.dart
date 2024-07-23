@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:http/http.dart' as http;
-import 'package:tito_app/core/constants/api_path.dart';
+import 'package:tito_app/core/api/api_service.dart';
+import 'package:tito_app/core/api/dio_client.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -31,10 +29,16 @@ class _SignUpState extends State<Signup> {
         'role': 'user',
       };
 
-      await ApiService.postData('/auth/sign-up', signUpData);
-    }
+      final apiService = ApiService(DioClient.dio);
 
-    context.pop();
+      try {
+        await apiService.signUp(signUpData);
+        context.pop();
+      } catch (e) {
+        print('Failed to sign up: $e');
+        // Handle error here, e.g., show a message to the user
+      }
+    }
   }
 
   @override
