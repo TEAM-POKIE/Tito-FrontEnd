@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:tito_app/core/constants/api_path.dart';
+import 'package:tito_app/core/api/api_path.dart';
+import 'package:tito_app/core/api/api_service.dart';
+import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_state_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
@@ -54,7 +56,8 @@ class _ChatState extends ConsumerState<Chat> {
   }
 
   Future<void> _fetchInitialData() async {
-    final data = await ApiService.getData('debate_list/${widget.id}');
+    final apiService = ApiService(DioClient.dio);
+    final data = await apiService.getData('debate_list/${widget.id}');
     if (data != null && data.containsKey('myNick')) {
       setState(() {
         myNick = data['myNick'];

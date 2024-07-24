@@ -78,119 +78,126 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
   @override
   Widget build(BuildContext context) {
     final debateInfo = ref.watch(debateInfoProvider);
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                child: LinearPercentIndicator(
-                  width: 200,
-                  animation: true,
-                  animationDuration: 200,
-                  lineHeight: 5.0,
-                  percent: 1,
-                  linearStrokeCap: LinearStrokeCap.butt,
-                  progressColor: const Color(0xff8E48F8),
-                  backgroundColor: Colors.grey,
-                  barRadius: const Radius.circular(10),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus(); // 키보드 내리기
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 10),
-              Text(
-                debateInfo?.title ?? '',
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                '나의 주장',
-                style: TextStyle(fontSize: 20),
-              ),
-              const SizedBox(height: 20),
-              TextFormField(
-                autocorrect: false,
-                decoration: InputDecoration(
-                  hintText: '입력하세요',
-                  fillColor: Colors.grey[200],
-                  filled: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                    borderSide: BorderSide.none,
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                  child: LinearPercentIndicator(
+                    width: 200,
+                    animation: true,
+                    animationDuration: 200,
+                    lineHeight: 5.0,
+                    percent: 1,
+                    linearStrokeCap: LinearStrokeCap.butt,
+                    progressColor: const Color(0xff8E48F8),
+                    backgroundColor: Colors.grey,
+                    barRadius: const Radius.circular(10),
                   ),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '나의 주장을 입력하세요';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  myArguments = value!;
-                },
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                '상대 주장',
-                style: TextStyle(fontSize: 20),
-              ),
-              const SizedBox(height: 20),
-              TextFormField(
-                autocorrect: false,
-                decoration: InputDecoration(
-                  hintText: '입력하세요',
-                  fillColor: Colors.grey[200],
-                  filled: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '상대 주장을 입력하세요';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  opponentArguments = value!;
-                },
-              ),
-              const Spacer(),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () => _navigateToChat(context),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff8E48F8),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  ),
-                  child: const Text(
-                    '토론방으로 이동',
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 40,
               ),
             ],
+          ),
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 10),
+                  Text(
+                    debateInfo?.title ?? '',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    '나의 주장',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    autocorrect: false,
+                    decoration: InputDecoration(
+                      hintText: '입력하세요',
+                      fillColor: Colors.grey[200],
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '나의 주장을 입력하세요';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      myArguments = value!;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    '상대 주장',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    autocorrect: false,
+                    decoration: InputDecoration(
+                      hintText: '입력하세요',
+                      fillColor: Colors.grey[200],
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '상대 주장을 입력하세요';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      opponentArguments = value!;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              ),
+            ),
+          ),
+        ),
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () => _navigateToChat(context),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xff8E48F8),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+              ),
+              child: const Text(
+                '토론방으로 이동',
+                style: TextStyle(fontSize: 16, color: Colors.white),
+              ),
+            ),
           ),
         ),
       ),
