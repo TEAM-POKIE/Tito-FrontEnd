@@ -6,7 +6,10 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/main.dart';
 import 'package:tito_app/core/routes/routes.dart';
-import 'package:tito_app/src/screen/login/login_main.dart'; // GlobalKey와 ValueNotifier를 사용하기 위해 main.dart 파일을 import
+import 'package:tito_app/src/screen/login/login_main.dart';
+// GlobalKey와 ValueNotifier를 사용하기 위해 main.dart 파일을 import
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tito_app/core/constants/style.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -35,12 +38,15 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(
-      splashIconSize: 100, // 크기를 적절히 조정
+      splashIconSize: 100.w, // 크기를 screenutil로 조정
       duration: 3000,
       splash: Container(
-        width: MediaQuery.sizeOf(context).width * 0.3,
-        decoration: BoxDecoration(
-          color: Color(0xFF8E48F8), // 배경색 설정 (보라색)
+        margin:
+            EdgeInsets.symmetric(horizontal: 114.w), // 좌우 여백을 screenutil로 비율 조정
+        width: 132.w, // 너비를 screenutil로 비율 조정
+        height: 132.w,
+        decoration: const BoxDecoration(
+          color: ColorSystem.purple, // 배경색 설정 (보라색)
           image: DecorationImage(
             image: AssetImage('assets/images/splashs.png'),
             fit: BoxFit.fitWidth, // 이미지를 중앙에 고정하고 비율을 유지하며 맞춤

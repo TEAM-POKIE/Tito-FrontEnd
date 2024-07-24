@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/src/screen/home_screen.dart';
 
-class MyListAppbar extends StatelessWidget {
-  const MyListAppbar({super.key});
+class MyBlockAppbar extends StatelessWidget {
+  const MyBlockAppbar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class MyListAppbar extends StatelessWidget {
         icon: const Icon(Icons.arrow_back_ios),
       ),
       title: const Text(
-        '내가 쓴 게시글',
+        '차단 리스트',
         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
       ),
       centerTitle: true,
