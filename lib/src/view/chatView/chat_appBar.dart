@@ -76,6 +76,7 @@ class DebateAppbar extends ConsumerWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
+      centerTitle: true, // 타이틀 중앙 정렬
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
         onPressed: () {

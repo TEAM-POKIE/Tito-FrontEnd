@@ -108,6 +108,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('토론 리스트'),
+        centerTitle: true, // 타이틀 중앙 정렬
       ),
       body: Column(
         children: [
