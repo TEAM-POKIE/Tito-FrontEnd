@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/main.dart';
 import 'package:tito_app/core/routes/routes.dart';
@@ -21,12 +22,17 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    requestPermissions();
     // 3초 후에 LoginMain 페이지로 이동
     Timer(Duration(seconds: 3), () {
       refreshNotifier.value = !refreshNotifier.value; // 상태 업데이트
       GoRouter.of(rootNavigatorKey.currentContext!)
           .go('/login'); // GlobalKey를 사용하여 페이지 전환
     });
+  }
+
+  Future<void> requestPermissions() async {
+    await [Permission.camera, Permission.photos].request();
   }
 
   @override
@@ -42,9 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
         decoration: const BoxDecoration(
           color: ColorSystem.purple, // 배경색 설정 (보라색)
           image: DecorationImage(
-            image: AssetImage(
-              'assets/images/splashs.png',
-            ),
+            image: AssetImage('assets/images/splashs.png'),
             fit: BoxFit.fitWidth, // 이미지를 중앙에 고정하고 비율을 유지하며 맞춤
           ),
         ),

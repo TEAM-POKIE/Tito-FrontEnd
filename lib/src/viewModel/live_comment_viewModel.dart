@@ -2,9 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tito_app/core/constants/api_path.dart';
+import 'package:tito_app/core/api/api_service.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
+import 'package:tito_app/core/api/dio_client.dart';
 
 class LiveState {
   final List<Message> messages;
@@ -26,6 +27,7 @@ class LiveCommentViewModel extends StateNotifier<LiveState> {
   final StreamController<List<Message>> _messagesController =
       StreamController.broadcast();
   final String roomId;
+  final ApiService apiService = ApiService(DioClient.dio);
 
   LiveCommentViewModel(this.channel, this.roomId) : super(LiveState()) {
     fetchInitialMessages();
@@ -44,7 +46,7 @@ class LiveCommentViewModel extends StateNotifier<LiveState> {
 
   Future<void> fetchInitialMessages() async {
     try {
-      final data = await ApiService.getData('live_comments/$roomId');
+      final data = await apiService.getData('live_comments/$roomId');
 
       if (data != null) {
         final messages =
@@ -83,7 +85,7 @@ class LiveCommentViewModel extends StateNotifier<LiveState> {
       _messagesController.add(state.messages);
 
       // Save message to API
-      final response = await ApiService.postData(
+      final response = await apiService.postData(
         'live_comments/$roomId',
         newMessage.toJson(),
       );
