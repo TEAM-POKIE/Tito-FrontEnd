@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tito_app/core/constants/api_path.dart';
+import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/constants/style.dart';
-import 'package:tito_app/core/constants/web_sockey_service.dart';
-import 'package:tito_app/core/provider/login_provider.dart';
-import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/src/viewModel/popup_viewModel.dart';
+import 'package:tito_app/core/api/dio_client.dart';
+import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/core/provider/popup_provider.dart';
 
 class DebatePopup extends ConsumerWidget {
   const DebatePopup({
@@ -95,6 +95,7 @@ class DebatePopup extends ConsumerWidget {
     final popupState = ref.watch(popupProvider);
     final popupViewModel = ref.watch(popupProvider.notifier);
     final loginInfo = ref.watch(loginInfoProvider);
+    final apiService = ApiService(DioClient.dio);
 
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -109,7 +110,7 @@ class DebatePopup extends ConsumerWidget {
           popupState.buttonStyle = 0;
           popupState.title = '토론이 시작 됐어요! 🎵';
           popupState.content = '서로 존중하는 토론을 부탁드려요!';
-          await ApiService.patchData('debate_list/${popupState.roomId}',
+          await apiService.patchData('debate_list/${popupState.roomId}',
               {'opponentNick': loginInfo!.nickname});
           context.pop();
           popupViewModel.showDebatePopup(context);
@@ -161,9 +162,6 @@ class DebatePopup extends ConsumerWidget {
             ),
             onPressed: () {
               context.pop();
-
-              // // 웹소켓을 통해 상대방에게 메시지 전송
-              // webSocketService.sendMessage('토론 참여 요청이 있습니다!');
 
               popupViewModel.showDebatePopup(context);
             },

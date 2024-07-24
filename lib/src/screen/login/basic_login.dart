@@ -1,10 +1,10 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tito_app/src/data/models/login_info.dart';
+
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:go_router/go_router.dart';
-import 'package:http/http.dart' as http;
+import 'package:tito_app/core/api/api_service.dart';
+import 'package:tito_app/core/api/dio_client.dart';
 
 class BasicLogin extends ConsumerStatefulWidget {
   const BasicLogin({super.key});
@@ -28,43 +28,27 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
     _formKey.currentState!.save();
 
     try {
-      final url = Uri.https(
-          'pokeeserver-default-rtdb.firebaseio.com', 'login_id_list.json');
-      final response = await http.get(url);
-      if (response.statusCode != 200) {
-        throw Exception('Failed to load data');
-      }
+      // 로그인 요청
+      final authResponse = await ApiService(DioClient.dio).signIn({
+        'email': _enteredEmail,
+        'password': _enteredPassword,
+      });
 
-      final Map<String, dynamic> listData = json.decode(response.body);
-      final List<LoginInfo> loginItems = [];
-      for (final item in listData.entries) {
-        loginItems.add(
-          LoginInfo(
-              id: item.key,
-              nickname: item.value['nickname'],
-              email: item.value['email'],
-              password: item.value['password']),
-        );
-      }
+      // 액세스 토큰 저장
+      await DioClient.setToken(authResponse.accessToken.token);
 
-      LoginInfo? loggedInUser;
-      for (final loginItem in loginItems) {
-        if (loginItem.email == _enteredEmail &&
-            loginItem.password == _enteredPassword) {
-          loggedInUser = loginItem;
-          break;
-        }
-      }
+      // 사용자 정보 요청
+      final userInfoResponse = await ApiService(DioClient.dio).getUserInfo();
 
-      if (loggedInUser != null) {
-        ref.read(loginInfoProvider.notifier).state = loggedInUser;
-        context.go('/home'); // HomeScreen으로 이동
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('아이디 비밀번호를 제대로 입력해주세요'),
-          ),
-        );
+      // JSON 응답을 LoginInfo 객체로 변환
+      final userInfo = userInfoResponse;
+
+      // 로그인 정보를 상태로 저장
+      ref.read(loginInfoProvider.notifier).state = userInfo;
+
+      // HomeScreen으로 이동
+      if (context.mounted) {
+        context.go('/home');
       }
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
