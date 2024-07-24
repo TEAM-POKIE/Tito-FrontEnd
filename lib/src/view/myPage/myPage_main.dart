@@ -228,43 +228,29 @@ class _MypageMainState extends ConsumerState<MypageMain> {
               title: '알림',
               onTap: () => context.go('/myalarm'),
             ),
-          ],
-          ),
-        ),
-        const SizedBox(
-          height: 10.0,
-        ),
-        const Divider(
-          thickness: 2,
-        ),
-        const SizedBox(height: 15.0),
-        const Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text(
-              '설정',
-              style: TextStyle(fontSize: 15),
+            const SizedBox(height: 10.0),
+            const Divider(thickness: 2),
+            const SizedBox(height: 15.0),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
+                  '설정',
+                  style: TextStyle(fontSize: 15),
+                ),
+              ),
             ),
-          ),
-        ),
-        const SizedBox(
-          height: 15.0,
-        ),
-        
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(20),
+            const SizedBox(height: 15.0),
+            _buildListTile(
+              context,
+              title: '비밀번호 수정',
+              onTap: () => context.go('/password'),
             ),
-            child: ListTile(
-              title: const Text('차단 리스트'),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () {
-                context.go('/myblock');
-              },
+            _buildListTile(
+              context,
+              title: '문의하기',
+              onTap: () => context.go('/contact'),
             ),
             _buildListTile(
               context,
@@ -277,6 +263,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
               onTap: () => showExitDialog(context),
             ),
             const SizedBox(height: 20),
+          ],
         ),
       ),
     );
