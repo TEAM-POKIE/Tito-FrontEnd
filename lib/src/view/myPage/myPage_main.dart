@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:dio/dio.dart';
 import 'package:tito_app/core/api/api_service.dart';
+import 'package:tito_app/core/constants/style.dart';
 
 class MypageMain extends ConsumerStatefulWidget {
   const MypageMain({super.key});
@@ -215,68 +216,63 @@ class _MypageMainState extends ConsumerState<MypageMain> {
             ),
             _buildListTile(
               context,
-              title: '내가 쓴 게시글',
-              onTap: () => context.go('/mylist'),
-            ),
-            _buildListTile(
-              context,
-              title: '좋아요',
-              onTap: () => context.go('/mylike'),
-            ),
-            _buildListTile(
-              context,
               title: '알림',
               onTap: () => context.go('/myalarm'),
             ),
-          ],
-          ),
-        ),
-        const SizedBox(
-          height: 10.0,
-        ),
-        const Divider(
-          thickness: 2,
-        ),
-        const SizedBox(height: 15.0),
-        const Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text(
-              '설정',
-              style: TextStyle(fontSize: 15),
+            const SizedBox(height: 10.0),
+            const Divider(thickness: 2),
+            const SizedBox(height: 15.0),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
+                  '설정',
+                  style: TextStyle(fontSize: 15),
+                ),
+              ),
             ),
-          ),
-        ),
-        const SizedBox(
-          height: 15.0,
-        ),
-        
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: ListTile(
-              title: const Text('차단 리스트'),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () {
-                context.go('/myblock');
-              },
+            const SizedBox(height: 15.0),
+            _buildListTile(
+              context,
+              title: '차단 리스트',
+              onTap: () => context.go('/myblock'),
             ),
             _buildListTile(
               context,
-              title: '로그아웃',
-              onTap: () {},
+              title: '비밀번호 변경',
+              onTap: () => context.go('/password'),
             ),
             _buildListTile(
               context,
-              title: '회원탈퇴',
-              onTap: () => showExitDialog(context),
+              title: '문의하기',
+              onTap: () => context.go('/contact'),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    '로그아웃',
+                    style: TextStyle(color: ColorSystem.grey),
+                  ),
+                ),
+                const Text(
+                  '|',
+                  style: TextStyle(color: ColorSystem.grey),
+                ),
+                TextButton(
+                    onPressed: () => showExitDialog(context),
+                    child: const Text(
+                      '회원탈퇴',
+                      style: TextStyle(color: ColorSystem.grey),
+                    )),
+              ],
             ),
             const SizedBox(height: 20),
+          ],
         ),
       ),
     );

@@ -29,7 +29,12 @@ class _MyDebateState extends ConsumerState<MyDebate> {
           children: [
             MyDebateFirstbody(),
             Expanded(
-              child: MyDebateScrollbody(),
+              child: Scrollbar(
+                thumbVisibility: true,
+                thickness: 8.0,
+                radius: Radius.circular(20.0),
+                child: MyDebateScrollbody(),
+              ),
             ),
           ],
         ),
