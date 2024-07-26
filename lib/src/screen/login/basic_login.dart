@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tito_app/core/constants/style.dart';
 
 class BasicLogin extends ConsumerStatefulWidget {
   const BasicLogin({super.key});
@@ -66,93 +69,136 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.arrow_back_ios),
+        ),
         title: const Text('로그인'),
+        titleTextStyle: FontSystem.KR16R,
+        centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                maxLength: 50,
-                keyboardType: TextInputType.emailAddress,
-                autocorrect: false,
-                decoration: const InputDecoration(
-                  label: Text('이메일'),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 105.h,
                 ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return '이메일을 입력해주세요';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _enteredEmail = value!;
-                },
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              TextFormField(
-                maxLength: 20,
-                decoration: const InputDecoration(
-                  label: Text('비밀번호'),
+                const Text(
+                  '이메일',
+                  style: FontSystem.KR20B,
                 ),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return '비밀번호를 입력해주세요';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _enteredPassword = value!;
-                },
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              ElevatedButton(
-                onPressed: _onLogin,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  minimumSize: const Size(300, 60),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                SizedBox(
+                  height: 12.h,
                 ),
-                child: const Text(
-                  '로그인',
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
+                TextFormField(
+                  maxLength: 50,
+                  keyboardType: TextInputType.emailAddress,
+                  autocorrect: false,
+                  decoration: const InputDecoration(
+                    hintText: '로그인 시 사용됩니다',
+                    hintStyle: TextStyle(
+                      color: ColorSystem.grey,
+                      fontSize: 16,
+                    ),
+                    //hintStyle:
+                  ),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return '이메일을 입력해주세요';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _enteredEmail = value!;
+                  },
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                    onPressed: _goSignUp,
+                SizedBox(
+                  height: 50.h,
+                ),
+                const Text(
+                  '비밀번호',
+                  style: FontSystem.KR20B,
+                ),
+                TextFormField(
+                  maxLength: 20,
+                  decoration: const InputDecoration(
+                    hintText: '비밀번호 (영문, 숫자 조합 8자 이상)',
+                    hintStyle: TextStyle(
+                      color: ColorSystem.grey,
+                      fontSize: 16,
+                    ),
+                  ),
+                  obscureText: true,
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return '비밀번호를 입력해주세요';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _enteredPassword = value!;
+                  },
+                ),
+                SizedBox(
+                  height: 50.h,
+                ),
+                Container(
+                  width: 350.w,
+                  height: 60.h,
+                  child: ElevatedButton(
+                    onPressed: _onLogin,
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.r),
+                      ),
+                      backgroundColor: Colors.black,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 149.w, vertical: 20.h),
+                    ),
                     child: const Text(
-                      '이메일로 가입',
+                      '로그인',
                       style: TextStyle(
-                          color: Color(0xff8E48F8),
+                          fontSize: 16,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold),
                     ),
                   ),
-                  const Text('|'),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      '비밀번호 찾기',
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 20.h,
                     ),
-                  ),
-                ],
-              ),
-            ],
+                    TextButton(
+                      onPressed: _goSignUp,
+                      child: const Text(
+                        '회원가입',
+                        style: TextStyle(
+                          color: ColorSystem.purple,
+                        ),
+                      ),
+                    ),
+                    const Text('|'),
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        '비밀번호 찾기',
+                        style: TextStyle(
+                          color: ColorSystem.grey,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                // SizedBox(height: 200.h),
+              ],
+            ),
           ),
         ),
       ),

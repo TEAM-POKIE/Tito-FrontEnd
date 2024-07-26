@@ -34,45 +34,51 @@ class LoginMain extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: ColorSystem.purple, // 배경색을 보라색으로 설정
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 32.w),
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset(
-                'assets/images/splashs.png',
-                width: MediaQuery.sizeOf(context).width * 0.4,
-              ),
-              const SizedBox(height: 40),
-              ...loginOptions.map((option) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(height: 146.h),
+            Image.asset(
+              'assets/images/splashs.png',
+              width: 162.w,
+              height: 127.29.h,
+            ),
+            SizedBox(height: 102.h),
+            ...loginOptions.map((option) {
+              return Padding(
+                padding: EdgeInsets.only(bottom: 12.h, left: 32.w, right: 32.w),
+                child: Container(
+                  width: 326.w,
+                  height: 60.h,
                   child: ElevatedButton.icon(
                     onPressed: () {},
                     icon: Image.asset(
                       option['image']!,
-                      width: 24,
-                      height: 24,
+                      width: 24.r,
+                      height: 24.r,
                     ),
                     label: Text(option['text']!),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xffA56DF9),
-                      foregroundColor: Colors.white,
-                      minimumSize: const Size(300, 60),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10), // 버튼 내부의 패딩 설정
+                      backgroundColor: ColorSystem.loginPurple,
+                      foregroundColor: ColorSystem.white,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 103.w, vertical: 18.h), // 버튼 내부의 패딩 설정
                       side: const BorderSide(color: ColorSystem.white),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                        borderRadius: BorderRadius.circular(20.r),
                       ),
-                      textStyle: FontSystem.KR16B,
+                      textStyle: FontSystem.KR16R,
                     ),
                   ),
-                );
-              }),
-              SizedBox(height: 12.h), // 버튼들 간의 간격 추가
-              ElevatedButton(
+                ),
+              );
+            }),
+            SizedBox(height: 10.h), // 버튼들 간의 간격 추가
+            Container(
+              width: 326.w,
+              height: 60.h,
+              child: ElevatedButton(
                 onPressed: goBasicLogin,
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
@@ -81,35 +87,35 @@ class LoginMain extends StatelessWidget {
                   backgroundColor: ColorSystem.black,
                   //minimumSize: const Size(300, 60),
                   padding: EdgeInsets.symmetric(
-                      horizontal: 103.w, vertical: 18.h), // 버튼 내부의 패딩 설정
+                      horizontal: 140.w, vertical: 17.h), // 버튼 내부의 패딩 설정
                 ),
                 child: Text(
                   '로그인',
-                  style: FontSystem.KR18B.copyWith(color: ColorSystem.white),
+                  style: FontSystem.KR16B.copyWith(color: ColorSystem.white),
                 ),
               ),
-              SizedBox(height: 64.h), // 버튼들 간의 간격 추가
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    '아직 회원이 아니신가요?',
-                    style: FontSystem.KR14R,
-                  ),
-                  TextButton(
-                    onPressed: goSignuUp,
-                    child: Text(
-                      '회원가입',
-                      style: FontSystem.KR14B.copyWith(
-                        decoration: TextDecoration.underline,
-                      ),
+            ),
+            SizedBox(height: 64.h), // 버튼들 간의 간격 추가
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  '아직 회원이 아니신가요?',
+                  style: FontSystem.KR14R,
+                ),
+                TextButton(
+                  onPressed: goSignuUp,
+                  child: Text(
+                    '회원가입',
+                    style: FontSystem.KR14B.copyWith(
+                      decoration: TextDecoration.underline,
                     ),
                   ),
-                ],
-              ),
-              SizedBox(height: 50.h)
-            ],
-          ),
+                ),
+              ],
+            ),
+            SizedBox(height: 16.h)
+          ],
         ),
       ),
     );
