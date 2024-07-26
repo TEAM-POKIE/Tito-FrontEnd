@@ -52,13 +52,13 @@ class LoadingAppbar extends StatelessWidget {
 }
 
 class DebateAppbar extends ConsumerWidget {
-  final ChatViewModel chatViewModel;
+  final ChatViewModel? chatViewModel;
   final String title;
   final String? notiIcon;
 
   const DebateAppbar({
     super.key,
-    required this.chatViewModel,
+    this.chatViewModel,
     required this.title,
     this.notiIcon,
   });
@@ -80,7 +80,7 @@ class DebateAppbar extends ConsumerWidget {
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
         onPressed: () {
-          chatViewModel.back(context);
+          chatViewModel!.back(context);
         },
       ),
       actions: [

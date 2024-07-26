@@ -28,9 +28,6 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
     if (loginInfo == null || chatState.debateData == null) {
       return;
     }
-
-    final isMyNick = chatState.debateData!['myNick'] == loginInfo.nickname;
-
     if (loginInfo.nickname != chatState.debateData!['myNick']) {
       if (chatState.debateData!['opponentTurn'] == 0) {
         popupState.buttonStyle = 1;
@@ -67,9 +64,6 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
     final loginInfo = ref.watch(loginInfoProvider);
     final chatState = ref.watch(chatProviders(widget.id));
     final chatViewModel = ref.read(chatProviders(widget.id).notifier);
-    final timerState = ref.read(timerProvider.notifier);
-    final popupViewmodel = ref.read(popupProvider.notifier);
-    final popupState = ref.watch(popupProvider);
 
     if (chatState.debateData == null || loginInfo == null) {
       return const SizedBox.shrink();

@@ -48,9 +48,7 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
     if (chatState.debateData!['myNick'] == loginInfo.nickname) {
       switch (chatState.debateData!['myTurn']) {
         case 0:
-          return _text(
-            chatState: chatState,
-          );
+          return firstText();
 
         case 1:
           if (chatState.debateData!['opponentTurn'] <
@@ -132,26 +130,27 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
   }
 }
 
-class _text extends StatelessWidget {
-  final ChatState chatState;
-
-  const _text({required this.chatState});
-
+class firstText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: DefaultTextStyle(
-        textAlign: TextAlign.center,
-        style: FontSystem.KR12B.copyWith(color: ColorSystem.purple),
-        child: AnimatedTextKit(
-          repeatForever: true,
-          animatedTexts: [
-            FadeAnimatedText(
-              '토론방이 개설되려면 당신의 첫 입론이 필요합니다.\n입론을 작성해주세요!',
-              textAlign: TextAlign.center,
-            ),
-          ],
+    return Container(
+      color: ColorSystem.ligthGrey,
+      width: MediaQuery.sizeOf(context).width,
+      height: 50,
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: DefaultTextStyle(
+          textAlign: TextAlign.center,
+          style: FontSystem.KR12B.copyWith(color: ColorSystem.purple),
+          child: AnimatedTextKit(
+            repeatForever: true,
+            animatedTexts: [
+              FadeAnimatedText(
+                '토론방이 개설되려면 당신의 첫 입론이 필요합니다.\n입론을 작성해주세요!',
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );
