@@ -28,16 +28,13 @@ class _BottomBarState extends ConsumerState<BottomBar> {
         case 1:
           context.go('/list');
           break;
-        case 4:
-          context.go('/free');
-          break;
       }
-    }
+    } 
   }
 
   @override
   Widget build(BuildContext context) {
-    final selectedIndex = ref.watch(selectedIndexProvider.notifier).state;
+    final selectedIndex = ref.watch(selectedIndexProvider);
     return BottomNavigationBar(
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
@@ -45,7 +42,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
             'assets/images/bottombar/home.png',
             width: 24,
             height: 24,
-            color: selectedIndex == 0 ? Colors.black : null,
+            color: selectedIndex == 0 ? Colors.black : Colors.grey,
           ),
           label: '홈',
         ),
@@ -54,7 +51,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
             'assets/images/bottombar/list.png',
             width: 24,
             height: 24,
-            color: selectedIndex == 1 ? Colors.black : null,
+            color: selectedIndex == 1 ? Colors.black : Colors.grey,
           ),
           label: '리스트',
         ),
@@ -74,24 +71,11 @@ class _BottomBarState extends ConsumerState<BottomBar> {
           ),
           label: 'AI 주제',
         ),
-        BottomNavigationBarItem(
-          icon: Image.asset(
-            selectedIndex == 4
-                ? 'assets/images/bottombar/board_select.png'
-                : 'assets/images/bottombar/board.png',
-            width: 24,
-            height: 24,
-          ),
-          label: '게시판',
-        ),
       ],
       currentIndex: selectedIndex,
       onTap: _onItemTapped,
       type: BottomNavigationBarType.fixed,
-      selectedItemColor:
-          (selectedIndex == 0 || selectedIndex == 1 || selectedIndex == 4)
-              ? Colors.black
-              : Colors.grey,
+      selectedItemColor:Colors.black,
       unselectedItemColor: Colors.grey,
     );
   }

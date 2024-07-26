@@ -53,6 +53,19 @@ dependencies:
   speech_balloon: ^0.0.4
   sliding_up_panel: ^2.0.0+1
   pull_to_refresh: ^2.0.0
+  flutter_screenutil: ^5.9.3
+  flutter_native_splash: ^2.4.1
+  animated_splash_screen: ^1.3.0
+  image_picker: ^1.1.2
+  flutter_launcher_icons: ^0.13.1
+  showcaseview: ^3.0.0
+  dio: ^5.5.0+1
+  retrofit: ^4.1.0
+  json_annotation: ^4.9.0
+  build_runner: ^2.4.11
+  retrofit_generator: ^8.1.2
+  json_serializable: ^6.8.0
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:
@@ -81,16 +94,14 @@ flutter:
     - assets/images/kakao.png
     - assets/images/google.png
     - assets/images/apple.png
-    - assets/images/notification.png
     - assets/images/hotlist.png
     - assets/images/mypage.png
     - assets/images/bottombar/ai.png
-    - assets/images/bottombar/board.png
     - assets/images/bottombar/create.png
     - assets/images/bottombar/home.png
     - assets/images/bottombar/list.png
-    - assets/images/bottombar/board_select.png
     - assets/images/ai_purple.png
+    - assets/images/alarm_none.png
     - assets/images/alarm.png
     - assets/images/sendArrow.png
     - assets/images/timingBell.png
@@ -105,7 +116,15 @@ flutter:
     - assets/images/detailChatIcon.png
     - assets/images/popupTimingBell.png
     - assets/images/changeprofile.png
-
+    - assets/images/ep_arrow-down.png
+    - assets/images/ep_arrow-up.png
+    - assets/images/livefire.png
+    - assets/images/debateAlarm.png
+    - assets/images/debatePopUpAlarm.png
+    - assets/images/ruleBookIcon.png
+    - assets/images/splash.png
+    - assets/images/splashs.png
+    - assets/images/LogoIcon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

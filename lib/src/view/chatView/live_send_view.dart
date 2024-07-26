@@ -15,6 +15,8 @@ class LiveSendView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final liveCommentViewModel = ref.read(liveCommentProvider(roomId).notifier);
+    final liveState = ref.read(liveCommentProvider(roomId));
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
@@ -43,6 +45,7 @@ class LiveSendView extends ConsumerWidget {
           const SizedBox(width: 8),
           IconButton(
             onPressed: () {
+              liveState.userNickname = username;
               liveCommentViewModel
                   .sendMessage(liveCommentViewModel.controller.text);
               liveCommentViewModel.controller.clear();

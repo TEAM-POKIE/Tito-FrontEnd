@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tito_app/core/constants/style.dart';
 
 class LoginMain extends StatelessWidget {
   const LoginMain({super.key});
@@ -30,94 +31,79 @@ class LoginMain extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xff8E48F8), // AppBar 배경색 설정
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.arrow_back),
-        ),
-      ),
       backgroundColor: const Color(0xff8E48F8), // 배경색을 보라색으로 설정
-      body: Container(
-        decoration: const BoxDecoration(
-          color: Color(0xff8E48F8), // 배경색을 보라색으로 설정
-        ),
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ...loginOptions.map((option) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: ElevatedButton.icon(
-                    onPressed: () {},
-                    icon: Image.asset(
-                      option['image']!,
-                      width: 24,
-                      height: 24,
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(
+              'assets/images/splashs.png',
+              width: MediaQuery.sizeOf(context).width * 0.4,
+            ),
+            const SizedBox(height: 40),
+            ...loginOptions.map((option) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: ElevatedButton.icon(
+                  onPressed: () {},
+                  icon: Image.asset(
+                    option['image']!,
+                    width: 24,
+                    height: 24,
+                  ),
+                  label: Text(option['text']!),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xffA56DF9),
+                    foregroundColor: Colors.white,
+                    minimumSize: const Size(300, 60),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10), // 버튼 내부의 패딩 설정
+                    side: const BorderSide(color: ColorSystem.white),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
                     ),
-                    label: Text(option['text']!),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          Colors.white.withOpacity(0.2), // 투명 흰색 배경 설정
-                      foregroundColor: Colors.black,
-                      minimumSize: const Size(300, 60),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10), // 버튼 내부의 패딩 설정
-                      side: const BorderSide(color: Colors.white),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      textStyle: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    textStyle: FontSystem.KR16B,
+                  ),
+                ),
+              );
+            }),
+            const SizedBox(height: 20), // 버튼들 간의 간격 추가
+            ElevatedButton(
+              onPressed: goBasicLogin,
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                backgroundColor: Colors.black,
+                minimumSize: const Size(300, 60),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20, vertical: 10), // 버튼 내부의 패딩 설정
+              ),
+              child: Text(
+                '로그인',
+                style: FontSystem.KR18B.copyWith(color: ColorSystem.white),
+              ),
+            ),
+            const SizedBox(height: 10), // 버튼들 간의 간격 추가
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  '아직 회원이 아니신가요?',
+                  style: FontSystem.KR14R,
+                ),
+                TextButton(
+                  onPressed: goSignuUp,
+                  child: Text(
+                    '회원가입',
+                    style: FontSystem.KR14B.copyWith(
+                      decoration: TextDecoration.underline,
                     ),
                   ),
-                );
-              }),
-              const SizedBox(height: 20), // 버튼들 간의 간격 추가
-              ElevatedButton(
-                onPressed: goBasicLogin,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  minimumSize: const Size(300, 60),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 10), // 버튼 내부의 패딩 설정
-                  textStyle: const TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ), // 텍스트 스타일 설정
                 ),
-                child: const Text(
-                  '로그인',
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('아직 회원이 아니신가요?'),
-                  TextButton(
-                    onPressed: goSignuUp,
-                    child: const Text(
-                      '회원가입',
-                      style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+              ],
+            ),
+          ],
         ),
       ),
     );

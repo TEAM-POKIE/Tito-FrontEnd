@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tito_app/src/view/myPage/my_like_appbar.dart';
+import 'package:tito_app/src/view/myPage/my_like_scrollbody.dart';
 
 
 class MyLike extends ConsumerWidget {
@@ -8,30 +10,13 @@ class MyLike extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            context.go('/mypage');
-          },
-          icon: const Icon(Icons.arrow_back_ios),
+    return const ProviderScope(
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(80.0),
+          child: MyLikeAppbar(),
         ),
-        title: const Text(
-          '좋아요',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-      ),
-      body: const SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 30.0),
-            Stack(
-              children: [
-              ],
-            ),
-          ],
-        ),
+        body: MyLikeScrollbody(),
       ),
     );
   }

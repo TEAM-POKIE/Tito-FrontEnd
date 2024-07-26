@@ -7,7 +7,8 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/src/data/models/types.dart' as types;
-import 'package:tito_app/core/constants/api_path.dart';
+import 'package:tito_app/core/api/api_service.dart';
+import 'package:tito_app/core/api/dio_client.dart';
 
 class ChatState {
   final List<types.Message> messages;
@@ -52,6 +53,7 @@ class ChatViewModel extends StateNotifier<ChatState> {
 
   late WebSocketChannel channel;
   late StreamController<List<types.Message>> _messagesController;
+  final ApiService apiService = ApiService(DioClient.dio);
 
   ChatViewModel(this.ref, String roomId) : super(ChatState(roomId: roomId)) {
     _messagesController = StreamController<List<types.Message>>.broadcast();
@@ -61,7 +63,8 @@ class ChatViewModel extends StateNotifier<ChatState> {
   Stream<List<types.Message>> get messagesStream => _messagesController.stream;
 
   void init() {
-    channel = WebSocketChannel.connect(Uri.parse('ws://localhost:4040/ws'));
+    channel = WebSocketChannel.connect(
+        Uri.parse('ws://192.168.1.6:4040/ws/${state.roomId}'));
     channel.stream.listen(_onReceiveMessage);
 
     fetchDebateData();
@@ -95,6 +98,18 @@ class ChatViewModel extends StateNotifier<ChatState> {
 
   void _onReceiveMessage(dynamic message) {
     final decodedMessage = json.decode(message);
+
+    if (decodedMessage['type'] == 'turnUpdate') {
+      state = state.copyWith(
+        debateData: {
+          ...state.debateData!,
+          'myTurn': decodedMessage['myTurn'],
+          'opponentTurn': decodedMessage['opponentTurn'],
+        },
+      );
+      return;
+    }
+
     final chatMessage = types.TextMessage(
       author: types.User(id: decodedMessage['senderId'] ?? ''),
       createdAt:
@@ -114,7 +129,7 @@ class ChatViewModel extends StateNotifier<ChatState> {
   Future<void> _fetchMessages() async {
     try {
       print('Fetching messages...');
-      final data = await ApiService.getData('chat_list/${state.roomId}');
+      final data = await apiService.getData('chat_list/${state.roomId}');
       if (data != null) {
         final loadedMessages = <types.Message>[];
         data.forEach((key, value) {
@@ -145,7 +160,7 @@ class ChatViewModel extends StateNotifier<ChatState> {
 
   Future<void> fetchDebateData() async {
     try {
-      final data = await ApiService.getData('debate_list/${state.roomId}');
+      final data = await apiService.getData('debate_list/${state.roomId}');
 
       if (data != null) {
         state = state.copyWith(
@@ -173,11 +188,11 @@ class ChatViewModel extends StateNotifier<ChatState> {
 
       if (loginInfo.nickname == debateData['myNick']) {
         patchDate = ++debateData['myTurn'];
-        await ApiService.patchData(
-            'debate_list/${state.roomId}', {'myTurn': patchDate});
+        await apiService
+            .patchData('debate_list/${state.roomId}', {'myTurn': patchDate});
       } else {
         patchDate = ++debateData['opponentTurn'];
-        await ApiService.patchData(
+        await apiService.patchData(
             'debate_list/${state.roomId}', {'opponentTurn': patchDate});
       }
 
@@ -188,7 +203,12 @@ class ChatViewModel extends StateNotifier<ChatState> {
       };
 
       controller.clear();
-      channel.sink.add(json.encode(newMessage));
+      channel.sink.add(json.encode({
+        ...newMessage,
+        'type': 'message',
+        'myTurn': debateData['myTurn'],
+        'opponentTurn': debateData['opponentTurn'],
+      }));
 
       final updatedMessages = [
         ...state.messages,
@@ -211,7 +231,7 @@ class ChatViewModel extends StateNotifier<ChatState> {
         'text': newMessage['text'] ?? '',
         'timestamp': newMessage['timestamp'],
       };
-      await ApiService.postData('chat_list/${state.roomId}', chatData);
+      await apiService.postData('chat_list/${state.roomId}', chatData);
     }
   }
 

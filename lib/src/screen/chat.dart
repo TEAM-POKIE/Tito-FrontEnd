@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:tito_app/core/constants/api_path.dart';
+import 'package:tito_app/core/api/api_path.dart';
+import 'package:tito_app/core/api/api_service.dart';
+import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_state_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
@@ -37,7 +39,7 @@ class _ChatState extends ConsumerState<Chat> {
     super.initState();
     // WebSocket 서버와 연결 설정
     channel = WebSocketChannel.connect(
-        Uri.parse('ws://localhost:4040/ws/${widget.id}'));
+        Uri.parse('ws://192.168.1.6:4040/ws/${widget.id}'));
 
     // WebSocket 서버로부터 메시지를 받을 때마다 상태 업데이트
     channel.stream.listen((message) {
@@ -54,7 +56,8 @@ class _ChatState extends ConsumerState<Chat> {
   }
 
   Future<void> _fetchInitialData() async {
-    final data = await ApiService.getData('debate_list/${widget.id}');
+    final apiService = ApiService(DioClient.dio);
+    final data = await apiService.getData('debate_list/${widget.id}');
     if (data != null && data.containsKey('myNick')) {
       setState(() {
         myNick = data['myNick'];
@@ -116,7 +119,7 @@ class _BasicDebate extends StatelessWidget {
   }
 }
 
-class _LiveComment extends StatelessWidget {
+class _LiveComment extends StatefulWidget {
   final LoginInfo loginInfo;
   final ChatState chatState;
   final String id;
@@ -129,35 +132,76 @@ class _LiveComment extends StatelessWidget {
   });
 
   @override
+  State<_LiveComment> createState() => _LiveCommentState();
+}
+
+class _LiveCommentState extends State<_LiveComment> {
+  bool xIcon = false;
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(80.0),
-        child: ChatAppbar(id: id), // id 전달
+        child: ChatAppbar(id: widget.id), // id 전달
       ),
       body: SlidingUpPanel(
+        onPanelSlide: (position) {
+          setState(() {
+            xIcon = position > 0.3;
+          });
+        },
+
         header: Container(
-          width: MediaQuery.of(context).size.width - 40,
+          decoration: const BoxDecoration(
+            border: Border(
+              bottom: BorderSide(color: ColorSystem.grey, width: 1.0),
+            ),
+          ),
+          width: MediaQuery.of(context).size.width,
           alignment: Alignment.center,
           padding: const EdgeInsets.all(8.0),
-          child: const Text(
-            '방청객 실시간 댓글',
-            style: FontSystem.KR20B,
-            textAlign: TextAlign.center,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              xIcon
+                  ? const SizedBox(
+                      width: 40,
+                    )
+                  : const SizedBox(
+                      width: 0,
+                    ),
+              const Text(
+                '방청객 실시간 댓글',
+                style: FontSystem.KR20B,
+                textAlign: TextAlign.center,
+              ),
+              xIcon
+                  ? IconButton(
+                      icon: const Icon(
+                        Icons.close,
+                        color: Colors.grey,
+                      ),
+                      onPressed: () {
+                        widget._panelController.close();
+                      },
+                    )
+                  : const SizedBox(width: 0),
+            ],
           ),
         ),
-        controller: _panelController,
-        panelBuilder: (scrollController) => LiveComment(
-          username: loginInfo.nickname,
-          id: id,
-          scrollController: scrollController,
+        controller: widget._panelController,
+        panelBuilder: (scrollController) => Container(
+          margin: const EdgeInsets.only(top: 70.0), // 상단 마진 추가
+          child: LiveComment(
+            username: widget.loginInfo.nickname,
+            id: widget.id,
+            scrollController: scrollController,
+          ),
         ),
         body: GestureDetector(
-          onTap: () {
-            _panelController.close();
-          },
-          child: ChatBody(id: id),
+          child: ChatBody(id: widget.id),
         ),
         backdropEnabled: true,
         backdropOpacity: 0.5,

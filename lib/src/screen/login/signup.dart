@@ -1,8 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:http/http.dart' as http;
+import 'package:tito_app/core/api/api_service.dart';
+import 'package:tito_app/core/api/dio_client.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -22,25 +21,23 @@ class _SignUpState extends State<Signup> {
   void _onSignUp() async {
     final isVaild = _formKey.currentState!.validate();
     _formKey.currentState!.save();
-    final url = Uri.https(
-        'pokeeserver-default-rtdb.firebaseio.com', 'login_id_list.json');
-
     if (isVaild) {
-      final response = await http.post(url,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: json.encode({
-            'nickname': _nickname,
-            'email': _email,
-            'password': _password,
-          }));
+      final signUpData = {
+        'nickname': _nickname,
+        'email': _email,
+        'password': _password,
+        'role': 'user',
+      };
 
-      if (!context.mounted) {
-        return;
+      final apiService = ApiService(DioClient.dio);
+
+      try {
+        await apiService.signUp(signUpData);
+        context.pop();
+      } catch (e) {
+        print('Failed to sign up: $e');
+        // Handle error here, e.g., show a message to the user
       }
-
-      context.pop();
     }
   }
 
@@ -118,6 +115,9 @@ class _SignUpState extends State<Signup> {
                 onPressed: _onSignUp,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
                   minimumSize: const Size(300, 60),
                   padding: const EdgeInsets.symmetric(
                       horizontal: 20, vertical: 10), // 버튼 내부의 패딩 설정

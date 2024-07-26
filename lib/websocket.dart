@@ -1,10 +1,9 @@
 import 'dart:io';
 
 void main() {
-  // 웹 소켓 서버 포트 설정
   const int port = 4040;
-  HttpServer.bind('localhost', port).then((HttpServer server) {
-    print('WebSocket listening at ws://localhost:$port');
+  HttpServer.bind(InternetAddress.anyIPv4, port).then((HttpServer server) {
+    print('WebSocket listening at ws://0.0.0.0:$port');
     final Map<String, List<WebSocket>> chatRooms = {};
 
     server.listen((HttpRequest request) {

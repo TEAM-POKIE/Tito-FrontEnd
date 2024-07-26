@@ -3,8 +3,9 @@ import 'package:web_socket_channel/status.dart' as status;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final webSocketProvider = Provider<WebSocketService>((ref) {
-  return WebSocketService('ws://localhost:4040/ws');
+final webSocketProvider =
+    Provider.family<WebSocketService, String>((ref, chatRoomId) {
+  return WebSocketService('ws://192.168.1.6:4040/ws/$chatRoomId');
 });
 
 class WebSocketService {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:tito_app/src/data/models/list_info.dart';
-import 'package:tito_app/core/constants/api_path.dart';
+import 'package:tito_app/core/api/api_service.dart';
+import 'package:tito_app/core/api/dio_client.dart';
 
 // State class
 class HomeState {
@@ -39,13 +39,14 @@ class HomeState {
 }
 
 // StateNotifier class
-class HomeViewmodel extends StateNotifier<HomeState> {
-  HomeViewmodel() : super(HomeState()) {
+class HomeViewModel extends StateNotifier<HomeState> {
+  HomeViewModel() : super(HomeState()) {
     _init();
   }
 
   final PageController _controller = PageController();
   PageController get controller => _controller;
+  final ApiService apiService = ApiService(DioClient.dio);
 
   Future<void> _init() async {
     await fetchTitles();
@@ -62,10 +63,10 @@ class HomeViewmodel extends StateNotifier<HomeState> {
 
   Future<void> fetchTitles() async {
     try {
-      final response = await ApiService.getData('live_debate_list');
+      final response = await apiService.getData('live_debate_list');
 
       final List<ListBanner> loadedItems = [];
-      for (final item in response!.entries) {
+      for (final item in response.entries) {
         loadedItems.add(
           ListBanner(
             id: item.key,
@@ -91,10 +92,10 @@ class HomeViewmodel extends StateNotifier<HomeState> {
 
   Future<void> hotList() async {
     try {
-      final response = await ApiService.getData('hot_debate_list');
+      final response = await apiService.getData('hot_debate_list');
 
       final List<HotList> hotItems = [];
-      for (final item in response!.entries) {
+      for (final item in response.entries) {
         hotItems.add(
           HotList(
             id: item.key,

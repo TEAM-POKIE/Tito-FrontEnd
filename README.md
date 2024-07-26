@@ -9,7 +9,11 @@
 Stack 위젯 사용 시, 위젯들을 쌓아서 위치시키기 위해 Container를 지정하며 각 Container의 크기를 지정해 위젯들을 배치해 주는데 이 부분을 까먹음 !
 
 ## Flutter의 상태관리 : Riverpod
-- 상태관리 : 변경되는 뎅터를 관리하는 것
+플러터에서 말하는 상태는 2가지 의미를 가지고 있다.
+1. UI에 변화를 주는 데이터
+2. 위의 데이터를 관리하기 위해 만들어진 State class
+
+
 - Flutter 같은 선언형 framework는 UI를 변경하기 위해 위젯을 다시 빌드해야 한다. 따라서, 위젯을 update 하는 방법이 중요하다.
 
 - createState() 를 호출해 상태를 별도의 State 클래스에 저장함
@@ -32,3 +36,5 @@ Stack 위젯 사용 시, 위젯들을 쌓아서 위치시키기 위해 Container
 1. 화면의 크기에 맞춰 위젯 크기 동적으로 조정하기
   - 다양한 크기의 화면에서 일관된 UI 제공가능
 ```MediaQuery.of(context).size.width & MediaQuery.of(context).size.height```
+
+

@@ -27,6 +27,7 @@ class MypageAppbar extends ConsumerWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
+      centerTitle: true, // 타이틀 중앙 정렬
     );
   }
 }
