@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tito_app/core/provider/debate_provider.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:tito_app/core/provider/debate_create_provider.dart';
 
 class DebateCreateSecond extends ConsumerStatefulWidget {
   const DebateCreateSecond({super.key});
@@ -16,68 +13,24 @@ class DebateCreateSecond extends ConsumerStatefulWidget {
 
 class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
   final _formKey = GlobalKey<FormState>();
-  var myArguments = '';
-  var opponentArguments = '';
-
-  Future<String> _createDebateRoom() async {
-    final debateInfo = ref.read(debateInfoProvider);
-
-    final loginInfo = ref.read(loginInfoProvider);
-    final url = Uri.https(
-        'pokeeserver-default-rtdb.firebaseio.com', 'debate_list.json');
-    final response = await http.post(url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: json.encode({
-          'title': debateInfo?.title ?? '',
-          'category': debateInfo?.category ?? '',
-          'myArgument': debateInfo?.myArgument ?? '',
-          'myNick': loginInfo?.nickname ?? '',
-          'turnId': '',
-          'opponentArgument': debateInfo?.opponentArgument ?? '',
-          'opponentNick': debateInfo?.opponentNick ?? '',
-          'debateState': debateInfo?.debateState ?? '',
-          'timestamp': DateTime.now().toIso8601String(),
-          'myTurn': 0,
-          'opponentTurn': 0,
-        }));
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      return data['name']; // Firebase는 새로 생성된 리소스의 키를 'name' 필드로 반환합니다.
-    } else {
-      throw Exception('Failed to create debate room');
-    }
-  }
-
-  void _navigateToChat(BuildContext context) async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
-
-    _formKey.currentState!.save();
-    final loginInfo = ref.read(loginInfoProvider);
-
-    ref.read(debateInfoProvider.notifier).updateDebateInfo(
-          myArgument: myArguments,
-          opponentArgument: opponentArguments,
-          myNick: loginInfo!.nickname,
-        );
-
-    try {
-      final newChatId = await _createDebateRoom();
-      final debateInfo = ref.read(debateInfoProvider);
-      context.push('/chat/$newChatId');
-    } catch (e) {
-      print('Error creating debate room: $e');
-      // Handle error appropriately
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    final debateInfo = ref.watch(debateInfoProvider);
+    final debateViewModel = ref.read(debateCreateProvider.notifier);
+    final debateState = ref.watch(debateCreateProvider);
+
+    void _nextCreate(BuildContext context) async {
+      if (!debateViewModel.validateForm(_formKey)) {
+        return;
+      }
+
+      debateViewModel.saveForm(_formKey);
+
+      if (!context.mounted) return;
+
+      context.push('/debate_create_third');
+    }
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus(); // 키보드 내리기
@@ -116,7 +69,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                 children: [
                   const SizedBox(height: 10),
                   Text(
-                    debateInfo?.title ?? '',
+                    debateState.title,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 20),
                   ),
@@ -143,9 +96,9 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                       }
                       return null;
                     },
-                    onSaved: (value) {
-                      myArguments = value!;
-                    },
+                    // onSaved: (value) {
+                    //   debateViewModel.updateMyArgument(value ?? '');
+                    // },
                   ),
                   const SizedBox(height: 20),
                   const Text(
@@ -170,9 +123,9 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                       }
                       return null;
                     },
-                    onSaved: (value) {
-                      opponentArguments = value!;
-                    },
+                    // onSaved: (value) {
+                    //   debateViewModel.updateOpponentArgument(value ?? '');
+                    // },
                   ),
                   const SizedBox(height: 20),
                 ],
@@ -185,7 +138,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
           child: SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () => _navigateToChat(context),
+              onPressed: () => _nextCreate(context),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xff8E48F8),
                 shape: RoundedRectangleBorder(
