@@ -4,6 +4,9 @@ import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
 class BasicLogin extends ConsumerStatefulWidget {
   const BasicLogin({super.key});
@@ -27,28 +30,27 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
     _formKey.currentState!.save();
 
     try {
-      // 로그인 요청
+      // & Phase 1. 백엔드에 로그인 요청
       final authResponse = await ApiService(DioClient.dio).signIn({
         'email': _enteredEmail,
         'password': _enteredPassword,
       });
 
-      // 액세스 토큰 저장
+      // & Phase 2. 수신한 Access, Refresh Token 시큐어 스토리지에 저장
       await DioClient.setToken(authResponse.accessToken.token);
+      await secureStorage.write(
+          key: 'API_ACCESS_TOKEN', value: authResponse.accessToken.token);
+      await secureStorage.write(
+          key: 'API_REFRESH_TOKEN', value: authResponse.refreshToken.token);
 
-      // 사용자 정보 요청
+      // & Phase 3. 해당 토큰으로 사용자 Detail Data 요청
       final userInfoResponse = await ApiService(DioClient.dio).getUserInfo();
-
-      // JSON 응답을 LoginInfo 객체로 변환
       final userInfo = userInfoResponse;
-
-      // 로그인 정보를 상태로 저장
       ref.read(loginInfoProvider.notifier).state = userInfo;
 
-      // HomeScreen으로 이동
-      if (context.mounted) {
-        context.go('/home');
-      }
+      // & Phase 4. HomeScreen으로 이동
+      if (!context.mounted) return;
+      context.go('/home');
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
