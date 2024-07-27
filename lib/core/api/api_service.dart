@@ -35,8 +35,6 @@ abstract class ApiService {
   @PATCH("users/{id}")
   Future<void> updateUserProfile(
       @Path("id") int id, @Body() Map<String, dynamic> data);
-  @POST("/debates")
-  Future<AuthResponse> signIn(@Body() Map<String, dynamic> loginData);
 
   @GET("/debates")
   Future<List<Debate>> getDebateList();

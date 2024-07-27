@@ -31,7 +31,7 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
     final loginInfo = ref.watch(loginInfoProvider);
     final timerState = ref.watch(timerProvider); // 타이머 상태
 
-    if (chatState.debateData == null || loginInfo == null) {
+    if (loginInfo == null) {
       return const SizedBox.shrink();
     }
 
@@ -43,80 +43,86 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
     }
 
     String remainingTime = formatDuration(timerState.remainingTime);
+    return _detailState(
+      chatState: chatState,
+      upImage: 'assets/images/detailChatIcon.png',
+      upTitle: '상대 반론자를 찾는 중이에요 !',
+      downTitle: '⏳ 00:00 토론 시작 전',
+    );
 
-    if (chatState.debateData!['myNick'] == loginInfo.nickname) {
-      switch (chatState.debateData!['myTurn']) {
-        case 1:
-          if (chatState.debateData!['opponentTurn'] <
-              chatState.debateData!['myTurn']) {
-            return _detailState(
-              chatState: chatState,
-              upImage: 'assets/images/detailChatIcon.png',
-              upTitle: '상대 반론자를 찾는 중이에요 !',
-            );
-          }
-          return _detailState(
-            chatState: chatState,
-            upImage: 'assets/images/detailChatIcon.png',
-            upTitle: '${chatState.debateData!['myNick']}님의 반론 타임이에요',
-            downTitle: '⏳ $remainingTime 남았어요!',
-          );
-        default:
-          if (chatState.debateData!['opponentTurn'] ==
-              chatState.debateData!['myTurn']) {
-            return _detailState(
-              chatState: chatState,
-              upImage: 'assets/images/detailChatIcon.png',
-              upTitle: '${chatState.debateData!['myNick']}님의 반론 타임이에요',
-              downTitle: '⏳ $remainingTime 남았어요!',
-            );
-          } else {
-            return _detailState(
-              chatState: chatState,
-              upImage: 'assets/images/detailChatIcon.png',
-              upTitle: '상대 반론 타임이에요!',
-              downTitle: '⏳ $remainingTime 남았어요!',
-            );
-          }
-      }
-    } else if (chatState.debateData!['opponentNick'] == '' ||
-        chatState.debateData!['opponentNick'] == loginInfo.nickname) {
-      switch (chatState.debateData!['opponentTurn']) {
-        case 0:
-          return _detailState(
-            chatState: chatState,
-            upImage: 'assets/images/chatCuteIcon.png',
-            downImage: 'assets/images/chatCuteIconPurple.png',
-            upTitle: '상대의 의견 : ${chatState.debateData!['myArgument']}',
-            downTitle: '당신의 의견 : ${chatState.debateData!['opponentArgument']}',
-          );
+    //   if (chatState.debateData!['myNick'] == loginInfo.nickname) {
+    //     switch (chatState.debateData!['myTurn']) {
+    //       case 1:
+    //         if (chatState.debateData!['opponentTurn'] <
+    //             chatState.debateData!['myTurn']) {
+    //           return _detailState(
+    //             chatState: chatState,
+    //             upImage: 'assets/images/detailChatIcon.png',
+    //             upTitle: '상대 반론자를 찾는 중이에요 !',
+    //           );
+    //         }
+    //         return _detailState(
+    //           chatState: chatState,
+    //           upImage: 'assets/images/detailChatIcon.png',
+    //           upTitle: '${chatState.debateData!['myNick']}님의 반론 타임이에요',
+    //           downTitle: '⏳ $remainingTime 남았어요!',
+    //         );
+    //       default:
+    //         if (chatState.debateData!['opponentTurn'] ==
+    //             chatState.debateData!['myTurn']) {
+    //           return _detailState(
+    //             chatState: chatState,
+    //             upImage: 'assets/images/detailChatIcon.png',
+    //             upTitle: '${chatState.debateData!['myNick']}님의 반론 타임이에요',
+    //             downTitle: '⏳ $remainingTime 남았어요!',
+    //           );
+    //         } else {
+    //           return _detailState(
+    //             chatState: chatState,
+    //             upImage: 'assets/images/detailChatIcon.png',
+    //             upTitle: '상대 반론 타임이에요!',
+    //             downTitle: '⏳ $remainingTime 남았어요!',
+    //           );
+    //         }
+    //     }
+    //   } else if (chatState.debateData!['opponentNick'] == '' ||
+    //       chatState.debateData!['opponentNick'] == loginInfo.nickname) {
+    //     switch (chatState.debateData!['opponentTurn']) {
+    //       case 0:
+    //         return _detailState(
+    //           chatState: chatState,
+    //           upImage: 'assets/images/chatCuteIcon.png',
+    //           downImage: 'assets/images/chatCuteIconPurple.png',
+    //           upTitle: '상대의 의견 : ${chatState.debateData!['myArgument']}',
+    //           downTitle: '당신의 의견 : ${chatState.debateData!['opponentArgument']}',
+    //         );
 
-        default:
-          if (chatState.debateData!['opponentTurn'] ==
-              chatState.debateData!['myTurn']) {
-            return _detailState(
-              chatState: chatState,
-              upImage: 'assets/images/detailChatIcon.png',
-              upTitle: '상대 반론 타임이에요!',
-              downTitle: '⏳ $remainingTime 남았어요!',
-            );
-          } else {
-            return _detailState(
-              chatState: chatState,
-              upImage: 'assets/images/detailChatIcon.png',
-              upTitle: '${chatState.debateData!['myNick']}님의 반론 타임이에요',
-              downTitle: '⏳ $remainingTime 남았어요!',
-            );
-          }
-      }
-    } else {
-      return ProfileVsWidget(
-        myNick: chatState.debateData!['myNick'],
-        opponentNick: chatState.debateData!['opponentNick'],
-        myArgument: chatState.debateData!['myArgument'],
-        opponentArgument: chatState.debateData!['opponentArgument'],
-      );
-    }
+    //       default:
+    //         if (chatState.debateData!['opponentTurn'] ==
+    //             chatState.debateData!['myTurn']) {
+    //           return _detailState(
+    //             chatState: chatState,
+    //             upImage: 'assets/images/detailChatIcon.png',
+    //             upTitle: '상대 반론 타임이에요!',
+    //             downTitle: '⏳ $remainingTime 남았어요!',
+    //           );
+    //         } else {
+    //           return _detailState(
+    //             chatState: chatState,
+    //             upImage: 'assets/images/detailChatIcon.png',
+    //             upTitle: '${chatState.debateData!['myNick']}님의 반론 타임이에요',
+    //             downTitle: '⏳ $remainingTime 남았어요!',
+    //           );
+    //         }
+    //     }
+    //   } else {
+    //     return ProfileVsWidget(
+    //       myNick: chatState.debateData!['myNick'],
+    //       opponentNick: chatState.debateData!['opponentNick'],
+    //       myArgument: chatState.debateData!['myArgument'],
+    //       opponentArgument: chatState.debateData!['opponentArgument'],
+    //     );
+    //   }
   }
 
   @override

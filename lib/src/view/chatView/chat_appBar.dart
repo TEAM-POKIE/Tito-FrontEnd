@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_state_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
@@ -17,22 +18,22 @@ class ChatAppbar extends ConsumerWidget {
     // final chatViewModel = ref.read(chatProviders.notifier);
     final loginInfo = ref.read(loginInfoProvider);
 
-    if (chatState.debateData == null) {
-      return const LoadingAppbar();
-    }
+    // if (chatState.debateData == null) {
+    //   return const LoadingAppbar();
+    // }
 
-    if (chatState.debateData!['opponentNick'] == '' &&
-        loginInfo!.nickname != chatState.debateData!['myNick']) {
-      return DebateAppbar(
-        // chatViewModel: chatViewModel,
-        title: chatState.debateData!['title'] ?? 'No Title',
-        notiIcon: 'assets/images/debateAlarm.png',
-      );
-    }
+    // if (chatState.debateData!['opponentNick'] == '' &&
+    //     loginInfo!.nickname != chatState.debateData!['myNick']) {
     return DebateAppbar(
       // chatViewModel: chatViewModel,
-      title: chatState.debateData!['title'] ?? 'No Title',
+      title: 'title',
+      notiIcon: 'assets/images/debateAlarm.png',
     );
+    //}
+    // return DebateAppbar(
+    //   // chatViewModel: chatViewModel,
+    //   title: chatState.debateData!['title'] ?? 'No Title',
+    // );
   }
 }
 
@@ -77,7 +78,8 @@ class DebateAppbar extends ConsumerWidget {
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
         onPressed: () {
-          chatViewModel!.back(context);
+          context.pop(context);
+          // chatViewModel!.back(context);
         },
       ),
       actions: [
@@ -97,7 +99,7 @@ class DebateAppbar extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.only(right: 10),
           child: IconButton(
-            icon: Image.asset('assets/images/info.png'),
+            icon: Image.asset('assets/images/debateList.png'),
             onPressed: () {
               popupViewModel.showRulePopup(context);
             },

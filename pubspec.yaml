@@ -130,6 +130,7 @@ flutter:
     - assets/images/splash.png
     - assets/images/splashs.png
     - assets/images/LogoIcon.png
+    - assets/images/debateList.png
     - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see

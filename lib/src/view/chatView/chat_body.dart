@@ -18,11 +18,12 @@ class ChatBody extends ConsumerWidget {
         ChatViewDetails(), // id 전달
 
         Expanded(
-          child: ChatListView(),
+          child: Text('리스트'),
+          // child: ChatListView(),
         ),
         // id 전달
 
-        ChatSpeechBubble(),
+        // ChatSpeechBubble(),
 
         ChatBottomDetail(), // id 전달
       ],
