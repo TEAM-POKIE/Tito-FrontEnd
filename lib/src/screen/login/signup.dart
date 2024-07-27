@@ -9,7 +9,7 @@ class Signup extends StatefulWidget {
   const Signup({super.key});
 
   @override
-  State<Signup> createState() {
+  State<Signup> createState() { 
     return _SignUpState();
   }
 }
@@ -23,7 +23,7 @@ class _SignUpState extends State<Signup> {
   void _onSignUp() async {
     final isVaild = _formKey.currentState!.validate();
     _formKey.currentState!.save();
-    if (isVaild) {
+    if (isVaild) { 
       final signUpData = {
         'nickname': _nickname,
         'email': _email,

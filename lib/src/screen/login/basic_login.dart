@@ -156,7 +156,7 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.r),
                       ),
-                      backgroundColor: Colors.black,
+                      backgroundColor: ColorSystem.black,
                       padding:
                           EdgeInsets.symmetric(horizontal: 149.w, vertical: 20.h),
                     ),
@@ -164,7 +164,7 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
                       '로그인',
                       style: TextStyle(
                           fontSize: 16,
-                          color: Colors.white,
+                          color: ColorSystem.white,
                           fontWeight: FontWeight.bold),
                     ),
                   ),

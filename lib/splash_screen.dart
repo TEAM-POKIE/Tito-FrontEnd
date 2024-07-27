@@ -38,13 +38,13 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(
-      splashIconSize: 100.w, // 크기를 screenutil로 조정
+      splashIconSize: 162.w, // 크기를 screenutil로 조정
       duration: 3000,
       splash: Container(
-        margin:
-            EdgeInsets.symmetric(horizontal: 114.w), // 좌우 여백을 screenutil로 비율 조정
-        width: 132.w, // 너비를 screenutil로 비율 조정
-        height: 132.w,
+        // margin:
+        //     EdgeInsets.symmetric(horizontal: 114.w), // 좌우 여백을 screenutil로 비율 조정
+        width: 162.w, // 너비를 screenutil로 비율 조정
+        height: 127.w,
         decoration: const BoxDecoration(
           color: ColorSystem.purple, // 배경색 설정 (보라색)
           image: DecorationImage(

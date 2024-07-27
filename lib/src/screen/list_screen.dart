@@ -19,6 +19,8 @@ class ListScreen extends ConsumerStatefulWidget {
 }
 
 class _ListScreenState extends ConsumerState<ListScreen> {
+//State 클래스는 StatefulWidget의 상태를 관리하고 상태가 변경될 때 위젯을 다시 그리도록 하는 역할이다
+// ListScreen 위젯의 상태를 관리하고, 상태 변경에 따라 UI를 업데이트하는 역할을 합니다. 이 부분이 있어야만 StatefulWidget이 상태를 가질 수 있고, 상태가 변경될 때마다 UI를 적절히 다시 그릴 수 있습니다.
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   
   final List<String> labels = ['연애', '정치', '연예', '자유', '스포츠'];
@@ -32,12 +34,15 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 
   @override
   void initState() {
+    //Widget tree의 초기화 
     super.initState();
     _fetchDebateList();
   }
 
   @override
   void dispose() {
+    // State 객체가 영구적으로 제거되는 것
+    // 더 이상 build 되지 않는 화면
     _timer.cancel();
     super.dispose();
   }
@@ -90,6 +95,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //위젯을 구성하고, 상태가 변경될 때마다 호출되어 UI를 다시 그립니다
     final loginInfo = ref.watch(loginInfoProvider);
 
     // 선택된 카테고리와 상태에 따라 필터링된 리스트 생성

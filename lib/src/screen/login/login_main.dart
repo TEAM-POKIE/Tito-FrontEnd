@@ -11,15 +11,15 @@ class LoginMain extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Map<String, String>> loginOptions = [
       {
-        'text': '카카오 로그인',
+        'text': '카카오로 시작하기',
         'image': 'assets/images/kakao.png',
       },
       {
-        'text': '구글로 로그인',
+        'text': '구글로 시작하기',
         'image': 'assets/images/google.png',
       },
       {
-        'text': '애플로 로그인',
+        'text': '애플로 시작하기',
         'image': 'assets/images/apple.png',
       },
     ];
@@ -62,8 +62,8 @@ class LoginMain extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: ColorSystem.loginPurple,
                       foregroundColor: ColorSystem.white,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 103.w, vertical: 18.h), // 버튼 내부의 패딩 설정
+                      // padding: EdgeInsets.symmetric(
+                      //     horizontal: 103.w, vertical: 18.h), // 버튼 내부의 패딩 설정
                       side: const BorderSide(color: ColorSystem.white),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.r),
@@ -86,8 +86,8 @@ class LoginMain extends StatelessWidget {
                   ),
                   backgroundColor: ColorSystem.black,
                   //minimumSize: const Size(300, 60),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 140.w, vertical: 17.h), // 버튼 내부의 패딩 설정
+                  // padding: EdgeInsets.symmetric(
+                      // horizontal: 140.w, vertical: 17.h), // 버튼 내부의 패딩 설정
                 ),
                 child: Text(
                   '로그인',
