@@ -43,7 +43,8 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var _value = _result.data!.map((k, v) => MapEntry(k, v));
+    var _value = _result.data!.map((k, dynamic v) =>
+        MapEntry(k, dynamic.fromJson(v as Map<String, dynamic>)));
     return _value;
   }
 
@@ -243,7 +244,8 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var _value = _result.data!.map((k, v) => MapEntry(k, v));
+    var _value = _result.data!.map((k, dynamic v) =>
+        MapEntry(k, dynamic.fromJson(v as Map<String, dynamic>)));
     return _value;
   }
 

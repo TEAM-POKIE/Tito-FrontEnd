@@ -14,7 +14,7 @@ class ChatAppbar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final chatState = ref.watch(chatProviders);
-    final chatViewModel = ref.read(chatProviders.notifier);
+    // final chatViewModel = ref.read(chatProviders.notifier);
     final loginInfo = ref.read(loginInfoProvider);
 
     if (chatState.debateData == null) {
@@ -24,13 +24,13 @@ class ChatAppbar extends ConsumerWidget {
     if (chatState.debateData!['opponentNick'] == '' &&
         loginInfo!.nickname != chatState.debateData!['myNick']) {
       return DebateAppbar(
-        chatViewModel: chatViewModel,
+        // chatViewModel: chatViewModel,
         title: chatState.debateData!['title'] ?? 'No Title',
         notiIcon: 'assets/images/debateAlarm.png',
       );
     }
     return DebateAppbar(
-      chatViewModel: chatViewModel,
+      // chatViewModel: chatViewModel,
       title: chatState.debateData!['title'] ?? 'No Title',
     );
   }
