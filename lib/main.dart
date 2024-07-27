@@ -5,7 +5,16 @@ import 'core/routes/routes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
 
-void main() async {
+import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+Future main() async {
+  await dotenv.load(fileName: ".env");
+
+  KakaoSdk.init(
+    nativeAppKey: dotenv.env['OAUTH_KAKAO_NATIVE_APP_KEY'],
+    javaScriptAppKey: dotenv.env['OAUTH_KAKAO_JAVASCRIPT_APP_KEY'],
+  );
   runApp(const SafeArea(
     child: MyApp(),
   ));

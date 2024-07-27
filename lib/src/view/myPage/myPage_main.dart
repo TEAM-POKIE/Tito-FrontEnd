@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:dio/dio.dart';
 import 'package:tito_app/core/api/api_service.dart';
+import 'package:tito_app/core/constants/style.dart';
 
 class MypageMain extends ConsumerStatefulWidget {
   const MypageMain({super.key});
@@ -215,16 +216,6 @@ class _MypageMainState extends ConsumerState<MypageMain> {
             ),
             _buildListTile(
               context,
-              title: '내가 쓴 게시글',
-              onTap: () => context.go('/mylist'),
-            ),
-            _buildListTile(
-              context,
-              title: '좋아요',
-              onTap: () => context.go('/mylike'),
-            ),
-            _buildListTile(
-              context,
               title: '알림',
               onTap: () => context.go('/myalarm'),
             ),
@@ -244,7 +235,12 @@ class _MypageMainState extends ConsumerState<MypageMain> {
             const SizedBox(height: 15.0),
             _buildListTile(
               context,
-              title: '비밀번호 수정',
+              title: '차단 리스트',
+              onTap: () => context.go('/myblock'),
+            ),
+            _buildListTile(
+              context,
+              title: '비밀번호 변경',
               onTap: () => context.go('/password'),
             ),
             _buildListTile(
@@ -252,15 +248,28 @@ class _MypageMainState extends ConsumerState<MypageMain> {
               title: '문의하기',
               onTap: () => context.go('/contact'),
             ),
-            _buildListTile(
-              context,
-              title: '로그아웃',
-              onTap: () {},
-            ),
-            _buildListTile(
-              context,
-              title: '회원탈퇴',
-              onTap: () => showExitDialog(context),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    '로그아웃',
+                    style: TextStyle(color: ColorSystem.grey),
+                  ),
+                ),
+                const Text(
+                  '|',
+                  style: TextStyle(color: ColorSystem.grey),
+                ),
+                TextButton(
+                    onPressed: () => showExitDialog(context),
+                    child: const Text(
+                      '회원탈퇴',
+                      style: TextStyle(color: ColorSystem.grey),
+                    )),
+              ],
             ),
             const SizedBox(height: 20),
           ],

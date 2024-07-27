@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tito_app/src/view/myPage/myPage_appBar.dart';
+import 'package:tito_app/src/view/myPage/myPage_appbar.dart';
 import 'package:tito_app/src/view/myPage/myPage_main.dart';
 
 
