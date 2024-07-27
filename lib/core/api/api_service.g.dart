@@ -43,8 +43,10 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
+
+    // Assuming the value type is Debate for this example.
     var _value = _result.data!.map((k, dynamic v) =>
-        MapEntry(k, dynamic.fromJson(v as Map<String, dynamic>)));
+        MapEntry(k, Debate.fromJson(v as Map<String, dynamic>)));
     return _value;
   }
 
@@ -217,25 +219,20 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<Map<String, dynamic>> uploadImage(MultipartFileWithToJson file) async {
+  Future<List<Debate>> getDebateList() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.fields.add(MapEntry(
-      'file',
-      jsonEncode(file),
-    ));
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<Map<String, dynamic>>(Options(
-      method: 'POST',
+    const Map<String, dynamic>? _data = null;
+    final _result =
+        await _dio.fetch<List<dynamic>>(_setStreamType<List<Debate>>(Options(
+      method: 'GET',
       headers: _headers,
       extra: _extra,
-      contentType: 'multipart/form-data',
     )
             .compose(
               _dio.options,
-              'upload',
+              '/debates',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -244,8 +241,9 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var _value = _result.data!.map((k, dynamic v) =>
-        MapEntry(k, dynamic.fromJson(v as Map<String, dynamic>)));
+    var _value = _result.data!
+        .map((dynamic i) => Debate.fromJson(i as Map<String, dynamic>))
+        .toList();
     return _value;
   }
 

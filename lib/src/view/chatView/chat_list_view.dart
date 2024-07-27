@@ -21,12 +21,12 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
     final chatState = ref.watch(chatProviders);
     final loginInfo = ref.read(loginInfoProvider);
 
-    if (chatState.debateData!['opponentNick'] == loginInfo?.nickname ||
-        chatState.debateData!['myNick'] == loginInfo?.nickname) {
-      return PartiChatList();
-    } else {
-      return AudienceChatList();
-    }
+    // if (chatState.debateData!['opponentNick'] == loginInfo?.nickname ||
+    //     chatState.debateData!['myNick'] == loginInfo?.nickname) {
+    return PartiChatList();
+    // } else {
+    //   return AudienceChatList();
+    // }
   }
 }
 

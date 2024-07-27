@@ -22,7 +22,7 @@ class DebateCreateChat extends ConsumerWidget {
       appBar: AppBar(
         title: Center(
           child: Text(
-            debateState.title,
+            debateState.debateTitle,
           ),
         ),
         leading: IconButton(

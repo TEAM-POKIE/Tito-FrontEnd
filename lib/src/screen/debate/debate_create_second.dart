@@ -24,8 +24,8 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
       if (!debateViewModel.validateForm(_formKey)) {
         return;
       }
-      debateState.aArgument = aArgument;
-      debateState.bArgument = bArgument;
+      debateState.debateMakerOpinion = aArgument;
+      debateState.debateJoinerOpinion = bArgument;
 
       if (!context.mounted) return;
 
@@ -70,7 +70,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                 children: [
                   const SizedBox(height: 10),
                   Text(
-                    debateState.title,
+                    debateState.debateTitle,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 20),
                   ),

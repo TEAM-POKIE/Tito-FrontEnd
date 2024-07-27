@@ -1,63 +1,65 @@
-class User {
+class Debate {
   final int id;
-  final String nickname;
-  final String email;
-  final String role;
-  final String profilePicture;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final bool tutorialCompleted;
+  final String debateTitle;
+  final String debateCategory;
+  final String debateStatus;
+  final String debateMakerOpinion;
+  final String debateJoinerOpinion;
+  final int debatedTimeLimit;
+  final int debateViewCount;
+  final int debateCommentCount;
+  final int debateRealtimeParticipants;
+  final int debateAlarmCount;
+  final String createdAt;
+  final String updatedAt;
 
-  User({
+  Debate({
     required this.id,
-    required this.nickname,
-    required this.email,
-    required this.role,
-    required this.profilePicture,
+    required this.debateTitle,
+    required this.debateCategory,
+    required this.debateStatus,
+    required this.debateMakerOpinion,
+    required this.debateJoinerOpinion,
+    required this.debatedTimeLimit,
+    required this.debateViewCount,
+    required this.debateCommentCount,
+    required this.debateRealtimeParticipants,
+    required this.debateAlarmCount,
     required this.createdAt,
     required this.updatedAt,
-    required this.tutorialCompleted,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      id: json['id'],
-      nickname: json['nickname'],
-      email: json['email'],
-      role: json['role'],
-      profilePicture: json['profilePicture'],
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
-      tutorialCompleted: json['tutorialCompleted'],
-    );
+  factory Debate.fromJson(Map<String, dynamic> json) {
+    return Debate(
+        id: json['id'],
+        debateTitle: json['debateTitle'],
+        debateCategory: json['debateCategory'],
+        debateStatus: json['debateStatus'],
+        debateMakerOpinion: json['debateMakerOpinion'],
+        debateJoinerOpinion: json['debateJoinerOpinion'],
+        debatedTimeLimit: json['debatedTimeLimit'],
+        debateViewCount: json['debateViewCount'],
+        debateCommentCount: json['debateCommentCount'],
+        debateRealtimeParticipants: json['debateRealtimeParticipants'],
+        debateAlarmCount: json['debateAlarmCount'],
+        createdAt: json['createdAt'],
+        updatedAt: json['updatedAt']);
   }
-}
-
-class Post {
-  final int id;
-  final String title;
-  final String content;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final User user;
-
-  Post({
-    required this.id,
-    required this.title,
-    required this.content,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.user,
-  });
-
-  factory Post.fromJson(Map<String, dynamic> json) {
-    return Post(
-      id: json['id'],
-      title: json['title'],
-      content: json['content'],
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
-      user: User.fromJson(json['user']),
-    );
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'debateTitle': debateTitle,
+      'debateCategory': debateCategory,
+      'debateStatus': debateStatus,
+      'debateMakerOpinion': debateMakerOpinion,
+      'debateJoinerOpinion': debateJoinerOpinion,
+      'debatedTimeLimit': debatedTimeLimit,
+      'debateViewCount': debateViewCount,
+      'debateCommentCount': debateCommentCount,
+      'debateRealtimeParticipants': debateRealtimeParticipants,
+      'debateAlarmCount': debateAlarmCount,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
+    };
   }
 }

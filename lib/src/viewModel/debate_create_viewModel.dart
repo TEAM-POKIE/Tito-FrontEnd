@@ -12,23 +12,23 @@ class DebateCreateViewModel extends StateNotifier<DebateCreateState> {
   final List<String> labels = ['연애', '정치', '연예', '자유', '스포츠'];
 
   void updateTitle(String title) {
-    state = state.copyWith(title: title);
+    state = state.copyWith(debateTitle: title);
   }
 
   void updateCategory(int index) {
-    state = state.copyWith(category: labels[index]);
+    state = state.copyWith(debateCategory: labels[index]);
   }
 
-  void updateContent(String content) {
-    state = state.copyWith(content: content);
-  }
+  // void updateContent(String content) {
+  //   state = state.copyWith(c: content);
+  // }
 
-  Future<void> pickImage() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      state = state.copyWith(image: image);
-    }
-  }
+  // Future<void> pickImage() async {
+  //   final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+  //   if (image != null) {
+  //     state = state.copyWith(image: image);
+  //   }
+  // }
 
   bool validateForm(GlobalKey<FormState> formKey) {
     return formKey.currentState?.validate() ?? false;

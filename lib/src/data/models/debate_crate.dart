@@ -1,45 +1,36 @@
-import 'package:image_picker/image_picker.dart';
-
 class DebateCreateState {
-  final String title;
-  final String category;
-  final String content;
-  final String myNick;
-  String aArgument;
-  String firstSend;
-  String bArgument;
-  final XFile? image;
+  final String debateTitle;
+  final String debateCategory;
+
+  String debateMakerOpinion;
+  String firstChatContent;
+  String debateJoinerOpinion;
+  String debateStatus;
 
   DebateCreateState({
-    this.title = '',
-    this.myNick = '',
-    this.aArgument = '',
-    this.bArgument = '',
-    this.category = '',
-    this.content = '',
-    this.firstSend = '',
-    this.image,
+    this.debateTitle = '',
+    this.debateCategory = '',
+    this.debateMakerOpinion = '',
+    this.firstChatContent = '',
+    this.debateJoinerOpinion = '',
+    this.debateStatus = '',
   });
 
   DebateCreateState copyWith({
-    String? title,
-    String? category,
-    String? content,
-    String? myNick,
-    String? aArgument,
-    String? bArgument,
-    String? firstSend,
-    XFile? image,
+    String? debateTitle,
+    String? debateCategory,
+    String? debateMakerOpinion,
+    String? firstChatContent,
+    String? debateJoinerOpinion,
+    String? debateStatus,
   }) {
     return DebateCreateState(
-      title: title ?? this.title,
-      category: category ?? this.category,
-      content: content ?? this.content,
-      myNick: myNick ?? this.myNick,
-      image: image ?? this.image,
-      firstSend: firstSend ?? this.firstSend,
-      aArgument: aArgument ?? this.aArgument,
-      bArgument: bArgument ?? this.bArgument,
+      debateTitle: debateTitle ?? this.debateTitle,
+      debateCategory: debateCategory ?? this.debateCategory,
+      debateMakerOpinion: debateMakerOpinion ?? this.debateMakerOpinion,
+      firstChatContent: firstChatContent ?? this.firstChatContent,
+      debateJoinerOpinion: debateJoinerOpinion ?? this.debateJoinerOpinion,
+      debateStatus: debateStatus ?? this.debateStatus,
     );
   }
 }
