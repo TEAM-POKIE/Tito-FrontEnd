@@ -3,27 +3,25 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:tito_app/core/api/api_path.dart';
+
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_state_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:tito_app/src/data/models/login_info.dart';
 import 'package:tito_app/src/view/chatView/chat_appBar.dart';
 import 'package:tito_app/src/view/chatView/chat_body.dart';
 import 'package:tito_app/src/view/chatView/live_comment.dart';
-import 'package:tito_app/src/viewModel/chat_viewModel.dart';
 
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class Chat extends ConsumerStatefulWidget {
-  final String id; // 채팅방 고유 ID
   final int turn = 0;
 
   const Chat({
     super.key,
-    required this.id,
   });
 
   @override
@@ -38,8 +36,7 @@ class _ChatState extends ConsumerState<Chat> {
   void initState() {
     super.initState();
     // WebSocket 서버와 연결 설정
-    channel = WebSocketChannel.connect(
-        Uri.parse('ws://192.168.1.6:4040/ws/${widget.id}'));
+    channel = WebSocketChannel.connect(Uri.parse('ws://192.168.1.6:4040/ws'));
 
     // WebSocket 서버로부터 메시지를 받을 때마다 상태 업데이트
     channel.stream.listen((message) {
@@ -57,7 +54,7 @@ class _ChatState extends ConsumerState<Chat> {
 
   Future<void> _fetchInitialData() async {
     final apiService = ApiService(DioClient.dio);
-    final data = await apiService.getData('debate_list/${widget.id}');
+    final data = await apiService.getData('debate_list/');
     if (data != null && data.containsKey('myNick')) {
       setState(() {
         myNick = data['myNick'];
@@ -73,7 +70,7 @@ class _ChatState extends ConsumerState<Chat> {
 
   @override
   Widget build(BuildContext context) {
-    final chatState = ref.watch(chatProviders(widget.id));
+    final chatState = ref.watch(chatProviders);
     final loginInfo = ref.watch(loginInfoProvider);
 
     if (loginInfo == null || chatState.debateData == null) {
@@ -84,12 +81,10 @@ class _ChatState extends ConsumerState<Chat> {
         loginInfo.nickname == chatState.debateData!['opponentNick'] ||
         chatState.debateData!['opponentNick'] == '') {
       return _BasicDebate(
-        id: widget.id,
         chatState: chatState,
       );
     } else {
       return _LiveComment(
-        id: widget.id,
         loginInfo: loginInfo,
         chatState: chatState,
       );
@@ -99,10 +94,8 @@ class _ChatState extends ConsumerState<Chat> {
 
 class _BasicDebate extends StatelessWidget {
   final ChatState chatState;
-  final String id;
 
   const _BasicDebate({
-    required this.id,
     required this.chatState,
   });
 
@@ -112,9 +105,9 @@ class _BasicDebate extends StatelessWidget {
       resizeToAvoidBottomInset: true,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60.0),
-        child: ChatAppbar(id: id), // id 전달
+        child: ChatAppbar(), // id 전달
       ),
-      body: ChatBody(id: id),
+      body: ChatBody(),
     );
   }
 }
@@ -122,12 +115,11 @@ class _BasicDebate extends StatelessWidget {
 class _LiveComment extends StatefulWidget {
   final LoginInfo loginInfo;
   final ChatState chatState;
-  final String id;
+
   final PanelController _panelController = PanelController();
 
   _LiveComment({
     required this.loginInfo,
-    required this.id,
     required this.chatState,
   });
 
@@ -144,7 +136,7 @@ class _LiveCommentState extends State<_LiveComment> {
       resizeToAvoidBottomInset: true,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(80.0),
-        child: ChatAppbar(id: widget.id), // id 전달
+        child: ChatAppbar(), // id 전달
       ),
       body: SlidingUpPanel(
         onPanelSlide: (position) {
@@ -196,12 +188,11 @@ class _LiveCommentState extends State<_LiveComment> {
           margin: const EdgeInsets.only(top: 70.0), // 상단 마진 추가
           child: LiveComment(
             username: widget.loginInfo.nickname,
-            id: widget.id,
             scrollController: scrollController,
           ),
         ),
         body: GestureDetector(
-          child: ChatBody(id: widget.id),
+          child: ChatBody(),
         ),
         backdropEnabled: true,
         backdropOpacity: 0.5,

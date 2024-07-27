@@ -5,7 +5,7 @@ import 'package:speech_balloon/speech_balloon.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
-import 'package:tito_app/src/view/chatView/chat_appBar.dart';
+
 import 'package:tito_app/src/view/chatView/chat_view_details.dart';
 
 class DebateCreateChat extends ConsumerWidget {
@@ -60,13 +60,15 @@ class DebateCreateChat extends ConsumerWidget {
           firstText(),
           Expanded(
             child: Container(
+              alignment: Alignment.bottomCenter,
+              width: MediaQuery.sizeOf(context).width,
               color: ColorSystem.ligthGrey,
+              child: StaticTextBubble(
+                title: '첫 입론을 입력하세요',
+                width: (MediaQuery.of(context).size.width - 100) * 0.7,
+                height: (MediaQuery.of(context).size.height - 450) * 0.2,
+              ),
             ),
-          ),
-          StaticTextBubble(
-            title: '첫 입론을 입력하세요',
-            width: (MediaQuery.of(context).size.width - 100) * 0.7,
-            height: (MediaQuery.of(context).size.height - 450) * 0.2,
           ),
           ChatBottom(),
         ],
@@ -108,9 +110,7 @@ class StaticTextBubble extends StatelessWidget {
 }
 
 class ChatBottom extends ConsumerStatefulWidget {
-  const ChatBottom({
-    super.key,
-  });
+  const ChatBottom({super.key});
 
   @override
   ConsumerState<ChatBottom> createState() => _ChatBottomDetailState();
@@ -127,13 +127,17 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottom> {
     super.dispose();
   }
 
-  void _sendMessage() {
+  void _sendMessage() async {
+    final debateState = ref.watch(debateCreateProvider);
     final text = _controller.text;
     if (text.isNotEmpty) {
-      // 여기에 메시지를 전송하는 로직을 추가하세요.
-      print("Message sent: $text");
+      // 메시지를 서버로 전송하는 API 호출
+
       _controller.clear();
       _focusNode.requestFocus(); // 메시지를 보낸 후 포커스를 유지합니다.
+
+      // 새로운 화면으로 이동 (채팅방)
+      context.push('/chat');
     }
   }
 

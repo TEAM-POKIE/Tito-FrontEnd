@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
+
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,13 +10,12 @@ import 'package:tito_app/src/viewModel/live_comment_viewModel.dart';
 
 class LiveComment extends ConsumerStatefulWidget {
   final String username;
-  final String id;
+
   final ScrollController scrollController;
 
   const LiveComment({
     super.key,
     required this.username,
-    required this.id,
     required this.scrollController,
   });
 
@@ -35,8 +34,7 @@ class _LiveCommentState extends ConsumerState<LiveComment>
   @override
   void initState() {
     super.initState();
-    final liveCommentViewModel =
-        ref.read(liveCommentProvider(widget.id).notifier);
+    final liveCommentViewModel = ref.read(liveCommentProvider.notifier);
     _initialMessagesFuture = liveCommentViewModel.loadInitialMessages();
     _initialMessagesFuture.then((messages) {
       if (mounted) {
@@ -92,8 +90,7 @@ class _LiveCommentState extends ConsumerState<LiveComment>
 
   @override
   Widget build(BuildContext context) {
-    final liveCommentViewModel =
-        ref.watch(liveCommentProvider(widget.id).notifier);
+    final liveCommentViewModel = ref.watch(liveCommentProvider.notifier);
 
     return FutureBuilder<List<Message>>(
       future: _initialMessagesFuture,
@@ -186,7 +183,7 @@ class _LiveCommentState extends ConsumerState<LiveComment>
                     },
                   ),
                 ),
-                LiveSendView(username: widget.username, roomId: widget.id),
+                LiveSendView(username: widget.username),
               ],
             ),
             ..._animations.asMap().entries.map((entry) {

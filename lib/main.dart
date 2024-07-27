@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp.router(
           routerConfig: router,
           title: 'Tito',
-          theme: ThemeData( 
+          theme: ThemeData(
             primaryColor: ColorSystem.purple,
           ),
         ),

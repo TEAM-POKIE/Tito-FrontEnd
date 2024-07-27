@@ -18,13 +18,14 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
   Widget build(BuildContext context) {
     final debateViewModel = ref.read(debateCreateProvider.notifier);
     final debateState = ref.watch(debateCreateProvider);
-
+    String aArgument = '';
+    String bArgument = '';
     void _nextCreate(BuildContext context) async {
       if (!debateViewModel.validateForm(_formKey)) {
         return;
       }
-
-      debateViewModel.saveForm(_formKey);
+      debateState.aArgument = aArgument;
+      debateState.bArgument = bArgument;
 
       if (!context.mounted) return;
 
@@ -96,9 +97,9 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                       }
                       return null;
                     },
-                    // onSaved: (value) {
-                    //   debateViewModel.updateMyArgument(value ?? '');
-                    // },
+                    onSaved: (value) {
+                      aArgument = value!;
+                    },
                   ),
                   const SizedBox(height: 20),
                   const Text(
@@ -123,9 +124,9 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                       }
                       return null;
                     },
-                    // onSaved: (value) {
-                    //   debateViewModel.updateOpponentArgument(value ?? '');
-                    // },
+                    onSaved: (value) {
+                      bArgument = value!;
+                    },
                   ),
                   const SizedBox(height: 20),
                 ],

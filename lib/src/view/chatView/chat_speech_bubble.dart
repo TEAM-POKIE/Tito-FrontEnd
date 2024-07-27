@@ -5,15 +5,14 @@ import 'package:tito_app/core/provider/chat_state_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:speech_balloon/speech_balloon.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
-import 'package:tito_app/src/viewModel/chat_viewModel.dart';
+import 'package:tito_app/src/data/models/debate_info.dart';
+import 'package:tito_app/src/data/models/popup_state.dart';
+
 import 'package:tito_app/src/viewModel/popup_viewModel.dart';
 
 class ChatSpeechBubble extends ConsumerStatefulWidget {
-  final String id;
-
   const ChatSpeechBubble({
     super.key,
-    required this.id,
   });
 
   @override
@@ -23,7 +22,7 @@ class ChatSpeechBubble extends ConsumerStatefulWidget {
 class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
   @override
   Widget build(BuildContext context) {
-    final chatState = ref.watch(chatProviders(widget.id));
+    final chatState = ref.watch(chatProviders);
     final loginInfo = ref.watch(loginInfoProvider);
     final popupViewModel = ref.read(popupProvider.notifier);
     final popupState = ref.read(popupProvider);

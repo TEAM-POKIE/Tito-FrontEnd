@@ -5,14 +5,13 @@ import 'package:tito_app/core/provider/chat_state_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/timer_provider.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:tito_app/src/viewModel/chat_viewModel.dart';
 import 'package:speech_balloon/speech_balloon.dart';
 
 class ChatViewDetails extends ConsumerStatefulWidget {
-  final String id;
   const ChatViewDetails({
     super.key,
-    required this.id,
   });
 
   @override
@@ -28,7 +27,7 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
 
   @override
   Widget build(BuildContext context) {
-    final chatState = ref.watch(chatProviders(widget.id));
+    final chatState = ref.watch(chatProviders);
     final loginInfo = ref.watch(loginInfoProvider);
     final timerState = ref.watch(timerProvider); // 타이머 상태
 
@@ -47,9 +46,6 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
 
     if (chatState.debateData!['myNick'] == loginInfo.nickname) {
       switch (chatState.debateData!['myTurn']) {
-        case 0:
-          return firstText();
-
         case 1:
           if (chatState.debateData!['opponentTurn'] <
               chatState.debateData!['myTurn']) {

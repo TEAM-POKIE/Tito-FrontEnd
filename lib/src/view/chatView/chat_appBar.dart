@@ -7,17 +7,14 @@ import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:tito_app/src/viewModel/chat_viewModel.dart';
 
 class ChatAppbar extends ConsumerWidget {
-  final String id;
-
   const ChatAppbar({
     super.key,
-    required this.id,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chatState = ref.watch(chatProviders(id));
-    final chatViewModel = ref.read(chatProviders(id).notifier);
+    final chatState = ref.watch(chatProviders);
+    final chatViewModel = ref.read(chatProviders.notifier);
     final loginInfo = ref.read(loginInfoProvider);
 
     if (chatState.debateData == null) {

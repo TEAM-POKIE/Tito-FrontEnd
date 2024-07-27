@@ -7,27 +7,24 @@ import 'package:tito_app/src/view/chatView/chat_speech_bubble.dart';
 import 'package:tito_app/src/view/chatView/chat_view_details.dart';
 
 class ChatBody extends ConsumerWidget {
-  final String id;
-
   const ChatBody({
     super.key,
-    required this.id,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
-        ChatViewDetails(id: id), // id 전달
+        ChatViewDetails(), // id 전달
 
         Expanded(
-          child: ChatListView(id: id),
+          child: ChatListView(),
         ),
         // id 전달
 
-        ChatSpeechBubble(id: id),
+        ChatSpeechBubble(),
 
-        ChatBottomDetail(id: id), // id 전달
+        ChatBottomDetail(), // id 전달
       ],
     );
   }
