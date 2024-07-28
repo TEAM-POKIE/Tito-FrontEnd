@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class DebateCreate extends ConsumerStatefulWidget {
   const DebateCreate({super.key});
@@ -14,6 +16,24 @@ class DebateCreate extends ConsumerStatefulWidget {
 
 class _DebateCreateState extends ConsumerState<DebateCreate> {
   final _formKey = GlobalKey<FormState>();
+  int _currentPage = 0;
+  final int _totalPages = 3;
+
+  void _nextPage() {
+    setState(() {
+      if (_currentPage < _totalPages - 1) {
+        _currentPage++;
+      }
+    });
+  }
+
+  void _previousPage() {
+    setState(() {
+      if (_currentPage > 0) {
+        _currentPage--;
+      }
+    });
+  }
 
   void _goNextCreate() async {
     final viewModel = ref.read(debateCreateProvider.notifier);
@@ -33,6 +53,7 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
   Widget build(BuildContext context) {
     final viewModel = ref.read(debateCreateProvider.notifier);
     final debateState = ref.watch(debateCreateProvider);
+    double _progress = (_currentPage + 1) / _totalPages;
 
     return GestureDetector(
       onTap: () {
@@ -40,22 +61,29 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
       },
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              context.pop();
+              //바로 이전에 실행했던 화면으로 이동
+            },
+            icon: const Icon(Icons.arrow_back_ios),
+          ),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                  padding: EdgeInsets.only(left: 24.w),
                   child: LinearPercentIndicator(
-                    width: 200,
+                    width: 210.w,
                     animation: true,
                     animationDuration: 1000,
                     lineHeight: 5.0,
-                    percent: 0.5,
+                    percent: _progress,
                     linearStrokeCap: LinearStrokeCap.butt,
                     progressColor: ColorSystem.purple,
-                    backgroundColor: Colors.grey,
-                    barRadius: const Radius.circular(10),
+                    backgroundColor: ColorSystem.grey,
+                    barRadius: Radius.circular(10.r),
                   ),
                 ),
               ),
@@ -64,16 +92,19 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 10),
+                  SizedBox(height: 40.h),
                   const Text(
                     '카테고리 선택',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    style: FontSystem.KR18R,
+                  ),
+                  SizedBox(
+                    height: 10.h,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -110,22 +141,22 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
                       );
                     }),
                   ),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: 60.h,
                   ),
                   const Text(
                     '토론 주제',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    style: FontSystem.KR18R,
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20.h),
                   TextFormField(
                     autocorrect: false,
                     decoration: InputDecoration(
                       hintText: '입력하세요',
-                      fillColor: Colors.grey[200],
+                      fillColor: ColorSystem.ligthGrey,
                       filled: true,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
+                        borderRadius: BorderRadius.circular(24.r),
                         borderSide: BorderSide.none,
                       ),
                     ),
@@ -139,22 +170,30 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
                       viewModel.updateTitle(value ?? '');
                     },
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 30.h),
                   GestureDetector(
                     onTap: () {
-                      // Handle AI topic generation
+                      context.go('/ai_create');
                     },
                     child: Row(
                       children: [
-                        Image.asset('assets/images/ai_purple.png'),
-                        const SizedBox(width: 8),
+                        Padding(
+                          padding: EdgeInsets.only(left: 7.w),
+                          child: SvgPicture.asset(
+                            'assets/icons/purple_cute.svg',
+                            width: 40.w,
+                            height: 40.h,
+                          ),
+                        ),
                         TextButton(
                           onPressed: () {},
-                          child: const Text(
-                            'AI 주제 생성하기',
+                          child: Text(
+                            'AI 자동 주제 생성 하기',
                             style: TextStyle(
                                 decoration: TextDecoration.underline,
-                                color: Color(0xff8E48F8),
+                                decorationColor: ColorSystem.purple,
+                                color: ColorSystem.purple,
+                                fontSize: 18.sp,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -167,21 +206,21 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
           ),
         ),
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 40.h),
           child: SizedBox(
-            width: double.infinity,
+            width: 350.w,
+            height: 60.h,
             child: ElevatedButton(
               onPressed: _goNextCreate,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xff8E48F8),
+                backgroundColor: ColorSystem.purple,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
+                  borderRadius: BorderRadius.circular(20.r),
                 ),
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
               ),
-              child: const Text(
+              child: Text(
                 '다음',
-                style: TextStyle(fontSize: 16, color: Colors.white),
+                style: TextStyle(fontSize: 20.sp, color: ColorSystem.white),
               ),
             ),
           ),
