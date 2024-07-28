@@ -172,9 +172,7 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
                   ),
                   SizedBox(height: 30.h),
                   GestureDetector(
-                    onTap: () {
-                      context.go('/ai_create');
-                    },
+                    onTap: () {},
                     child: Row(
                       children: [
                         Padding(
@@ -186,7 +184,9 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
                           ),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            context.go('/ai_create');
+                          },
                           child: Text(
                             'AI 자동 주제 생성 하기',
                             style: TextStyle(

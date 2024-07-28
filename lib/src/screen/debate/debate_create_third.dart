@@ -7,7 +7,6 @@ import 'package:tito_app/core/constants/style.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
-
 class DebateCreateThird extends ConsumerWidget {
   const DebateCreateThird({super.key});
 
@@ -68,9 +67,9 @@ class DebateCreateThird extends ConsumerWidget {
                   SizedBox(height: 40.h),
                   const Text(
                     '토론 주제에 대한 본문',
-                    style: TextStyle(fontSize: 20),
+                    style: FontSystem.KR18R,
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20.h),
                   TextFormField(
                     autocorrect: false,
                     maxLines: 5,
@@ -79,7 +78,7 @@ class DebateCreateThird extends ConsumerWidget {
                       fillColor: Colors.grey[200],
                       filled: true,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(.0),
+                        borderRadius: BorderRadius.circular(24.r),
                         borderSide: BorderSide.none,
                       ),
                     ),
@@ -89,32 +88,39 @@ class DebateCreateThird extends ConsumerWidget {
                       }
                       return null;
                     },
-                    // onSaved: (value) {
-                    //   debateViewModel.updateContent(value ?? '');
-                    // },
+                    onSaved: (value) {
+                      debateViewModel.updateContent(value ?? '');
+                    },
                   ),
-                  const SizedBox(height: 20),
-                  Text(
+                  SizedBox(height: 40.h),
+                  const Text(
                     '이미지 첨부하기',
-                    style: FontSystem.KR18R.copyWith(color: ColorSystem.black),
+                    style: FontSystem.KR18R,
+                  ),
+                  SizedBox(
+                    height: 20.h,
                   ),
                   Row(
                     children: [
-                      TextButton.icon(
-                        onPressed: () {}, //debateViewModel.pickImage,
-                        icon: const Icon(
-                          Icons.camera_alt,
-                          color: ColorSystem.white,
-                        ),
-                        label: Text(
-                          '파일 첨부',
-                          style: FontSystem.KR14M
-                              .copyWith(color: ColorSystem.white),
-                        ),
-                        style: TextButton.styleFrom(
-                          backgroundColor: ColorSystem.purple,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24),
+                      Container(
+                        width: 120.w,
+                        height: 50.h,
+                        child: TextButton.icon(
+                          onPressed: () {}, //debateViewModel.pickImage,
+                          icon: const Icon(
+                            Icons.camera_alt,
+                            color: ColorSystem.white,
+                          ),
+                          label: Text(
+                            '파일 첨부',
+                            style: FontSystem.KR14M
+                                .copyWith(color: ColorSystem.white),
+                          ),
+                          style: TextButton.styleFrom(
+                            backgroundColor: ColorSystem.purple,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24.r),
+                            ),
                           ),
                         ),
                       ),
@@ -126,23 +132,23 @@ class DebateCreateThird extends ConsumerWidget {
           ),
         ),
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 40.h),
           child: SizedBox(
-            width: double.infinity,
+            width: 350.w,
+            height: 60.h,
             child: ElevatedButton(
               onPressed: () {
                 debateViewModel.nextChat(_formKey, context);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xff8E48F8),
+                backgroundColor: ColorSystem.purple,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
+                  borderRadius: BorderRadius.circular(20.r),
                 ),
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
               ),
-              child: const Text(
-                '다음',
-                style: TextStyle(fontSize: 16, color: Colors.white),
+              child: Text(
+                '토론장으로 이동',
+                style: TextStyle(fontSize: 20.sp, color: ColorSystem.white),
               ),
             ),
           ),
