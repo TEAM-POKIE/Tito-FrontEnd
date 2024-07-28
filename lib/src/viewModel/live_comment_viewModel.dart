@@ -26,10 +26,12 @@ class LiveCommentViewModel extends StateNotifier<LiveState> {
   final TextEditingController controller = TextEditingController();
   final StreamController<List<Message>> _messagesController =
       StreamController.broadcast();
-  final String roomId;
+
   final ApiService apiService = ApiService(DioClient.dio);
 
-  LiveCommentViewModel(this.channel, this.roomId) : super(LiveState()) {
+  LiveCommentViewModel(
+    this.channel,
+  ) : super(LiveState()) {
     fetchInitialMessages();
     channel.stream.listen((message) {
       final parsedMessage = _parseMessage(message);
@@ -46,7 +48,7 @@ class LiveCommentViewModel extends StateNotifier<LiveState> {
 
   Future<void> fetchInitialMessages() async {
     try {
-      final data = await apiService.getData('live_comments/$roomId');
+      final data = await apiService.getData('/live_comments');
 
       if (data != null) {
         final messages =
@@ -86,7 +88,7 @@ class LiveCommentViewModel extends StateNotifier<LiveState> {
 
       // Save message to API
       final response = await apiService.postData(
-        'live_comments/$roomId',
+        '/live_comments',
         newMessage.toJson(),
       );
 

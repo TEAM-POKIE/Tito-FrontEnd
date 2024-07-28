@@ -45,21 +45,21 @@ class _MypageMainState extends ConsumerState<MypageMain> {
   }
 
   Future<String?> uploadImage(File imageFile) async {
-    final dio = Dio();
-    final apiService = ApiService(dio);
-    try {
-      FormData formData = FormData.fromMap({
-        "file": await MultipartFile.fromFile(imageFile.path,
-            filename: "upload.jpg"),
-      });
-      final response = await apiService.uploadImage(MultipartFileWithToJson(
-        await MultipartFile.fromFile(imageFile.path, filename: "upload.jpg"),
-      ));
-      return response['fileUrl'];
-    } catch (e) {
-      print(e);
-      return null;
-    }
+    // final dio = Dio();
+    // final apiService = ApiService(dio);
+    // try {
+    //   FormData formData = FormData.fromMap({
+    //     "file": await MultipartFile.fromFile(imageFile.path,
+    //         filename: "upload.jpg"),
+    //   });
+    //   final response = await apiService.uploadImage(MultipartFileWithToJson(
+    //     await MultipartFile.fromFile(imageFile.path, filename: "upload.jpg"),
+    //   ));
+    //   return response['fileUrl'];
+    // } catch (e) {
+    //   print(e);
+    //   return null;
+    // }
   }
 
   Future<void> updateUserProfile(String profileImageUrl) async {

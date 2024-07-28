@@ -110,12 +110,9 @@ final GoRouter router = GoRouter(
     ),
 
     GoRoute(
-      path: '/chat/:id',
+      path: '/chat',
       builder: (context, state) {
-        final id = state.pathParameters['id']!;
-        return Chat(
-          id: id,
-        );
+        return const Chat();
       },
     ),
 

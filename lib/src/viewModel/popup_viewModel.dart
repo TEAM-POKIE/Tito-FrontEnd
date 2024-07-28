@@ -1,67 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tito_app/core/constants/web_sockey_service.dart';
+
 import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/src/data/models/popup_state.dart';
 import 'package:tito_app/src/widgets/reuse/debate_popup.dart';
 import 'package:tito_app/src/widgets/reuse/rule_pop_up.dart';
 
 // PopupState 클래스 정의
-class PopupState {
-  String roomId;
-  final Map<String, dynamic>? debateData;
-  int? buttonStyle;
-  String? title;
-  String? content;
-  String? buttonContentLeft;
-  String? imgSrc;
-  String? titleLabel;
-  String? opponentNick;
-  String? buttonContentRight;
-
-  PopupState({
-    this.roomId = '',
-    this.debateData,
-    this.buttonStyle,
-    this.titleLabel,
-    this.content,
-    this.imgSrc,
-    this.title,
-    this.buttonContentLeft,
-    this.opponentNick,
-    this.buttonContentRight,
-  });
-
-  PopupState copyWith({
-    String? roomId,
-    String? opponentNick,
-    String? title,
-    String? titleLabel,
-    String? content,
-    String? buttonContentLeft,
-    String? imgSrc,
-    String? buttonContentRight,
-    Map<String, dynamic>? debateData,
-    int? buttonStyle,
-  }) {
-    return PopupState(
-      roomId: roomId ?? this.roomId,
-      opponentNick: opponentNick ?? this.opponentNick,
-      title: title ?? this.title,
-      titleLabel: titleLabel ?? this.titleLabel,
-      imgSrc: imgSrc ?? this.imgSrc,
-      buttonContentLeft: buttonContentLeft ?? this.buttonContentLeft,
-      buttonContentRight: buttonContentRight ?? this.buttonContentRight,
-      content: content ?? this.content,
-      debateData: debateData ?? this.debateData,
-      buttonStyle: buttonStyle ?? this.buttonStyle,
-    );
-  }
-}
 
 // PopupViewmodel 클래스 정의
 class PopupViewmodel extends StateNotifier<PopupState> {
   final Ref ref;
-  late WebSocketService webSocketService;
 
   PopupViewmodel(this.ref) : super(PopupState()) {
     // 웹소켓 서비스 초기화
