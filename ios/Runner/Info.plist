@@ -41,6 +41,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>kakao01fe6631fc7787a553528a1b214e2bc5</string>
 				<string>com.googleusercontent.apps.964139724412-0ne5ikmk6o3s32jejsuhedohs128nek0</string>
 			</array>
 		</dict>
@@ -60,6 +61,5 @@
 	<string>We need access to the camera to take pictures.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need access to the photo library to select pictures.</string>
-
 </dict>
 </plist>
