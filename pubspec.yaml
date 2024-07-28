@@ -73,6 +73,8 @@ dependencies:
   flutter_dotenv: ^5.1.0
   cool_dropdown: ^2.1.0
   dropdown_button2: ^2.3.9
+  flutter_hooks: ^0.20.5
+  hooks_riverpod: ^2.5.1
 
 dev_dependencies:
   flutter_test:

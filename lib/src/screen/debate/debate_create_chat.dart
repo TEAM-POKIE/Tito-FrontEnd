@@ -4,26 +4,21 @@ import 'package:go_router/go_router.dart';
 import 'package:speech_balloon/speech_balloon.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
-import 'package:tito_app/core/provider/popup_provider.dart';
 
 import 'package:tito_app/src/view/chatView/chat_view_details.dart';
 
 class DebateCreateChat extends ConsumerWidget {
-  const DebateCreateChat({
-    super.key,
-  });
+  const DebateCreateChat({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final debateState = ref.watch(debateCreateProvider);
-    final popupViewModel = ref.read(popupProvider.notifier);
-    final popupState = ref.read(popupProvider);
+    final debateViewModel = ref.read(debateCreateProvider.notifier);
+
     return Scaffold(
       appBar: AppBar(
         title: Center(
-          child: Text(
-            debateState.debateTitle,
-          ),
+          child: Text(debateState.debateTitle),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
@@ -35,13 +30,7 @@ class DebateCreateChat extends ConsumerWidget {
           IconButton(
             icon: Image.asset('assets/images/debateAlarm.png'),
             onPressed: () {
-              popupState.title = '토론 시작 시 알림을 보내드릴게요!';
-              popupState.imgSrc = 'assets/images/debatePopUpAlarm.png';
-              popupState.content =
-                  '토론 참여자가 정해지고 \n최종 토론이 개설 되면 \n푸시알림을 통해 알려드려요';
-              popupState.buttonContentLeft = '네 알겠어요';
-              popupState.buttonStyle = 1;
-              popupViewModel.showDebatePopup(context);
+              debateViewModel.showDebatePopup(context);
             },
           ),
           Padding(
@@ -49,7 +38,7 @@ class DebateCreateChat extends ConsumerWidget {
             child: IconButton(
               icon: Image.asset('assets/images/info.png'),
               onPressed: () {
-                popupViewModel.showRulePopup(context);
+                debateViewModel.showRulePopup(context);
               },
             ),
           ),
@@ -127,18 +116,9 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottom> {
     super.dispose();
   }
 
-  void _sendMessage() async {
-    final debateState = ref.watch(debateCreateProvider);
-    final text = _controller.text;
-    if (text.isNotEmpty) {
-      // 메시지를 서버로 전송하는 API 호출
-
-      _controller.clear();
-      _focusNode.requestFocus(); // 메시지를 보낸 후 포커스를 유지합니다.
-
-      // 새로운 화면으로 이동 (채팅방)
-      context.push('/chat');
-    }
+  void _sendMessage() {
+    ref.read(debateCreateProvider.notifier).sendMessage(context, _controller);
+    _focusNode.requestFocus(); // 메시지를 보낸 후 포커스를 유지합니다.
   }
 
   @override
