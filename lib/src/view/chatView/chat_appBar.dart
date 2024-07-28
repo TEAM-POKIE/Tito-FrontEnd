@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_state_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
@@ -7,46 +9,16 @@ import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:tito_app/src/viewModel/chat_viewModel.dart';
 
 class ChatAppbar extends ConsumerWidget {
-  final String id;
-
-  const ChatAppbar({
-    super.key,
-    required this.id,
-  });
+  const ChatAppbar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chatState = ref.watch(chatProviders(id));
-    final chatViewModel = ref.read(chatProviders(id).notifier);
+    final chatState = ref.watch(chatProviders);
     final loginInfo = ref.read(loginInfoProvider);
 
-    if (chatState.debateData == null) {
-      return const LoadingAppbar();
-    }
-
-    if (chatState.debateData!['opponentNick'] == '' &&
-        loginInfo!.nickname != chatState.debateData!['myNick']) {
-      return DebateAppbar(
-        chatViewModel: chatViewModel,
-        title: chatState.debateData!['title'] ?? 'No Title',
-        notiIcon: 'assets/images/debateAlarm.png',
-      );
-    }
     return DebateAppbar(
-      chatViewModel: chatViewModel,
-      title: chatState.debateData!['title'] ?? 'No Title',
-    );
-  }
-}
-
-class LoadingAppbar extends StatelessWidget {
-  const LoadingAppbar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: ColorSystem.white,
-      title: const Text('Loading...'),
+      title: 'title',
+      notiIcon: 'assets/images/debateAlarm.png',
     );
   }
 }
@@ -67,6 +39,12 @@ class DebateAppbar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final popupViewModel = ref.read(popupProvider.notifier);
     final popupState = ref.read(popupProvider);
+
+    final List<String> menuItems = [
+      '토론 삭제하기',
+      '토론룰 보기',
+    ];
+
     return AppBar(
       backgroundColor: ColorSystem.white,
       title: Text(
@@ -76,11 +54,11 @@ class DebateAppbar extends ConsumerWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
-      centerTitle: true, // 타이틀 중앙 정렬
+      centerTitle: true,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
         onPressed: () {
-          chatViewModel!.back(context);
+          context.pop(context);
         },
       ),
       actions: [
@@ -99,11 +77,54 @@ class DebateAppbar extends ConsumerWidget {
           ),
         Padding(
           padding: const EdgeInsets.only(right: 10),
-          child: IconButton(
-            icon: Image.asset('assets/images/info.png'),
-            onPressed: () {
-              popupViewModel.showRulePopup(context);
+          child: DropdownButton2<String>(
+            customButton: const Icon(Icons.more_vert, color: Colors.black),
+            items: menuItems.map((item) {
+              return DropdownMenuItem<String>(
+                value: item,
+                child: Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.center, // Align text to the left
+                      child: Text(item, style: FontSystem.KR16B),
+                    ),
+                    if (item != menuItems.last)
+                      const Divider(
+                        thickness: 1,
+                        color: Colors.grey,
+                        indent: 10,
+                        endIndent: 10,
+                      ),
+                  ],
+                ),
+              );
+            }).toList(),
+            onChanged: (value) {
+              if (value == '토론 삭제하기') {
+                // 토론 삭제 로직 추가
+              } else if (value == '토론룰 보기') {
+                popupViewModel.showRulePopup(context);
+              }
             },
+            buttonStyleData: const ButtonStyleData(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              height: 48,
+              width: 48, // Adjust this width
+            ),
+            dropdownStyleData: const DropdownStyleData(
+              padding: EdgeInsets.all(10),
+              maxHeight: 150,
+              width: 140, // Adjust this width for dropdown
+              offset: Offset(0, -5), // Adjust the offset if needed
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                color: Colors.white,
+              ),
+            ),
+            menuItemStyleData: const MenuItemStyleData(
+              height: 40,
+              padding: EdgeInsets.symmetric(horizontal: 16),
+            ),
           ),
         ),
       ],

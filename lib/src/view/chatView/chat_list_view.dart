@@ -2,16 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_state_provider.dart';
-import 'package:tito_app/core/provider/live_comment.dart';
+
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/src/data/models/types.dart' as types;
 
 class ChatListView extends ConsumerStatefulWidget {
-  final String id;
-
   const ChatListView({
     super.key,
-    required this.id,
   });
 
   @override
@@ -21,24 +18,21 @@ class ChatListView extends ConsumerStatefulWidget {
 class _ChatListViewState extends ConsumerState<ChatListView> {
   @override
   Widget build(BuildContext context) {
-    final chatState = ref.watch(chatProviders(widget.id));
+    final chatState = ref.watch(chatProviders);
     final loginInfo = ref.read(loginInfoProvider);
 
-    if (chatState.debateData!['opponentNick'] == loginInfo?.nickname ||
-        chatState.debateData!['myNick'] == loginInfo?.nickname) {
-      return PartiChatList(id: widget.id);
-    } else {
-      return AudienceChatList(id: widget.id);
-    }
+    // if (chatState.debateData!['opponentNick'] == loginInfo?.nickname ||
+    //     chatState.debateData!['myNick'] == loginInfo?.nickname) {
+    return PartiChatList();
+    // } else {
+    //   return AudienceChatList();
+    // }
   }
 }
 
 class PartiChatList extends ConsumerStatefulWidget {
-  final String id;
-
   const PartiChatList({
     super.key,
-    required this.id,
   });
 
   @override
@@ -54,7 +48,7 @@ class _PartiChatListState extends ConsumerState<PartiChatList> {
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-    final chatViewModel = ref.read(chatProviders(widget.id).notifier);
+    final chatViewModel = ref.read(chatProviders.notifier);
     _initialMessagesFuture = chatViewModel.loadInitialMessages();
     _initialMessagesFuture.then((messages) {
       if (mounted) {
@@ -73,7 +67,7 @@ class _PartiChatListState extends ConsumerState<PartiChatList> {
 
   @override
   Widget build(BuildContext context) {
-    final chatViewModel = ref.watch(chatProviders(widget.id).notifier);
+    final chatViewModel = ref.watch(chatProviders.notifier);
     final loginInfo = ref.read(loginInfoProvider);
 
     return FutureBuilder<List<types.Message>>(
@@ -168,11 +162,8 @@ class _PartiChatListState extends ConsumerState<PartiChatList> {
 }
 
 class AudienceChatList extends ConsumerStatefulWidget {
-  final String id;
-
   const AudienceChatList({
     super.key,
-    required this.id,
   });
 
   @override
@@ -188,7 +179,7 @@ class _AudienceChatListState extends ConsumerState<AudienceChatList> {
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-    final chatViewModel = ref.read(chatProviders(widget.id).notifier);
+    final chatViewModel = ref.read(chatProviders.notifier);
 
     _initialMessagesFuture = chatViewModel.loadInitialMessages();
 
@@ -209,8 +200,8 @@ class _AudienceChatListState extends ConsumerState<AudienceChatList> {
 
   @override
   Widget build(BuildContext context) {
-    final chatViewModel = ref.watch(chatProviders(widget.id).notifier);
-    final chatState = ref.watch(chatProviders(widget.id));
+    final chatViewModel = ref.watch(chatProviders.notifier);
+    final chatState = ref.watch(chatProviders);
     final loginInfo = ref.read(loginInfoProvider);
 
     return FutureBuilder<List<types.Message>>(

@@ -5,15 +5,14 @@ import 'package:tito_app/core/provider/chat_state_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:speech_balloon/speech_balloon.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
-import 'package:tito_app/src/viewModel/chat_viewModel.dart';
+import 'package:tito_app/src/data/models/debate_info.dart';
+import 'package:tito_app/src/data/models/popup_state.dart';
+
 import 'package:tito_app/src/viewModel/popup_viewModel.dart';
 
 class ChatSpeechBubble extends ConsumerStatefulWidget {
-  final String id;
-
   const ChatSpeechBubble({
     super.key,
-    required this.id,
   });
 
   @override
@@ -23,7 +22,7 @@ class ChatSpeechBubble extends ConsumerStatefulWidget {
 class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
   @override
   Widget build(BuildContext context) {
-    final chatState = ref.watch(chatProviders(widget.id));
+    final chatState = ref.watch(chatProviders);
     final loginInfo = ref.watch(loginInfoProvider);
     final popupViewModel = ref.read(popupProvider.notifier);
     final popupState = ref.read(popupProvider);
@@ -47,52 +46,58 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
 
     String sendNick = isMyNick ? myNick : opponentNick;
 
-    if (isMyNick) {
-      switch (myTurn) {
-        case 0:
-          return StaticTextBubble(
-            chatState: chatState,
-            title: '첫 입론을 입력하세요',
-            width: (MediaQuery.of(context).size.width - 100) * 0.7,
-            height: (MediaQuery.of(context).size.height - 450) * 0.2,
-          );
+    return StaticTextBubble(
+      chatState: chatState,
+      title: '첫 입론을 입력하세요',
+      width: (MediaQuery.of(context).size.width - 100) * 0.7,
+      height: (MediaQuery.of(context).size.height - 450) * 0.2,
+    );
+    // if (isMyNick) {
+    //   switch (myTurn) {
+    //     case 0:
+    //       return StaticTextBubble(
+    //         chatState: chatState,
+    //         title: '첫 입론을 입력하세요',
+    //         width: (MediaQuery.of(context).size.width - 100) * 0.7,
+    //         height: (MediaQuery.of(context).size.height - 450) * 0.2,
+    //       );
 
-        default:
-          if (opponentTurn == 0) {
-            SizedBox(
-              width: 0,
-            );
-          }
-          if (opponentTurn >= 3) {
-            return TimingButton(
-              sendNick: sendNick,
-              popupViewModel: popupViewModel,
-              popupState: popupState,
-            );
-          }
-          break; // Added break to handle cases where opponentTurn < 1
-      }
-    } else {
-      switch (opponentTurn) {
-        case 0:
-          return StaticTextBubble(
-            chatState: chatState,
-            title: '토론 참여자를 기다리고 있어요!\n의견을 작성해보세요',
-            width: (MediaQuery.of(context).size.width - 100) * 0.8,
-            height: (MediaQuery.of(context).size.height - 450) * 0.3,
-          );
+    //     default:
+    //       if (opponentTurn == 0) {
+    //         SizedBox(
+    //           width: 0,
+    //         );
+    //       }
+    //       if (opponentTurn >= 3) {
+    //         return TimingButton(
+    //           sendNick: sendNick,
+    //           popupViewModel: popupViewModel,
+    //           popupState: popupState,
+    //         );
+    //       }
+    //       break; // Added break to handle cases where opponentTurn < 1
+    //   }
+    // } else {
+    //   switch (opponentTurn) {
+    //     case 0:
+    //       return StaticTextBubble(
+    //         chatState: chatState,
+    //         title: '토론 참여자를 기다리고 있어요!\n의견을 작성해보세요',
+    //         width: (MediaQuery.of(context).size.width - 100) * 0.8,
+    //         height: (MediaQuery.of(context).size.height - 450) * 0.3,
+    //       );
 
-        default:
-          if (opponentTurn >= 3) {
-            return TimingButton(
-              sendNick: sendNick,
-              popupViewModel: popupViewModel,
-              popupState: popupState,
-            );
-          }
-          break; // Added break to handle cases where opponentTurn < 3
-      }
-    }
+    //     default:
+    //       if (opponentTurn >= 3) {
+    //         return TimingButton(
+    //           sendNick: sendNick,
+    //           popupViewModel: popupViewModel,
+    //           popupState: popupState,
+    //         );
+    //       }
+    //       break; // Added break to handle cases where opponentTurn < 3
+    //   }
+    // }
 
     // Return a default widget if no conditions are met
     return const SizedBox.shrink();
@@ -120,9 +125,9 @@ class StaticTextBubble extends StatefulWidget {
 class _StaticTextBubbleState extends State<StaticTextBubble> {
   @override
   Widget build(BuildContext context) {
-    if (!mounted || widget.chatState.isVisible == false) {
-      return const SizedBox.shrink(); // 빈 공간 반환
-    }
+    // if (!mounted || widget.chatState.isVisible == false) {
+    //   return const SizedBox.shrink(); // 빈 공간 반환
+    // }
 
     return SpeechBalloon(
       width: widget.width,

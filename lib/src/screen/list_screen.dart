@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:tito_app/core/api/api_service.dart';
+import 'package:tito_app/core/api/dio_client.dart';
+import 'package:tito_app/src/data/models/debate_list.dart';
 import 'dart:convert';
 import 'package:tito_app/src/widgets/reuse/search_bar.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
@@ -20,7 +23,7 @@ class ListScreen extends ConsumerStatefulWidget {
 
 class _ListScreenState extends ConsumerState<ListScreen> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-  
+
   final List<String> labels = ['연애', '정치', '연예', '자유', '스포츠'];
   final List<String> statuses = ['전체', '토론 중', '토론 종료'];
   final List<String> sortOptions = ['최신순', '인기순'];
@@ -33,6 +36,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   @override
   void initState() {
     super.initState();
+
     _fetchDebateList();
   }
 
@@ -56,35 +60,38 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   }
 
   Future<void> _fetchDebateList() async {
-    final url = Uri.https(
-        'pokeeserver-default-rtdb.firebaseio.com', 'debate_list.json');
-    final response = await http.get(url);
+    try {
+      // ApiService에서 Debate 리스트를 받아옴
+      final List<Debate> debateResponse =
+          await ApiService(DioClient.dio).getDebateList();
 
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(response.body);
-      List<Map<String, dynamic>> list = data.entries.map((entry) {
-        final Map<String, dynamic> debate =
-            Map<String, dynamic>.from(entry.value);
-        debate['id'] = entry.key; // id 값을 추가합니다.
-
-        return debate;
-      }).toList();
-
+      // 선택된 정렬 옵션에 따라 정렬
       if (selectedSortOption == '최신순') {
-        list.sort((a, b) {
-          DateTime dateA = DateTime.parse(a['timestamp']);
-          DateTime dateB = DateTime.parse(b['timestamp']);
-          return dateB.compareTo(dateA); // 내림차순으로 정렬합니다.
+        debateResponse.sort((a, b) {
+          DateTime dateA = DateTime.parse(a.updatedAt);
+          DateTime dateB = DateTime.parse(b.updatedAt);
+          return dateB.compareTo(dateA); // 내림차순으로 정렬
         });
       }
 
+      // 상태가 마운트된 경우 state 설정
       if (mounted) {
         setState(() {
-          debateList = list;
+          debateList = debateResponse
+              .map((debate) => {
+                    'id': debate.id,
+                    'title': debate.debateTitle,
+                    'debateStatus': debate.debateStatus,
+                    'debateMakerOpinion': debate.debateMakerOpinion,
+                    'debateJoinerOpinion': debate.debateJoinerOpinion,
+                    'timestamp': debate.updatedAt,
+                  })
+              .toList();
         });
       }
-    } else {
-      throw Exception('Failed to load debate list');
+    } catch (error) {
+      // 에러 처리
+      print('Error fetching debate list: $error');
     }
   }
 

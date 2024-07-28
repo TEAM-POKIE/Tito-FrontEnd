@@ -47,7 +47,7 @@ class DebateCreateThird extends ConsumerWidget {
                 children: [
                   const SizedBox(height: 10),
                   Text(
-                    debateState.title,
+                    debateState.debateTitle,
                     style: FontSystem.KR18B.copyWith(fontSize: 30),
                   ),
                   const SizedBox(height: 20),
@@ -74,9 +74,9 @@ class DebateCreateThird extends ConsumerWidget {
                       }
                       return null;
                     },
-                    onSaved: (value) {
-                      debateViewModel.updateContent(value ?? '');
-                    },
+                    // onSaved: (value) {
+                    //   debateViewModel.updateContent(value ?? '');
+                    // },
                   ),
                   const SizedBox(height: 20),
                   Text(
@@ -86,7 +86,7 @@ class DebateCreateThird extends ConsumerWidget {
                   Row(
                     children: [
                       TextButton.icon(
-                        onPressed: debateViewModel.pickImage,
+                        onPressed: () {}, //debateViewModel.pickImage,
                         icon: const Icon(
                           Icons.camera_alt,
                           color: ColorSystem.white,

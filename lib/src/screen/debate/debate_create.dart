@@ -90,11 +90,11 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
                               textStyle:
                                   const TextStyle(fontWeight: FontWeight.bold),
                               padding: const EdgeInsets.all(0),
-                              backgroundColor: debateState.category ==
+                              backgroundColor: debateState.debateCategory ==
                                       viewModel.labels[index]
                                   ? ColorSystem.black
                                   : ColorSystem.ligthGrey,
-                              foregroundColor: debateState.category ==
+                              foregroundColor: debateState.debateCategory ==
                                       viewModel.labels[index]
                                   ? Colors.white
                                   : const Color(0xff6B6B6B),
