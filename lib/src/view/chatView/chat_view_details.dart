@@ -1,34 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_state_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/timer_provider.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:tito_app/src/data/models/debate_info.dart';
+import 'package:tito_app/src/view/chatView/live_comment.dart';
 import 'package:tito_app/src/view/chatView/votingbar.dart';
 
-class ChatViewDetails extends ConsumerStatefulWidget {
-  const ChatViewDetails({
-    super.key,
-  });
+class ChatViewDetails extends HookConsumerWidget {
+  const ChatViewDetails({super.key});
 
   @override
-  _ChatViewDetailsState createState() => _ChatViewDetailsState();
-}
-
-class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
-  @override
-  void initState() {
-    super.initState();
-    ref.read(timerProvider.notifier).startTimer(); // 타이머 시작
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final chatState = ref.watch(chatProviders);
     final loginInfo = ref.watch(loginInfoProvider);
     final timerState = ref.watch(timerProvider); // 타이머 상태
+
+    useEffect(() {
+      ref.read(timerProvider.notifier).startTimer(); // 타이머 시작
+      return () => ref.read(timerProvider.notifier).stopTimer(); // 타이머 정지
+    }, []);
 
     if (loginInfo == null) {
       return const SizedBox.shrink();
@@ -42,23 +36,15 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
     }
 
     String remainingTime = formatDuration(timerState.remainingTime);
-    return Column(
-      children: [
-        _detailState(
-          chatState: chatState,
-          upImage: 'assets/images/detailChatIcon.png',
-          upTitle: '상대 반론자를 찾는 중이에요 !',
-          downTitle: '⏳ 00:00 토론 시작 전',
-        ),
-        VotingBar(),
-      ],
-    );
-  }
 
-  @override
-  void dispose() {
-    ref.read(timerProvider.notifier).stopTimer(); // 타이머 중지
-    super.dispose();
+    return Expanded(
+      child: Column(
+        children: [
+          Expanded(child: LiveComments()),
+          VotingBar(),
+        ],
+      ),
+    );
   }
 }
 
@@ -67,7 +53,7 @@ class firstText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: ColorSystem.ligthGrey,
-      width: MediaQuery.sizeOf(context).width,
+      width: MediaQuery.of(context).size.width,
       height: 50,
       child: Padding(
         padding: const EdgeInsets.all(10),
@@ -173,11 +159,12 @@ class _detailState extends StatelessWidget {
   }
 }
 
-class ProfileVsWidget extends StatefulWidget {
+class ProfileVsWidget extends StatelessWidget {
   final String myNick;
   final String myArgument;
   final String opponentNick;
   final String opponentArgument;
+
   const ProfileVsWidget({
     required this.myNick,
     required this.myArgument,
@@ -185,11 +172,6 @@ class ProfileVsWidget extends StatefulWidget {
     required this.opponentArgument,
   });
 
-  @override
-  State<ProfileVsWidget> createState() => _ProfileVsWidgetState();
-}
-
-class _ProfileVsWidgetState extends State<ProfileVsWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
