@@ -66,6 +66,7 @@ dependencies:
   retrofit_generator: ^8.1.2
   json_serializable: ^6.8.0
   permission_handler: ^11.3.1
+  flutter_svg: ^2.0.10+1
 
 dev_dependencies:
   flutter_test:
@@ -90,16 +91,23 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/icons/bottom_ai.svg
+    - assets/icons/bottom_debate.svg
+    - assets/icons/bottom_home.svg
+    - assets/icons/bottom_list.svg
+    - assets/icons/bottom_my.svg
+    
+
+
+    
+
     - assets/images/logo.png
     - assets/images/kakao.png
     - assets/images/google.png
     - assets/images/apple.png
+    - assets/images/black_apple.png
     - assets/images/hotlist.png
     - assets/images/mypage.png
-    - assets/images/bottombar/ai.png
-    - assets/images/bottombar/create.png
-    - assets/images/bottombar/home.png
-    - assets/images/bottombar/list.png
     - assets/images/ai_purple.png
     - assets/images/alarm_none.png
     - assets/images/alarm.png
@@ -125,6 +133,9 @@ flutter:
     - assets/images/splash.png
     - assets/images/splashs.png
     - assets/images/LogoIcon.png
+    - assets/images/hot_fighter.png
+    - assets/images/star.png
+    
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

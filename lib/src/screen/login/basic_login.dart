@@ -70,7 +70,9 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            context.go('/login');
+          },
           icon: const Icon(Icons.arrow_back_ios),
         ),
         title: const Text('로그인'),
@@ -157,8 +159,8 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                       backgroundColor: ColorSystem.black,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 149.w, vertical: 20.h),
+                      // padding:
+                      //     EdgeInsets.symmetric(horizontal: 149.w, vertical: 20.h),
                     ),
                     child: const Text(
                       '로그인',

@@ -9,7 +9,7 @@ class Signup extends StatefulWidget {
   const Signup({super.key});
 
   @override
-  State<Signup> createState() { 
+  State<Signup> createState() {
     return _SignUpState();
   }
 }
@@ -23,7 +23,7 @@ class _SignUpState extends State<Signup> {
   void _onSignUp() async {
     final isVaild = _formKey.currentState!.validate();
     _formKey.currentState!.save();
-    if (isVaild) { 
+    if (isVaild) {
       final signUpData = {
         'nickname': _nickname,
         'email': _email,
@@ -48,7 +48,9 @@ class _SignUpState extends State<Signup> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            context.go('/login');
+          },
           icon: const Icon(Icons.arrow_back_ios),
         ),
         title: const Text('회원가입'),
@@ -123,8 +125,10 @@ class _SignUpState extends State<Signup> {
                 const SizedBox(
                   height: 12,
                 ),
-                const Text ('비밀번호', 
-                style: FontSystem.KR20B,),
+                const Text(
+                  '비밀번호',
+                  style: FontSystem.KR20B,
+                ),
                 TextFormField(
                   maxLength: 20,
                   decoration: const InputDecoration(
@@ -162,13 +166,80 @@ class _SignUpState extends State<Signup> {
                     child: const Text(
                       '회원가입',
                       style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
+                        fontSize: 18,
+                        color: Colors.white,
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: 44.h,),
+                SizedBox(
+                  height: 44.h,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 53.w),
+                  child: Row(
+                    //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        width: 80.w,
+                        height: 60.h,
+                        padding: EdgeInsets.only(right: 12.w),
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ColorSystem.grey,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.r),
+                            ),
+                          ),
+                          child: Image.asset(
+                            'assets/images/kakao.png',
+                            width: 24.w,
+                            height: 24.h,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 80.w,
+                        height: 60.h,
+                        padding: EdgeInsets.only(right: 12.w),
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ColorSystem.grey,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.r),
+                            ),
+                          ),
+                          child: Image.asset(
+                            'assets/images/google.png',
+                            width: 24.w,
+                            height: 24.h,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 80.w,
+                        height: 60.h,
+                        padding: EdgeInsets.only(right: 12.w),
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ColorSystem.grey,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.r),
+                            ),
+                          ),
+                          child: Image.asset(
+                            'assets/images/black_apple.png',
+                            width: 24.w,
+                            height: 24.h,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
