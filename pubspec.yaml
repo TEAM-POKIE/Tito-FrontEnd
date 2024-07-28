@@ -66,6 +66,11 @@ dependencies:
   retrofit_generator: ^8.1.2
   json_serializable: ^6.8.0
   permission_handler: ^11.3.1
+  flutter_appauth: ^6.0.6
+  kakao_flutter_sdk_user: ^1.9.5
+  kakao_flutter_sdk_common: ^1.9.5
+  flutter_secure_storage: ^4.2.1
+  flutter_dotenv: ^5.1.0
   flutter_svg: ^2.0.10+1
 
 dev_dependencies:
@@ -136,6 +141,7 @@ flutter:
     - assets/images/hot_fighter.png
     - assets/images/star.png
     
+    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
