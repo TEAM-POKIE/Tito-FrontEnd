@@ -13,19 +13,22 @@ class DebateCreateSecond extends ConsumerStatefulWidget {
 
 class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
   final _formKey = GlobalKey<FormState>();
+  String aArgument = '';
+  String bArgument = '';
 
   @override
   Widget build(BuildContext context) {
     final debateViewModel = ref.read(debateCreateProvider.notifier);
     final debateState = ref.watch(debateCreateProvider);
-    String aArgument = '';
-    String bArgument = '';
+
     void _nextCreate(BuildContext context) async {
       if (!debateViewModel.validateForm(_formKey)) {
         return;
       }
-      debateState.debateMakerOpinion = aArgument;
-      debateState.debateJoinerOpinion = bArgument;
+      _formKey.currentState?.save(); // 폼의 모든 필드 저장
+      print('aArgument: $aArgument');
+      print('bArgument: $bArgument');
+      debateViewModel.updateOpinion(aArgument, bArgument);
 
       if (!context.mounted) return;
 
@@ -98,7 +101,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                       return null;
                     },
                     onSaved: (value) {
-                      aArgument = value!;
+                      aArgument = value ?? '';
                     },
                   ),
                   const SizedBox(height: 20),
@@ -125,7 +128,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                       return null;
                     },
                     onSaved: (value) {
-                      bArgument = value!;
+                      bArgument = value ?? '';
                     },
                   ),
                   const SizedBox(height: 20),
@@ -148,7 +151,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
               ),
               child: const Text(
-                '토론방으로 이동',
+                '다음',
                 style: TextStyle(fontSize: 16, color: Colors.white),
               ),
             ),

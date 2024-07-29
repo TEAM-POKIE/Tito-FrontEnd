@@ -26,6 +26,11 @@ class DebateCreateViewModel extends StateNotifier<DebateCreateState> {
     state = state.copyWith(firstChatContent: content);
   }
 
+  void updateOpinion(String aOpinion, String bOpinion) {
+    state = state.copyWith(
+        debateMakerOpinion: aOpinion, debateJoinerOpinion: bOpinion);
+  }
+
   void showDebatePopup(BuildContext context) {
     final popupState = ref.read(popupProvider);
     final popupViewModel = ref.read(popupProvider.notifier);

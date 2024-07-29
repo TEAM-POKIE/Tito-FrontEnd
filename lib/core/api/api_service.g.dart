@@ -19,6 +19,7 @@ class _ApiService implements ApiService {
   final Dio _dio;
 
   String? baseUrl;
+
   @override
   Future<Map<String, dynamic>> getData(String endpoint) async {
     final _extra = <String, dynamic>{};
@@ -42,10 +43,7 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-
-    // Assuming the value type is Debate for this example.
-    var _value = _result.data!.map((k, dynamic v) =>
-        MapEntry(k, Debate.fromJson(v as Map<String, dynamic>)));
+    final _value = _result.data!;
     return _value;
   }
 
@@ -231,7 +229,7 @@ class _ApiService implements ApiService {
     )
             .compose(
               _dio.options,
-              '/debates',
+              'debates',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -245,37 +243,6 @@ class _ApiService implements ApiService {
         .toList();
     return _value;
   }
-
-  // @override
-  // Future<Map<String, dynamic>> uploadImage(MultipartFileWithToJson file) async {
-  //   final _extra = <String, dynamic>{};
-  //   final queryParameters = <String, dynamic>{};
-  //   final _headers = <String, dynamic>{};
-  //   final _data = FormData();
-  //   _data.files.add(MapEntry(
-  //     'file',
-  //     MultipartFile.fromFileSync(file.path), // Ensure the path is correct here
-  //   ));
-  //   final _result = await _dio.fetch<Map<String, dynamic>>(
-  //       _setStreamType<Map<String, dynamic>>(Options(
-  //     method: 'POST',
-  //     headers: _headers,
-  //     extra: _extra,
-  //     contentType: 'multipart/form-data',
-  //   )
-  //           .compose(
-  //             _dio.options,
-  //             'upload',
-  //             queryParameters: queryParameters,
-  //             data: _data,
-  //           )
-  //           .copyWith(
-  //               baseUrl: _combineBaseUrls(
-  //             _dio.options.baseUrl,
-  //             baseUrl,
-  //           ))));
-  //   return _result.data!;
-  // }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
