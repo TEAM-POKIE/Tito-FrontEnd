@@ -7,6 +7,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:speech_balloon/speech_balloon.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
+import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/websocket_provider.dart';
 import 'package:tito_app/src/data/models/debate_crate.dart';
 
@@ -150,6 +151,7 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottom> {
   void _sendMessage() {
     final webSocketService = ref.read(webSocketProvider);
     final debateState = ref.read(debateCreateProvider);
+    final loginInfo = ref.read(loginInfoProvider);
 
     // DebateCreateState를 활용하여 메시지 생성
     final message = DebateCreateState(
@@ -165,7 +167,7 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottom> {
     final jsonMessage = json.encode({
       'command': 'CREATE',
       'debateId': null,
-      'userId': 2,
+      'userId': loginInfo!.id,
       'content':
           json.encode(message.toJson()), // message.toJson()을 JSON 문자열로 인코딩
     });

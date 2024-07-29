@@ -6,6 +6,7 @@ import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_state_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
+import 'package:tito_app/core/provider/websocket_provider.dart';
 import 'package:tito_app/src/viewModel/chat_viewModel.dart';
 
 class ChatAppbar extends ConsumerWidget {
@@ -15,10 +16,31 @@ class ChatAppbar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final chatState = ref.watch(chatProviders);
     final loginInfo = ref.read(loginInfoProvider);
+    final webSocketStream = ref.watch(webSocketProvider).stream;
 
-    return DebateAppbar(
-      title: 'title',
-      notiIcon: 'assets/images/debateAlarm.png',
+    return StreamBuilder<Map<String, dynamic>>(
+      stream: webSocketStream,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final data = snapshot.data!;
+          if (data.containsKey('title')) {
+            final title = data[''] as String;
+            return DebateAppbar(
+              title: title,
+              notiIcon: 'assets/images/debateAlarm.png',
+            );
+          } else {
+            return DebateAppbar(
+              title: 'No Title Available',
+              notiIcon: 'assets/images/debateAlarm.png',
+            );
+          }
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+          return const CircularProgressIndicator();
+        }
+      },
     );
   }
 }

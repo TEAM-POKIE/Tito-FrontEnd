@@ -70,10 +70,10 @@ class _MypageMainState extends ConsumerState<MypageMain> {
         "profilePicture": profileImageUrl,
       });
 
-      // 로그인 정보를 상태로 업데이트
-      ref.read(loginInfoProvider.notifier).state = loginInfo.copyWith(
-        profilePicture: profileImageUrl,
-      );
+      // // 로그인 정보를 상태로 업데이트
+      // ref.read(loginInfoProvider.notifier).state = loginInfo.copyWith(
+      //   profilePicture: profileImageUrl,
+      // );
     } catch (e) {
       print(e);
     }

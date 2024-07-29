@@ -1,8 +1,13 @@
+import 'dart:convert';
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
+import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/core/provider/websocket_provider.dart';
 import 'package:tito_app/src/data/models/debate_crate.dart';
 import 'package:tito_app/src/data/models/debate_list.dart';
 import 'package:tito_app/src/widgets/reuse/search_bar.dart';
@@ -32,6 +37,8 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   @override
   void initState() {
     super.initState();
+    final loginInfo = ref.read(loginInfoProvider);
+    print(loginInfo!.nickname);
     _fetchDebateList();
   }
 
@@ -43,6 +50,24 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   void _onLoading() async {
     await _fetchDebateList();
     _refreshController.loadComplete();
+  }
+
+  void _enterChat(debateId) {
+    final webSocketService = ref.read(webSocketProvider);
+    final loginInfo = ref.read(loginInfoProvider);
+    // DebateCreateState를 활용하여 메시지 생성
+
+    // JSON 객체를 생성하여 문자열로 인코딩
+    final jsonMessage = json.encode({
+      'command': "ENTER",
+      'debateId': debateId,
+      'userId': loginInfo!.id,
+      'content': null,
+    });
+
+    // WebSocket을 통해 메시지 전송
+    webSocketService.sendMessage(jsonMessage);
+    context.push('/chat');
   }
 
   Future<void> _fetchDebateList() async {
@@ -209,16 +234,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                         ),
                         child: ListTile(
                           onTap: () {
-                            final debateState = debate.debateStatus;
-
-                            if (debate.id != null) {
-                              if (debateState == '토론 참여가능' ||
-                                  debateState == '토론 진행중') {
-                                context.push('/chat');
-                              }
-                            } else {
-                              print('Invalid ID for Chat page.');
-                            }
+                            _enterChat(debate.id);
                           },
                           title: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
