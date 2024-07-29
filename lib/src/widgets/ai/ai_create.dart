@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:tito_app/src/widgets/ai/ai_select.dart';
 import 'package:get/get.dart';
 import 'package:tito_app/src/widgets/ai/selection_controller.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tito_app/core/constants/style.dart';
 
 class AiCreate extends StatelessWidget {
-  SelectionController selectionController =
-      Get.put(SelectionController());
+  SelectionController selectionController = Get.put(SelectionController());
 
   AiCreate({super.key});
 
@@ -17,10 +21,10 @@ class AiCreate extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(
-                color: isSelected ? const Color(0xFF8E48F8) : Colors.grey),
-            borderRadius: BorderRadius.circular(8),
+                color: isSelected ? ColorSystem.purple : ColorSystem.grey),
+            borderRadius: BorderRadius.circular(24.r),
           ),
-          margin: const EdgeInsets.all(4.0),
+          margin: EdgeInsets.all(4.5.w),
           child: Center(
             child: Text(text),
           ),
@@ -30,19 +34,26 @@ class AiCreate extends StatelessWidget {
   }
 
   Widget _buildSelectedItem(int index) {
-    return Transform.scale(
-      scale: 0.77,
-      child: Chip(
-        label: Text(
-          '아이템 $index',
-          style: const TextStyle(color: Colors.white, fontSize: 16),
-        ),
-        backgroundColor: Colors.black,
-        deleteIcon: const Icon(Icons.close, color: Colors.white),
-        onDeleted: () =>
-            selectionController.toggleSelection(index), // X 아이콘이 눌렸을 때 선택 상태 토글
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18.0),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10.w),
+      child: Transform.scale(
+        scale: 0.8,
+        child: Container(
+          width: 120.w,
+          height: 50.h,
+          child: Chip(
+            label: Text(
+              '아이템 $index',
+              style: TextStyle(color: ColorSystem.white, fontSize: 14.sp),
+            ),
+            backgroundColor: Colors.black,
+            deleteIcon: const Icon(Icons.close, color: ColorSystem.white, size: 20,),
+            onDeleted: () =>
+                selectionController.toggleSelection(index), // X 아이콘이 눌렸을 때 선택 상태 토글
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+          ),
         ),
       ),
     );
@@ -52,42 +63,47 @@ class AiCreate extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.arrow_back_ios),
+        leading: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios),
+          ),
         ),
       ),
       body: Column(
         children: [
-          const Padding(padding: EdgeInsets.all(18)),
+          SizedBox(
+            height: 37.h,
+          ),
           Container(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(padding: EdgeInsets.only(left: 18)),
-                Image.asset(
-                  'assets/images/ai_purple.png',
-                  width: 40,
-                  height: 40,
+                Padding(padding: EdgeInsets.symmetric(horizontal: 10.w)),
+                SvgPicture.asset(
+                  'assets/icons/purple_cute.svg',
+                  width: 40.w,
+                  height: 40.h,
                 ),
-                const SizedBox(width: 8),
-                const Column(
+                SizedBox(width: 8.w),
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 7),
-                    Text(
+                    SizedBox(height: 10.h),
+                    const Text(
                       'AI 자동 토론 주제 생성 하기',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: FontSystem.KR18R,
                     ),
-                    SizedBox(height: 8),
-                    Row(
+                    SizedBox(height: 8.h),
+                    const Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           '원하는 키워드를 선택해보세요!',
-                          style: TextStyle(fontSize: 18),
+                          style: FontSystem.KR18R,
                         ),
                       ],
                     ),
@@ -97,11 +113,11 @@ class AiCreate extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 25,
+            height: 61.h,
             child: Obx(() {
               return selectionController.selectedItems.isNotEmpty
                   ? Padding(
-                      padding: const EdgeInsets.all(2.0),
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Wrap(
@@ -116,61 +132,74 @@ class AiCreate extends StatelessWidget {
                   : Container();
             }),
           ),
-          const SizedBox(height: 18),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              TextButton(
-                onPressed: selectionController.resetSelection,
-                child: const Text(
-                  '새로고침',
-                  style: TextStyle(
-                      color: Colors.black,
-                      decoration: TextDecoration.underline),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: TextButton(
+                  onPressed: selectionController.resetSelection,
+                  child: Text(
+                    '새로고침',
+                    style: TextStyle(
+                        color: ColorSystem.black,
+                        fontSize: 14.sp,
+                        decoration: TextDecoration.underline),
+                  ),
                 ),
               ),
             ],
           ),
+          SizedBox(
+            height: 30.h,
+          ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GridView.count(
-                crossAxisCount: 3,
-                children: List.generate(9, (index) {
-                  return _buildGridItem(context, '아이템 $index', index);
-                }),
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Container(
+                width: 330.w,
+                height: 250.h,
+                child: GridView.count(
+                  crossAxisCount: 3,
+                  children: List.generate(9, (index) {
+                    return _buildGridItem(context, '아이템 $index', index);
+                  }),
+                ),
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 40.h),
             child: Obx(() {
               bool isSelectExist = selectionController.selectedItems.isNotEmpty;
               return SizedBox(
-                width: 310,
-                height: 60,
+                width: 350.w,
+                height: 60.h,
                 child: ElevatedButton(
                   onPressed: isSelectExist
                       ? () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const AiSelect()),
+                            MaterialPageRoute(
+                                builder: (context) => AiSelect()),
                           );
                         }
                       : null,
                   style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.r)
+                    ),
                     backgroundColor:
-                        isSelectExist ? const Color(0xFF8E48F8) : Colors.grey,
+                        isSelectExist ? ColorSystem.purple : ColorSystem.grey,
                   ),
-                  child: const Text(
+                  child: Text(
                     '다음',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+                    style: TextStyle(color: ColorSystem.white, fontSize: 20.sp),
                   ),
                 ),
               );
             }),
           ),
-          const SizedBox(height: 23),
         ],
       ),
     );

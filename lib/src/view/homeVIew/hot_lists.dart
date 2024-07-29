@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:tito_app/core/provider/home_state_provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tito_app/core/constants/style.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tito_app/core/constants/style.dart';
 
 class HotLists extends ConsumerWidget {
   const HotLists({super.key});
@@ -14,38 +18,39 @@ class HotLists extends ConsumerWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 20),
+            SizedBox(height: 30.h),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: 20.h, ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
                     'HOT한 토론',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
+                    style: FontSystem.KR18B,
                   ),
-                  TextButton(
-                      onPressed: () {
-                        homeViewModel.goListPage(context);
-                      },
-                      child: const Text('더보기 >'))
+                  SizedBox(width: 6.w,),
+                  Container(
+                    width: 39.5.w,
+                    height: 29.06.h,
+                    child: Image.asset('assets/images/hotlist.png')),
+                  // TextButton(
+                  //     onPressed: () {
+                  //       homeViewModel.goListPage(context);
+                  //     },
+                  //     child: const Text('더보기 >'))
                 ],
               ),
             ),
             Column(
               children: List.generate(homeState.hotItems.length, (index) {
                 final hotItem = homeState.hotItems[index];
-
                 return Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
+                      color: ColorSystem.white,
+                      borderRadius: BorderRadius.circular(20.r),
                     ),
                     child: ListTile(
                       leading: Image.asset(
@@ -66,14 +71,14 @@ class HotLists extends ConsumerWidget {
                         children: [
                           const Icon(
                             Icons.whatshot,
-                            color: Colors.purple,
+                            color: ColorSystem.purple,
                           ),
                           const SizedBox(width: 5),
                           Text(
                             hotItem.hotScore.toString(),
                             style: const TextStyle(
                               fontSize: 14,
-                              color: Colors.grey,
+                              color: ColorSystem.grey,
                             ),
                           ),
                         ],

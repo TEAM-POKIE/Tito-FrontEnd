@@ -10,6 +10,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:dio/dio.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/constants/style.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MypageMain extends ConsumerStatefulWidget {
   const MypageMain({super.key});
@@ -142,137 +143,168 @@ class _MypageMainState extends ConsumerState<MypageMain> {
     final loginInfo = ref.watch(loginInfoProvider);
     return SingleChildScrollView(
       child: Center(
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            Stack(
-              children: [
-                CircleAvatar(
-                  radius: 35,
-                  backgroundImage: _image != null
-                      ? FileImage(File(_image!.path)) as ImageProvider
-                      : loginInfo?.profilePicture == null
-                          ? const AssetImage('assets/images/chatprofile.png')
-                          : NetworkImage(loginInfo!.profilePicture!)
-                              as ImageProvider,
-                ),
-                Positioned(
-                  bottom: -5,
-                  right: -5,
-                  child: Transform.rotate(
-                    angle: 0.1,
-                    child: IconButton(
-                      iconSize: 30.0,
-                      onPressed: () {
-                        _showImagePickerOptions(context);
-                      },
-                      icon: Image.asset('assets/images/changeprofile.png'),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: Column(
+            children: [
+              SizedBox(height: 22.h),
+              Stack(
+                children: [
+                  CircleAvatar(
+                    radius: 35.r,
+                    backgroundImage: _image != null
+                        ? FileImage(File(_image!.path)) as ImageProvider
+                        : loginInfo?.profilePicture == null
+                            ? const AssetImage('assets/images/chatprofile.png')
+                            : NetworkImage(loginInfo!.profilePicture!)
+                                as ImageProvider,
+                  ),
+                  Positioned(
+                    bottom: -5,
+                    right: -5,
+                    child: Transform.rotate(
+                      angle: 0.1,
+                      child: IconButton(
+                        iconSize: 30.0,
+                        onPressed: () {
+                          _showImagePickerOptions(context);
+                        },
+                        icon: Image.asset('assets/images/changeprofile.png'),
+                      ),
                     ),
                   ),
+                ],
+              ),
+              SizedBox(height: 10.h),
+              Text(
+                '${loginInfo?.nickname}',
+                style:
+                    FontSystem.KR24B,
+              ),
+              Container(
+                width: 70.w,
+                height: 30.h,
+                padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 6.w),
+                decoration: BoxDecoration(
+                  color: ColorSystem.lightPurple,
+                  borderRadius: BorderRadius.circular(10.r),
                 ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Text(
-              '${loginInfo?.nickname}',
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 5),
-              padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 221, 199, 255),
-                borderRadius: BorderRadius.circular(10),
+                child: const Text(
+                  '승률 80%',
+                  style: TextStyle(
+                      color: ColorSystem.purple,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
-              child: const Text(
-                '승률 80%',
-                style: TextStyle(
-                    color: Color(0xFF8E48F8), fontWeight: FontWeight.bold),
+              SizedBox(height: 10.h),
+              const Text(
+                '12전 | 10승 | 2패',
+                style: FontSystem.KR18R,
               ),
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              '12전 | 10승 | 2패',
-              style: TextStyle(fontSize: 16, color: Colors.black),
-            ),
-            const SizedBox(height: 20),
-            const Divider(thickness: 2),
-            const SizedBox(height: 15.0),
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+              SizedBox(height: 44.h),
+              // Divider(thickness: 4),
+              Container(
+                width: double.infinity,
+                height: 4.h,
+                margin: EdgeInsets.symmetric(vertical: 20.h),
+                decoration: BoxDecoration(
+                  color: ColorSystem.grey3,
+                  borderRadius: BorderRadius.circular(4.h),
+                ),
+              ),
+              SizedBox(height: 32.h),
+              const Align(
+                alignment: Alignment.centerLeft,
                 child: Text(
                   '내 활동',
-                  style: TextStyle(fontSize: 15),
+                  style: FontSystem.KR14B,
                 ),
               ),
-            ),
-            const SizedBox(height: 15.0),
-            _buildListTile(
-              context,
-              title: '내가 참여한 토론',
-              onTap: () => context.go('/mydebate'),
-            ),
-            _buildListTile(
-              context,
-              title: '알림',
-              onTap: () => context.go('/myalarm'),
-            ),
-            const SizedBox(height: 10.0),
-            const Divider(thickness: 2),
-            const SizedBox(height: 15.0),
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+              SizedBox(height: 20.h),
+              _buildListTile(
+                context,
+                title: '내가 참여한 토론',
+                onTap: () => context.go('/mydebate'),
+              ),
+              _buildListTile(
+                context,
+                title: '알림',
+                onTap: () => context.go('/myalarm'),
+              ),
+              SizedBox(height: 80.h),
+              Container(
+                width: double.infinity,
+                height: 4.h,
+                margin: EdgeInsets.symmetric(vertical: 20.h),
+                decoration: BoxDecoration(
+                  color: ColorSystem.grey3,
+                  borderRadius: BorderRadius.circular(4.h),
+                ),
+              ),
+              SizedBox(height: 20.h),
+              const Align(
+                alignment: Alignment.centerLeft,
                 child: Text(
                   '설정',
-                  style: TextStyle(fontSize: 15),
+                  style: FontSystem.KR14B,
                 ),
               ),
-            ),
-            const SizedBox(height: 15.0),
-            _buildListTile(
-              context,
-              title: '차단 리스트',
-              onTap: () => context.go('/myblock'),
-            ),
-            _buildListTile(
-              context,
-              title: '비밀번호 변경',
-              onTap: () => context.go('/password'),
-            ),
-            _buildListTile(
-              context,
-              title: '문의하기',
-              onTap: () => context.go('/contact'),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    '로그아웃',
+
+              SizedBox(height: 20.h),
+              _buildListTile(
+                context,
+                title: '차단 리스트',
+                onTap: () => context.go('/myblock'),
+              ),
+              _buildListTile(
+                context,
+                title: '비밀번호 변경',
+                onTap: () => context.go('/password'),
+              ),
+              _buildListTile(
+                context,
+                title: '문의하기',
+                onTap: () => context.go('/contact'),
+              ),
+              _buildListTile(
+                context,
+                title: '개인정보처리방침',
+                onTap: () => context.go('/contact'),
+              ),
+              _buildListTile(
+                context,
+                title: '이용약관',
+                onTap: () => context.go('/contact'),
+              ),
+
+              // ############ 여기 아직 디자인 적용 전이다 ################
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text(
+                      '로그아웃',
+                      style: TextStyle(color: ColorSystem.grey),
+                    ),
+                  ),
+                  const Text(
+                    '|',
                     style: TextStyle(color: ColorSystem.grey),
                   ),
-                ),
-                const Text(
-                  '|',
-                  style: TextStyle(color: ColorSystem.grey),
-                ),
-                TextButton(
-                    onPressed: () => showExitDialog(context),
-                    child: const Text(
-                      '회원탈퇴',
-                      style: TextStyle(color: ColorSystem.grey),
-                    )),
-              ],
-            ),
-            const SizedBox(height: 20),
-          ],
+                  TextButton(
+                      onPressed: () => showExitDialog(context),
+                      child: const Text(
+                        '회원탈퇴',
+                        style: TextStyle(color: ColorSystem.grey),
+                      )),
+                ],
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );
@@ -281,11 +313,13 @@ class _MypageMainState extends ConsumerState<MypageMain> {
   Widget _buildListTile(BuildContext context,
       {required String title, required VoidCallback onTap}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
+      padding: EdgeInsets.only(bottom: 11.h),
       child: Container(
+        height: 60.h,
+        width: 350.w,
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: ColorSystem.grey),
+          borderRadius: BorderRadius.circular(20.r),
         ),
         child: ListTile(
           title: Text(title),
