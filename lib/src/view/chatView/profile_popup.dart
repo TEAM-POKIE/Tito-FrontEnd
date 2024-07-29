@@ -13,7 +13,7 @@ class ProfilePopup extends StatefulWidget {
 
 class _ProfilePopupState extends State<ProfilePopup> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-  final List<String> _items = [];   //아이템 리스트
+  final List<String> _items = []; //아이템 리스트
 
   @override
   void initState() {
@@ -24,7 +24,7 @@ class _ProfilePopupState extends State<ProfilePopup> {
   void _addItems() {
     for (int i = 0; i < 4; i++) {
       _items.add('Item $i');
-      _listKey.currentState?.insertItem(_items.length - 1);   //애니메이션과 함께 아이템 삽입 
+      _listKey.currentState?.insertItem(_items.length - 1); //애니메이션과 함께 아이템 삽입
     }
   }
 
@@ -32,66 +32,86 @@ class _ProfilePopupState extends State<ProfilePopup> {
     return SizeTransition(
       sizeFactor: animation,
       child: ListTile(
-        title: Text('아싸 애인 vs 인싸 애인'),
-        subtitle: Text('의견: 아싸 애인이 더 좋다'),
-        trailing: Text('결과: 승', style: TextStyle(color: ColorSystem.purple)),
+        title: const Text(
+          '아싸 애인 vs 인싸 애인',
+          style: FontSystem.KR16R,
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('의견: 아싸 애인이 더 좋다', style: FontSystem.KR14R),
+            Text('결과: 승',
+                style: FontSystem.KR14R.copyWith(color: ColorSystem.purple))
+          ],
+        ),
       ),
     );
   }
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.r),
-            ),
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 15.w),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('프로필', style: FontSystem.KR14B),
-                    Icon(Icons.close),
-                  ],
-                ),
-                SizedBox(height: 42.h),
-                const Row(
-                  children: [
-                    
-                    sizedBox(width: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('포키', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                        SizedBox(height: 4),
-                        Text('승률 80%', style: TextStyle(fontSize: 16, color: Colors.purple)),
-                        SizedBox(height: 4),
-                        Text('12전 | 10승 | 2패', style: TextStyle(fontSize: 16)),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(height: 16),
-                Text('참여한 토론', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                SizedBox(height: 8),
-                Expanded(
-                  child: AnimatedList(
-                    key: _listKey,
-                    initialItemCount: _items.length,
-                    itemBuilder: (context, index, animation) {
-                      return _buildItem(_items[index], animation);
-                    },
+      appBar: AppBar(
+        title: const Text('프로필', style: FontSystem.KR14B),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(Icons.close),
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          SizedBox(height: 42.h),
+          Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 68.w),
+                child: ClipOval(
+                  child: SvgPicture.asset(
+                    'assets/icons/profile.svg',
+                    width: 70.w,
+                    height: 70.h, // SVG 이미지 경로// 이미지 맞춤 설정
                   ),
                 ),
-              ],
+              ),
+              
+              Padding(
+                padding: EdgeInsets.only(left: 20.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('포키',
+                        style:
+                            FontSystem.KR24B),
+                    SizedBox(height: 4),
+                    Text('승률 80%',
+                        style: TextStyle(fontSize: 16, color: Colors.purple)),
+                    SizedBox(height: 4),
+                    Text('12전 | 10승 | 2패', style: TextStyle(fontSize: 16)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 16),
+          Text('참여한 토론',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          SizedBox(height: 8),
+          Expanded(
+            child: AnimatedList(
+              key: _listKey,
+              initialItemCount: _items.length,
+              itemBuilder: (context, index, animation) {
+                return _buildItem(_items[index], animation);
+              },
             ),
           ),
-        
+        ],
       ),
     );
   }
