@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tito_app/core/constants/style.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -17,15 +19,15 @@ class LoginMain extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Map<String, String>> loginOptions = [
       {
-        'text': '카카오 로그인',
+        'text': '카카오로 시작하기',
         'image': 'assets/images/kakao.png',
       },
       {
-        'text': '구글로 로그인',
+        'text': '구글로 시작하기',
         'image': 'assets/images/google.png',
       },
       {
-        'text': '애플로 로그인',
+        'text': '애플로 시작하기',
         'image': 'assets/images/apple.png',
       },
     ];
@@ -122,64 +124,69 @@ class LoginMain extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xff8E48F8), // 배경색을 보라색으로 설정
+      backgroundColor: ColorSystem.purple, // 배경색을 보라색으로 설정
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            SizedBox(height: 146.h),
             Image.asset(
               'assets/images/splashs.png',
-              width: MediaQuery.sizeOf(context).width * 0.4,
+              width: 162.w,
+              height: 127.29.h,
             ),
-            const SizedBox(height: 40),
+            SizedBox(height: 102.h),
             ...loginOptions.map((option) {
               return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: ElevatedButton.icon(
-                  onPressed: option['text'] == '구글로 로그인'
-                      ? _signInWithGoogle
-                      : option['text'] == '카카오 로그인'
-                          ? _signInWithKaKao
-                          : () {},
-                  icon: Image.asset(
-                    option['image']!,
-                    width: 24,
-                    height: 24,
-                  ),
-                  label: Text(option['text']!),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xffA56DF9),
-                    foregroundColor: Colors.white,
-                    minimumSize: const Size(300, 60),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10), // 버튼 내부의 패딩 설정
-                    side: const BorderSide(color: ColorSystem.white),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
+                padding: EdgeInsets.only(bottom: 12.h, left: 32.w, right: 32.w),
+                child: Container(
+                  width: 326.w,
+                  height: 60.h,
+                  child: ElevatedButton.icon(
+                    onPressed: () {},
+                    icon: Image.asset(
+                      option['image']!,
+                      width: 24.r,
+                      height: 24.r,
                     ),
-                    textStyle: FontSystem.KR16B,
+                    label: Text(option['text']!),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ColorSystem.loginPurple,
+                      foregroundColor: ColorSystem.white,
+                      // padding: EdgeInsets.symmetric(
+                      //     horizontal: 103.w, vertical: 18.h), // 버튼 내부의 패딩 설정
+                      side: const BorderSide(color: ColorSystem.white),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.r),
+                      ),
+                      textStyle: FontSystem.KR16R,
+                    ),
                   ),
                 ),
               );
             }),
-            const SizedBox(height: 20), // 버튼들 간의 간격 추가
-            ElevatedButton(
-              onPressed: goBasicLogin,
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+            SizedBox(height: 10.h), // 버튼들 간의 간격 추가
+            Container(
+              width: 326.w,
+              height: 60.h,
+              child: ElevatedButton(
+                onPressed: goBasicLogin,
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                  backgroundColor: ColorSystem.black,
+                  //minimumSize: const Size(300, 60),
+                  // padding: EdgeInsets.symmetric(
+                      // horizontal: 140.w, vertical: 17.h), // 버튼 내부의 패딩 설정
                 ),
-                backgroundColor: Colors.black,
-                minimumSize: const Size(300, 60),
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 10), // 버튼 내부의 패딩 설정
-              ),
-              child: Text(
-                '로그인',
-                style: FontSystem.KR18B.copyWith(color: ColorSystem.white),
+                child: Text(
+                  '로그인',
+                  style: FontSystem.KR16B.copyWith(color: ColorSystem.white),
+                ),
               ),
             ),
-            const SizedBox(height: 10), // 버튼들 간의 간격 추가
+            SizedBox(height: 64.h), // 버튼들 간의 간격 추가
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -198,6 +205,7 @@ class LoginMain extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(height: 16.h)
           ],
         ),
       ),

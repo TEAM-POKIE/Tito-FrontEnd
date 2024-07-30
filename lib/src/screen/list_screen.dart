@@ -12,6 +12,8 @@ import 'package:tito_app/src/data/models/debate_crate.dart';
 import 'package:tito_app/src/data/models/debate_list.dart';
 import 'package:tito_app/src/widgets/reuse/search_bar.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tito_app/core/constants/style.dart';
 
 class ListScreen extends ConsumerStatefulWidget {
   const ListScreen({super.key});
@@ -36,6 +38,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 
   @override
   void initState() {
+    //Widget tree의 초기화
     super.initState();
     final loginInfo = ref.read(loginInfoProvider);
     print(loginInfo!.nickname);
@@ -110,36 +113,51 @@ class _ListScreenState extends ConsumerState<ListScreen> {
       ),
       body: Column(
         children: [
-          const CustomSearchBar(),
-          const SizedBox(height: 20),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(labels.length, (index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  child: SizedBox(
-                    height: 40,
-                    width: (MediaQuery.of(context).size.width - 40) * 0.2,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          selectedIndex = index;
-                          _fetchDebateList();
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        textStyle: const TextStyle(fontWeight: FontWeight.bold),
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        backgroundColor: selectedIndex == index
-                            ? Colors.black
-                            : Colors.grey[200],
-                        foregroundColor: selectedIndex == index
-                            ? Colors.white
-                            : const Color.fromARGB(255, 101, 101, 101),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w,),
+            child: const CustomSearchBar(),
+          ),
+          SizedBox(height: 16.h),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Container(
+              width: 360.w,
+              height: 30.h,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: List.generate(labels.length, (index) {
+                  return Flexible(
+                    child: Container(
+                      height: 30.h,
+                      width: 66.w,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            selectedIndex = index;
+                            _fetchDebateList();
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          textStyle: FontSystem.KR10R,
+                          backgroundColor: selectedIndex == index
+                              ? ColorSystem.black
+                              : Colors.grey[200],
+                          foregroundColor: selectedIndex == index
+                              ? ColorSystem.white
+                              : const Color.fromARGB(255, 101, 101, 101),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              labels[index],
+                              style: TextStyle(fontSize: 10.sp),
+                              // style: FontSystem.KR10B,
+                            ),
+                          ],
                         ),
                       ),
                       child: Text(
@@ -147,13 +165,14 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                         style: TextStyle(fontSize: 10),
                       ),
                     ),
-                  ),
-                );
-              }),
+                  );
+                }),
+              ),
             ),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 45.h),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Row(
@@ -171,8 +190,8 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                           statuses[index],
                           style: TextStyle(
                             color: selectedStatus == statuses[index]
-                                ? Colors.black
-                                : Colors.grey,
+                                ? ColorSystem.black
+                                : ColorSystem.grey,
                             fontWeight: selectedStatus == statuses[index]
                                 ? FontWeight.bold
                                 : FontWeight.normal,
@@ -180,10 +199,10 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                         ),
                       ),
                       if (index < statuses.length - 1)
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 3.h),
                           child:
-                              Text('|', style: TextStyle(color: Colors.grey)),
+                              Text('|', style: TextStyle(color: ColorSystem.grey)),
                         ),
                     ],
                   );
@@ -207,7 +226,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 18.h),
           Expanded(
             child: SmartRefresher(
               controller: _refreshController,
@@ -218,7 +237,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
               child: Scrollbar(
                 thumbVisibility: true,
                 thickness: 8.0,
-                radius: const Radius.circular(20.0),
+                radius: Radius.circular(20.r),
                 child: ListView.builder(
                   itemCount: debateList.length,
                   itemBuilder: (context, index) {

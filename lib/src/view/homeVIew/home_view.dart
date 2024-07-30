@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tito_app/core/provider/home_state_provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tito_app/core/constants/style.dart';
 
 class HomeView extends ConsumerWidget {
   const HomeView({super.key});
@@ -21,15 +23,15 @@ class HomeView extends ConsumerWidget {
             itemBuilder: (context, index) {
               return Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(20),
+                    color: ColorSystem.black,
+                    borderRadius: BorderRadius.circular(20.r),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30.0, vertical: 10),
+                    padding:  EdgeInsets.symmetric(
+                        horizontal: 20.w, vertical: 30.h),
                     child: Row(
                       children: [
                         Expanded(
@@ -42,24 +44,24 @@ class HomeView extends ConsumerWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   const Text(
-                                    'HOT 한 토론🔥',
-                                    style: TextStyle(color: Colors.white),
+                                    '불 붙은 실시간 토론🔥',
+                                    style: TextStyle(color: ColorSystem.white),
                                   ),
                                   Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 5),
+                                    // padding: EdgeInsets.symmetric(
+                                    //     horizontal: 10.w, vertical: 5),
                                     decoration: BoxDecoration(
-                                      color: Colors.purple,
-                                      borderRadius: BorderRadius.circular(20),
+                                      color: ColorSystem.purple,
+                                      borderRadius: BorderRadius.circular(20.r),
                                     ),
                                     child: const Text(
                                       '실시간 토론중',
-                                      style: TextStyle(color: Colors.white),
+                                      style: TextStyle(color: ColorSystem.white),
                                     ),
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 10),
+                              SizedBox(height: 12.h),
                               LayoutBuilder(
                                 builder: (context, constraints) {
                                   return SizedBox(
@@ -71,7 +73,7 @@ class HomeView extends ConsumerWidget {
                                         Text(
                                           homeState.titles[index],
                                           style: const TextStyle(
-                                            color: Colors.white,
+                                            color: ColorSystem.white,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16,
                                           ),
@@ -81,7 +83,7 @@ class HomeView extends ConsumerWidget {
                                         Text(
                                           homeState.contents[index],
                                           style: const TextStyle(
-                                            color: Colors.white,
+                                            color: ColorSystem.white,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16,
                                           ),
@@ -108,8 +110,8 @@ class HomeView extends ConsumerWidget {
           effect: const WormEffect(
             dotWidth: 10.0,
             dotHeight: 10.0,
-            activeDotColor: Colors.black,
-            dotColor: Colors.grey,
+            activeDotColor: ColorSystem.black,
+            dotColor: ColorSystem.grey,
           ),
         ),
       ],
