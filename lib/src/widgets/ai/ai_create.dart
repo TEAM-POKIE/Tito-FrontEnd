@@ -4,8 +4,7 @@ import 'package:get/get.dart';
 import 'package:tito_app/src/widgets/ai/selection_controller.dart';
 
 class AiCreate extends StatelessWidget {
-  SelectionController selectionController =
-      Get.put(SelectionController());
+  SelectionController selectionController = Get.put(SelectionController());
 
   AiCreate({super.key});
 
@@ -154,7 +153,8 @@ class AiCreate extends StatelessWidget {
                       ? () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const AiSelect()),
+                            MaterialPageRoute(
+                                builder: (context) => const AiSelect()),
                           );
                         }
                       : null,
