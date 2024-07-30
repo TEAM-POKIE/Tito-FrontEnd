@@ -1,36 +1,70 @@
 class DebateCreateState {
   final String debateTitle;
   final String debateCategory;
+  String debateStatus;
 
   String debateMakerOpinion;
   String firstChatContent;
   String debateJoinerOpinion;
-  String debateStatus;
 
   DebateCreateState({
     this.debateTitle = '',
     this.debateCategory = '',
-    this.debateMakerOpinion = '',
-    this.firstChatContent = '',
-    this.debateJoinerOpinion = '',
     this.debateStatus = '',
+    this.debateMakerOpinion = '',
+    this.debateJoinerOpinion = '',
+    this.firstChatContent = '',
   });
 
   DebateCreateState copyWith({
     String? debateTitle,
     String? debateCategory,
-    String? debateMakerOpinion,
-    String? firstChatContent,
-    String? debateJoinerOpinion,
     String? debateStatus,
+    String? debateMakerOpinion,
+    String? debateJoinerOpinion,
+    String? firstChatContent,
   }) {
     return DebateCreateState(
       debateTitle: debateTitle ?? this.debateTitle,
       debateCategory: debateCategory ?? this.debateCategory,
-      debateMakerOpinion: debateMakerOpinion ?? this.debateMakerOpinion,
-      firstChatContent: firstChatContent ?? this.firstChatContent,
-      debateJoinerOpinion: debateJoinerOpinion ?? this.debateJoinerOpinion,
       debateStatus: debateStatus ?? this.debateStatus,
+      debateMakerOpinion: debateMakerOpinion ?? this.debateMakerOpinion,
+      debateJoinerOpinion: debateJoinerOpinion ?? this.debateJoinerOpinion,
+      firstChatContent: firstChatContent ?? this.firstChatContent,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'debateTitle': debateTitle,
+      'debateCategory': debateCategory,
+      'debateStatus': debateStatus,
+      'debateMakerOpinion': debateMakerOpinion,
+      'debateJoinerOpinion': debateJoinerOpinion,
+      'firstChatContent': firstChatContent,
+    };
+  }
+}
+
+enum DebateCategory {
+  ROMANCE('연애'),
+  POLITICS('정치'),
+  ENTERTAINMENT('연예'),
+  FREE('자유'),
+  SPORTS('스포츠');
+
+  final String displayName;
+
+  const DebateCategory(this.displayName);
+
+  @override
+  String toString() => displayName;
+
+  // Enum 값을 문자열로부터 가져오는 메소드
+  static DebateCategory fromString(String category) {
+    return DebateCategory.values.firstWhere(
+      (e) => e.name == category,
+      orElse: () => DebateCategory.FREE,
     );
   }
 }

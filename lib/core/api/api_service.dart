@@ -36,11 +36,6 @@ abstract class ApiService {
   Future<void> updateUserProfile(
       @Path("id") int id, @Body() Map<String, dynamic> data);
 
-  @GET("/debates")
+  @GET("debates")
   Future<List<Debate>> getDebateList();
-
-  // @POST("upload")
-  // @MultiPart()
-  // Future<Map<String, dynamic>> uploadImage(
-  //     @Part() MultipartFileWithToJson file);
 }

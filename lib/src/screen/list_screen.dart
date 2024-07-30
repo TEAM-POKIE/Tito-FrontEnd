@@ -1,15 +1,16 @@
+import 'dart:convert';
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
+import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
-import 'package:tito_app/src/data/models/debate_list.dart';
-import 'dart:convert';
-import 'package:tito_app/src/widgets/reuse/search_bar.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
-import 'package:go_router/go_router.dart';
-import 'dart:async';
+import 'package:tito_app/core/provider/websocket_provider.dart';
+import 'package:tito_app/src/data/models/debate_crate.dart';
+import 'package:tito_app/src/data/models/debate_list.dart';
+import 'package:tito_app/src/widgets/reuse/search_bar.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
@@ -24,37 +25,25 @@ class ListScreen extends ConsumerStatefulWidget {
 }
 
 class _ListScreenState extends ConsumerState<ListScreen> {
-//State 클래스는 StatefulWidget의 상태를 관리하고 상태가 변경될 때 위젯을 다시 그리도록 하는 역할이다
-// ListScreen 위젯의 상태를 관리하고, 상태 변경에 따라 UI를 업데이트하는 역할을 합니다. 이 부분이 있어야만 StatefulWidget이 상태를 가질 수 있고, 상태가 변경될 때마다 UI를 적절히 다시 그릴 수 있습니다.
-  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-
   final List<String> labels = ['연애', '정치', '연예', '자유', '스포츠'];
   final List<String> statuses = ['전체', '토론 중', '토론 종료'];
   final List<String> sortOptions = ['최신순', '인기순'];
   int selectedIndex = 0;
   String selectedStatus = '전체';
   String selectedSortOption = '최신순';
-  List<Map<String, dynamic>> debateList = [];
-  late Timer _timer;
+  List<Debate> debateList = [];
+
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
     //Widget tree의 초기화
     super.initState();
-
+    final loginInfo = ref.read(loginInfoProvider);
+    print(loginInfo!.nickname);
     _fetchDebateList();
   }
-
-  @override
-  void dispose() {
-    // State 객체가 영구적으로 제거되는 것
-    // 더 이상 build 되지 않는 화면
-    _timer.cancel();
-    super.dispose();
-  }
-
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
     await _fetchDebateList();
@@ -66,69 +55,61 @@ class _ListScreenState extends ConsumerState<ListScreen> {
     _refreshController.loadComplete();
   }
 
+  void _enterChat(debateId) {
+    final webSocketService = ref.read(webSocketProvider);
+    final loginInfo = ref.read(loginInfoProvider);
+    // DebateCreateState를 활용하여 메시지 생성
+
+    // JSON 객체를 생성하여 문자열로 인코딩
+    final jsonMessage = json.encode({
+      'command': "ENTER",
+      'debateId': debateId,
+      'userId': loginInfo!.id,
+      'content': null,
+    });
+
+    // WebSocket을 통해 메시지 전송
+    webSocketService.sendMessage(jsonMessage);
+    context.push('/chat');
+  }
+
   Future<void> _fetchDebateList() async {
     try {
-      // ApiService에서 Debate 리스트를 받아옴
       final List<Debate> debateResponse =
           await ApiService(DioClient.dio).getDebateList();
 
-      // 선택된 정렬 옵션에 따라 정렬
-      if (selectedSortOption == '최신순') {
-        debateResponse.sort((a, b) {
-          DateTime dateA = DateTime.parse(a.updatedAt);
-          DateTime dateB = DateTime.parse(b.updatedAt);
-          return dateB.compareTo(dateA); // 내림차순으로 정렬
-        });
-      }
-
-      // 상태가 마운트된 경우 state 설정
-      if (mounted) {
-        setState(() {
-          debateList = debateResponse
-              .map((debate) => {
-                    'id': debate.id,
-                    'title': debate.debateTitle,
-                    'debateStatus': debate.debateStatus,
-                    'debateMakerOpinion': debate.debateMakerOpinion,
-                    'debateJoinerOpinion': debate.debateJoinerOpinion,
-                    'timestamp': debate.updatedAt,
-                  })
-              .toList();
-        });
-      }
+      setState(() {
+        debateList = debateResponse.map((debate) {
+          return Debate(
+            id: debate.id,
+            debateTitle: debate.debateTitle,
+            debateCategory:
+                DebateListCategory.fromString(debate.debateCategory).toString(),
+            debateStatus:
+                DebateListStatus.fromString(debate.debateStatus).toString(),
+            debateMakerOpinion: debate.debateMakerOpinion,
+            debateJoinerOpinion: debate.debateJoinerOpinion,
+            debatedTimeLimit: debate.debatedTimeLimit,
+            debateViewCount: debate.debateViewCount,
+            debateCommentCount: debate.debateCommentCount,
+            debateRealtimeParticipants: debate.debateRealtimeParticipants,
+            debateAlarmCount: debate.debateAlarmCount,
+            createdAt: debate.createdAt,
+            updatedAt: debate.updatedAt,
+          );
+        }).toList();
+      });
     } catch (error) {
-      // 에러 처리
       print('Error fetching debate list: $error');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    //위젯을 구성하고, 상태가 변경될 때마다 호출되어 UI를 다시 그립니다
-    final loginInfo = ref.watch(loginInfoProvider);
-
-    // 선택된 카테고리와 상태에 따라 필터링된 리스트 생성
-    List<Map<String, dynamic>> filteredDebateList = debateList.where((debate) {
-      final categoryMatch = debate['category'] == labels[selectedIndex];
-      bool statusMatch = true;
-
-      if (selectedStatus == '토론 중') {
-        statusMatch = debate['debateState'] == '토론 참여가능' ||
-            debate['debateState'] == '토론 진행중';
-      } else if (selectedStatus == '토론 종료') {
-        statusMatch =
-            debate['debateState'] == '투표 중' || debate['debateState'] == '투표 완료';
-      }
-
-      return categoryMatch && (statusMatch || selectedStatus == '전체');
-    }).toList();
-
     return Scaffold(
       appBar: AppBar(
-        title: Padding(
-          padding: EdgeInsets.only(left: 0.w),
-          child: const Text('토론 리스트', style: FontSystem.KR20B),
-        ),
+        title: const Text('토론 리스트'),
+        centerTitle: true,
       ),
       body: Column(
         children: [
@@ -178,6 +159,10 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                             ),
                           ],
                         ),
+                      ),
+                      child: Text(
+                        labels[index],
+                        style: TextStyle(fontSize: 10),
                       ),
                     ),
                   );
@@ -254,9 +239,9 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                 thickness: 8.0,
                 radius: Radius.circular(20.r),
                 child: ListView.builder(
-                  itemCount: filteredDebateList.length,
+                  itemCount: debateList.length,
                   itemBuilder: (context, index) {
-                    final debate = filteredDebateList[index];
+                    final debate = debateList[index];
 
                     return Padding(
                       padding: const EdgeInsets.symmetric(
@@ -268,16 +253,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                         ),
                         child: ListTile(
                           onTap: () {
-                            final debateState = debate['debateState'] ?? '';
-
-                            if (debate['id'] != null) {
-                              if (debateState == '토론 참여가능' ||
-                                  debateState == '토론 진행중') {
-                                context.push('/chat/${debate['id']}');
-                              }
-                            } else {
-                              print('Invalid ID for Chat page.');
-                            }
+                            _enterChat(debate.id);
                           },
                           title: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -286,15 +262,15 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 8, vertical: 4),
                                 decoration: BoxDecoration(
-                                  color: debate['debateState'] == '토론 중'
+                                  color: debate.debateStatus == '토론 중'
                                       ? Colors.purple[100]
                                       : Colors.grey[200],
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Text(
-                                  debate['debateState'] ?? '상태 없음',
+                                  debate.debateStatus ?? '상태 없음',
                                   style: TextStyle(
-                                    color: debate['debateState'] == '토론 중'
+                                    color: debate.debateStatus == '토론 중'
                                         ? Colors.purple
                                         : Colors.grey,
                                     fontWeight: FontWeight.bold,
@@ -303,7 +279,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                               ),
                               const SizedBox(height: 5),
                               Text(
-                                debate['title'] ?? 'No title',
+                                debate.debateTitle ?? 'No title',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
@@ -311,12 +287,12 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                               ),
                               const SizedBox(height: 5),
                               Text(
-                                '승률 ${debate['myArgument'] ?? '정보 없음'} VS ${debate['opponentArgument'] ?? '정보 없음'}',
+                                '제한 시간: ${debate.debatedTimeLimit}분',
                               ),
                             ],
                           ),
                           trailing: Image.asset(
-                            'assets/images/hotlist.png', // Add your image path here
+                            'assets/images/hotlist.png',
                             width: 40,
                             height: 40,
                           ),

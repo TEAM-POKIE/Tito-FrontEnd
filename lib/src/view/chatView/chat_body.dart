@@ -15,17 +15,15 @@ class ChatBody extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
-        ChatViewDetails(), // id 전달
+        // ChatViewDetails(), // id 전달
 
-        Expanded(
-          child: Text('리스트'),
-          // child: ChatListView(),
-        ),
-        // id 전달
+        // Expanded(
+        //   child: ChatListView(),
+        // ),
 
         // ChatSpeechBubble(),
 
-        ChatBottomDetail(), // id 전달
+        // ChatBottomDetail(), // id 전달
       ],
     );
   }
