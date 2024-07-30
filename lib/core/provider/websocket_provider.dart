@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
+import 'package:tito_app/src/data/models/types.dart' as types;
 
 final webSocketProvider = Provider<WebSocketService>((ref) {
   final service = WebSocketService();
@@ -46,16 +47,17 @@ class WebSocketService {
     }
   }
 
-  // void _reconnect() {
-  //   Future.delayed(Duration(seconds: 5), () {
-  //     print('Attempting to reconnect...');
-  //     _connect();
-  //   });
-  // }
-
   Stream<Map<String, dynamic>> get stream => _controller.stream;
 
-  // String 타입의 메시지도 처리할 수 있도록 수정
+  // messageStream 게터 추가
+  Stream<List<types.Message>> get messageStream =>
+      _controller.stream.map((data) {
+        // 데이터를 Message 객체로 변환하는 로직 추가
+        return (data['messages'] as List)
+            .map((json) => types.Message.fromJson(json))
+            .toList();
+      });
+
   void sendMessage(String message) {
     print('Sending message: $message');
     channel.sink.add(message);

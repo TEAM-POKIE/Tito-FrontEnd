@@ -5,11 +5,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:speech_balloon/speech_balloon.dart';
+import 'package:tito_app/core/api/api_service.dart';
+import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
-import 'package:tito_app/core/provider/websocket_provider.dart';
+import 'package:tito_app/core/provider/popup_provider.dart';
+
 import 'package:tito_app/src/data/models/debate_crate.dart';
+import 'package:tito_app/src/data/models/popup_state.dart';
+import 'package:tito_app/src/viewModel/popup_viewModel.dart';
 
 class DebateCreateChat extends ConsumerStatefulWidget {
   const DebateCreateChat({super.key});
@@ -19,27 +24,13 @@ class DebateCreateChat extends ConsumerStatefulWidget {
 }
 
 class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
-  late WebSocketService webSocketService;
-
   @override
   void initState() {
     super.initState();
-    webSocketService = ref.read(webSocketProvider);
-
-    // 수신된 메시지 로그 출력
-    webSocketService.stream.listen((message) {
-      print('Received message: $message');
-      // 여기에서 메시지를 처리할 수 있습니다.
-    }, onError: (error) {
-      print('Error in websocket connection: $error');
-    }, onDone: () {
-      print('WebSocket connection closed');
-    });
   }
 
   @override
   void dispose() {
-    webSocketService.dispose(); // WebSocket 연결 해제
     super.dispose();
   }
 
@@ -148,36 +139,20 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottom> {
     super.dispose();
   }
 
-  void _sendMessage() {
-    final webSocketService = ref.read(webSocketProvider);
+  void _sendMessage() async {
     final debateState = ref.read(debateCreateProvider);
-    final loginInfo = ref.read(loginInfoProvider);
-
-    // DebateCreateState를 활용하여 메시지 생성
-    final message = DebateCreateState(
-      debateTitle: debateState.debateTitle,
-      debateCategory: debateState.debateCategory,
-      debateStatus: 'CREATED',
-      debateMakerOpinion: debateState.debateMakerOpinion,
-      debateJoinerOpinion: debateState.debateJoinerOpinion,
-      firstChatContent: _controller.text,
-    );
-
-    // JSON 객체를 생성하여 문자열로 인코딩
-    final jsonMessage = json.encode({
-      'command': 'CREATE',
-      'debateId': null,
-      'userId': loginInfo!.id,
-      'content':
-          json.encode(message.toJson()), // message.toJson()을 JSON 문자열로 인코딩
-    });
-
-    // WebSocket을 통해 메시지 전송
-    webSocketService.sendMessage(jsonMessage);
-
-    // 입력 필드 초기화
+    final popupState = ref.read(popupProvider);
+    final PopupViewmodel = ref.read(popupProvider.notifier);
+    popupState.buttonStyle = 2;
+    popupState.buttonContentLeft = '취소';
+    popupState.buttonContentRight = '확인';
+    popupState.imgSrc = 'assets/images/chatIconRight.png';
+    popupState.content = '토론을 시작하시겠습니까?';
+    popupState.title = '토론장을 개설하겠습니까?';
+    PopupViewmodel.showDebatePopup(context);
+    debateState.firstChatContent = _controller.text;
+    debateState.debateStatus = 'CREATED';
     _controller.clear();
-    _focusNode.requestFocus(); // 메시지 전송 후 입력 필드에 포커스 유지
   }
 
   @override

@@ -108,14 +108,16 @@ final GoRouter router = GoRouter(
       path: '/debate_create_chat',
       builder: (context, state) => const DebateCreateChat(),
     ),
-
     GoRoute(
-      path: '/chat',
+      path: '/chat/:id',
       builder: (context, state) {
-        return const Chat();
+        // 'id'를 String에서 int로 변환
+        final int id = int.parse(state.pathParameters['id']!);
+        return Chat(
+          id: id,
+        );
       },
     ),
-
     //초기화면 지정하는 부분
     GoRoute(
       path: '/',

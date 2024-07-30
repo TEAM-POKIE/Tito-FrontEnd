@@ -3,56 +3,33 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:tito_app/core/constants/style.dart';
-import 'package:tito_app/core/provider/chat_state_provider.dart';
-import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/core/provider/chat_view_provider.dart';
+
 import 'package:tito_app/core/provider/popup_provider.dart';
-import 'package:tito_app/core/provider/websocket_provider.dart';
-import 'package:tito_app/src/viewModel/chat_viewModel.dart';
 
 class ChatAppbar extends ConsumerWidget {
-  const ChatAppbar({super.key});
+  final int id;
+
+  const ChatAppbar({super.key, required this.id});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chatState = ref.watch(chatProviders);
-    final loginInfo = ref.read(loginInfoProvider);
-    final webSocketStream = ref.watch(webSocketProvider).stream;
-
-    return StreamBuilder<Map<String, dynamic>>(
-      stream: webSocketStream,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final data = snapshot.data!;
-          if (data.containsKey('title')) {
-            final title = data[''] as String;
-            return DebateAppbar(
-              title: title,
-              notiIcon: 'assets/images/debateAlarm.png',
-            );
-          } else {
-            return DebateAppbar(
-              title: 'No Title Available',
-              notiIcon: 'assets/images/debateAlarm.png',
-            );
-          }
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        } else {
-          return const CircularProgressIndicator();
-        }
-      },
+    final debateState = ref.read(chatInfoProvider);
+    return DebateAppbar(
+      title: debateState!.debateTitle,
+      notiIcon: 'assets/images/debateAlarm.png',
     );
   }
 }
 
 class DebateAppbar extends ConsumerWidget {
-  final ChatViewModel? chatViewModel;
+  // final ChatViewModel? chatViewModel;
   final String title;
   final String? notiIcon;
 
   const DebateAppbar({
     super.key,
-    this.chatViewModel,
+    // this.chatViewModel,
     required this.title,
     this.notiIcon,
   });

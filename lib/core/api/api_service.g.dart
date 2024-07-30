@@ -216,6 +216,34 @@ class _ApiService implements ApiService {
   }
 
   @override
+  Future<DebateCreateInfo> postDebate(Map<String, dynamic> debate) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(debate);
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<DebateCreateInfo>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'debates',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = DebateCreateInfo.fromJson(_result.data!);
+    return _value;
+  }
+
+  @override
   Future<List<Debate>> getDebateList() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -243,6 +271,36 @@ class _ApiService implements ApiService {
     var _value = data
         .map((dynamic i) => Debate.fromJson(i as Map<String, dynamic>))
         .toList();
+    return _value;
+  }
+
+  @override
+  Future<DebateInfo> getDebateInfo(@Path("id") int debateId) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+      _setStreamType<DebateInfo>(
+        Options(
+          method: 'GET',
+          headers: _headers,
+          extra: _extra,
+        )
+            .compose(
+              _dio.options,
+              'debates/${debateId}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+              baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+            ),
+      ),
+    );
+
+    // JSON 데이터를 DebateInfo 객체로 변환
+    final _value = DebateInfo.fromJson(_result.data!);
     return _value;
   }
 

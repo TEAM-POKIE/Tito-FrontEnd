@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/constants/style.dart';
-import 'package:tito_app/core/provider/chat_state_provider.dart';
+
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:speech_balloon/speech_balloon.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
-import 'package:tito_app/src/data/models/debate_info.dart';
+
 import 'package:tito_app/src/data/models/popup_state.dart';
 
 import 'package:tito_app/src/viewModel/popup_viewModel.dart';
@@ -22,32 +22,30 @@ class ChatSpeechBubble extends ConsumerStatefulWidget {
 class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
   @override
   Widget build(BuildContext context) {
-    final chatState = ref.watch(chatProviders);
     final loginInfo = ref.watch(loginInfoProvider);
     final popupViewModel = ref.read(popupProvider.notifier);
     final popupState = ref.read(popupProvider);
 
-    if (chatState.debateData == null || loginInfo == null) {
-      return const SizedBox.shrink();
-    }
+    // if (chatState.debateData == null || loginInfo == null) {
+    //   return const SizedBox.shrink();
+    //   // }
 
-    final myNick = chatState.debateData?['myNick'];
-    final opponentNick = chatState.debateData?['opponentNick'];
-    final myTurn = chatState.debateData?['myTurn'];
-    final opponentTurn = chatState.debateData?['opponentTurn'];
-    final isMyNick = myNick == loginInfo.nickname;
+    //   // // final myNick = chatState.debateData?['myNick'];
+    //   // // final opponentNick = chatState.debateData?['opponentNick'];
+    //   // // final myTurn = chatState.debateData?['myTurn'];
+    //   // // final opponentTurn = chatState.debateData?['opponentTurn'];
+    //   // final isMyNick = myNick == loginInfo.nickname;
 
-    if (myNick == null ||
-        opponentNick == null ||
-        myTurn == null ||
-        opponentTurn == null) {
-      return const SizedBox.shrink();
-    }
+    //   // if (myNick == null ||
+    //   //     opponentNick == null ||
+    //   //     myTurn == null ||
+    //   //     opponentTurn == null) {
+    //   return const SizedBox.shrink();
+    // }
 
-    String sendNick = isMyNick ? myNick : opponentNick;
+    // String sendNick = isMyNick ? myNick : opponentNick;
 
     return StaticTextBubble(
-      chatState: chatState,
       title: '첫 입론을 입력하세요',
       width: (MediaQuery.of(context).size.width - 100) * 0.7,
       height: (MediaQuery.of(context).size.height - 450) * 0.2,
@@ -108,14 +106,12 @@ class StaticTextBubble extends StatefulWidget {
   final String title;
   final double width;
   final double height;
-  final ChatState chatState;
 
   const StaticTextBubble({
     super.key,
     required this.title,
     required this.width,
     required this.height,
-    required this.chatState,
   });
 
   @override
