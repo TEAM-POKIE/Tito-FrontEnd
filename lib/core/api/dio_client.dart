@@ -4,8 +4,8 @@ class DioClient {
   static final Dio _dio = Dio()
     ..options = BaseOptions(
       baseUrl: 'https://dev-tito.owsla.duckdns.org/',
-      connectTimeout: Duration(milliseconds: 500), // 변경: int -> Duration
-      receiveTimeout: Duration(milliseconds: 500), // 변경: int -> Duration
+      //connectTimeout: Duration(milliseconds: 6000), // 변경: int -> Duration
+      //receiveTimeout: Duration(milliseconds: 6000), // 변경: int -> Duration
     )
     ..interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
