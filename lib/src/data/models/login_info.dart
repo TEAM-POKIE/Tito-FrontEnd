@@ -1,34 +1,34 @@
 class LoginInfo {
-  const LoginInfo({
+  final int id;
+  final String nickname;
+  final String email;
+  final String role;
+  final String? profilePicture;
+  final String createdAt;
+  final String updatedAt;
+  final bool tutorialCompleted;
+
+  LoginInfo({
     required this.id,
     required this.nickname,
     required this.email,
     required this.role,
-    this.profilePicture, // Make profilePicture nullable
+    this.profilePicture,
     required this.createdAt,
     required this.updatedAt,
     required this.tutorialCompleted,
   });
 
-  final int id;
-  final String nickname;
-  final String email;
-  final String role;
-  final String? profilePicture; // Make profilePicture nullable
-  final String createdAt;
-  final String updatedAt;
-  final bool tutorialCompleted;
-
   factory LoginInfo.fromJson(Map<String, dynamic> json) {
     return LoginInfo(
-      id: json['id'] ?? 0, // Provide a default value if null
-      nickname: json['nickname'] ?? '',
-      email: json['email'] ?? '',
-      role: json['role'] ?? '',
-      profilePicture: json['profilePicture'],
-      createdAt: json['createdAt'] ?? '',
-      updatedAt: json['updatedAt'] ?? '',
-      tutorialCompleted: json['tutorialCompleted'] ?? false,
+      id: json['data']['id'] ?? 0,
+      nickname: json['data']['nickname'] ?? '',
+      email: json['data']['email'] ?? '',
+      role: json['data']['role'] ?? '',
+      profilePicture: json['data']['profilePicture'],
+      createdAt: json['data']['createdAt'] ?? '',
+      updatedAt: json['data']['updatedAt'] ?? '',
+      tutorialCompleted: json['data']['tutorialCompleted'] ?? false,
     );
   }
 
@@ -43,27 +43,5 @@ class LoginInfo {
       'updatedAt': updatedAt,
       'tutorialCompleted': tutorialCompleted,
     };
-  }
-
-  LoginInfo copyWith({
-    int? id,
-    String? nickname,
-    String? email,
-    String? role,
-    String? profilePicture,
-    String? createdAt,
-    String? updatedAt,
-    bool? tutorialCompleted,
-  }) {
-    return LoginInfo(
-      id: id ?? this.id,
-      nickname: nickname ?? this.nickname,
-      email: email ?? this.email,
-      role: role ?? this.role,
-      profilePicture: profilePicture ?? this.profilePicture,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-      tutorialCompleted: tutorialCompleted ?? this.tutorialCompleted,
-    );
   }
 }

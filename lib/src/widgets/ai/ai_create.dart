@@ -47,9 +47,13 @@ class AiCreate extends StatelessWidget {
               style: TextStyle(color: ColorSystem.white, fontSize: 14.sp),
             ),
             backgroundColor: Colors.black,
-            deleteIcon: const Icon(Icons.close, color: ColorSystem.white, size: 20,),
-            onDeleted: () =>
-                selectionController.toggleSelection(index), // X 아이콘이 눌렸을 때 선택 상태 토글
+            deleteIcon: const Icon(
+              Icons.close,
+              color: ColorSystem.white,
+              size: 20,
+            ),
+            onDeleted: () => selectionController
+                .toggleSelection(index), // X 아이콘이 눌렸을 때 선택 상태 토글
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12.r),
             ),
@@ -187,8 +191,7 @@ class AiCreate extends StatelessWidget {
                       : null,
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.r)
-                    ),
+                        borderRadius: BorderRadius.circular(20.r)),
                     backgroundColor:
                         isSelectExist ? ColorSystem.purple : ColorSystem.grey,
                   ),

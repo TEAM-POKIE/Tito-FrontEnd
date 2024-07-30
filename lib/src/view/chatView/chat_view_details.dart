@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:tito_app/core/constants/style.dart';
-import 'package:tito_app/core/provider/chat_state_provider.dart';
+
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/timer_provider.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -11,11 +11,11 @@ import 'package:tito_app/src/view/chatView/live_comment.dart';
 import 'package:tito_app/src/view/chatView/votingbar.dart';
 
 class ChatViewDetails extends HookConsumerWidget {
-  const ChatViewDetails({super.key});
+  final int id;
+  const ChatViewDetails({super.key, required this.id});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chatState = ref.watch(chatProviders);
     final loginInfo = ref.watch(loginInfoProvider);
     final timerState = ref.watch(timerProvider); // 타이머 상태
 
@@ -40,8 +40,11 @@ class ChatViewDetails extends HookConsumerWidget {
     return Expanded(
       child: Column(
         children: [
-          Expanded(child: LiveComments()),
-          VotingBar(),
+          Expanded(
+              child: _detailState(
+                  upImage: 'assets/images/detailChatIcon.png',
+                  upTitle: '상대 반론자를 찾는 중이예요 !',
+                  downTitle: '⏳ 00:00 토론 시작 전')),
         ],
       ),
     );
@@ -76,14 +79,14 @@ class firstText extends StatelessWidget {
 }
 
 class _detailState extends StatelessWidget {
-  final ChatState chatState;
+  // final DebateInfo chatState;
   final String upImage;
   final String upTitle;
   final String? downImage;
   final String? downTitle;
 
   const _detailState({
-    required this.chatState,
+    // required this.chatState,
     required this.upImage,
     required this.upTitle,
     this.downTitle,

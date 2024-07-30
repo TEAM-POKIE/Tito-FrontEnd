@@ -3,34 +3,33 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:tito_app/core/constants/style.dart';
-import 'package:tito_app/core/provider/chat_state_provider.dart';
-import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/core/provider/chat_view_provider.dart';
+
 import 'package:tito_app/core/provider/popup_provider.dart';
-import 'package:tito_app/src/viewModel/chat_viewModel.dart';
 
 class ChatAppbar extends ConsumerWidget {
-  const ChatAppbar({super.key});
+  final int id;
+
+  const ChatAppbar({super.key, required this.id});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chatState = ref.watch(chatProviders);
-    final loginInfo = ref.read(loginInfoProvider);
-
+    final debateState = ref.read(chatInfoProvider);
     return DebateAppbar(
-      title: 'title',
+      title: debateState!.debateTitle,
       notiIcon: 'assets/images/debateAlarm.png',
     );
   }
 }
 
 class DebateAppbar extends ConsumerWidget {
-  final ChatViewModel? chatViewModel;
+  // final ChatViewModel? chatViewModel;
   final String title;
   final String? notiIcon;
 
   const DebateAppbar({
     super.key,
-    this.chatViewModel,
+    // this.chatViewModel,
     required this.title,
     this.notiIcon,
   });

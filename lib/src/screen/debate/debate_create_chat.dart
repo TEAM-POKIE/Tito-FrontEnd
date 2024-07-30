@@ -1,17 +1,41 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 import 'package:speech_balloon/speech_balloon.dart';
+import 'package:tito_app/core/api/api_service.dart';
+import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
+import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/core/provider/popup_provider.dart';
 
-import 'package:tito_app/src/view/chatView/chat_view_details.dart';
+import 'package:tito_app/src/data/models/debate_crate.dart';
+import 'package:tito_app/src/data/models/popup_state.dart';
+import 'package:tito_app/src/viewModel/popup_viewModel.dart';
 
-class DebateCreateChat extends ConsumerWidget {
+class DebateCreateChat extends ConsumerStatefulWidget {
   const DebateCreateChat({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<DebateCreateChat> createState() => _DebateCreateChatState();
+}
+
+class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final debateState = ref.watch(debateCreateProvider);
     final debateViewModel = ref.read(debateCreateProvider.notifier);
 
@@ -46,7 +70,6 @@ class DebateCreateChat extends ConsumerWidget {
       ),
       body: Column(
         children: [
-          firstText(),
           Expanded(
             child: Container(
               alignment: Alignment.bottomCenter,
@@ -116,9 +139,20 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottom> {
     super.dispose();
   }
 
-  void _sendMessage() {
-    ref.read(debateCreateProvider.notifier).sendMessage(context, _controller);
-    _focusNode.requestFocus(); // 메시지를 보낸 후 포커스를 유지합니다.
+  void _sendMessage() async {
+    final debateState = ref.read(debateCreateProvider);
+    final popupState = ref.read(popupProvider);
+    final PopupViewmodel = ref.read(popupProvider.notifier);
+    popupState.buttonStyle = 2;
+    popupState.buttonContentLeft = '취소';
+    popupState.buttonContentRight = '확인';
+    popupState.imgSrc = 'assets/images/chatIconRight.png';
+    popupState.content = '토론을 시작하시겠습니까?';
+    popupState.title = '토론장을 개설하겠습니까?';
+    PopupViewmodel.showDebatePopup(context);
+    debateState.firstChatContent = _controller.text;
+    debateState.debateStatus = 'CREATED';
+    _controller.clear();
   }
 
   @override

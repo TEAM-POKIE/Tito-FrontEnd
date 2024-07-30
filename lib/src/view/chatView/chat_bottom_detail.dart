@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tito_app/core/provider/chat_state_provider.dart';
+
 import 'package:tito_app/core/provider/login_provider.dart';
-import 'package:tito_app/core/provider/popup_provider.dart';
-import 'package:tito_app/core/provider/timer_provider.dart';
 
 class ChatBottomDetail extends ConsumerStatefulWidget {
-  const ChatBottomDetail({
-    super.key,
-  });
+  final int id;
+  const ChatBottomDetail({super.key, required this.id});
 
   @override
   ConsumerState<ChatBottomDetail> createState() => _ChatBottomDetailState();
@@ -60,8 +57,6 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
   @override
   Widget build(BuildContext context) {
     final loginInfo = ref.watch(loginInfoProvider);
-    final chatState = ref.watch(chatProviders);
-    final chatViewModel = ref.read(chatProviders.notifier);
 
     if (loginInfo == null) {
       return const SizedBox.shrink();
@@ -75,9 +70,9 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
         children: [
           Expanded(
             child: TextField(
-              controller: chatViewModel.controller,
+              // controller: chatViewModel.controller,
               autocorrect: false,
-              focusNode: chatViewModel.focusNode,
+              // focusNode: chatViewModel.focusNode,
               decoration: InputDecoration(
                 hintText: '상대 의견 작성 타임이에요!',
                 fillColor: Colors.grey[200],

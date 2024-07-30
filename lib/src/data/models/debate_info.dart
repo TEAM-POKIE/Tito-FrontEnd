@@ -1,34 +1,73 @@
-import 'package:tito_app/src/data/models/types.dart' as types;
+class DebateInfo {
+  final int id;
+  final String debateTitle;
+  final String debateCategory;
+  final String debateStatus;
+  final String debateMakerOpinion;
+  final String debateJoinerOpinion;
+  final int debatedTimeLimit;
+  final int debateViewCount;
+  final int debateCommentCount;
+  final int debateRealtimeParticipants;
+  final int debateAlarmCount;
+  final String createdAt;
+  final String updatedAt;
 
-class ChatState {
-  final List<types.Message> messages;
-  final bool isFirstMessage;
-  final bool? isVisible;
-  final String fadeText;
-
-  final Map<String, dynamic>? debateData;
-
-  ChatState({
-    this.messages = const [],
-    this.isFirstMessage = true,
-    this.fadeText = '첫 채팅을 입력해주세요!',
-    this.debateData,
-    this.isVisible = true,
+  DebateInfo({
+    required this.id,
+    required this.debateTitle,
+    required this.debateCategory,
+    required this.debateStatus,
+    required this.debateMakerOpinion,
+    required this.debateJoinerOpinion,
+    required this.debatedTimeLimit,
+    required this.debateViewCount,
+    required this.debateCommentCount,
+    required this.debateRealtimeParticipants,
+    required this.debateAlarmCount,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
-  ChatState copyWith({
-    List<types.Message>? messages,
-    bool? isFirstMessage,
-    bool? isVisible,
-    String? fadeText,
-    Map<String, dynamic>? debateData,
-  }) {
-    return ChatState(
-      messages: messages ?? this.messages,
-      isFirstMessage: isFirstMessage ?? this.isFirstMessage,
-      fadeText: fadeText ?? this.fadeText,
-      isVisible: isVisible ?? this.isVisible,
-      debateData: debateData ?? this.debateData,
+  factory DebateInfo.fromJson(Map<String, dynamic> json) {
+    return DebateInfo(
+      id: json['data']['id'] ?? 0,
+      debateTitle: json['data']['debateTitle'] ?? '',
+      debateCategory: json['data']['debateCategory'] ?? '',
+      debateStatus: json['data']['debateStatus'] ?? '',
+      debateMakerOpinion: json['data']['debateMakerOpinion'] ?? '',
+      debateJoinerOpinion: json['data']['debateJoinerOpinion'] ?? '',
+      debatedTimeLimit: json['data']['debatedTimeLimit'] ?? 0,
+      debateViewCount: json['data']['debateViewCount'] ?? 0,
+      debateCommentCount: json['data']['debateCommentCount'] ?? 0,
+      debateRealtimeParticipants:
+          json['data']['debateRealtimeParticipants'] ?? 0,
+      debateAlarmCount: json['data']['debateAlarmCount'] ?? 0,
+      createdAt: json['data']['createdAt'] ?? '',
+      updatedAt: json['data']['updatedAt'] ?? '',
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'debateTitle': debateTitle,
+      'debateCategory': debateCategory,
+      'debateStatus': debateStatus,
+      'debateMakerOpinion': debateMakerOpinion,
+      'debateJoinerOpinion': debateJoinerOpinion,
+      'debatedTimeLimit': debatedTimeLimit,
+      'debateViewCount': debateViewCount,
+      'debateCommentCount': debateCommentCount,
+      'debateRealtimeParticipants': debateRealtimeParticipants,
+      'debateAlarmCount': debateAlarmCount,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
+    };
+  }
+
+  @override
+  String toString() {
+    return 'Debate{id: $id, debateTitle: $debateTitle, debateCategory: $debateCategory, debateStatus: $debateStatus, debateMakerOpinion: $debateMakerOpinion, debateJoinerOpinion: $debateJoinerOpinion, debatedTimeLimit: $debatedTimeLimit, debateViewCount: $debateViewCount, debateCommentCount: $debateCommentCount, debateRealtimeParticipants: $debateRealtimeParticipants, debateAlarmCount: $debateAlarmCount, createdAt: $createdAt, updatedAt: $updatedAt}';
   }
 }

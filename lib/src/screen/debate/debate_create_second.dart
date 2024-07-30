@@ -15,39 +15,22 @@ class DebateCreateSecond extends ConsumerStatefulWidget {
 
 class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
   final _formKey = GlobalKey<FormState>();
-  int _currentPage = 0;
-  final int _totalPages = 3;
-
-  void _nextPage() {
-    setState(() {
-      if (_currentPage < _totalPages - 1) {
-        _currentPage++;
-      }
-    });
-  }
-
-  void _previousPage() {
-    setState(() {
-      if (_currentPage > 0) {
-        _currentPage--;
-      }
-    });
-  }
+  String aArgument = '';
+  String bArgument = '';
 
   @override
   Widget build(BuildContext context) {
     final debateViewModel = ref.read(debateCreateProvider.notifier);
     final debateState = ref.watch(debateCreateProvider);
-    String aArgument = '';
-    String bArgument = '';    
-    double _progress = (_currentPage + 1) / _totalPages;
 
     void _nextCreate(BuildContext context) async {
       if (!debateViewModel.validateForm(_formKey)) {
         return;
       }
-      debateState.debateMakerOpinion = aArgument;
-      debateState.debateJoinerOpinion = bArgument;
+      _formKey.currentState?.save(); // 폼의 모든 필드 저장
+      print('aArgument: $aArgument');
+      print('bArgument: $bArgument');
+      debateViewModel.updateOpinion(aArgument, bArgument);
 
       if (!context.mounted) return;
 
@@ -78,7 +61,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                     animation: true,
                     animationDuration: 1000,
                     lineHeight: 5.0,
-                    percent: _progress,
+                    percent: 0.5,
                     linearStrokeCap: LinearStrokeCap.butt,
                     progressColor: ColorSystem.purple,
                     backgroundColor: ColorSystem.grey,
@@ -126,7 +109,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                       return null;
                     },
                     onSaved: (value) {
-                      aArgument = value!;
+                      aArgument = value ?? '';
                     },
                   ),
                   SizedBox(height: 40.h),
@@ -153,7 +136,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                       return null;
                     },
                     onSaved: (value) {
-                      bArgument = value!;
+                      bArgument = value ?? '';
                     },
                   ),
                 ],
