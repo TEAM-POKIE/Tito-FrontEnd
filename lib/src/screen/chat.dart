@@ -2,26 +2,19 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
-
-import 'package:tito_app/core/api/api_service.dart';
-import 'package:tito_app/core/api/dio_client.dart';
-import 'package:tito_app/core/constants/style.dart';
-import 'package:tito_app/core/provider/chat_state_provider.dart';
+import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
-import 'package:tito_app/src/data/models/debate_info.dart';
-import 'package:tito_app/src/data/models/login_info.dart';
+import 'package:tito_app/core/provider/websocket_provider.dart';
 import 'package:tito_app/src/view/chatView/chat_appBar.dart';
 import 'package:tito_app/src/view/chatView/chat_body.dart';
-import 'package:tito_app/src/view/chatView/live_comment.dart';
-
-import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:tito_app/src/data/models/debate_info.dart';
 
 class Chat extends ConsumerStatefulWidget {
-  final int turn = 0;
+  final int id;
 
   const Chat({
     super.key,
+    required this.id,
   });
 
   @override
@@ -29,65 +22,62 @@ class Chat extends ConsumerStatefulWidget {
 }
 
 class _ChatState extends ConsumerState<Chat> {
-  late WebSocketChannel channel;
-  late String myNick;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // WebSocket 서버와 연결 설정
-  //   channel = WebSocketChannel.connect(Uri.parse('ws://192.168.1.6:4040/ws'));
-
-  //   // WebSocket 서버로부터 메시지를 받을 때마다 상태 업데이트
-  //   channel.stream.listen((message) {
-  //     final data = json.decode(message);
-  //     if (data['type'] == 'update_myNick') {
-  //       setState(() {
-  //         myNick = data['myNick'];
-  //       });
-  //     }
-  //   });
-
-  //   // 초기 데이터를 가져오는 HTTP 요청
-  //   _fetchInitialData();
-  // }
-
-  // Future<void> _fetchInitialData() async {
-  //   final apiService = ApiService(DioClient.dio);
-  //   final data = await apiService.getData('debate_list/');
-  //   if (data != null && data.containsKey('myNick')) {
-  //     setState(() {
-  //       myNick = data['myNick'];
-  //     });
-  //   }
-  // }
-
   @override
-  void dispose() {
-    channel.sink.close();
-    super.dispose();
+  void initState() {
+    super.initState();
+    _fetchDebateInfo();
+  }
+
+  Future<void> _fetchDebateInfo() async {
+    final chatViewModel = ref.read(chatInfoProvider.notifier);
+    await chatViewModel.fetchDebateInfo(widget.id);
+
+    final webSocketService = ref.read(webSocketProvider);
+    final loginInfo = ref.watch(loginInfoProvider);
+    final debateInfo = ref.read(chatInfoProvider);
+
+    if (loginInfo != null && debateInfo != null) {
+      final message = jsonEncode({
+        "type": "ENTER",
+        "userId": loginInfo.id,
+        "debateId": debateInfo.id,
+      });
+      webSocketService.sendMessage(message);
+    } else {
+      print("Error: Login info or Debate info is null.");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final chatState = ref.watch(chatProviders);
+    final debateInfo = ref.watch(chatInfoProvider);
     final loginInfo = ref.watch(loginInfoProvider);
 
-    // if (loginInfo == null || chatState.debateData == null) {
-    //   return const Center(child: CircularProgressIndicator());
-    // }
+    if (debateInfo == null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Loading...'),
+        ),
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
 
     return _BasicDebate(
-      chatState: chatState,
+      id: widget.id,
+      debateInfo: debateInfo,
     );
   }
 }
 
 class _BasicDebate extends StatelessWidget {
-  final ChatState chatState;
+  final int id;
+  final DebateInfo? debateInfo;
 
   const _BasicDebate({
-    required this.chatState,
+    required this.id,
+    required this.debateInfo,
   });
 
   @override
@@ -96,9 +86,9 @@ class _BasicDebate extends StatelessWidget {
       resizeToAvoidBottomInset: true,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60.0),
-        child: ChatAppbar(), // id 전달
+        child: ChatAppbar(id: id), // id 전달
       ),
-      body: ChatBody(),
+      body: ChatBody(id: id), // id 전달
     );
   }
 }

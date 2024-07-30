@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 import 'package:tito_app/core/api/multpart_file_with_to_json.dart';
+import 'package:tito_app/src/data/models/debate_crate.dart';
+import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:tito_app/src/data/models/debate_list.dart';
 import 'package:tito_app/src/data/models/login_info.dart';
 import 'package:tito_app/src/data/models/auth_response.dart';
@@ -38,4 +40,9 @@ abstract class ApiService {
 
   @GET("debates")
   Future<List<Debate>> getDebateList();
+  @GET("debates/{id}")
+  Future<DebateInfo> getDebateInfo(@Path("id") int debateId);
+
+  @POST("debates")
+  Future<DebateCreateInfo> postDebate(@Body() Map<String, dynamic> debate);
 }

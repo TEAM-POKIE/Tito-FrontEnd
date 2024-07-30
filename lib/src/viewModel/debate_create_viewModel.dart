@@ -21,7 +21,6 @@ enum DebateCategory {
 
 class DebateCreateViewModel extends StateNotifier<DebateCreateState> {
   final Ref ref;
-  final WebSocketService _webSocketService = WebSocketService();
 
   DebateCreateViewModel(this.ref) : super(DebateCreateState());
 

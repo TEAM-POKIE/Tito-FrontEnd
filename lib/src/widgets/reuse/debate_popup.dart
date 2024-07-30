@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tito_app/core/provider/debate_create_provider.dart';
+import 'package:tito_app/core/provider/websocket_provider.dart';
 import 'package:tito_app/src/viewModel/popup_viewModel.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
@@ -128,6 +132,19 @@ class DebatePopup extends ConsumerWidget {
   Widget _twoButtons(BuildContext context, WidgetRef ref) {
     final popupState = ref.watch(popupProvider);
     final popupViewModel = ref.watch(popupProvider.notifier);
+    final debateState = ref.watch(debateCreateProvider);
+
+    void startDebate() async {
+      try {
+        final debateData = debateState.toJson();
+
+        final response = await ApiService(DioClient.dio).postDebate(debateData);
+
+        context.push('/chat/${response.id}');
+      } catch (error) {
+        print('Error posting debate: $error');
+      }
+    }
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -161,9 +178,12 @@ class DebatePopup extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(vertical: 10),
             ),
             onPressed: () {
-              context.pop();
-
-              popupViewModel.showDebatePopup(context);
+              if (popupState.title == '토론장을 개설하겠습니까?') {
+                startDebate();
+              } else {
+                context.pop();
+                popupViewModel.showDebatePopup(context);
+              }
             },
             child: Text(
               popupState.buttonContentRight ?? '',

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,7 +7,7 @@ import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/websocket_provider.dart';
-import 'package:tito_app/src/data/models/debate_crate.dart';
+
 import 'package:tito_app/src/data/models/debate_list.dart';
 import 'package:tito_app/src/widgets/reuse/search_bar.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -67,7 +66,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 
     // WebSocket을 통해 메시지 전송
     webSocketService.sendMessage(jsonMessage);
-    context.push('/chat');
+    context.push('/chat/${debateId}');
   }
 
   Future<void> _fetchDebateList() async {
