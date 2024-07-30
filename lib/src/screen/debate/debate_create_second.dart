@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tito_app/core/constants/style.dart';
 
 class DebateCreateSecond extends ConsumerStatefulWidget {
   const DebateCreateSecond({super.key});
@@ -41,22 +43,29 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
       },
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              context.pop();
+              //바로 이전에 실행했던 화면으로 이동
+            },
+            icon: const Icon(Icons.arrow_back_ios),
+          ),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                  padding: EdgeInsets.only(left: 24.w),
                   child: LinearPercentIndicator(
-                    width: 200,
+                    width: 210.w,
                     animation: true,
-                    animationDuration: 200,
+                    animationDuration: 1000,
                     lineHeight: 5.0,
-                    percent: 1,
+                    percent: _progress,
                     linearStrokeCap: LinearStrokeCap.butt,
-                    progressColor: const Color(0xff8E48F8),
-                    backgroundColor: Colors.grey,
-                    barRadius: const Radius.circular(10),
+                    progressColor: ColorSystem.purple,
+                    backgroundColor: ColorSystem.grey,
+                    barRadius: Radius.circular(10.r),
                   ),
                 ),
               ),
@@ -65,24 +74,23 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 10),
+                  SizedBox(height: 34.h),
                   Text(
                     debateState.debateTitle,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 20),
+                    style: FontSystem.KR18B.copyWith(fontSize: 30),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 40.h),
                   const Text(
                     '나의 주장',
-                    style: TextStyle(fontSize: 20),
+                    style: FontSystem.KR18R,
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20.h),
                   TextFormField(
                     autocorrect: false,
                     decoration: InputDecoration(
@@ -90,7 +98,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                       fillColor: Colors.grey[200],
                       filled: true,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
+                        borderRadius: BorderRadius.circular(24.r),
                         borderSide: BorderSide.none,
                       ),
                     ),
@@ -104,12 +112,12 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                       aArgument = value ?? '';
                     },
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 40.h),
                   const Text(
                     '상대 주장',
-                    style: TextStyle(fontSize: 20),
+                    style: FontSystem.KR18R,
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20.h),
                   TextFormField(
                     autocorrect: false,
                     decoration: InputDecoration(
@@ -117,7 +125,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                       fillColor: Colors.grey[200],
                       filled: true,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
+                        borderRadius: BorderRadius.circular(24.r),
                         borderSide: BorderSide.none,
                       ),
                     ),
@@ -131,28 +139,27 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                       bArgument = value ?? '';
                     },
                   ),
-                  const SizedBox(height: 20),
                 ],
               ),
             ),
           ),
         ),
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 40.h),
           child: SizedBox(
-            width: double.infinity,
+            width: 350.w,
+            height: 60.h,
             child: ElevatedButton(
               onPressed: () => _nextCreate(context),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xff8E48F8),
+                backgroundColor: ColorSystem.purple,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
+                  borderRadius: BorderRadius.circular(20.r),
                 ),
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
               ),
-              child: const Text(
+              child: Text(
                 '다음',
-                style: TextStyle(fontSize: 16, color: Colors.white),
+                style: TextStyle(fontSize: 20.sp, color: ColorSystem.white),
               ),
             ),
           ),

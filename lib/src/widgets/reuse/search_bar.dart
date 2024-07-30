@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tito_app/core/constants/style.dart';
 
 class CustomSearchBar extends StatelessWidget {
   const CustomSearchBar({super.key});
@@ -7,25 +9,26 @@ class CustomSearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
-        width: 360,
+        width: 350.w,
+        height: 50.h,
         child: TextField(
           decoration: InputDecoration(
             filled: true,
-            fillColor: const Color(0xFFF6F6F6), // 더 밝은 배경색
+            fillColor: ColorSystem.ligthGrey, // 더 밝은 배경색
             border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(25.0),
+                borderRadius: BorderRadius.circular(24.r),
                 borderSide: BorderSide.none),
             hintText: '검색어를 입력하세요',
             hintStyle: const TextStyle(
               fontSize: 16,
-              color: Color.fromARGB(255, 130, 130, 130),
+              color: ColorSystem.grey,
             ),
             prefixIcon: const Icon(Icons.search,
-                color: Color.fromARGB(255, 88, 88, 88),
+                color: ColorSystem.grey,
                 size: 26.0), // 아이콘 색상 추가
           ),
           style: const TextStyle(
-            color: Colors.black,
+            color: ColorSystem.black,
           ),
         ),
       ),
