@@ -61,7 +61,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                     animation: true,
                     animationDuration: 1000,
                     lineHeight: 5.0,
-                    percent: _progress,
+                    // percent: _progress,
                     linearStrokeCap: LinearStrokeCap.butt,
                     progressColor: ColorSystem.purple,
                     backgroundColor: ColorSystem.grey,

@@ -37,17 +37,10 @@ class ChatViewDetails extends HookConsumerWidget {
 
     String remainingTime = formatDuration(timerState.remainingTime);
 
-    return Expanded(
-      child: Column(
-        children: [
-          Expanded(
-              child: _detailState(
-                  upImage: 'assets/images/detailChatIcon.png',
-                  upTitle: '상대 반론자를 찾는 중이예요 !',
-                  downTitle: '⏳ 00:00 토론 시작 전')),
-        ],
-      ),
-    );
+    return _detailState(
+        upImage: 'assets/images/detailChatIcon.png',
+        upTitle: '상대 반론자를 찾는 중이예요 !',
+        downTitle: '⏳ 00:00 토론 시작 전');
   }
 }
 

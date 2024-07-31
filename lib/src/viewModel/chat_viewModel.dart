@@ -1,20 +1,27 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
+import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/core/provider/websocket_provider.dart';
 import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
 
 class ChatViewModel extends StateNotifier<DebateInfo?> {
-  ChatViewModel() : super(null) {
+  final Ref ref; // Add a ref to access other providers
+
+  ChatViewModel(this.ref) : super(null) {
     _connectWebSocket();
   }
 
   late WebSocketChannel _channel;
   final _messageController = StreamController<Map<String, dynamic>>.broadcast();
+  final TextEditingController controller = TextEditingController();
+  final FocusNode focusNode = FocusNode();
 
   Stream<Map<String, dynamic>> get messageStream => _messageController.stream;
 
@@ -44,8 +51,40 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     });
   }
 
-  void sendMessage(String message) {
-    _channel.sink.add(message);
+  void sendMessage() {
+    final loginInfo = ref.read(loginInfoProvider);
+    final message = controller.text;
+
+    if (message.isEmpty) return;
+
+    final jsonMessage = json.encode({
+      "type": "CHAT",
+      "userId": loginInfo?.id ?? '',
+      "debateId": state?.id ?? 0,
+      "content": message
+    });
+
+    _channel.sink.add(jsonMessage);
+    controller.clear(); // Clear the input field after sending the message
+    focusNode.requestFocus(); // Keep focus on the input field
+  }
+
+  void sendJoinMessage() {
+    final loginInfo = ref.read(loginInfoProvider);
+    final message = controller.text;
+
+    if (message.isEmpty) return;
+
+    final jsonMessage = json.encode({
+      "type": "JOIN",
+      "userId": loginInfo?.id ?? '',
+      "debateId": state?.id ?? 0,
+      "content": message
+    });
+
+    _channel.sink.add(jsonMessage);
+    controller.clear();
+    focusNode.requestFocus();
   }
 
   void clear() {
@@ -56,6 +95,8 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
   void dispose() {
     _channel.sink.close(status.goingAway);
     _messageController.close();
+    controller.dispose();
+    focusNode.dispose();
     super.dispose();
   }
 }

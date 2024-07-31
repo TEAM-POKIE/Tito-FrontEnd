@@ -113,7 +113,9 @@ class _ListScreenState extends ConsumerState<ListScreen> {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w,),
+            padding: EdgeInsets.symmetric(
+              horizontal: 20.w,
+            ),
             child: const CustomSearchBar(),
           ),
           SizedBox(height: 16.h),
@@ -159,10 +161,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                           ],
                         ),
                       ),
-                      child: Text(
-                        labels[index],
-                        style: TextStyle(fontSize: 10),
-                      ),
                     ),
                   );
                 }),
@@ -200,8 +198,8 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                       if (index < statuses.length - 1)
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 3.h),
-                          child:
-                              Text('|', style: TextStyle(color: ColorSystem.grey)),
+                          child: Text('|',
+                              style: TextStyle(color: ColorSystem.grey)),
                         ),
                     ],
                   );

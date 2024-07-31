@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/websocket_provider.dart';
-import 'package:tito_app/src/data/models/types.dart' as types;
 
 class ChatListView extends ConsumerStatefulWidget {
   final int id;
+
   const ChatListView({
     super.key,
     required this.id,
@@ -19,13 +19,13 @@ class ChatListView extends ConsumerStatefulWidget {
 class _ChatListViewState extends ConsumerState<ChatListView> {
   @override
   Widget build(BuildContext context) {
-    final loginInfo = ref.read(loginInfoProvider);
+    final loginInfo = ref.watch(loginInfoProvider);
+    final webSocketService = ref.watch(webSocketProvider);
 
-    // WebSocketProvider를 사용하여 메시지 수신 스트림을 구독
-    final messageStream = ref.watch(webSocketProvider).messageStream;
-
-    return StreamBuilder<List<types.Message>>(
-      stream: messageStream,
+    return StreamBuilder<List<Map<String, dynamic>>>(
+      stream: webSocketService.stream
+          .map((message) => [message])
+          .asBroadcastStream(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -40,10 +40,8 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
           itemCount: messages.length,
           itemBuilder: (context, index) {
             final message = messages[index];
-            final isMyMessage = message.author.id == loginInfo?.nickname;
-            final formattedTime = TimeOfDay.fromDateTime(
-                    DateTime.fromMillisecondsSinceEpoch(message.createdAt))
-                .format(context);
+            final isMyMessage = message['userId'] == loginInfo?.id;
+            final formattedTime = TimeOfDay.now().format(context);
 
             return Padding(
               padding:
@@ -67,7 +65,7 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text((message as types.TextMessage).text),
+                        Text(message['message']),
                         const SizedBox(height: 5),
                         Text(
                           formattedTime,
@@ -87,3 +85,19 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
     );
   }
 }
+  // List<Map<String, dynamic>> _messages = [];
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _subscribeToWebSocket();
+  // }
+
+  // void _subscribeToWebSocket() {
+  //   final webSocketService = ref.read(webSocketProvider);
+  //   webSocketService.stream.listen((message) {
+  //     setState(() {
+  //       _messages.add(message);
+  //     });
+  //   });
+  // }

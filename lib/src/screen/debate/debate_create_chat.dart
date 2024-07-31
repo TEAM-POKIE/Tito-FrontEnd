@@ -149,9 +149,10 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottom> {
     popupState.imgSrc = 'assets/images/chatIconRight.png';
     popupState.content = '토론을 시작하시겠습니까?';
     popupState.title = '토론장을 개설하겠습니까?';
-    PopupViewmodel.showDebatePopup(context);
     debateState.firstChatContent = _controller.text;
     debateState.debateStatus = 'CREATED';
+    PopupViewmodel.showDebatePopup(context);
+
     _controller.clear();
   }
 
