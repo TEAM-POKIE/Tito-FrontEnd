@@ -8,41 +8,119 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 
-class MyAlarmScrollbody extends ConsumerWidget {
-  const MyAlarmScrollbody({super.key});
+class MyAlarmScrollbody extends StatefulWidget {
+  @override
+  _MyAlarmScrollBodyState createState() => _MyAlarmScrollBodyState();
+}
+
+class _MyAlarmScrollBodyState extends State<MyAlarmScrollbody> {
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+  final GlobalKey<AnimatedListState> _secondListKey =
+      GlobalKey<AnimatedListState>();
+  final List<String> _alarms = List.generate(15, (index) => '새로운 알림예시 $index');
+  final List<String> _oldAlarms =
+      List.generate(15, (index) => '지난 알림예시 $index');
+      
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: 50.h,
+          height: 20.h,
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Text(
+          child: const Text(
             '새로운 알림',
-            style: FontSystem.KR20R,
+            style: FontSystem.KR20B,
           ),
         ),
-        SizedBox(height: 30.h),
+        SizedBox(height: 15.h),
         Container(
-          width: 350.w,
           height: 460.h,
-          child: SingleChildScrollView(),
+          child: Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 3.w),
+              child: AnimatedList(
+                key: _listKey,
+                initialItemCount: _alarms.length,
+                itemBuilder: (context, index, animation) {
+                  return _buildItem(context, _alarms[index], animation, index);
+                },
+              ),
+            ),
+          ),
         ),
         SizedBox(height: 40.h),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Text(
+          child: const Text(
             '지난 알림',
-            style: FontSystem.KR20R,
+            style: FontSystem.KR20B,
           ),
         ),
-        SizedBox(height: 30.h,),
-        SingleChildScrollView(),
+        SizedBox(
+          height: 15.h,
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 3.w),
+            child: AnimatedList(
+              key: _secondListKey,
+              initialItemCount: _oldAlarms.length,
+              itemBuilder: (context, index, animation) {
+                return _buildSecondItem(
+                    context, _oldAlarms[index], animation, index);
+              },
+            ),
+          ),
+        ),
       ],
     );
   }
+}
+
+Widget _buildItem(
+    BuildContext context, String user, Animation<double> animation, int index) {
+  return SizeTransition(
+    sizeFactor: animation,
+    child: Padding(
+      padding: EdgeInsets.symmetric(vertical: 4.h),
+      child: ListTile(
+        onTap: () {},
+        leading: SvgPicture.asset('assets/icons/alarm_new.svg'),
+        title: Text(
+          user,
+          style: FontSystem.KR16B.copyWith(color: ColorSystem.purple),
+        ),
+        subtitle: Text(
+          '지금',
+          style: FontSystem.KR14R.copyWith(color: ColorSystem.grey),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget _buildSecondItem(
+    BuildContext context, String user, Animation<double> animation, int index) {
+  return SizeTransition(
+    sizeFactor: animation,
+    child: Padding(
+      padding: EdgeInsets.symmetric(vertical: 4.h),
+      child: ListTile(
+        leading: SvgPicture.asset('assets/icons/alarm.svg'),
+        title: Text(
+          user,
+          style: FontSystem.KR16B,
+        ),
+        subtitle: Text(
+          '지난 8시간',
+          style: FontSystem.KR14R.copyWith(color: ColorSystem.grey),
+        ),
+      ),
+    ),
+  );
 }

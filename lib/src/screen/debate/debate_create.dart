@@ -91,65 +91,81 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
           ),
         ),
         body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 40.h),
-                  const Text(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 40.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: const Text(
                     '카테고리 선택',
                     style: FontSystem.KR18R,
                   ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(viewModel.labels.length, (index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                        child: SizedBox(
-                          width: (MediaQuery.of(context).size.width - 80) * 0.2,
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5.w),
+                  child: Container(
+                    width: 380.w,
+                    height: 30.h,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: List.generate(viewModel.labels.length, (index) {
+                        return Container(
+                          height: 30.h,
+                          width: 75.w,
                           child: ElevatedButton(
                             onPressed: () {
                               viewModel.updateCategory(index);
                             },
                             style: ElevatedButton.styleFrom(
-                              textStyle:
-                                  const TextStyle(fontWeight: FontWeight.bold),
+                              textStyle: FontSystem.KR10R,
                               padding: const EdgeInsets.all(0),
                               backgroundColor: debateState.debateCategory ==
                                       viewModel.labels[index]
                                   ? ColorSystem.black
-                                  : ColorSystem.ligthGrey,
+                                  : Colors.grey[200],
                               foregroundColor: debateState.debateCategory ==
                                       viewModel.labels[index]
-                                  ? Colors.white
-                                  : const Color(0xff6B6B6B),
+                                  ? ColorSystem.white
+                                  : const Color.fromARGB(255, 101, 101, 101),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0),
+                                borderRadius: BorderRadius.circular(12.r),
                               ),
                             ),
-                            child: Text(
-                              viewModel.labels[index],
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  viewModel.labels[index],
+                                  style: TextStyle(fontSize: 10.sp),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                      );
-                    }),
+                        );
+                      }),
+                    ),
                   ),
-                  SizedBox(
-                    height: 60.h,
-                  ),
-                  const Text(
+                ),
+                SizedBox(
+                  height: 60.h,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: const Text(
                     '토론 주제',
                     style: FontSystem.KR18R,
                   ),
-                  SizedBox(height: 20.h),
-                  TextFormField(
+                ),
+                SizedBox(height: 20.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: TextFormField(
                     autocorrect: false,
                     decoration: InputDecoration(
                       hintText: '입력하세요',
@@ -170,38 +186,38 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
                       viewModel.updateTitle(value ?? '');
                     },
                   ),
-                  SizedBox(height: 30.h),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 7.w),
-                          child: SvgPicture.asset(
-                            'assets/icons/purple_cute.svg',
-                            width: 40.w,
-                            height: 40.h,
-                          ),
+                ),
+                SizedBox(height: 30.h),
+                GestureDetector(
+                  onTap: () {},
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 7.w),
+                        child: SvgPicture.asset(
+                          'assets/icons/purple_cute.svg',
+                          width: 40.w,
+                          height: 40.h,
                         ),
-                        TextButton(
-                          onPressed: () {
-                            context.go('/ai_create');
-                          },
-                          child: Text(
-                            'AI 자동 주제 생성 하기',
-                            style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                decorationColor: ColorSystem.purple,
-                                color: ColorSystem.purple,
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.bold),
-                          ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          context.go('/ai_create');
+                        },
+                        child: Text(
+                          'AI 자동 주제 생성 하기',
+                          style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              decorationColor: ColorSystem.purple,
+                              color: ColorSystem.purple,
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.bold),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

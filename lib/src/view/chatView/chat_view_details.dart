@@ -97,7 +97,7 @@ class _detailState extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 5),
       color: Colors.white,
       child: Column(
         mainAxisSize: MainAxisSize.min,

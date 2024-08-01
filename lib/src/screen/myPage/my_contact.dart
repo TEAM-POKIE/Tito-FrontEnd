@@ -1,3 +1,4 @@
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +7,8 @@ import 'package:tito_app/src/widgets/reuse/purple_button.dart';
 import 'dart:io';
 import 'package:tito_app/src/view/myPage/pick_image.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tito_app/core/constants/style.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MyContact extends StatefulWidget {
   const MyContact({super.key});
@@ -38,12 +41,12 @@ class _MyContactState extends State<MyContact> {
         ),
         title: const Text(
           '문의하기',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: FontSystem.KR16B,
         ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: ConstrainedBox(
           constraints: BoxConstraints(
             minHeight: MediaQuery.of(context).size.height,
@@ -51,133 +54,136 @@ class _MyContactState extends State<MyContact> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20.0),
-              const Text(
-                '내용',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 10.0),
-              SizedBox(
-                height: 200.0,
+              SizedBox(height: 51.h),
+              const Text('내용', style: FontSystem.KR16R),
+              SizedBox(height: 10.h),
+              Container(
+                height: 200.h,
                 child: TextField(
                   //controller: _contentController,
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 250.0),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 250.h),
                     // hintText: '입력하세요',
                     // hintStyle: const TextStyle(color: Colors.grey),
                     filled: true,
-                    fillColor: const Color(0xFFF6F6F6),
+                    fillColor: ColorSystem.ligthGrey,
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
+                      borderRadius: BorderRadius.circular(24.r),
                       borderSide: BorderSide.none,
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 20.0),
+              SizedBox(height: 18.h),
               SizedBox(
-                width: 125,
-                height: 45,
+                width: 115.w,
+                height: 40.h,
                 child: ElevatedButton(
-                  onPressed:_pickImage,
+                  onPressed: _pickImage,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF8E48F8),
-                    foregroundColor: Colors.white,
+                    backgroundColor: ColorSystem.purple,
+                    foregroundColor: ColorSystem.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
                   ),
-                  child: const Row(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
                         Icons.camera_alt,
-                        size: 16,
+                        size: 16.sp,
                       ),
                       SizedBox(
-                        width: 5.0,
+                        width: 5.w,
                       ),
                       Text(
                         '파일 첨부',
-                        style: TextStyle(fontSize: 14),
+                        style: FontSystem.KR14R.copyWith(color: ColorSystem.white),
                       ),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 15),
-              const SizedBox(height: 30.0),
-              const Text('연락받을 이메일',
-                  style:
-                      TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 10.0),
-              const TextField(
+              SizedBox(height: 20.h),
+              const Text('연락받을 이메일', style: FontSystem.KR16R),
+              SizedBox(height: 10.h),
+              TextField(
                 //controller: _titleController,
                 decoration: InputDecoration(
                   // hintText: '입력하세요',
                   // hintStyle: TextStyle(color: Colors.grey),
                   filled: true,
-                  fillColor: Color(0xFFF6F6F6),
+                  fillColor: ColorSystem.ligthGrey,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(24.r)),
                     borderSide: BorderSide.none,
                   ),
                 ),
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: ColorSystem.black),
               ),
-              const SizedBox(height: 30.0),
-              const Text('이용자 아이디',
-                  style:
-                      TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
-              const TextField(
+              SizedBox(height: 18.h),
+              const Text('이용자 아이디', style: FontSystem.KR16R),
+              SizedBox(height: 10.h),
+              TextField(
                 //controller: _titleController,
                 decoration: InputDecoration(
                   // hintText: '입력하세요',
                   // hintStyle: TextStyle(color: Colors.grey),
                   filled: true,
-                  fillColor: Color(0xFFF6F6F6),
+                  fillColor: ColorSystem.ligthGrey,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(24.r)),
                     borderSide: BorderSide.none,
                   ),
                 ),
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: ColorSystem.black),
               ),
-              const SizedBox(height: 30.0),
+              SizedBox(height: 18.h),
               const Text('학교',
                   style:
-                      TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
-              const TextField(
+                      FontSystem.KR16R),
+              TextField(
                 //controller: _titleController,
                 decoration: InputDecoration(
                   // hintText: '입력하세요',
                   // hintStyle: TextStyle(color: Colors.grey),
                   filled: true,
-                  fillColor: Color(0xFFF6F6F6),
+                  fillColor: ColorSystem.ligthGrey,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(24.r)),
                     borderSide: BorderSide.none,
                   ),
                 ),
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: ColorSystem.black),
               ),
-              const SizedBox(height: 30.0),
-              Container(
-                width: 350,
-                height: 60,
-                child: PurpleButton(
-                  text: '문의 접수',
-                  onPressed: () {
-                    context.go('/mypage');
-                  },
-                ),
-              ),
+              SizedBox(height: 28.h),
             ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 40.h),
+        child: SizedBox(
+          width: 350.w,
+          height: 60.h,
+          child: ElevatedButton(
+            onPressed: () {
+              context.go('/mypage');
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: ColorSystem.purple,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.r),
+              ),
+            ),
+            child: Text(
+              '문의 접수',
+              style: TextStyle(fontSize: 20.sp, color: ColorSystem.white),
+            ),
           ),
         ),
       ),

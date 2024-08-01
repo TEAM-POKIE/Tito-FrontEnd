@@ -11,6 +11,7 @@ import 'package:dio/dio.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class MypageMain extends ConsumerStatefulWidget {
   const MypageMain({super.key});
@@ -150,18 +151,30 @@ class _MypageMainState extends ConsumerState<MypageMain> {
               SizedBox(height: 22.h),
               Stack(
                 children: [
-                  CircleAvatar(
-                    radius: 35.r,
-                    backgroundImage: _image != null
-                        ? FileImage(File(_image!.path)) as ImageProvider
-                        : loginInfo?.profilePicture == null
-                            ? const AssetImage('assets/images/chatprofile.png')
-                            : NetworkImage(loginInfo!.profilePicture!)
-                                as ImageProvider,
+                  SvgPicture.asset(
+                    'assets/icons/circle_profile.svg',
+                    width: 70,
+                    height: 70,
+                    color: ColorSystem.lightPurple,
                   ),
+                  // CircleAvatar(
+                  //   radius: 35.r,
+                  //   backgroundImage: _image != null
+                  //       ? FileImage(File(_image!.path)) as ImageProvider
+                  //       : loginInfo?.profilePicture == null
+                  //           ? null
+                  //           : NetworkImage(loginInfo!.profilePicture!)
+                  //               as ImageProvider,
+                  //   child: _image == null && loginInfo?.profilePicture == null
+                  //       ? SvgPicture.asset(
+                  //           'assets/icons/circle_profile.svg',
+                  //           fit: BoxFit.cover,
+                  //         )
+                  //       : null,
+                  // ),
                   Positioned(
-                    bottom: -5,
-                    right: -5,
+                    bottom: -10,
+                    right: -10,
                     child: Transform.rotate(
                       angle: 0.1,
                       child: IconButton(
@@ -169,18 +182,33 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                         onPressed: () {
                           _showImagePickerOptions(context);
                         },
-                        icon: Image.asset('assets/images/changeprofile.png'),
+                        icon: SvgPicture.asset('assets/icons/mypage_edit.svg'),
                       ),
                     ),
                   ),
                 ],
               ),
               SizedBox(height: 10.h),
-              Text(
-                '${loginInfo?.nickname}',
-                style:
-                    FontSystem.KR24B,
+
+              Row(
+                //mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 150.w),
+                    child: Text(
+                      '${loginInfo?.nickname}',
+                      style: FontSystem.KR24B,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      context.go('/nickname');
+                    },
+                    icon: const Icon(Icons.arrow_forward_ios),
+                  ),
+                ],
               ),
+
               Container(
                 width: 70.w,
                 height: 30.h,
@@ -202,7 +230,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                 '12전 | 10승 | 2패',
                 style: FontSystem.KR18R,
               ),
-              SizedBox(height: 44.h),
+              SizedBox(height: 34.h),
               // Divider(thickness: 4),
               Container(
                 width: double.infinity,
@@ -213,7 +241,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                   borderRadius: BorderRadius.circular(4.h),
                 ),
               ),
-              SizedBox(height: 32.h),
+              SizedBox(height: 10.h),
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -232,11 +260,16 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                 title: '알림',
                 onTap: () => context.go('/myalarm'),
               ),
-              SizedBox(height: 80.h),
+              _buildListTile(
+                context,
+                title: '차단 리스트',
+                onTap: () => context.go('/myblock'),
+              ),
+              SizedBox(height: 46.h),
               Container(
                 width: double.infinity,
                 height: 4.h,
-                margin: EdgeInsets.symmetric(vertical: 20.h),
+                margin: EdgeInsets.only(bottom: 10.h),
                 decoration: BoxDecoration(
                   color: ColorSystem.grey3,
                   borderRadius: BorderRadius.circular(4.h),
@@ -252,11 +285,6 @@ class _MypageMainState extends ConsumerState<MypageMain> {
               ),
 
               SizedBox(height: 20.h),
-              _buildListTile(
-                context,
-                title: '차단 리스트',
-                onTap: () => context.go('/myblock'),
-              ),
               _buildListTile(
                 context,
                 title: '비밀번호 변경',

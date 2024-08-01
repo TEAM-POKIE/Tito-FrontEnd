@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -50,15 +51,8 @@ class _MyDebateFirstbodyState extends ConsumerState<MyDebateFirstbody> {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: DropdownButton2<String>(
+              child: DropdownButton<String>(
                 value: selectedSortOption,
-                underline: SizedBox.shrink(), // 밑줄 제거
-                // icon: Icon(Icons.keyboard_arrow_down_sharp),
-                // dropdownDecoration: BoxDecoration(
-                //   borderRadius: BorderRadius.circular(12.0), // 모서리를 둥글게 설정
-                //   color: ColorSystem.ligthGrey,
-                // ),
-                // menuMaxHeight: 200.0, // 드롭다운 메뉴 최대 높이 설정
                 onChanged: (String? newValue) {
                   setState(() {
                     selectedSortOption = newValue!;
@@ -68,18 +62,20 @@ class _MyDebateFirstbodyState extends ConsumerState<MyDebateFirstbody> {
                     sortOptions.map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
-                    child: Column(
-                      children: [
-                        Text(
-                          value,
-                          style: FontSystem.KR14R, // 글자 크기 설정
-                        ),
-                        if (value != sortOptions.last)
-                          Divider(color: ColorSystem.grey), // 구분선 추가
-                      ],
+                    child: Text(
+                      value,
+                      style: FontSystem.KR14R
+                          .copyWith(color: ColorSystem.grey), // 글자 크기 설정
                     ),
                   );
                 }).toList(),
+                icon: Icon(
+                  Icons.keyboard_arrow_down,
+                  color: ColorSystem.grey,
+                  size: 20.sp,
+                ),
+                underline: SizedBox.shrink(),
+                style: FontSystem.KR14R.copyWith(color: ColorSystem.grey),
               ),
             ),
           ],

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tito_app/src/screen/home_screen.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class MyDebateScrollbody extends ConsumerStatefulWidget {
   const MyDebateScrollbody({super.key});
@@ -42,7 +43,7 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
           children: [
             Container(
               width: 350.w,
-              height: 130.h,
+              height: 120.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20.r),
                 border: Border.all(color: ColorSystem.grey),
@@ -55,7 +56,8 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
                       padding: EdgeInsets.only(left: 0.w),
                       child: Text(
                         '2024.6.20',
-                        style: TextStyle(fontSize: 14.sp, color: ColorSystem.grey),
+                        style:
+                            TextStyle(fontSize: 14.sp, color: ColorSystem.grey),
                       ),
                     ),
                     Divider(color: ColorSystem.grey),
@@ -64,10 +66,10 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(left: 0.w),
-                          child:
-                              const Text('아싸 애인 VS 인싸 애인', style: FontSystem.KR15B),
+                          child: const Text('아싸 애인 VS 인싸 애인',
+                              style: FontSystem.KR15B),
                         ),
-                        SizedBox(height: 5.h),
+                        SizedBox(height: 4.h),
                         Padding(
                           padding: EdgeInsets.only(left: 0.w),
                           child: Column(
@@ -78,7 +80,7 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
                                 style: FontSystem.KR14R
                                     .copyWith(color: ColorSystem.grey),
                               ),
-                             // SizedBox(height: 4.h),
+                              //SizedBox(height: 2.h),
                               Padding(
                                 padding: EdgeInsets.only(left: 0.w),
                                 child: Column(
@@ -99,6 +101,12 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
                     ),
                   ],
                 ),
+                // trailing: SvgPicture.asset(
+                //   'assets/icons/list_real_null.svg',
+                //   width: 80.w,
+                //   height: 80.h,
+                //   fit: BoxFit.contain,
+                // ),
               ),
             ),
           ],

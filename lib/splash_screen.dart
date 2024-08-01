@@ -22,17 +22,24 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    requestPermissions();
+    requestPermissions(); //카메라 및 사진권한 요청
     // 3초 후에 LoginMain 페이지로 이동
     Timer(Duration(seconds: 3), () {
       refreshNotifier.value = !refreshNotifier.value; // 상태 업데이트
-      GoRouter.of(rootNavigatorKey.currentContext!)
-          .go('/login'); // GlobalKey를 사용하여 페이지 전환
+      if (rootNavigatorKey.currentContext != null) {
+        GoRouter.of(rootNavigatorKey.currentContext!)
+            .go('/login'); // GlobalKey를 사용하여 페이지 전환
+      } else {
+        // 적절한 에러 처리 또는 디버깅 로그 추가
+        print('Error: rootNavigatorKey.currentContext is null');
+      }
     });
   }
 
   Future<void> requestPermissions() async {
-    await [Permission.camera, Permission.photos].request();
+    //카메라와 사진권한 요청
+    await [Permission.camera, Permission.photos]
+        .request(); //권한 요청 수행 및 완료될때까지 기다리기
   }
 
   @override
@@ -41,8 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
       splashIconSize: 162.w, // 크기를 screenutil로 조정
       duration: 3000,
       splash: Container(
-        // margin:
-        //     EdgeInsets.symmetric(horizontal: 114.w), // 좌우 여백을 screenutil로 비율 조정
+        //로고가 Containter 안에 지정될 것이다
         width: 162.w, // 너비를 screenutil로 비율 조정
         height: 127.w,
         decoration: const BoxDecoration(
@@ -53,7 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
         ),
       ),
-      nextScreen: Container(), // 임시로 Placeholder 사용
+      nextScreen: const LoginMain(),
       splashTransition:
           SplashTransition.fadeTransition, // 스플래시 화면 전환 애니메이션 설정 (옵션)
       backgroundColor: ColorSystem.purple, // 배경색 설정 (옵션)
