@@ -64,7 +64,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
       'command': "ENTER",
       'debateId': debateId,
       'userId': loginInfo!.id,
-      'content': null,
     });
 
     // WebSocket을 통해 메시지 전송

@@ -47,21 +47,21 @@ class LiveCommentViewModel extends StateNotifier<LiveState> {
   Stream<List<Message>> get messagesStream => _messagesController.stream;
 
   Future<void> fetchInitialMessages() async {
-    try {
-      final data = await apiService.getData('/live_comments');
+    // try {
+    //   final data = await apiService.getData('/live_comments');
 
-      if (data != null) {
-        final messages =
-            data.entries.map((e) => Message.fromJson(e.value)).toList();
-        messages.sort((a, b) => a.createdAt.compareTo(b.createdAt)); // 메시지 정렬
-        state = state.copyWith(messages: messages);
-        _messagesController.add(state.messages);
-      } else {
-        print('Failed to fetch messages.');
-      }
-    } catch (e) {
-      print('Error fetching messages: $e');
-    }
+    //   if (data != null) {
+    //     final messages =
+    //         data.entries.map((e) => Message.fromJson(e.value)).toList();
+    //     messages.sort((a, b) => a.createdAt.compareTo(b.createdAt)); // 메시지 정렬
+    //     state = state.copyWith(messages: messages);
+    //     _messagesController.add(state.messages);
+    //   } else {
+    //     print('Failed to fetch messages.');
+    //   }
+    // } catch (e) {
+    //   print('Error fetching messages: $e');
+    // }
   }
 
   Future<List<Message>> loadInitialMessages() async {
@@ -87,14 +87,14 @@ class LiveCommentViewModel extends StateNotifier<LiveState> {
       _messagesController.add(state.messages);
 
       // Save message to API
-      final response = await apiService.postData(
-        '/live_comments',
-        newMessage.toJson(),
-      );
+      // final response = await apiService.postData(
+      //   '/live_comments',
+      //   newMessage.toJson(),
+      // );
 
-      if (!response) {
-        print('Failed to save message.');
-      }
+      // if (!response) {
+      //   print('Failed to save message.');
+      // }
     }
   }
 

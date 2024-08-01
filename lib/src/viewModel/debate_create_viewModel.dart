@@ -66,16 +66,6 @@ class DebateCreateViewModel extends StateNotifier<DebateCreateState> {
     popupViewModel.showRulePopup(context);
   }
 
-  void sendMessage(BuildContext context, TextEditingController controller) {
-    final text = controller.text;
-    if (text.isNotEmpty) {
-      // 메시지를 서버로 전송하는 API 호출 로직
-
-      controller.clear();
-      context.push('/chat');
-    }
-  }
-
   bool validateForm(GlobalKey<FormState> formKey) {
     return formKey.currentState?.validate() ?? false;
   }

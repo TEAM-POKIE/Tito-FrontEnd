@@ -24,7 +24,7 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
     if (loginInfo == null) {
       return;
     }
-    chatViewModel.sendJoinMessage();
+    chatViewModel.sendMessage();
     // if (chatState!.id != loginInfo.id) {
     //   popupState.buttonStyle = 1;
     //   popupState.title = '토론에 참여 하시겠어요?';

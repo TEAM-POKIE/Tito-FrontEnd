@@ -63,10 +63,15 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
       "debateId": state?.id ?? 0,
       "content": message
     });
+    print(jsonMessage);
 
     _channel.sink.add(jsonMessage);
     controller.clear(); // Clear the input field after sending the message
     focusNode.requestFocus(); // Keep focus on the input field
+  }
+
+  void getParticiapent() async {
+    final userInfoResponse = await ApiService(DioClient.dio).getDebateInfo();
   }
 
   void sendJoinMessage() {
@@ -81,6 +86,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
       "debateId": state?.id ?? 0,
       "content": message
     });
+    print(jsonMessage);
 
     _channel.sink.add(jsonMessage);
     controller.clear();
