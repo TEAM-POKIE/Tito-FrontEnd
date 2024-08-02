@@ -11,6 +11,8 @@ import 'package:tito_app/src/viewModel/popup_viewModel.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class DebatePopup extends ConsumerWidget {
   const DebatePopup({
@@ -22,18 +24,19 @@ class DebatePopup extends ConsumerWidget {
     final popupState = ref.watch(popupProvider);
 
     return Dialog(
+      backgroundColor: ColorSystem.white,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
+        borderRadius: BorderRadius.circular(20.r),
       ),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 13.w),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const SizedBox(
+                SizedBox(
                   width: 35,
                 ),
                 popupState.buttonStyle == 2

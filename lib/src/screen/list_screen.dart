@@ -111,6 +111,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 0.w),
           child: AppBar(
+            backgroundColor: ColorSystem.white,
             title: const Text(
               '토론 리스트',
               style: FontSystem.KR20B,
@@ -264,9 +265,14 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                           EdgeInsets.symmetric(horizontal: 20.h, vertical: 5.w),
                       child: Container(
                         decoration: BoxDecoration(
-                          border: Border.all(
-                            color: ColorSystem.grey,
-                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0x669795A3),
+                              spreadRadius: 0,
+                              blurRadius: 4,
+                            )
+                          ],
+                          color: ColorSystem.white,
                           borderRadius: BorderRadius.circular(20.r),
                         ),
                         child: ListTile(
@@ -289,32 +295,38 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                 child: Text(
                                   debate.debateStatus ?? '상태 없음',
                                   style: TextStyle(
-                                    color: debate.debateStatus == '토론 중'
-                                        ? ColorSystem.purple
-                                        : ColorSystem.purple,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14.sp
-                                  ),
+                                      color: debate.debateStatus == '토론 중'
+                                          ? ColorSystem.purple
+                                          : ColorSystem.purple,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14.sp),
                                 ),
                               ),
                               SizedBox(height: 5.h),
-                              Text(debate.debateTitle ?? 'No title',
-                                  style: FontSystem.KR16B),
+                              Text(
+                                debate.debateTitle ?? 'No title',
+                                style: FontSystem.KR16B,
+                                maxLines: 1, // 텍스트를 한 줄로 제한
+                                overflow:
+                                    TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
+                              ),
                               SizedBox(height: 4.h),
                               Text(
                                 '제한 시간: ${debate.debatedTimeLimit}분',
-                                style: FontSystem.KR14R.copyWith(color: ColorSystem.purple),
+                                style: FontSystem.KR14R
+                                    .copyWith(color: ColorSystem.purple),
+                                maxLines: 1, // 텍스트를 한 줄로 제한
+                                overflow:
+                                    TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
                               ),
                             ],
                           ),
-                          trailing: 
-                            SvgPicture.asset(
-                              'assets/icons/list_real_null.svg',
-                              // wi10th: 100.w,
-                              // height: 80.h,
-                              fit: BoxFit.contain,
-                            ),
-                          
+                          trailing: SvgPicture.asset(
+                            'assets/icons/list_real_null.svg',
+                            // wi10th: 100.w,
+                            // height: 80.h,
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
                     );

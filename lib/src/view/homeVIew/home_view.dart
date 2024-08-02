@@ -22,16 +22,15 @@ class HomeView extends ConsumerWidget {
             itemCount: homeState.titles.length,
             itemBuilder: (context, index) {
               return Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
                 child: Container(
                   decoration: BoxDecoration(
                     color: ColorSystem.black,
                     borderRadius: BorderRadius.circular(20.r),
                   ),
                   child: Padding(
-                    padding:  EdgeInsets.symmetric(
-                        horizontal: 20.w, vertical: 30.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 30.h),
                     child: Row(
                       children: [
                         Expanded(
@@ -56,7 +55,8 @@ class HomeView extends ConsumerWidget {
                                     ),
                                     child: const Text(
                                       '실시간 토론중',
-                                      style: TextStyle(color: ColorSystem.white),
+                                      style:
+                                          TextStyle(color: ColorSystem.white),
                                     ),
                                   ),
                                 ],
@@ -87,6 +87,9 @@ class HomeView extends ConsumerWidget {
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16,
                                           ),
+                                          maxLines: 1, // 텍스트를 한 줄로 제한
+                                          overflow: TextOverflow
+                                              .ellipsis, // 넘칠 경우 "..." 처리
                                         ),
                                       ],
                                     ),

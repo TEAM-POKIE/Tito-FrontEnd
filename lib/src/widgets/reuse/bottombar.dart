@@ -40,6 +40,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   Widget build(BuildContext context) {
     final selectedIndex = ref.watch(selectedIndexProvider);
     return BottomNavigationBar(
+      backgroundColor: ColorSystem.white,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: SvgPicture.asset('assets/icons/bottom_home.svg',

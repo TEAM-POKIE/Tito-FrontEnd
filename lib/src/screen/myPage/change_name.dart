@@ -18,6 +18,7 @@ class ChangeName extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: ColorSystem.white,
         leading: IconButton(
           onPressed: () {
             context.go('/mypage');

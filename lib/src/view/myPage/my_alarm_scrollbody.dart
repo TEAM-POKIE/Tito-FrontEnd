@@ -20,7 +20,6 @@ class _MyAlarmScrollBodyState extends State<MyAlarmScrollbody> {
   final List<String> _alarms = List.generate(15, (index) => '새로운 알림예시 $index');
   final List<String> _oldAlarms =
       List.generate(15, (index) => '지난 알림예시 $index');
-      
 
   @override
   Widget build(BuildContext context) {
@@ -115,6 +114,8 @@ Widget _buildSecondItem(
         title: Text(
           user,
           style: FontSystem.KR16B,
+          maxLines: 1, // 텍스트를 한 줄로 제한
+          overflow: TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
         ),
         subtitle: Text(
           '지난 8시간',

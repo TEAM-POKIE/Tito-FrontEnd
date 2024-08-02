@@ -8,6 +8,7 @@ import 'package:tito_app/core/api/dio_client.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
@@ -24,6 +25,7 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
   final _formKey = GlobalKey<FormState>();
   var _enteredEmail = '';
   var _enteredPassword = '';
+  bool _obscureText = true;
 
   void _onLogin() async {
     if (!_formKey.currentState!.validate()) {
@@ -73,6 +75,7 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: ColorSystem.white,
         leading: IconButton(
           onPressed: () {
             context.go('/login');
@@ -105,13 +108,21 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
                   maxLength: 50,
                   keyboardType: TextInputType.emailAddress,
                   autocorrect: false,
-                  decoration: const InputDecoration(
+                  style: TextStyle(
+                    color: _enteredEmail.isNotEmpty
+                        ? ColorSystem.purple
+                        : ColorSystem.black,
+                    fontSize: 16,
+                  ),
+                  decoration: InputDecoration(
                     hintText: '로그인 시 사용됩니다',
                     hintStyle: TextStyle(
-                      color: ColorSystem.grey,
+                      color: _enteredEmail.isNotEmpty
+                          ? ColorSystem.purple
+                          : ColorSystem.grey,
                       fontSize: 16,
                     ),
-                    //hintStyle:
+                    focusColor: ColorSystem.purple,
                   ),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
@@ -123,6 +134,7 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
                     _enteredEmail = value!;
                   },
                 ),
+
                 SizedBox(
                   height: 50.h,
                 ),
@@ -132,14 +144,26 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
                 ),
                 TextFormField(
                   maxLength: 20,
-                  decoration: const InputDecoration(
+                  obscureText: _obscureText, // 비밀번호 입력처럼 텍스트를 숨길지 여부
+                  decoration: InputDecoration(
                     hintText: '비밀번호 (영문, 숫자 조합 8자 이상)',
                     hintStyle: TextStyle(
                       color: ColorSystem.grey,
                       fontSize: 16,
                     ),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureText ? Icons.visibility_off : Icons.visibility,
+                        color: _obscureText ? ColorSystem.grey : ColorSystem.purple, 
+                        size: 18.sp,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
+                    ),
                   ),
-                  obscureText: true,
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return '비밀번호를 입력해주세요';

@@ -13,6 +13,7 @@ class MyAlarmAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: ColorSystem.white,
       leading: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12.w),
         child: IconButton(
