@@ -63,7 +63,7 @@ class HotFighter extends ConsumerWidget {
                 },
               ),
             ),
-            SizedBox(height:56.62.h ,),
+            //SizedBox(height:56.62.h ,),
           ],
         ),
       ),

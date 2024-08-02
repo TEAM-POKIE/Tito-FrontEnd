@@ -7,7 +7,7 @@ import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/websocket_provider.dart';
-
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tito_app/src/data/models/debate_list.dart';
 import 'package:tito_app/src/widgets/reuse/search_bar.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -105,9 +105,17 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('토론 리스트'),
-        centerTitle: true,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(70.0),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 0.w),
+          child: AppBar(
+            title: const Text(
+              '토론 리스트',
+              style: FontSystem.KR20B,
+            ),
+          ),
+        ),
       ),
       body: Column(
         children: [
@@ -117,48 +125,47 @@ class _ListScreenState extends ConsumerState<ListScreen> {
             ),
             child: const CustomSearchBar(),
           ),
-          SizedBox(height: 16.h),
+          SizedBox(height: 20.h),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            padding: EdgeInsets.symmetric(horizontal: 0.w),
             child: Container(
-              width: 360.w,
+              //카테고리 바가 들어가는 Container 부분
+              width: 380.w,
               height: 30.h,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: List.generate(labels.length, (index) {
-                  return Flexible(
-                    child: Container(
-                      height: 30.h,
-                      width: 66.w,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = index;
-                            _fetchDebateList();
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          textStyle: FontSystem.KR10R,
-                          backgroundColor: selectedIndex == index
-                              ? ColorSystem.black
-                              : Colors.grey[200],
-                          foregroundColor: selectedIndex == index
-                              ? ColorSystem.white
-                              : const Color.fromARGB(255, 101, 101, 101),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.r),
+                  return Container(
+                    height: 30.h,
+                    width: 75.w,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          selectedIndex = index;
+                          _fetchDebateList();
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        textStyle: FontSystem.KR10R,
+                        backgroundColor: selectedIndex == index
+                            ? ColorSystem.black
+                            : Colors.grey[200],
+                        foregroundColor: selectedIndex == index
+                            ? ColorSystem.white
+                            : const Color.fromARGB(255, 101, 101, 101),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            labels[index],
+                            style: TextStyle(fontSize: 10.sp),
+                            // style: FontSystem.KR10B,
                           ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              labels[index],
-                              style: TextStyle(fontSize: 10.sp),
-                              // style: FontSystem.KR10B,
-                            ),
-                          ],
-                        ),
+                        ],
                       ),
                     ),
                   );
@@ -166,61 +173,74 @@ class _ListScreenState extends ConsumerState<ListScreen> {
               ),
             ),
           ),
-          SizedBox(height: 45.h),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Row(
-                children: List.generate(statuses.length, (index) {
-                  return Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedStatus = statuses[index];
-                            _fetchDebateList();
-                          });
-                        },
-                        child: Text(
-                          statuses[index],
-                          style: TextStyle(
-                            color: selectedStatus == statuses[index]
-                                ? ColorSystem.black
-                                : ColorSystem.grey,
-                            fontWeight: selectedStatus == statuses[index]
-                                ? FontWeight.bold
-                                : FontWeight.normal,
+          SizedBox(height: 35.h),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: List.generate(statuses.length, (index) {
+                    return Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedStatus = statuses[index];
+                              _fetchDebateList();
+                            });
+                          },
+                          child: Text(
+                            statuses[index],
+                            style: TextStyle(
+                              color: selectedStatus == statuses[index]
+                                  ? ColorSystem.black
+                                  : ColorSystem.grey,
+                              fontWeight: selectedStatus == statuses[index]
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                            ),
                           ),
                         ),
+                        if (index < statuses.length - 1)
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 3.h),
+                            child: Text('|',
+                                style: TextStyle(color: ColorSystem.grey)),
+                          ),
+                      ],
+                    );
+                  }),
+                ),
+                DropdownButton<String>(
+                  value: selectedSortOption,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedSortOption = newValue!;
+                      _fetchDebateList(); // 정렬 옵션을 적용하여 리스트를 다시 가져옵니다.
+                    });
+                  },
+                  items:
+                      sortOptions.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                        style:
+                            FontSystem.KR14R.copyWith(color: ColorSystem.grey),
                       ),
-                      if (index < statuses.length - 1)
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 3.h),
-                          child: Text('|',
-                              style: TextStyle(color: ColorSystem.grey)),
-                        ),
-                    ],
-                  );
-                }),
-              ),
-              DropdownButton<String>(
-                value: selectedSortOption,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedSortOption = newValue!;
-                    _fetchDebateList(); // 정렬 옵션을 적용하여 리스트를 다시 가져옵니다.
-                  });
-                },
-                items:
-                    sortOptions.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-              ),
-            ],
+                    );
+                  }).toList(),
+                  icon: Icon(
+                    Icons.keyboard_arrow_down,
+                    color: ColorSystem.grey,
+                    size: 20.sp,
+                  ),
+                  underline: SizedBox.shrink(), // 밑줄을 없애기 위해 사용
+                  style: FontSystem.KR14R.copyWith(color: ColorSystem.grey),
+                ),
+              ],
+            ),
           ),
           SizedBox(height: 18.h),
           Expanded(
@@ -238,14 +258,15 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                   itemCount: debateList.length,
                   itemBuilder: (context, index) {
                     final debate = debateList[index];
-
                     return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 5),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20.h, vertical: 5.w),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: ColorSystem.grey,
+                          ),
+                          borderRadius: BorderRadius.circular(20.r),
                         ),
                         child: ListTile(
                           onTap: () {
@@ -254,43 +275,42 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                           title: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              SizedBox(height: 8.h),
                               Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 4),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 6.h, vertical: 4.w),
                                 decoration: BoxDecoration(
                                   color: debate.debateStatus == '토론 중'
-                                      ? Colors.purple[100]
-                                      : Colors.grey[200],
-                                  borderRadius: BorderRadius.circular(12),
+                                      ? ColorSystem.lightPurple
+                                      : ColorSystem.lightPurple,
+                                  borderRadius: BorderRadius.circular(10.r),
                                 ),
                                 child: Text(
                                   debate.debateStatus ?? '상태 없음',
                                   style: TextStyle(
-                                    color: debate.debateStatus == '토론 중'
-                                        ? Colors.purple
-                                        : Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                      color: debate.debateStatus == '토론 중'
+                                          ? ColorSystem.purple
+                                          : ColorSystem.purple,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14.sp),
                                 ),
                               ),
-                              const SizedBox(height: 5),
-                              Text(
-                                debate.debateTitle ?? 'No title',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              const SizedBox(height: 5),
+                              SizedBox(height: 5.h),
+                              Text(debate.debateTitle ?? 'No title',
+                                  style: FontSystem.KR16B),
+                              SizedBox(height: 4.h),
                               Text(
                                 '제한 시간: ${debate.debatedTimeLimit}분',
+                                style: FontSystem.KR14R
+                                    .copyWith(color: ColorSystem.purple),
                               ),
                             ],
                           ),
-                          trailing: Image.asset(
-                            'assets/images/hotlist.png',
-                            width: 40,
-                            height: 40,
+                          trailing: SvgPicture.asset(
+                            'assets/icons/list_real_null.svg',
+                            // wi10th: 100.w,
+                            // height: 80.h,
+                            fit: BoxFit.contain,
                           ),
                         ),
                       ),

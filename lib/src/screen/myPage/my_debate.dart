@@ -4,6 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:tito_app/src/view/myPage/my_debate_appbar.dart';
 import 'package:tito_app/src/view/myPage/my_debate_firstbody.dart';
 import 'package:tito_app/src/view/myPage/my_debate_scrollbody.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tito_app/core/constants/style.dart';
+import 'package:flutter_svg/svg.dart';
 
 class MyDebate extends ConsumerStatefulWidget {
   const MyDebate({super.key});
@@ -19,10 +23,10 @@ class _MyDebateState extends ConsumerState<MyDebate> {
 
   @override
   Widget build(BuildContext context) {
-    return const ProviderScope(
+    return ProviderScope(
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(80.0),
+          preferredSize: Size.fromHeight(80.h),
           child: MyDebateAppbar(),
         ),
         body: Column(
@@ -32,7 +36,7 @@ class _MyDebateState extends ConsumerState<MyDebate> {
               child: Scrollbar(
                 thumbVisibility: true,
                 thickness: 8.0,
-                radius: Radius.circular(20.0),
+                radius: Radius.circular(20.r),
                 child: MyDebateScrollbody(),
               ),
             ),

@@ -64,7 +64,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
             width: 24,
             height: 24,
           ),
-          label: '개설',
+          label: '토론 개설',
         ),
         BottomNavigationBarItem(
           icon: SvgPicture.asset(

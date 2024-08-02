@@ -13,6 +13,7 @@
 
     <application
         android:label="tito"
+        android:enableOnBackInvokedCallback="true"
     >
         <activity
             android:name=".MainActivity"
