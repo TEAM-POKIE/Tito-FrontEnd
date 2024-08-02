@@ -7,12 +7,33 @@ import 'package:tito_app/core/constants/style.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
-class DebateCreateThird extends ConsumerWidget {
+class DebateCreateThird extends ConsumerStatefulWidget {
   const DebateCreateThird({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final _formKey = GlobalKey<FormState>();
+  ConsumerState<DebateCreateThird> createState() => _DebateCreateThirdState();
+}
+
+class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
+  final _formKey = GlobalKey<FormState>();
+  late TextEditingController _contentController;
+
+  @override
+  void initState() {
+    super.initState();
+    final debateViewModel = ref.read(debateCreateProvider.notifier);
+    _contentController =
+        TextEditingController(text: debateViewModel.state.firstChatContent);
+  }
+
+  @override
+  void dispose() {
+    _contentController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final debateViewModel = ref.watch(debateCreateProvider.notifier);
     final debateState = ref.watch(debateCreateProvider);
 
@@ -71,6 +92,7 @@ class DebateCreateThird extends ConsumerWidget {
                   ),
                   SizedBox(height: 20.h),
                   TextFormField(
+                    controller: _contentController,
                     autocorrect: false,
                     maxLines: 5,
                     decoration: InputDecoration(
@@ -89,7 +111,7 @@ class DebateCreateThird extends ConsumerWidget {
                       return null;
                     },
                     onSaved: (value) {
-                      debateViewModel.updateContent(value ?? '');
+                      debateViewModel.updateContent(value!);
                     },
                   ),
                   SizedBox(height: 40.h),
@@ -138,7 +160,8 @@ class DebateCreateThird extends ConsumerWidget {
             height: 60.h,
             child: ElevatedButton(
               onPressed: () {
-                debateViewModel.nextChat(_formKey, context);
+                debateViewModel.nextChat(
+                    _formKey, context); // formKey와 context 전달
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: ColorSystem.purple,

@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:tito_app/core/constants/style.dart';
+import 'package:tito_app/core/provider/chat_view_provider.dart';
 
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/timer_provider.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:tito_app/src/data/models/debate_info.dart';
-import 'package:tito_app/src/view/chatView/live_comment.dart';
-import 'package:tito_app/src/view/chatView/votingbar.dart';
 
 class ChatViewDetails extends HookConsumerWidget {
   final int id;
@@ -18,8 +16,10 @@ class ChatViewDetails extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final loginInfo = ref.watch(loginInfoProvider);
     final timerState = ref.watch(timerProvider); // 타이머 상태
+    final chatViewModel = ref.watch(chatInfoProvider.notifier); // 타이머 상태
 
     useEffect(() {
+      // chatViewModel.getParticiapent(id);
       ref.read(timerProvider.notifier).startTimer(); // 타이머 시작
       return () => ref.read(timerProvider.notifier).stopTimer(); // 타이머 정지
     }, []);

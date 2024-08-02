@@ -55,19 +55,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   }
 
   void _enterChat(debateId) {
-    final webSocketService = ref.read(webSocketProvider);
-    final loginInfo = ref.read(loginInfoProvider);
-    // DebateCreateState를 활용하여 메시지 생성
-
-    // JSON 객체를 생성하여 문자열로 인코딩
-    final jsonMessage = json.encode({
-      'command': "ENTER",
-      'debateId': debateId,
-      'userId': loginInfo!.id,
-    });
-
-    // WebSocket을 통해 메시지 전송
-    webSocketService.sendMessage(jsonMessage);
     context.push('/chat/${debateId}');
   }
 

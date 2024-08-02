@@ -6,13 +6,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
-
 import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
 
 class ChatViewModel extends StateNotifier<DebateInfo?> {
-  final Ref ref; // Add a ref to access other providers
+  final Ref ref;
 
   ChatViewModel(this.ref) : super(null) {
     _connectWebSocket();
@@ -22,6 +21,9 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
   final _messageController = StreamController<Map<String, dynamic>>.broadcast();
   final TextEditingController controller = TextEditingController();
   final FocusNode focusNode = FocusNode();
+  final List<Map<String, dynamic>> _messages = [];
+
+  List<Map<String, dynamic>> get messages => _messages;
 
   Stream<Map<String, dynamic>> get messageStream => _messageController.stream;
 
@@ -42,8 +44,13 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     );
 
     _channel.stream.listen((message) {
-      final decodedMessage = json.decode(message) as Map<String, dynamic>;
-      _messageController.sink.add(decodedMessage);
+      if (message is String && message.startsWith('{')) {
+        final decodedMessage = json.decode(message) as Map<String, dynamic>;
+        _messages.add(decodedMessage);
+        _messageController.sink.add(decodedMessage);
+      } else {
+        print('Invalid message format or non-JSON string received: $message');
+      }
     }, onError: (error) {
       print('WebSocket error: $error');
     }, onDone: () {
@@ -66,19 +73,8 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     print(jsonMessage);
 
     _channel.sink.add(jsonMessage);
-    controller.clear(); // Clear the input field after sending the message
-    focusNode.requestFocus(); // Keep focus on the input field
-  }
-
-  void getParticiapent(int id) async {
-    try {
-      final userInfoResponse =
-          await ApiService(DioClient.dio).getParicipants(id);
-      state = userInfoResponse;
-    } catch (error) {
-      print('Error fetching debate info: $error');
-      state = null;
-    }
+    controller.clear();
+    focusNode.requestFocus();
   }
 
   void sendJoinMessage() {
@@ -102,6 +98,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
 
   void clear() {
     state = null;
+    _messages.clear();
   }
 
   @override

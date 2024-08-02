@@ -24,21 +24,27 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
     if (loginInfo == null) {
       return;
     }
-    chatViewModel.sendMessage();
-    // if (chatState!.id != loginInfo.id) {
-    //   popupState.buttonStyle = 1;
-    //   popupState.title = '토론에 참여 하시겠어요?';
-    //   popupState.imgSrc = 'assets/images/chatIconRight.png';
-    //   popupState.buttonContentLeft = '토론 참여하기';
-    //   popupState.content = '작성하신 의견을 전송하면\n토론 개설자에게 보여지고\n토론이 본격적으로 시작돼요!';
-    //   await popupViewModel.showDebatePopup(context);
-    // }
+    // chatViewModel.sendMessage();
+    if (chatState!.debateJoinerId == 0 &&
+        chatState.debateJoinerTurnCount == 0 &&
+        chatState.debateOwnerId != loginInfo.id) {
+      popupState.buttonStyle = 1;
+      popupState.title = '토론에 참여 하시겠어요?';
+      popupState.imgSrc = 'assets/images/chatIconRight.png';
+      popupState.buttonContentLeft = '토론 참여하기';
+      popupState.content = '작성하신 의견을 전송하면\n토론 개설자에게 보여지고\n토론이 본격적으로 시작돼요!';
+      await popupViewModel.showDebatePopup(context);
+      chatViewModel.sendJoinMessage();
+    } else if (chatState.debateJoinerId == loginInfo.id ||
+        chatState.debateOwnerId == loginInfo.id) {
+      chatViewModel.sendMessage();
+    }
 
-    // if (popupState.title == '토론이 시작 됐어요! 🎵') {
-    //   if (mounted) {
-    //     ref.read(timerProvider.notifier).resetTimer();
-    //   }
-    // }
+    if (popupState.title == '토론이 시작 됐어요! 🎵') {
+      if (mounted) {
+        ref.read(timerProvider.notifier).resetTimer();
+      }
+    }
   }
 
   @override

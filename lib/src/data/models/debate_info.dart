@@ -12,6 +12,10 @@ class DebateInfo {
   final int debateAlarmCount;
   final String createdAt;
   final String updatedAt;
+  final int debateOwnerId;
+  int debateOwnerTurnCount;
+  final int debateJoinerId;
+  int debateJoinerTurnCount;
 
   DebateInfo({
     required this.id,
@@ -27,6 +31,10 @@ class DebateInfo {
     required this.debateAlarmCount,
     required this.createdAt,
     required this.updatedAt,
+    required this.debateOwnerId,
+    required this.debateOwnerTurnCount,
+    required this.debateJoinerId,
+    required this.debateJoinerTurnCount,
   });
 
   factory DebateInfo.fromJson(Map<String, dynamic> json) {
@@ -45,6 +53,10 @@ class DebateInfo {
       debateAlarmCount: json['data']['debateAlarmCount'] ?? 0,
       createdAt: json['data']['createdAt'] ?? '',
       updatedAt: json['data']['updatedAt'] ?? '',
+      debateOwnerId: json['data']['debateOwnerId'] ?? 0,
+      debateOwnerTurnCount: json['data']['debateOwnerTurnCount'] ?? 0,
+      debateJoinerId: json['data']['debateJoinerId'] ?? 0,
+      debateJoinerTurnCount: json['data']['debateJoinerTurnCount'] ?? 0,
     );
   }
 
@@ -63,6 +75,10 @@ class DebateInfo {
       'debateAlarmCount': debateAlarmCount,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
+      "debateOwnerId": debateOwnerId,
+      "debateOwnerTurnCount": debateOwnerTurnCount,
+      "debateJoinerId": debateOwnerTurnCount,
+      "debateJoinerTurnCount": debateOwnerTurnCount,
     };
   }
 
