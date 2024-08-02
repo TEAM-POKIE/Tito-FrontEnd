@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
-import 'package:tito_app/core/provider/websocket_provider.dart';
+
 import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
@@ -70,8 +70,15 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     focusNode.requestFocus(); // Keep focus on the input field
   }
 
-  void getParticiapent() async {
-    final userInfoResponse = await ApiService(DioClient.dio).getDebateInfo();
+  void getParticiapent(int id) async {
+    try {
+      final userInfoResponse =
+          await ApiService(DioClient.dio).getParicipants(id);
+      state = userInfoResponse;
+    } catch (error) {
+      print('Error fetching debate info: $error');
+      state = null;
+    }
   }
 
   void sendJoinMessage() {
