@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/src/screen/home_screen.dart';
 import 'package:tito_app/core/constants/style.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class MyDebateScrollbody extends ConsumerStatefulWidget {
   const MyDebateScrollbody({super.key});
@@ -14,14 +15,14 @@ class MyDebateScrollbody extends ConsumerStatefulWidget {
 }
 
 class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
-  final GlobalKey<AnimatedListState> _debateListKey = GlobalKey<AnimatedListState>();
+  final GlobalKey<AnimatedListState> _debateListKey =
+      GlobalKey<AnimatedListState>();
   final List<int> _items = List<int>.generate(5, (int index) => index);
 
   @override
   Widget build(BuildContext context) {
     return AnimatedList(
       key: _debateListKey,
-      padding: const EdgeInsets.all(20),
       initialItemCount: _items.length,
       itemBuilder: (context, index, animation) {
         return _buildItem(context, index, animation);
@@ -36,76 +37,79 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
         begin: Offset(-1, 0),
         end: Offset(0, 0),
       ).animate(animation),
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 8),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.grey),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-              spreadRadius: 1,
-              blurRadius: 5,
-            ),
-          ],
-        ),
-        child: const ListTile(
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding:
-                    EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 5),
-                child: Column(
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+        child: Row(
+          children: [
+            Container(
+              width: 350.w,
+              height: 120.h,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.r),
+                border: Border.all(color: ColorSystem.grey),
+              ),
+              child: ListTile(
+                title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '2024.6.20',
-                      style: TextStyle(color: Colors.grey),
+                    Padding(
+                      padding: EdgeInsets.only(left: 0.w),
+                      child: Text(
+                        '2024.6.20',
+                        style:
+                            TextStyle(fontSize: 14.sp, color: ColorSystem.grey),
+                      ),
                     ),
-                  ],
-                ),
-              ),
-              Divider(color: Colors.grey),
-              Padding(
-                padding: EdgeInsets.only(left: 16, right: 16),
-                child: Text(
-                  '아싸 애인 VS 인싸 애인',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '의견: 아싸 애인이 더 좋다',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    Row(
+                    Divider(color: ColorSystem.grey),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          '결과: 승',
-                          style: TextStyle(
-                            color: Colors.purple,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 0.w),
+                          child: const Text('아싸 애인 VS 인싸 애인',
+                              style: FontSystem.KR15B),
                         ),
-                        Image(
-                          image: AssetImage('assets/images/hotlist.png'),
+                        SizedBox(height: 4.h),
+                        Padding(
+                          padding: EdgeInsets.only(left: 0.w),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '의견: 아싸 애인이 더 좋다',
+                                style: FontSystem.KR14R
+                                    .copyWith(color: ColorSystem.grey),
+                              ),
+                              //SizedBox(height: 2.h),
+                              Padding(
+                                padding: EdgeInsets.only(left: 0.w),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '결과: 승',
+                                      style: FontSystem.KR14R
+                                          .copyWith(color: ColorSystem.purple),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ), //여기 !!
                         ),
                       ],
                     ),
                   ],
                 ),
+                // trailing: SvgPicture.asset(
+                //   'assets/icons/list_real_null.svg',
+                //   width: 80.w,
+                //   height: 80.h,
+                //   fit: BoxFit.contain,
+                // ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

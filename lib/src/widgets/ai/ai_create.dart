@@ -185,7 +185,7 @@ class AiCreate extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const AiSelect()),
+                                builder: (context) => AiSelect()),
                           );
                         }
                       : null,

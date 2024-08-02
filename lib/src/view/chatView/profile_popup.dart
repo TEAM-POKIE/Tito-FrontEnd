@@ -50,68 +50,72 @@ class _ProfilePopupState extends State<ProfilePopup> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('프로필', style: FontSystem.KR14B),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(Icons.close),
-          ),
-        ],
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.r),
       ),
-      body: Column(
-        children: [
-          SizedBox(height: 42.h),
-          Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 68.w),
-                child: ClipOval(
-                  child: SvgPicture.asset(
-                    'assets/icons/profile.svg',
-                    width: 70.w,
-                    height: 70.h, // SVG 이미지 경로// 이미지 맞춤 설정
-                  ),
-                ),
-              ),
-              
-              Padding(
-                padding: EdgeInsets.only(left: 20.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      child: Container(
+        //width: 
+        child: Column(
+          children: [
+            const Text('프로필', style: FontSystem.KR14R),
+            IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: const Icon(Icons.close),
+            ),
+            Column(
+              children: [
+                //SizedBox(height: 42.h),
+                Row(
                   children: [
-                    Text('포키',
-                        style:
-                            FontSystem.KR24B),
-                    SizedBox(height: 4),
-                    Text('승률 80%',
-                        style: TextStyle(fontSize: 16, color: Colors.purple)),
-                    SizedBox(height: 4),
-                    Text('12전 | 10승 | 2패', style: TextStyle(fontSize: 16)),
+                    Padding(
+                      padding: EdgeInsets.only(left: 68.w),
+                      child: ClipOval(
+                        child: SvgPicture.asset(
+                          'assets/icons/profile.svg',
+                          width: 70.w,
+                          height: 70.h, // SVG 이미지 경로// 이미지 맞춤 설정
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('포키', style: FontSystem.KR24B),
+                          SizedBox(height: 4),
+                          Text('승률 80%',
+                              style: TextStyle(
+                                  fontSize: 16, color: Colors.purple)),
+                          SizedBox(height: 4),
+                          Text('12전 | 10승 | 2패',
+                              style: TextStyle(fontSize: 16)),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: 16),
-          Text('참여한 토론',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          SizedBox(height: 8),
-          Expanded(
-            child: AnimatedList(
-              key: _listKey,
-              initialItemCount: _items.length,
-              itemBuilder: (context, index, animation) {
-                return _buildItem(_items[index], animation);
-              },
+                SizedBox(height: 16),
+                Text('참여한 토론',
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                SizedBox(height: 8),
+                Expanded(
+                  child: AnimatedList(
+                    key: _listKey,
+                    initialItemCount: _items.length,
+                    itemBuilder: (context, index, animation) {
+                      return _buildItem(_items[index], animation);
+                    },
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

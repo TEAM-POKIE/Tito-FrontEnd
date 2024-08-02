@@ -1,8 +1,14 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/src/screen/home_screen.dart';
 import 'dart:async';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tito_app/core/constants/style.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 
 class MyDebateFirstbody extends ConsumerStatefulWidget {
   const MyDebateFirstbody({super.key});
@@ -30,31 +36,48 @@ class _MyDebateFirstbodyState extends ConsumerState<MyDebateFirstbody> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.only(left: 16.0, top: 16.0),
-          child: Text(
+        SizedBox(
+          height: 50.h,
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 20.w),
+          child: const Text(
             '포키님은 12번의 토론 중\n10번을 이기셨어요!',
-            style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+            style: FontSystem.KR20R,
           ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Padding(padding: const EdgeInsets.only(right: 16.0),
-            child: DropdownButton<String>(
-              value: selectedSortOption,
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedSortOption = newValue!;
-                });
-              },
-              items: sortOptions.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: DropdownButton<String>(
+                value: selectedSortOption,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    selectedSortOption = newValue!;
+                  });
+                },
+                items:
+                    sortOptions.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(
+                      value,
+                      style: FontSystem.KR14R
+                          .copyWith(color: ColorSystem.grey), // 글자 크기 설정
+                    ),
+                  );
+                }).toList(),
+                icon: Icon(
+                  Icons.keyboard_arrow_down,
+                  color: ColorSystem.grey,
+                  size: 20.sp,
+                ),
+                underline: SizedBox.shrink(),
+                style: FontSystem.KR14R.copyWith(color: ColorSystem.grey),
+              ),
+            ),
           ],
         ),
       ],
