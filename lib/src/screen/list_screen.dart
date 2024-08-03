@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -59,20 +60,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   }
 
   void _enterChat(debateId) {
-    final webSocketService = ref.read(webSocketProvider);
-    final loginInfo = ref.read(loginInfoProvider);
-    // DebateCreateState를 활용하여 메시지 생성
-
-    // JSON 객체를 생성하여 문자열로 인코딩
-    final jsonMessage = json.encode({
-      'command': "ENTER",
-      'debateId': debateId,
-      'userId': loginInfo!.id,
-      'content': null,
-    });
-
-    // WebSocket을 통해 메시지 전송
-    webSocketService.sendMessage(jsonMessage);
     context.push('/chat/${debateId}');
   }
 
@@ -154,7 +141,13 @@ class _ListScreenState extends ConsumerState<ListScreen> {
         }
       });
     } catch (error) {
-      print('Error fetching debate list: $error');
+      if (error is DioException) {
+        print('Error type: ${error.type}');
+        print('Error message: ${error.message}');
+        print('Error response: ${error.response}');
+      } else {
+        print('Error: $error');
+      }
     }
   }
 

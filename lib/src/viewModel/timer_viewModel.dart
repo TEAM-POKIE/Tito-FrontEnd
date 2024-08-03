@@ -15,9 +15,10 @@ class TimerState {
 
 class TimerNotifier extends StateNotifier<TimerState> {
   Timer? _timer;
+  final int debatedTimeLimit;
 
-  TimerNotifier()
-      : super(TimerState(remainingTime: Duration(minutes: 7, seconds: 20)));
+  TimerNotifier({this.debatedTimeLimit = 8})
+      : super(TimerState(remainingTime: Duration(minutes: debatedTimeLimit)));
 
   void startTimer() {
     _timer?.cancel(); // 기존 타이머가 있으면 취소
@@ -37,7 +38,7 @@ class TimerNotifier extends StateNotifier<TimerState> {
   }
 
   void resetTimer() {
-    state = TimerState(remainingTime: Duration(minutes: 7, seconds: 20));
+    state = TimerState(remainingTime: Duration(minutes: debatedTimeLimit));
     startTimer();
   }
 

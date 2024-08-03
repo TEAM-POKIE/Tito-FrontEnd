@@ -21,93 +21,6 @@ class _ApiService implements ApiService {
   String? baseUrl;
 
   @override
-  Future<Map<String, dynamic>> getData(String endpoint) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<Map<String, dynamic>>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '${endpoint}.json',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final _value = _result.data!;
-    return _value;
-  }
-
-  @override
-  Future<bool> patchData(
-    String endpoint,
-    Map<String, dynamic> data,
-  ) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(data);
-    final _result = await _dio.fetch<bool>(_setStreamType<bool>(Options(
-      method: 'PATCH',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '${endpoint}.json',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
-    final _value = _result.data!;
-    return _value;
-  }
-
-  @override
-  Future<bool> postData(
-    String endpoint,
-    Map<String, dynamic> data,
-  ) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(data);
-    final _result = await _dio.fetch<bool>(_setStreamType<bool>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '${endpoint}.json',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
-    final _value = _result.data!;
-    return _value;
-  }
-
-  @override
   Future<void> signUp(Map<String, dynamic> signUpData) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -216,34 +129,6 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<DebateCreateInfo> postDebate(Map<String, dynamic> debate) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(debate);
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<DebateCreateInfo>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'debates',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final _value = DebateCreateInfo.fromJson(_result.data!);
-    return _value;
-  }
-
-  @override
   Future<List<Debate>> getDebateList() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -275,18 +160,47 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<DebateInfo> getDebateInfo(@Path("id") int debateId) async {
+  Future<List<DebateParticipants>> getParicipants(int debateId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-      _setStreamType<DebateInfo>(
-        Options(
-          method: 'GET',
-          headers: _headers,
-          extra: _extra,
-        )
+    final _result = await _dio
+        .fetch<List<dynamic>>(_setStreamType<List<DebateParticipants>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/debates/${debateId}/participants',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    var _value = _result.data!
+        .map((dynamic i) =>
+            DebateParticipants.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return _value;
+  }
+
+  @override
+  Future<DebateInfo> getDebateInfo(int debateId) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<DebateInfo>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
             .compose(
               _dio.options,
               'debates/${debateId}',
@@ -294,13 +208,39 @@ class _ApiService implements ApiService {
               data: _data,
             )
             .copyWith(
-              baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
-            ),
-      ),
-    );
-
-    // JSON 데이터를 DebateInfo 객체로 변환
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
     final _value = DebateInfo.fromJson(_result.data!);
+    return _value;
+  }
+
+  @override
+  Future<DebateCreateInfo> postDebate(Map<String, dynamic> debate) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(debate);
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<DebateCreateInfo>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'debates',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = DebateCreateInfo.fromJson(_result.data!);
     return _value;
   }
 

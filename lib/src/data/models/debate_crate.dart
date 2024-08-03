@@ -6,6 +6,9 @@ class DebateCreateState {
   String debateMakerOpinion;
   String firstChatContent;
   String debateJoinerOpinion;
+  String debateImageUrl;
+
+  String debateContent;
 
   DebateCreateState({
     this.debateTitle = '',
@@ -14,6 +17,8 @@ class DebateCreateState {
     this.debateMakerOpinion = '',
     this.debateJoinerOpinion = '',
     this.firstChatContent = '',
+    this.debateImageUrl = '',
+    this.debateContent = '',
   });
 
   DebateCreateState copyWith({
@@ -23,6 +28,8 @@ class DebateCreateState {
     String? debateMakerOpinion,
     String? debateJoinerOpinion,
     String? firstChatContent,
+    String? debateContent,
+    String? debateImageUrl,
   }) {
     return DebateCreateState(
       debateTitle: debateTitle ?? this.debateTitle,
@@ -31,6 +38,8 @@ class DebateCreateState {
       debateMakerOpinion: debateMakerOpinion ?? this.debateMakerOpinion,
       debateJoinerOpinion: debateJoinerOpinion ?? this.debateJoinerOpinion,
       firstChatContent: firstChatContent ?? this.firstChatContent,
+      debateContent: debateContent ?? this.debateContent,
+      debateImageUrl: debateImageUrl ?? this.debateImageUrl,
     );
   }
 
@@ -42,6 +51,8 @@ class DebateCreateState {
       'debateMakerOpinion': debateMakerOpinion,
       'debateJoinerOpinion': debateJoinerOpinion,
       'firstChatContent': firstChatContent,
+      'debateContent': debateContent,
+      'debateImageUrl': debateImageUrl,
     };
   }
 }

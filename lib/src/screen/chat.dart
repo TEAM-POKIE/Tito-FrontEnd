@@ -1,13 +1,18 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tito_app/core/api/api_service.dart';
+import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/websocket_provider.dart';
 import 'package:tito_app/src/view/chatView/chat_appBar.dart';
 import 'package:tito_app/src/view/chatView/chat_body.dart';
 import 'package:tito_app/src/data/models/debate_info.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 class Chat extends ConsumerStatefulWidget {
   final int id;
@@ -22,6 +27,8 @@ class Chat extends ConsumerStatefulWidget {
 }
 
 class _ChatState extends ConsumerState<Chat> {
+  List<Map<String, dynamic>> _messages = [];
+  late StreamSubscription<Map<String, dynamic>> _subscription;
   @override
   void initState() {
     super.initState();
@@ -30,8 +37,8 @@ class _ChatState extends ConsumerState<Chat> {
 
   Future<void> _fetchDebateInfo() async {
     final chatViewModel = ref.read(chatInfoProvider.notifier);
+    final chatState = ref.read(chatInfoProvider);
     await chatViewModel.fetchDebateInfo(widget.id);
-
     final webSocketService = ref.read(webSocketProvider);
     final loginInfo = ref.watch(loginInfoProvider);
     final debateInfo = ref.read(chatInfoProvider);
@@ -43,6 +50,14 @@ class _ChatState extends ConsumerState<Chat> {
         "debateId": debateInfo.id,
       });
       webSocketService.sendMessage(message);
+
+      webSocketService.stream.listen((message) {
+        if (message.containsKey('content')) {
+          setState(() {
+            _messages.add(message);
+          });
+        }
+      });
     } else {
       print("Error: Login info or Debate info is null.");
     }
@@ -52,7 +67,16 @@ class _ChatState extends ConsumerState<Chat> {
   Widget build(BuildContext context) {
     final debateInfo = ref.watch(chatInfoProvider);
     final loginInfo = ref.watch(loginInfoProvider);
+    final chatState = ref.read(chatInfoProvider);
 
+    if (_messages.isNotEmpty) {
+      if (_messages.length > 1) {
+        chatState!.debateJoinerId = _messages[1]['userId'];
+      }
+      chatState!.debateOwnerId = _messages.first['userId'];
+      chatState.debateOwnerTurnCount = _messages.last['ownerTurnCount'];
+      chatState.debateJoinerTurnCount = _messages.last['joinerTurnCount'];
+    }
     if (debateInfo == null) {
       return Scaffold(
         appBar: AppBar(

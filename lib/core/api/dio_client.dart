@@ -4,9 +4,9 @@ class DioClient {
   static final Dio _dio = Dio()
     ..options = BaseOptions(
       baseUrl: 'https://dev-tito.owsla.duckdns.org/',
-      connectTimeout: Duration(milliseconds: 5000), // 변경: int -> Duration
+      connectTimeout: Duration(milliseconds: 2000), // 변경: int -> Duration
       receiveTimeout: Duration(milliseconds: 5000), // 변경: int -> Duration
-    ) 
+    )
     ..interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
         // 여기서 토큰을 추가합니다.
