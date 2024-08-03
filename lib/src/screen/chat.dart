@@ -12,6 +12,7 @@ import 'package:tito_app/core/provider/websocket_provider.dart';
 import 'package:tito_app/src/view/chatView/chat_appBar.dart';
 import 'package:tito_app/src/view/chatView/chat_body.dart';
 import 'package:tito_app/src/data/models/debate_info.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 class Chat extends ConsumerStatefulWidget {
   final int id;

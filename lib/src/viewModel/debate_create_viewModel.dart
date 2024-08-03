@@ -40,7 +40,7 @@ class DebateCreateViewModel extends StateNotifier<DebateCreateState> {
   }
 
   void updateContent(String content) {
-    state = state.copyWith(firstChatContent: content);
+    state = state.copyWith(debateContent: content);
   }
 
   void updateOpinion(String aOpinion, String bOpinion) {

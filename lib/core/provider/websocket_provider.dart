@@ -29,7 +29,6 @@ class WebSocketService {
         try {
           print('Raw message received: $message');
           final decodedMessage = json.decode(message) as Map<String, dynamic>;
-          print('Decoded message: $decodedMessage');
           _controller.sink.add(decodedMessage);
         } catch (e) {
           print('Error decoding message: $e');

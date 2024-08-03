@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
+import 'package:tito_app/core/provider/login_provider.dart';
 
 import 'package:tito_app/core/provider/popup_provider.dart';
 
@@ -15,10 +16,17 @@ class ChatAppbar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final debateState = ref.read(chatInfoProvider);
-    return DebateAppbar(
-      title: debateState!.debateTitle,
-      notiIcon: 'assets/images/debateAlarm.png',
-    );
+    switch (debateState!.debateJoinerTurnCount) {
+      case 0:
+        return DebateAppbar(
+          title: debateState.debateTitle,
+          notiIcon: 'assets/images/debateAlarm.png',
+        );
+      default:
+        return DebateAppbar(
+          title: debateState.debateTitle,
+        );
+    }
   }
 }
 
@@ -38,11 +46,14 @@ class DebateAppbar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final popupViewModel = ref.read(popupProvider.notifier);
     final popupState = ref.read(popupProvider);
-
-    final List<String> menuItems = [
-      '토론 삭제하기',
-      '토론룰 보기',
-    ];
+    final debateState = ref.read(chatInfoProvider);
+    final loginInfo = ref.read(loginInfoProvider);
+    String ImgUrl = '';
+    final List<String> menuItems =
+        debateState!.debateOwnerId == loginInfo!.id &&
+                debateState.debateJoinerTurnCount == 0
+            ? ['토론 삭제하기', '토론룰 보기']
+            : ['토론룰 보기', '신고하기'];
 
     return AppBar(
       backgroundColor: ColorSystem.white,
@@ -57,21 +68,21 @@ class DebateAppbar extends ConsumerWidget {
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
         onPressed: () {
-          context.pop(context);
+          context.go('/list');
         },
       ),
       actions: [
         if (notiIcon != null && notiIcon!.isNotEmpty)
           IconButton(
             icon: Image.asset(notiIcon!),
-            onPressed: () {
+            onPressed: () async {
               popupState.title = '토론 시작 시 알림을 보내드릴게요!';
               popupState.imgSrc = 'assets/images/debatePopUpAlarm.png';
               popupState.content =
                   '토론 참여자가 정해지고 \n최종 토론이 개설 되면 \n푸시알림을 통해 알려드려요';
               popupState.buttonContentLeft = '네 알겠어요';
               popupState.buttonStyle = 1;
-              popupViewModel.showDebatePopup(context);
+              await popupViewModel.showDebatePopup(context);
             },
           ),
         Padding(

@@ -65,7 +65,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
 
   void sendMessage() {
     final loginInfo = ref.read(loginInfoProvider);
-    final chatState = ref.read(chatInfoProvider);
+
     final message = controller.text;
 
     if (message.isEmpty) return;
@@ -82,10 +82,6 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     controller.clear();
     focusNode.requestFocus();
     // Reset the timer to 8 minutes
-    if (chatState!.debateOwnerTurnCount >= 1) {
-      timerNotifier?.resetTimer();
-      timerNotifier?.startTimer();
-    }
   }
 
   void sendJoinMessage() {
@@ -105,8 +101,6 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     _channel.sink.add(jsonMessage);
     controller.clear();
     focusNode.requestFocus();
-    timerNotifier?.resetTimer();
-    timerNotifier?.startTimer();
   }
 
   void clear() {
