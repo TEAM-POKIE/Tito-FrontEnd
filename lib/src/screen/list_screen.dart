@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -85,7 +86,13 @@ class _ListScreenState extends ConsumerState<ListScreen> {
         }).toList();
       });
     } catch (error) {
-      print('Error fetching debate list: $error');
+      if (error is DioException) {
+        print('Error type: ${error.type}');
+        print('Error message: ${error.message}');
+        print('Error response: ${error.response}');
+      } else {
+        print('Error: $error');
+      }
     }
   }
 

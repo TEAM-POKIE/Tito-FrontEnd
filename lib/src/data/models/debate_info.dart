@@ -5,16 +5,16 @@ class DebateInfo {
   final String debateStatus;
   final String debateMakerOpinion;
   final String debateJoinerOpinion;
-  final int debatedTimeLimit;
+  int debatedTimeLimit;
   final int debateViewCount;
   final int debateCommentCount;
   final int debateRealtimeParticipants;
   final int debateAlarmCount;
   final String createdAt;
   final String updatedAt;
-  final int debateOwnerId;
+  int debateOwnerId;
   int debateOwnerTurnCount;
-  final int debateJoinerId;
+  int debateJoinerId;
   int debateJoinerTurnCount;
 
   DebateInfo({

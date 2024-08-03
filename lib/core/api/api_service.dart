@@ -30,7 +30,7 @@ abstract class ApiService {
 
   @GET("debates")
   Future<List<Debate>> getDebateList();
-  @GET("/debates/{debate_id}/participants")
+  @GET("/debates/{id}/participants")
   Future<List<DebateParticipants>> getParicipants(@Path("id") int debateId);
   @GET("debates/{id}")
   Future<DebateInfo> getDebateInfo(@Path("id") int debateId);

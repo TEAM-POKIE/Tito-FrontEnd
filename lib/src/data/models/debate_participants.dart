@@ -27,15 +27,15 @@ class DebateParticipants {
 
   factory DebateParticipants.fromJson(Map<String, dynamic> json) {
     return DebateParticipants(
-      id: json['id'],
-      debateId: json['debateId'],
-      userId: json['userId'],
-      debateOwner: json['debateOwner'],
+      id: json['id'] ?? 0,
+      debateId: json['debateId'] ?? 0,
+      userId: json['userId'] ?? 0,
+      debateOwner: json['debateOwner'] ?? false,
       debateWinOrLose: json['debateWinOrLose'],
-      turnCount: json['turnCount'],
+      turnCount: json['turnCount'] ?? 0,
       turnStartTime: DateTime.parse(json['turnStartTime']),
-      noResponseCount: json['noResponseCount'],
-      timingBellCount: json['timingBellCount'],
+      noResponseCount: json['noResponseCount'] ?? 0,
+      timingBellCount: json['timingBellCount'] ?? 0,
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
     );

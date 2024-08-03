@@ -78,7 +78,6 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
               child: StaticTextBubble(
                 title: '첫 입론을 입력하세요',
                 width: (MediaQuery.of(context).size.width - 100) * 0.7,
-                height: (MediaQuery.of(context).size.height - 450) * 0.2,
               ),
             ),
           ),
@@ -92,20 +91,17 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
 class StaticTextBubble extends StatelessWidget {
   final String title;
   final double width;
-  final double height;
 
   const StaticTextBubble({
     super.key,
     required this.title,
     required this.width,
-    required this.height,
   });
 
   @override
   Widget build(BuildContext context) {
     return SpeechBalloon(
       width: width,
-      height: height,
       borderRadius: 12,
       nipLocation: NipLocation.bottom,
       color: ColorSystem.purple,

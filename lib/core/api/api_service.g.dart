@@ -173,7 +173,7 @@ class _ApiService implements ApiService {
     )
             .compose(
               _dio.options,
-              '/debates/{debate_id}/participants',
+              '/debates/${debateId}/participants',
               queryParameters: queryParameters,
               data: _data,
             )

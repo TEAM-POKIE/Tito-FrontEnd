@@ -5,13 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
+import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/src/data/models/debate_info.dart';
+import 'package:tito_app/src/data/models/debate_participants.dart';
+import 'package:tito_app/src/viewModel/timer_viewModel.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
 
 class ChatViewModel extends StateNotifier<DebateInfo?> {
   final Ref ref;
+  TimerNotifier? timerNotifier;
 
   ChatViewModel(this.ref) : super(null) {
     _connectWebSocket();
@@ -31,6 +35,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
   Future<void> fetchDebateInfo(int id) async {
     try {
       final debateInfo = await ApiService(DioClient.dio).getDebateInfo(id);
+
       state = debateInfo;
     } catch (error) {
       print('Error fetching debate info: $error');
@@ -60,6 +65,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
 
   void sendMessage() {
     final loginInfo = ref.read(loginInfoProvider);
+    final chatState = ref.read(chatInfoProvider);
     final message = controller.text;
 
     if (message.isEmpty) return;
@@ -75,6 +81,11 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     _channel.sink.add(jsonMessage);
     controller.clear();
     focusNode.requestFocus();
+    // Reset the timer to 8 minutes
+    if (chatState!.debateOwnerTurnCount >= 1) {
+      timerNotifier?.resetTimer();
+      timerNotifier?.startTimer();
+    }
   }
 
   void sendJoinMessage() {
@@ -94,6 +105,8 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     _channel.sink.add(jsonMessage);
     controller.clear();
     focusNode.requestFocus();
+    timerNotifier?.resetTimer();
+    timerNotifier?.startTimer();
   }
 
   void clear() {

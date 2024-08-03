@@ -1,28 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
-
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/timer_provider.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:tito_app/src/view/chatView/live_comment.dart';
 
-class ChatViewDetails extends HookConsumerWidget {
+class ChatViewDetails extends ConsumerStatefulWidget {
   final int id;
   const ChatViewDetails({super.key, required this.id});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final loginInfo = ref.watch(loginInfoProvider);
-    final timerState = ref.watch(timerProvider); // 타이머 상태
-    final chatViewModel = ref.watch(chatInfoProvider.notifier); // 타이머 상태
+  ConsumerState<ChatViewDetails> createState() => _ChatViewDetailsState();
+}
 
-    useEffect(() {
-      // chatViewModel.getParticiapent(id);
-      ref.read(timerProvider.notifier).startTimer(); // 타이머 시작
-      return () => ref.read(timerProvider.notifier).stopTimer(); // 타이머 정지
-    }, []);
+class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final loginInfo = ref.watch(loginInfoProvider);
+    final timerState = ref.watch(timerProvider);
+    final chatViewModel = ref.watch(chatInfoProvider.notifier);
+    final chatState = ref.watch(chatInfoProvider);
 
     if (loginInfo == null) {
       return const SizedBox.shrink();
@@ -37,49 +48,40 @@ class ChatViewDetails extends HookConsumerWidget {
 
     String remainingTime = formatDuration(timerState.remainingTime);
 
-    return _detailState(
-        upImage: 'assets/images/detailChatIcon.png',
-        upTitle: '상대 반론자를 찾는 중이예요 !',
-        downTitle: '⏳ 00:00 토론 시작 전');
+    if (chatState!.debateJoinerId == loginInfo.id ||
+        chatState.debateOwnerId == loginInfo.id) {
+      return _DetailState(
+          upImage: 'assets/images/detailChatIcon.svg',
+          upTitle: '상대 반론자를 찾는 중이예요 !',
+          downTitle: '⏳ ${remainingTime} 토론 시작 전');
+    } else {
+      switch (chatState.debateJoinerTurnCount) {
+        case 0:
+          return _DetailState(
+            upImage: 'assets/images/chatCuteIcon.svg',
+            upTitle: '상대의 의견 : ${chatState.debateMakerOpinion}',
+            downTitle: '당신의 의견 : ${chatState.debateJoinerOpinion}',
+            downImage: 'assets/images/chatCuteIconPurple.svg',
+          );
+        case 1:
+          return LiveComment();
+        default:
+          return _DetailState(
+              upImage: 'assets/images/chatDefaultIcon.svg',
+              upTitle: '기본 상태입니다.',
+              downTitle: '토론을 시작해주세요.');
+      }
+    }
   }
 }
 
-class firstText extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: ColorSystem.ligthGrey,
-      width: MediaQuery.of(context).size.width,
-      height: 50,
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: DefaultTextStyle(
-          textAlign: TextAlign.center,
-          style: FontSystem.KR12B.copyWith(color: ColorSystem.purple),
-          child: AnimatedTextKit(
-            repeatForever: true,
-            animatedTexts: [
-              FadeAnimatedText(
-                '토론방이 개설되려면 당신의 첫 입론이 필요합니다.\n입론을 작성해주세요!',
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _detailState extends StatelessWidget {
-  // final DebateInfo chatState;
+class _DetailState extends StatelessWidget {
   final String upImage;
   final String upTitle;
   final String? downImage;
   final String? downTitle;
 
-  const _detailState({
-    // required this.chatState,
+  const _DetailState({
     required this.upImage,
     required this.upTitle,
     this.downTitle,
@@ -102,11 +104,11 @@ class _detailState extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: (upImage == 'assets/images/chatCuteIcon.png')
+                mainAxisAlignment: (upImage == 'assets/images/chatCuteIcon.svg')
                     ? MainAxisAlignment.start
                     : MainAxisAlignment.center,
                 children: [
-                  Image.asset(
+                  SvgPicture.asset(
                     upImage,
                   ),
                   const SizedBox(width: 8),
@@ -124,19 +126,19 @@ class _detailState extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               width: MediaQuery.of(context).size.width - 50,
               decoration: BoxDecoration(
-                color: downImage == 'assets/images/chatCuteIconPurple.png'
+                color: downImage == 'assets/images/chatCuteIconPurple.svg'
                     ? ColorSystem.lightPurple
                     : ColorSystem.white,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: (upImage == 'assets/images/chatCuteIcon.png')
+                mainAxisAlignment: (upImage == 'assets/images/chatCuteIcon.svg')
                     ? MainAxisAlignment.start
                     : MainAxisAlignment.center,
                 children: [
                   downImage != null && downImage!.isNotEmpty
-                      ? Image.asset(downImage!)
+                      ? SvgPicture.asset(downImage!)
                       : const SizedBox(width: 0),
                   const SizedBox(width: 8),
                   Text(

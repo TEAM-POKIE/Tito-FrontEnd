@@ -45,11 +45,12 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
 
     // String sendNick = isMyNick ? myNick : opponentNick;
 
-    return StaticTextBubble(
-      title: '첫 입론을 입력하세요',
-      width: (MediaQuery.of(context).size.width - 100) * 0.7,
-      height: (MediaQuery.of(context).size.height - 450) * 0.2,
-    );
+    // return StaticTextBubble(
+    //   title: '첫 입론을 입력하세요',
+    //   width: (MediaQuery.of(context).size.width - 100) * 0.7,
+    //   height: (MediaQuery.of(context).size.height - 450) * 0.2,
+    // );
+
     // if (isMyNick) {
     //   switch (myTurn) {
     //     case 0:

@@ -116,10 +116,6 @@ flutter:
     - assets/icons/first_chat_find.svg
     - assets/icons/alarm.svg
     - assets/icons/alarm_new.svg
-    
-
-
-    
 
     - assets/images/logo.png
     - assets/images/kakao.png
@@ -138,10 +134,10 @@ flutter:
     - assets/images/comment_btn.png
     - assets/images/info.png
     - assets/images/chatprofile.png
-    - assets/images/chatCuteIcon.png
-    - assets/images/chatCuteIconPurple.png
+    - assets/images/chatCuteIcon.svg
+    - assets/images/chatCuteIconPurple.svg
     - assets/images/chatIconRight.png
-    - assets/images/detailChatIcon.png
+    - assets/images/detailChatIcon.svg
     - assets/images/popupTimingBell.png
     - assets/images/changeprofile.png
     - assets/images/ep_arrow-down.png
@@ -155,7 +151,7 @@ flutter:
     - assets/images/LogoIcon.png
     - assets/images/hot_fighter.png
     - assets/images/star.png
-    
+
     - assets/images/debateList.png
     - .env
 
