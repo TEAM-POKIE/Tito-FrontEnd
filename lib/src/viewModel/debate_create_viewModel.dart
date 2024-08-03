@@ -40,7 +40,7 @@ class DebateCreateViewModel extends StateNotifier<DebateCreateState> {
   }
 
   void updateContent(String content) {
-    state = state.copyWith(firstChatContent: content);
+    state = state.copyWith(debateContent: content);
   }
 
   void updateOpinion(String aOpinion, String bOpinion) {
@@ -64,16 +64,6 @@ class DebateCreateViewModel extends StateNotifier<DebateCreateState> {
   void showRulePopup(BuildContext context) {
     final popupViewModel = ref.read(popupProvider.notifier);
     popupViewModel.showRulePopup(context);
-  }
-
-  void sendMessage(BuildContext context, TextEditingController controller) {
-    final text = controller.text;
-    if (text.isNotEmpty) {
-      // 메시지를 서버로 전송하는 API 호출 로직
-
-      controller.clear();
-      context.push('/chat');
-    }
   }
 
   bool validateForm(GlobalKey<FormState> formKey) {

@@ -116,20 +116,18 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
 class StaticTextBubble extends StatelessWidget {
   final String title;
   final double width;
-  final double height;
 
   const StaticTextBubble({
     super.key,
     required this.title,
     required this.width,
-    required this.height,
   });
 
   @override
   Widget build(BuildContext context) {
     return SpeechBalloon(
       width: width,
-      height: height,
+      height: 12,
       borderRadius: 15.r,
       nipLocation: NipLocation.bottom,
       color: ColorSystem.purple,
@@ -173,9 +171,10 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottom> {
     popupState.imgSrc = 'assets/images/chatIconRight.png';
     popupState.content = '토론을 시작하시겠습니까?';
     popupState.title = '토론장을 개설하겠습니까?';
-    PopupViewmodel.showDebatePopup(context);
     debateState.firstChatContent = _controller.text;
     debateState.debateStatus = 'CREATED';
+    PopupViewmodel.showDebatePopup(context);
+
     _controller.clear();
   }
 

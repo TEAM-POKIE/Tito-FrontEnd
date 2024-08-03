@@ -1,109 +1,186 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tito_app/core/constants/style.dart';
+import 'package:tito_app/core/provider/login_provider.dart';
 
-class LiveComments extends StatelessWidget {
-  LiveComments({Key? key}) : super(key: key);
+class LiveComment extends ConsumerStatefulWidget {
+  @override
+  _LiveCommentState createState() => _LiveCommentState();
+}
 
-  // 더미 데이터 생성
-  final List<Comment> comments = [
-    Comment(
-      username: '타카',
-      message: '그건 아니지',
-      profileImageUrl: 'https://via.placeholder.com/150',
-      isLiked: false,
-    ),
-    Comment(
-      username: 'dlkfj',
-      message: '과학적으로 그렇긴 함',
-      profileImageUrl: 'https://via.placeholder.com/150',
-      isLiked: true,
-    ),
-    Comment(
-      username: '뚜미둡',
-      message: '포키님은 진짜 논리적이시네요',
-      profileImageUrl: 'https://via.placeholder.com/150',
-      isLiked: false,
-    ),
-    Comment(
-      username: 'fdjkkjflds',
-      message: '저 말이 맞는듯ㅋㅋ',
-      profileImageUrl: 'https://via.placeholder.com/150',
-      isLiked: true,
-    ),
-  ];
+class _LiveCommentState extends ConsumerState<LiveComment>
+    with TickerProviderStateMixin {
+  bool _isExpanded = false;
+
+  List<AnimationController> _animationControllers = [];
+  List<Animation<double>> _animations = [];
+  List<double> _positions = [];
+
+  void _toggleExpand() {
+    setState(() {
+      _isExpanded = !_isExpanded;
+    });
+  }
+
+  @override
+  void dispose() {
+    for (var controller in _animationControllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  void _startAnimation() {
+    setState(() {
+      final startPosition = Random().nextDouble() * 50;
+
+      final controller = AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 800), // 애니메이션 지속 시간
+      );
+
+      final animation = Tween<double>(begin: 0, end: 400).animate(
+        CurvedAnimation(
+          parent: controller,
+          curve: Curves.easeOut,
+        ),
+      );
+
+      _animationControllers.add(controller);
+      _animations.add(animation);
+      _positions.add(startPosition);
+
+      controller.addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          setState(() {
+            final index = _animationControllers.indexOf(controller);
+            _animationControllers.removeAt(index);
+            _animations.removeAt(index);
+            _positions.removeAt(index);
+          });
+        }
+      });
+
+      controller.forward();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    final loginInfo = ref.read(loginInfoProvider);
+    return Stack(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Container(
+          width: double.infinity,
+          child: Column(
             children: [
-              Text(
-                '${comments.length}명 관전중',
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.bold,
+              GestureDetector(
+                onTap: _toggleExpand,
+                child: Container(
+                  color: Colors.white,
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.person,
+                            color: ColorSystem.purple,
+                          ),
+                          SizedBox(width: 8),
+                          Text('15명 관전중',
+                              style: FontSystem.KR14R
+                                  .copyWith(color: ColorSystem.purple)),
+                        ],
+                      ),
+                      Icon(
+                        _isExpanded
+                            ? Icons.keyboard_arrow_up
+                            : Icons.keyboard_arrow_down,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              Icon(Icons.keyboard_arrow_down, color: Colors.grey),
+              AnimatedContainer(
+                duration: Duration(milliseconds: 300),
+                height:
+                    _isExpanded ? MediaQuery.of(context).size.height * 0.2 : 0,
+                color: Colors.white,
+                child: _isExpanded
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: 5, // 예시를 위해 고정된 수의 항목을 표시합니다.
+                        itemBuilder: (context, index) {
+                          return Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 8.0),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.person,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  '타카',
+                                  style: FontSystem.KR16B
+                                      .copyWith(color: ColorSystem.grey),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  '아냐아아아',
+                                  style: FontSystem.KR16B,
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      )
+                    : SizedBox.shrink(),
+              ),
             ],
           ),
         ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: comments.length,
-            itemBuilder: (context, index) {
-              final comment = comments[index];
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4.0),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(comment.profileImageUrl),
-                  ),
-                  title: Text(comment.username),
-                  subtitle: Text(comment.message),
-                  trailing: IconButton(
-                    icon: Icon(
-                      Icons.favorite,
-                      color: comment.isLiked ? Colors.red : Colors.grey,
-                    ),
-                    onPressed: () {
-                      // Like 버튼을 눌렀을 때의 로직을 추가하세요.
-                    },
-                  ),
-                ),
+        ..._animations.asMap().entries.map((entry) {
+          final index = entry.key;
+          final animation = entry.value;
+          final position = _positions[index];
+
+          return AnimatedBuilder(
+            animation: animation,
+            builder: (context, child) {
+              return Positioned(
+                bottom: 70 + animation.value,
+                right: position,
+                child: Image.asset('assets/images/livefire.png'),
               );
             },
-          ),
-        ),
+          );
+        }).toList(),
+        _isExpanded
+            ? Positioned(
+                bottom: 10,
+                right: 10,
+                child: FloatingActionButton(
+                  onPressed: _startAnimation,
+                  shape: const CircleBorder(),
+                  child: Image.asset('assets/images/livefire.png'),
+                  backgroundColor: Colors.white,
+                  elevation: 2,
+                ),
+              )
+            : SizedBox(
+                width: 0,
+              ),
       ],
     );
   }
-}
-
-class Comment {
-  final String username;
-  final String message;
-  final String profileImageUrl;
-  final bool isLiked;
-
-  Comment({
-    required this.username,
-    required this.message,
-    required this.profileImageUrl,
-    this.isLiked = false,
-  });
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: Scaffold(
-      appBar: AppBar(
-        title: Text('Live Comments'),
-      ),
-      body: LiveComments(),
-    ),
-  ));
 }

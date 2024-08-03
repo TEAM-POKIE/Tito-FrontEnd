@@ -101,8 +101,6 @@ class DebatePopup extends ConsumerWidget {
   Widget _oneButton(BuildContext context, WidgetRef ref) {
     final popupState = ref.watch(popupProvider);
     final popupViewModel = ref.watch(popupProvider.notifier);
-    final loginInfo = ref.watch(loginInfoProvider);
-    final apiService = ApiService(DioClient.dio);
 
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -117,8 +115,7 @@ class DebatePopup extends ConsumerWidget {
           popupState.buttonStyle = 0;
           popupState.title = '토론이 시작 됐어요! 🎵';
           popupState.content = '서로 존중하는 토론을 부탁드려요!';
-          await apiService.patchData('debate_list/${popupState.roomId}',
-              {'opponentNick': loginInfo!.nickname});
+
           context.pop();
           popupViewModel.showDebatePopup(context);
         } else if (popupState.title == '토론 시작 시 알림을 보내드릴게요!') {
@@ -140,7 +137,7 @@ class DebatePopup extends ConsumerWidget {
     void startDebate() async {
       try {
         final debateData = debateState.toJson();
-
+        print(debateData);
         final response = await ApiService(DioClient.dio).postDebate(debateData);
 
         context.push('/chat/${response.id}');
@@ -182,6 +179,8 @@ class DebatePopup extends ConsumerWidget {
             ),
             onPressed: () {
               if (popupState.title == '토론장을 개설하겠습니까?') {
+                debateState.debateImageUrl = '1221';
+                debateState.debateContent = '12';
                 startDebate();
               } else {
                 context.pop();
