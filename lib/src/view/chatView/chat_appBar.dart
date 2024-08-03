@@ -6,6 +6,8 @@ import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tito_app/core/constants/style.dart';
+
 
 class ChatAppbar extends ConsumerWidget {
   final int id;
@@ -122,7 +124,7 @@ class DebateAppbar extends ConsumerWidget {
               offset: Offset(0, -5), // Adjust the offset if needed
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
-                color: Colors.white,
+                color: ColorSystem.white,
               ),
             ),
             menuItemStyleData: const MenuItemStyleData(

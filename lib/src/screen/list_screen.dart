@@ -44,13 +44,17 @@ class _ListScreenState extends ConsumerState<ListScreen> {
     _fetchDebateList();
   }
 
+// 아래로 내렸을 때 새로고침 되는 코드
   void _onRefresh() async {
-    await _fetchDebateList();
+    //await _fetchDebateList();
+    await _fetchDebateList(isRefresh: true); // 새로고침 시 기존 데이터를 대체
     _refreshController.refreshCompleted();
   }
 
+// 리스트 끝에 도달했을 때 호출되는 코드
   void _onLoading() async {
-    await _fetchDebateList();
+    //await _fetchDebateList();
+    await _fetchDebateList(isRefresh: false); // 로딩 시 데이터를 추가
     _refreshController.loadComplete();
   }
 
@@ -72,31 +76,82 @@ class _ListScreenState extends ConsumerState<ListScreen> {
     context.push('/chat/${debateId}');
   }
 
-  Future<void> _fetchDebateList() async {
+// 데이터 fetch 로직 : 새로고침 시 기존데이터를 대체하고 리스트 끝에서 다시 렌더링시키기
+  Future<void> _fetchDebateList({bool isRefresh = false}) async {
     try {
       final List<Debate> debateResponse =
           await ApiService(DioClient.dio).getDebateList();
 
+      //   setState(() {
+      //     debateList = debateResponse.map((debate) {
+      //       return Debate(
+      //         id: debate.id,
+      //         debateTitle: debate.debateTitle,
+      //         debateCategory:
+      //             DebateListCategory.fromString(debate.debateCategory).toString(),
+      //         debateStatus:
+      //             DebateListStatus.fromString(debate.debateStatus).toString(),
+      //         debateMakerOpinion: debate.debateMakerOpinion,
+      //         debateJoinerOpinion: debate.debateJoinerOpinion,
+      //         debatedTimeLimit: debate.debatedTimeLimit,
+      //         debateViewCount: debate.debateViewCount,
+      //         debateCommentCount: debate.debateCommentCount,
+      //         debateRealtimeParticipants: debate.debateRealtimeParticipants,
+      //         debateAlarmCount: debate.debateAlarmCount,
+      //         createdAt: debate.createdAt,
+      //         updatedAt: debate.updatedAt,
+      //       );
+      //     }).toList();
+      //   });
+      // } catch (error) {
+      //   print('Error fetching debate list: $error');
+      // }
       setState(() {
-        debateList = debateResponse.map((debate) {
-          return Debate(
-            id: debate.id,
-            debateTitle: debate.debateTitle,
-            debateCategory:
-                DebateListCategory.fromString(debate.debateCategory).toString(),
-            debateStatus:
-                DebateListStatus.fromString(debate.debateStatus).toString(),
-            debateMakerOpinion: debate.debateMakerOpinion,
-            debateJoinerOpinion: debate.debateJoinerOpinion,
-            debatedTimeLimit: debate.debatedTimeLimit,
-            debateViewCount: debate.debateViewCount,
-            debateCommentCount: debate.debateCommentCount,
-            debateRealtimeParticipants: debate.debateRealtimeParticipants,
-            debateAlarmCount: debate.debateAlarmCount,
-            createdAt: debate.createdAt,
-            updatedAt: debate.updatedAt,
-          );
-        }).toList();
+        if (isRefresh) {
+          // 새로고침일 경우 기존 데이터를 대체
+          debateList = debateResponse.map((debate) {
+            return Debate(
+              id: debate.id,
+              debateTitle: debate.debateTitle,
+              debateCategory:
+                  DebateListCategory.fromString(debate.debateCategory)
+                      .toString(),
+              debateStatus:
+                  DebateListStatus.fromString(debate.debateStatus).toString(),
+              debateMakerOpinion: debate.debateMakerOpinion,
+              debateJoinerOpinion: debate.debateJoinerOpinion,
+              debatedTimeLimit: debate.debatedTimeLimit,
+              debateViewCount: debate.debateViewCount,
+              debateCommentCount: debate.debateCommentCount,
+              debateRealtimeParticipants: debate.debateRealtimeParticipants,
+              debateAlarmCount: debate.debateAlarmCount,
+              createdAt: debate.createdAt,
+              updatedAt: debate.updatedAt,
+            );
+          }).toList();
+        } else {
+          // 로딩일 경우 기존 리스트에 데이터를 추가
+          debateList.addAll(debateResponse.map((debate) {
+            return Debate(
+              id: debate.id,
+              debateTitle: debate.debateTitle,
+              debateCategory:
+                  DebateListCategory.fromString(debate.debateCategory)
+                      .toString(),
+              debateStatus:
+                  DebateListStatus.fromString(debate.debateStatus).toString(),
+              debateMakerOpinion: debate.debateMakerOpinion,
+              debateJoinerOpinion: debate.debateJoinerOpinion,
+              debatedTimeLimit: debate.debatedTimeLimit,
+              debateViewCount: debate.debateViewCount,
+              debateCommentCount: debate.debateCommentCount,
+              debateRealtimeParticipants: debate.debateRealtimeParticipants,
+              debateAlarmCount: debate.debateAlarmCount,
+              createdAt: debate.createdAt,
+              updatedAt: debate.updatedAt,
+            );
+          }).toList());
+        }
       });
     } catch (error) {
       print('Error fetching debate list: $error');
@@ -257,7 +312,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                 thickness: 8.0,
                 radius: Radius.circular(20.r),
                 child: ListView.builder(
-                  itemCount: debateList.length,
+                  itemCount: 15,
                   itemBuilder: (context, index) {
                     final debate = debateList[index];
                     return Padding(
