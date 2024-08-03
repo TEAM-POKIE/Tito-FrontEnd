@@ -61,6 +61,7 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
       },
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: ColorSystem.white,
           leading: IconButton(
             onPressed: () {
               context.pop();
@@ -193,11 +194,11 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
                   child: Row(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(left: 7.w),
+                        padding: EdgeInsets.only(left: 20.w),
                         child: SvgPicture.asset(
                           'assets/icons/purple_cute.svg',
-                          width: 40.w,
-                          height: 40.h,
+                          width: 30.w,
+                          height: 30.h,
                         ),
                       ),
                       TextButton(
@@ -206,12 +207,10 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
                         },
                         child: Text(
                           'AI 자동 주제 생성 하기',
-                          style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              decorationColor: ColorSystem.purple,
+                          style: FontSystem.KR18B.copyWith(
                               color: ColorSystem.purple,
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.bold),
+                              decoration: TextDecoration.underline,
+                              decorationColor: ColorSystem.purple),
                         ),
                       ),
                     ],

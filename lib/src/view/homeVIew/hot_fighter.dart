@@ -12,61 +12,61 @@ class HotFighter extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Expanded(
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Row(
-                children: [
-                  const Text(
-                    'HOT한 토론러',
-                    style: FontSystem.KR18B,
-                  ),
-                  SizedBox(width: 4.w,),
-                  Container(
-                    width: 20.w,
-                    height: 20.h,
-                    child: Image.asset('assets/images/star.png')),
-                ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: Row(
+            children: [
+              const Text(
+                'HOT한 토론러',
+                style: FontSystem.KR18B,
               ),
-            ),
-            SizedBox(
-              height: 16.h,
-            ),
-            Container(
-              //padding: EdgeInsets.symmetric(horizontal: 10.w),
-              height: 150.h,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 10, // 예시로 10개의 아이템
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.symmetric(horizontal: 8.w),
-                    child: Column(
-                      children: [
-                        CircleAvatar(
-                          radius: 30.w,
-                          backgroundImage: AssetImage(
-                              'assets/images/hot_fighter.png'), // 프로필 이미지 경로
-                        ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          '일인자',
-                          style: FontSystem.KR16R,
-                        ),
-                      ],
-                    ),
-                  );
-                },
+              SizedBox(
+                width: 4.w,
               ),
-            ),
-            //SizedBox(height:56.62.h ,),
-          ],
+              Container(
+                  width: 20.w,
+                  height: 20.h,
+                  child: Image.asset('assets/images/star.png')),
+            ],
+          ),
         ),
-      ),
+        SizedBox(
+          height: 16.h,
+        ),
+        Container(
+          //padding: EdgeInsets.symmetric(horizontal: 10.w),
+          height: 150.h,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: 10, // 예시로 10개의 아이템
+            itemBuilder: (context, index) {
+              return Container(
+                margin: EdgeInsets.symmetric(horizontal: 8.w),
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 30.w,
+                      backgroundImage: AssetImage(
+                          'assets/images/hot_fighter.png'), // 프로필 이미지 경로
+                    ),
+                    SizedBox(height: 8.h),
+                    Text(
+                      '일인자',
+                      style: FontSystem.KR16R,
+                      maxLines: 1, // 텍스트를 한 줄로 제한
+                      overflow: TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        //SizedBox(height:56.62.h ,),
+      ],
     );
   }
 }

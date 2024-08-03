@@ -43,6 +43,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
       },
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: ColorSystem.white,
           leading: IconButton(
             onPressed: () {
               context.pop();
@@ -95,7 +96,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                     autocorrect: false,
                     decoration: InputDecoration(
                       hintText: '입력하세요',
-                      fillColor: Colors.grey[200],
+                      fillColor: ColorSystem.ligthGrey,
                       filled: true,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(24.r),
@@ -122,7 +123,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                     autocorrect: false,
                     decoration: InputDecoration(
                       hintText: '입력하세요',
-                      fillColor: Colors.grey[200],
+                      fillColor: ColorSystem.ligthGrey,
                       filled: true,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(24.r),

@@ -45,8 +45,15 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
               width: 350.w,
               height: 120.h,
               decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0x669795A3),
+                    spreadRadius: 0,
+                    blurRadius: 4,
+                  )
+                ],
+                color: ColorSystem.white,
                 borderRadius: BorderRadius.circular(20.r),
-                border: Border.all(color: ColorSystem.grey),
               ),
               child: ListTile(
                 title: Column(
@@ -66,8 +73,11 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(left: 0.w),
-                          child: const Text('아싸 애인 VS 인싸 애인',
-                              style: FontSystem.KR15B),
+                          child: const Text(
+                            '아싸 애인 VS 인싸 애인',
+                            style: FontSystem.KR15B,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                         SizedBox(height: 4.h),
                         Padding(
@@ -79,6 +89,8 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
                                 '의견: 아싸 애인이 더 좋다',
                                 style: FontSystem.KR14R
                                     .copyWith(color: ColorSystem.grey),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
                               ),
                               //SizedBox(height: 2.h),
                               Padding(

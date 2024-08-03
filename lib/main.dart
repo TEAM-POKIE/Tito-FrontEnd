@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
           routerConfig: router,
           title: 'Tito',
           theme: ThemeData(
+            scaffoldBackgroundColor: ColorSystem.white,
             primaryColor: ColorSystem.purple,
           ),
         ),

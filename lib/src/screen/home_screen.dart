@@ -27,7 +27,12 @@ class HomeScreen extends ConsumerWidget {
       body: homeState.isLoading
           ? const Center(child: CircularProgressIndicator())
           : const Column(
-              children: [CustomSearchBar(), HomeView(), HotLists(), HotFighter()],
+              children: [
+                CustomSearchBar(),
+                HomeView(),
+                HotLists(),
+                HotFighter()
+              ],
             ),
     );
   }

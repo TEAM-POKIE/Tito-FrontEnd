@@ -11,6 +11,7 @@ class MypageAppbar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AppBar(
+      backgroundColor: ColorSystem.white,
       leading: IconButton(
         onPressed: () {
           context.go('/home');

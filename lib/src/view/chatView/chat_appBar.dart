@@ -4,9 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
-import 'package:tito_app/core/provider/login_provider.dart';
-
 import 'package:tito_app/core/provider/popup_provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatAppbar extends ConsumerWidget {
   final int id;
@@ -59,14 +58,17 @@ class DebateAppbar extends ConsumerWidget {
       backgroundColor: ColorSystem.white,
       title: Text(
         title,
-        style: const TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-        ),
+        style: FontSystem.KR16B,
+        maxLines: 1, // 텍스트를 한 줄로 제한
+        overflow: TextOverflow.ellipsis,
       ),
       centerTitle: true,
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+        icon: const Icon(
+          Icons.arrow_back_ios,
+          color: ColorSystem.black,
+          size: 24,
+        ),
         onPressed: () {
           context.go('/list');
         },
@@ -86,22 +88,24 @@ class DebateAppbar extends ConsumerWidget {
             },
           ),
         Padding(
-          padding: const EdgeInsets.only(right: 10),
+          padding: EdgeInsets.only(right: 10.w),
           child: DropdownButton2<String>(
-            customButton: const Icon(Icons.more_vert, color: Colors.black),
+            customButton: const Icon(Icons.more_vert, color: ColorSystem.black),
             items: menuItems.map((item) {
               return DropdownMenuItem<String>(
                 value: item,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                       alignment: Alignment.center, // Align text to the left
-                      child: Text(item, style: FontSystem.KR16B),
+                      child: Text(item, style: FontSystem.KR14B),
                     ),
                     if (item != menuItems.last)
                       const Divider(
                         thickness: 1,
-                        color: Colors.grey,
+                        color: ColorSystem.grey,
                         indent: 10,
                         endIndent: 10,
                       ),
@@ -124,7 +128,7 @@ class DebateAppbar extends ConsumerWidget {
             dropdownStyleData: const DropdownStyleData(
               padding: EdgeInsets.all(10),
               maxHeight: 150,
-              width: 140, // Adjust this width for dropdown
+              width: 240, // Adjust this width for dropdown
               offset: Offset(0, -5), // Adjust the offset if needed
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
