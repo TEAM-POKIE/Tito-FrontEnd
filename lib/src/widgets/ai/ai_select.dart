@@ -6,14 +6,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:tito_app/src/widgets/ai/ai_select.dart';
 import 'package:get/get.dart';
 import 'package:tito_app/src/widgets/ai/selection_controller.dart';
+import 'package:go_router/go_router.dart';
 
 class AiSelect extends StatefulWidget {
-  
   SelectionController selectionController = Get.put(SelectionController());
   AiSelect({super.key});
 
-
-    Widget _buildGridItem(BuildContext context, String text, int index) {
+  Widget _buildGridItem(BuildContext context, String text, int index) {
     return Obx(() {
       bool isSelected = selectionController.selectedItems.contains(index);
       return InkWell(
@@ -26,13 +25,16 @@ class AiSelect extends StatefulWidget {
           ),
           margin: EdgeInsets.all(4.5.w),
           child: Center(
-            child: Text(text),
+            child: Text(
+              text,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ),
       );
     });
   }
-  
 
   @override
   State<StatefulWidget> createState() {
@@ -76,7 +78,11 @@ class _AiSelectState extends State<AiSelect> {
           borderRadius: BorderRadius.circular(20.r),
         ),
         child: Center(
-          child: Text(text),
+          child: Text(
+            text,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
       ),
     );
@@ -87,11 +93,12 @@ class _AiSelectState extends State<AiSelect> {
     bool isSelectExist = selectedSentence.isNotEmpty;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: ColorSystem.white,
         leading: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              context.go('/home');
             },
             icon: const Icon(Icons.arrow_back_ios),
           ),
@@ -178,7 +185,11 @@ class _AiSelectState extends State<AiSelect> {
                                 : ColorSystem.grey),
                         borderRadius: BorderRadius.circular(20.r)),
                     alignment: Alignment.center,
-                    child: Text('Item $index'),
+                    child: Text(
+                      'Item $index',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 );
               }),

@@ -98,7 +98,7 @@ class _detailState extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.only(bottom: 5),
-      color: Colors.white,
+      color: ColorSystem.white,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,

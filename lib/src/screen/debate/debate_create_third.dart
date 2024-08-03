@@ -22,6 +22,7 @@ class DebateCreateThird extends ConsumerWidget {
       },
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: ColorSystem.white,
           leading: IconButton(
             onPressed: () {
               context.pop();
@@ -70,27 +71,32 @@ class DebateCreateThird extends ConsumerWidget {
                     style: FontSystem.KR18R,
                   ),
                   SizedBox(height: 20.h),
-                  TextFormField(
-                    autocorrect: false,
-                    maxLines: 5,
-                    decoration: InputDecoration(
-                      hintText: '입력하세요',
-                      fillColor: Colors.grey[200],
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24.r),
-                        borderSide: BorderSide.none,
-                      ),
+                  Container(
+                    width: 350.w,
+                    height: 240.h,
+                    decoration: BoxDecoration(
+                      color: ColorSystem.ligthGrey,
+                      borderRadius: BorderRadius.circular(24.r)
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '본문을 입력하세요';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      debateViewModel.updateContent(value ?? '');
-                    },
+                    child: TextFormField(
+                      autocorrect: false,
+                      decoration: InputDecoration(
+                        hintText: '입력하세요',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24.r),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '본문을 입력하세요';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        debateViewModel.updateContent(value ?? '');
+                      },
+                    ),
                   ),
                   SizedBox(height: 40.h),
                   const Text(

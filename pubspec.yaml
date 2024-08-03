@@ -116,19 +116,34 @@ flutter:
     - assets/icons/first_chat_find.svg
     - assets/icons/alarm.svg
     - assets/icons/alarm_new.svg
+    - assets/icons/kakao.svg
+    - assets/icons/google.svg
+    - assets/icons/apple.svg
+    - assets/icons/email.svg
+    - assets/icons/hide.svg
+    - assets/icons/arrow_black.svg
+    - assets/icons/arrow_grey.svg
+    - assets/icons/arrow_front.svg
+    - assets/icons/arrow_down.svg
+    - assets/icons/arrow.svg
+    - assets/icons/popup_face.svg
+    - assets/icons/home_alarm.svg
+    - assets/icons/purple_rule.svg
+    - assets/icons/black_talk.svg
+    - assets/icons/chat_alarm.svg
+    - assets/icons/dot.svg
+    - assets/icons/chat_cute.svg
+    
+  
     
 
 
     
 
     - assets/images/logo.png
-    - assets/images/kakao.png
-    - assets/images/google.png
-    - assets/images/apple.png
-    - assets/images/black_apple.png
     - assets/images/hotlist.png
     - assets/images/mypage.png
-    - assets/images/ai_purple.png
+
     - assets/images/alarm_none.png
     - assets/images/alarm.png
     - assets/images/sendArrow.png

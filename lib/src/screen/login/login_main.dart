@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
@@ -20,15 +21,15 @@ class LoginMain extends StatelessWidget {
     final List<Map<String, String>> loginOptions = [
       {
         'text': '카카오로 시작하기',
-        'image': 'assets/images/kakao.png',
-      },
-      {
-        'text': '구글로 시작하기',
-        'image': 'assets/images/google.png',
+        'icon': 'assets/icons/kakao.svg',
       },
       {
         'text': '애플로 시작하기',
-        'image': 'assets/images/apple.png',
+        'icon': 'assets/icons/apple.svg',
+      },
+      {
+        'text': '구글로 시작하기',
+        'icon': 'assets/icons/google.svg',
       },
     ];
 
@@ -142,25 +143,9 @@ class LoginMain extends StatelessWidget {
                 child: Container(
                   width: 326.w,
                   height: 60.h,
-                  child: ElevatedButton.icon(
-                    onPressed: () {},
-                    icon: Image.asset(
-                      option['image']!,
-                      width: 24.r,
-                      height: 24.r,
-                    ),
-                    label: Text(option['text']!),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorSystem.loginPurple,
-                      foregroundColor: ColorSystem.white,
-                      // padding: EdgeInsets.symmetric(
-                      //     horizontal: 103.w, vertical: 18.h), // 버튼 내부의 패딩 설정
-                      side: const BorderSide(color: ColorSystem.white),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.r),
-                      ),
-                      textStyle: FontSystem.KR16R,
-                    ),
+                  child: GestureDetector(
+                    onTap: (){},
+                    child: SvgPicture.asset(option['icon']!),
                   ),
                 ),
               );
@@ -169,21 +154,9 @@ class LoginMain extends StatelessWidget {
             Container(
               width: 326.w,
               height: 60.h,
-              child: ElevatedButton(
-                onPressed: goBasicLogin,
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.r),
-                  ),
-                  backgroundColor: ColorSystem.black,
-                  //minimumSize: const Size(300, 60),
-                  // padding: EdgeInsets.symmetric(
-                      // horizontal: 140.w, vertical: 17.h), // 버튼 내부의 패딩 설정
-                ),
-                child: Text(
-                  '로그인',
-                  style: FontSystem.KR16B.copyWith(color: ColorSystem.white),
-                ),
+              child: GestureDetector(
+                onTap: goBasicLogin,
+                child: SvgPicture.asset('assets/icons/email.svg'),
               ),
             ),
             SizedBox(height: 64.h), // 버튼들 간의 간격 추가

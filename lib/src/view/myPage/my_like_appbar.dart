@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/src/screen/home_screen.dart';
+import 'package:tito_app/core/constants/style.dart';
 
 class MyLikeAppbar extends StatelessWidget {
   const MyLikeAppbar({super.key});
@@ -9,6 +10,7 @@ class MyLikeAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: ColorSystem.white,
       leading: IconButton(
         onPressed: () {
           context.go('/mypage');

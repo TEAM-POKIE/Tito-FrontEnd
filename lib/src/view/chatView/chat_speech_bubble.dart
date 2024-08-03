@@ -5,10 +5,10 @@ import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:speech_balloon/speech_balloon.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
-
 import 'package:tito_app/src/data/models/popup_state.dart';
-
 import 'package:tito_app/src/viewModel/popup_viewModel.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ChatSpeechBubble extends ConsumerStatefulWidget {
   const ChatSpeechBubble({
@@ -46,9 +46,9 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
     // String sendNick = isMyNick ? myNick : opponentNick;
 
     return StaticTextBubble(
-      title: '첫 입론을 입력하세요',
-      width: (MediaQuery.of(context).size.width - 100) * 0.7,
-      height: (MediaQuery.of(context).size.height - 450) * 0.2,
+      title: '첫 입론을 입력해주세요!',
+      width: 180.w,
+      height: 45.h,
     );
     // if (isMyNick) {
     //   switch (myTurn) {
@@ -128,15 +128,15 @@ class _StaticTextBubbleState extends State<StaticTextBubble> {
     return SpeechBalloon(
       width: widget.width,
       height: widget.height,
-      borderRadius: 12,
+      borderRadius: 15.r,
       nipLocation: NipLocation.bottom,
       color: ColorSystem.purple,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
         child: Text(
           widget.title,
           textAlign: TextAlign.center,
-          style: FontSystem.KR16B.copyWith(color: Colors.white),
+          style: FontSystem.KR16R.copyWith(color: Colors.white),
         ),
       ),
     );

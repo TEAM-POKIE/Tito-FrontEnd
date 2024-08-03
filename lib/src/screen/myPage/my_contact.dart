@@ -33,6 +33,7 @@ class _MyContactState extends State<MyContact> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: ColorSystem.white,
         leading: IconButton(
           onPressed: () {
             context.go('/mypage');

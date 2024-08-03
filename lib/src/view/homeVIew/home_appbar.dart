@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:tito_app/core/provider/home_state_provider.dart';
 
 class HomeAppbar extends ConsumerWidget {
@@ -13,6 +14,7 @@ class HomeAppbar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // final homeViewModel = ref.read(homeViewModelProvider.notifier);
     return AppBar(
+      backgroundColor: ColorSystem.white,
       leading: SizedBox(
         width: 66.w,
         height: 33.28.h,
@@ -23,12 +25,14 @@ class HomeAppbar extends ConsumerWidget {
       ),
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            context.go('/myalarm');
+          },
           icon: SizedBox(
             width: 30.w,
             height: 30.h,
-            child: Image.asset(
-              'assets/images/alarm_none.png',
+            child: SvgPicture.asset(
+              'assets/icons/home_alarm.svg',
             ),
           ),
         ),

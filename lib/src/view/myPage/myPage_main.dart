@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:tito_app/core/api/multpart_file_with_to_json.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +13,11 @@ import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tito_app/src/view/myPage/exit_popup.dart';
+import 'package:tito_app/src/view/myPage/logout_popup.dart';
+
+
+import 'package:tito_app/src/widgets/reuse/profile_popup.dart';
 
 class MypageMain extends ConsumerStatefulWidget {
   const MypageMain({super.key});
@@ -191,14 +197,11 @@ class _MypageMainState extends ConsumerState<MypageMain> {
               SizedBox(height: 10.h),
 
               Row(
-                //mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 150.w),
-                    child: Text(
-                      '${loginInfo?.nickname}',
-                      style: FontSystem.KR24B,
-                    ),
+                  Text(
+                    '${loginInfo?.nickname}',
+                    style: FontSystem.KR24B.copyWith(color: ColorSystem.purple),
                   ),
                   IconButton(
                     onPressed: () {
@@ -210,19 +213,20 @@ class _MypageMainState extends ConsumerState<MypageMain> {
               ),
 
               Container(
-                width: 70.w,
-                height: 30.h,
+                width: 90.w,
+                height: 33.h,
                 padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 6.w),
                 decoration: BoxDecoration(
                   color: ColorSystem.lightPurple,
                   borderRadius: BorderRadius.circular(10.r),
+                  border: Border.all(color: ColorSystem.purple),
                 ),
-                child: const Text(
-                  '승률 80%',
-                  style: TextStyle(
-                      color: ColorSystem.purple,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    '승률 80%',
+                    style: FontSystem.KR18B.copyWith(color: ColorSystem.purple),
+                  ),
                 ),
               ),
               SizedBox(height: 10.h),
@@ -298,21 +302,27 @@ class _MypageMainState extends ConsumerState<MypageMain> {
               _buildListTile(
                 context,
                 title: '개인정보처리방침',
-                onTap: () => context.go('/contact'),
+                onTap: () => context.go('/personalRule'),
               ),
               _buildListTile(
                 context,
                 title: '이용약관',
-                onTap: () => context.go('/contact'),
+                onTap: () => context.go('/rule'),
               ),
-
-              // ############ 여기 아직 디자인 적용 전이다 ################
+              SizedBox(height: 30.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return ProfilePopup();
+                        },
+                      );
+                    },
                     child: const Text(
                       '로그아웃',
                       style: TextStyle(color: ColorSystem.grey),
@@ -323,7 +333,14 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                     style: TextStyle(color: ColorSystem.grey),
                   ),
                   TextButton(
-                      onPressed: () => showExitDialog(context),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return ExitPopup();
+                          },
+                        );
+                      },
                       child: const Text(
                         '회원탈퇴',
                         style: TextStyle(color: ColorSystem.grey),
@@ -346,8 +363,16 @@ class _MypageMainState extends ConsumerState<MypageMain> {
         height: 60.h,
         width: 350.w,
         decoration: BoxDecoration(
-          border: Border.all(color: ColorSystem.grey),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0x669795A3),
+              spreadRadius: 0,
+              blurRadius: 4,
+            )
+          ],
+          //border: Border.all(color: ColorSystem.grey),
           borderRadius: BorderRadius.circular(20.r),
+          color: ColorSystem.white,
         ),
         child: ListTile(
           title: Text(title),

@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:speech_balloon/speech_balloon.dart';
@@ -11,10 +11,12 @@ import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
-
 import 'package:tito_app/src/data/models/debate_crate.dart';
 import 'package:tito_app/src/data/models/popup_state.dart';
 import 'package:tito_app/src/viewModel/popup_viewModel.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class DebateCreateChat extends ConsumerStatefulWidget {
   const DebateCreateChat({super.key});
@@ -41,49 +43,71 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: ColorSystem.white,
         title: Center(
-          child: Text(debateState.debateTitle),
+          child: Text(
+            debateState.debateTitle,
+            style: FontSystem.KR16B,
+          ),
         ),
+        centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+          icon: const Icon(Icons.arrow_back_ios,
+              color: ColorSystem.black, size: 24),
           onPressed: () {
             context.pop();
           },
         ),
         actions: [
           IconButton(
-            icon: Image.asset('assets/images/debateAlarm.png'),
+            icon: SvgPicture.asset(
+              'assets/icons/chat_alarm.svg',
+            ),
+            iconSize: 24,
             onPressed: () {
               debateViewModel.showDebatePopup(context);
             },
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: IconButton(
-              icon: Image.asset('assets/images/info.png'),
-              onPressed: () {
-                debateViewModel.showRulePopup(context);
-              },
-            ),
+          IconButton(
+            icon: SvgPicture.asset('assets/icons/dot.svg'),
+            onPressed: () {
+              debateViewModel.showRulePopup(context);
+            },
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Container(
-              alignment: Alignment.bottomCenter,
-              width: MediaQuery.sizeOf(context).width,
-              color: ColorSystem.ligthGrey,
-              child: StaticTextBubble(
-                title: '첫 입론을 입력하세요',
-                width: (MediaQuery.of(context).size.width - 100) * 0.7,
-                height: (MediaQuery.of(context).size.height - 450) * 0.2,
+      body: Container(
+        color: ColorSystem.grey3,
+        child: Column(
+          children: [
+            SizedBox(height: 20.h),
+            DefaultTextStyle(
+              textAlign: TextAlign.center,
+              style: FontSystem.KR14R.copyWith(color: ColorSystem.purple),
+              child: AnimatedTextKit(
+                repeatForever: true,
+                animatedTexts: [
+                  FadeAnimatedText(
+                    '토론방이 개설되려면 당신의 첫 입론이 필요합니다.\n입론을 작성해주세요!',
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
             ),
-          ),
-          ChatBottom(),
-        ],
+            Expanded(
+              child: Container(
+                alignment: Alignment.bottomCenter,
+                color: ColorSystem.grey3,
+                child: StaticTextBubble(
+                  title: '첫 입론을 입력해주세요!',
+                  width: 180.w,
+                  height: 45.h,
+                ),
+              ),
+            ),
+            ChatBottom(),
+          ],
+        ),
       ),
     );
   }
@@ -106,15 +130,15 @@ class StaticTextBubble extends StatelessWidget {
     return SpeechBalloon(
       width: width,
       height: height,
-      borderRadius: 12,
+      borderRadius: 15.r,
       nipLocation: NipLocation.bottom,
       color: ColorSystem.purple,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
         child: Text(
           title,
           textAlign: TextAlign.center,
-          style: FontSystem.KR16B.copyWith(color: Colors.white),
+          style: FontSystem.KR16R.copyWith(color: Colors.white),
         ),
       ),
     );

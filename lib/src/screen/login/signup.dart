@@ -19,6 +19,7 @@ class _SignUpState extends State<Signup> {
   var _nickname = '';
   var _password = '';
   final _formKey = GlobalKey<FormState>();
+  bool _obscureText = true;
 
   void _onSignUp() async {
     final isVaild = _formKey.currentState!.validate();
@@ -47,6 +48,7 @@ class _SignUpState extends State<Signup> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: ColorSystem.white,
         leading: IconButton(
           onPressed: () {
             context.go('/login');
@@ -131,14 +133,26 @@ class _SignUpState extends State<Signup> {
                 ),
                 TextFormField(
                   maxLength: 20,
-                  decoration: const InputDecoration(
+                  obscureText: _obscureText,
+                  decoration: InputDecoration(
                     hintText: '비밀번호 (영문, 숫자 조합 8자 이상)',
-                    hintStyle: TextStyle(
+                    hintStyle: const TextStyle(
                       color: ColorSystem.grey,
                       fontSize: 16,
                     ),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureText ? Icons.visibility_off : Icons.visibility,
+                        color: _obscureText ? ColorSystem.grey : ColorSystem.purple, 
+                        size: 18.sp,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
+                    ),
                   ),
-                  obscureText: true,
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return '비밀번호를 입력해주세요';

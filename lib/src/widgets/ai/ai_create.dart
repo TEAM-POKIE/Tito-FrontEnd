@@ -26,7 +26,11 @@ class AiCreate extends StatelessWidget {
           ),
           margin: EdgeInsets.all(4.5.w),
           child: Center(
-            child: Text(text),
+            child: Text(
+              text,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ),
       );
@@ -34,29 +38,26 @@ class AiCreate extends StatelessWidget {
   }
 
   Widget _buildSelectedItem(int index) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10.w),
-      child: Transform.scale(
-        scale: 0.8,
-        child: Container(
-          width: 120.w,
-          height: 50.h,
-          child: Chip(
-            label: Text(
-              '아이템 $index',
-              style: TextStyle(color: ColorSystem.white, fontSize: 14.sp),
-            ),
-            backgroundColor: Colors.black,
-            deleteIcon: const Icon(
-              Icons.close,
-              color: ColorSystem.white,
-              size: 20,
-            ),
-            onDeleted: () => selectionController
-                .toggleSelection(index), // X 아이콘이 눌렸을 때 선택 상태 토글
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.r),
-            ),
+    return Transform.scale(
+      scale: 0.8,
+      child: Container(
+        child: Chip(
+          label: Text(
+            '$index',
+            style: TextStyle(color: ColorSystem.white, fontSize: 14.sp),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          backgroundColor: Colors.black,
+          deleteIcon: const Icon(
+            Icons.close,
+            color: ColorSystem.white,
+            size: 20,
+          ),
+          onDeleted: () => selectionController
+              .toggleSelection(index), // X 아이콘이 눌렸을 때 선택 상태 토글
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.r),
           ),
         ),
       ),
@@ -67,6 +68,7 @@ class AiCreate extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: ColorSystem.white,
         leading: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: IconButton(
@@ -117,7 +119,7 @@ class AiCreate extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 61.h,
+            height: 60.h,
             child: Obx(() {
               return selectionController.selectedItems.isNotEmpty
                   ? Padding(
@@ -125,8 +127,9 @@ class AiCreate extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Wrap(
-                          spacing: 0.0, // Chip 간의 수평 간격 최소화
-                          runSpacing: 0.0, // Chip 줄 간의 수직 간격 최소화
+                          spacing:
+                              -28.0, // Chip 간의 수평 간격 최소화 (음수로 설정하여 더 좁게 할 수 있음)
+                          runSpacing: -10.0, // Chip 줄 간의 수직 간격 최소화
                           children: selectionController.selectedItems
                               .map((index) => _buildSelectedItem(index))
                               .toList(),
@@ -166,7 +169,8 @@ class AiCreate extends StatelessWidget {
                 child: GridView.count(
                   crossAxisCount: 3,
                   children: List.generate(9, (index) {
-                    return _buildGridItem(context, '아이템 $index', index);
+                    return _buildGridItem(
+                        context, '아이템어쩔티비ㅇㄹㅇㄹㅇㄹㅇㄹㅇㄹㅇㄹ $index', index);
                   }),
                 ),
               ),
@@ -184,8 +188,7 @@ class AiCreate extends StatelessWidget {
                       ? () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                                builder: (context) => AiSelect()),
+                            MaterialPageRoute(builder: (context) => AiSelect()),
                           );
                         }
                       : null,

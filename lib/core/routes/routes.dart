@@ -13,6 +13,8 @@ import 'package:tito_app/src/screen/myPage/my_debate.dart';
 import 'package:tito_app/src/screen/myPage/my_like.dart';
 import 'package:tito_app/src/screen/myPage/my_block.dart';
 import 'package:tito_app/splash_screen.dart';
+import 'package:tito_app/src/view/myPage/my_personalRule.dart';
+import 'package:tito_app/src/view/myPage/my_rule.dart';
 import 'package:tito_app/src/widgets/ai/ai_create.dart';
 import 'package:tito_app/src/screen/debate/debate_create.dart';
 import 'package:tito_app/src/screen/debate/debate_create_second.dart';
@@ -82,6 +84,14 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/contact',
       builder: (context, state) => const MyContact(),
+    ),
+    GoRoute(
+      path: '/personalRule',
+      builder: (context, state) => const MyPersonalrule(),
+    ),
+    GoRoute(
+      path: '/rule',
+      builder: (context, state) => const MyRule(),
     ),
     GoRoute(
       path: '/nickname',
