@@ -91,7 +91,6 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
               ),
             ],
           ),
-          Text('갤러리'),
         ],
       ),
     );
