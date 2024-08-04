@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 
@@ -207,8 +208,8 @@ class TimingButton extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(
-                'assets/images/timingBell.png',
+              SvgPicture.asset(
+                'assets/icons/timingBell.svg',
                 width: 20, // 아이콘 크기 조정
                 height: 20,
               ),

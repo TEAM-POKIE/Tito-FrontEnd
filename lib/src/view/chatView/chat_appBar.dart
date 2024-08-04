@@ -49,7 +49,7 @@ class DebateAppbar extends ConsumerWidget {
     final chatViewModel = ref.read(chatInfoProvider.notifier);
     final debateState = ref.read(chatInfoProvider);
     final loginInfo = ref.read(loginInfoProvider);
-    String ImgUrl = '';
+
     final List<String> menuItems =
         debateState!.debateOwnerId == loginInfo!.id &&
                 debateState.debateJoinerTurnCount == 0
@@ -116,7 +116,7 @@ class DebateAppbar extends ConsumerWidget {
             }).toList(),
             onChanged: (value) {
               if (value == '토론 삭제하기') {
-                // 토론 삭제 로직 추가
+                popupViewModel.showDeletePopup(context);
               } else if (value == '토론룰 보기') {
                 popupViewModel.showRulePopup(context);
               }

@@ -44,9 +44,10 @@ class DebatePopup extends ConsumerWidget {
                     ? Row(
                         children: [
                           if (popupState.imgSrc != null)
-                            Image.asset(
+                            SvgPicture.asset(
                               popupState.imgSrc!,
                               width: 30,
+                              height: 30,
                             ),
                           Text(
                             popupState.titleLabel ?? '',
@@ -56,9 +57,10 @@ class DebatePopup extends ConsumerWidget {
                         ],
                       )
                     : popupState.imgSrc != null
-                        ? Image.asset(
+                        ? SvgPicture.asset(
                             popupState.imgSrc!,
-                            width: 50,
+                            width: 30,
+                            height: 30,
                           )
                         : Container(),
                 IconButton(
@@ -147,6 +149,18 @@ class DebatePopup extends ConsumerWidget {
       }
     }
 
+    void deleteDebate() async {
+      final chatState = ref.read(chatInfoProvider);
+      try {
+        final response =
+            await ApiService(DioClient.dio).deleteDebate(chatState!.id);
+
+        context.go('/home');
+      } catch (error) {
+        print('Error posting debate: $error');
+      }
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -183,6 +197,8 @@ class DebatePopup extends ConsumerWidget {
                 debateState.debateImageUrl = '1221';
 
                 startDebate();
+              } else if (popupState.title == '토론을 삭제 하시겠어요?') {
+                deleteDebate();
               } else {
                 context.pop();
                 popupViewModel.showDebatePopup(context);

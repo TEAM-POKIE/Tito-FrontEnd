@@ -31,7 +31,7 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
         chatState.debateOwnerId != loginInfo.id) {
       popupState.buttonStyle = 1;
       popupState.title = '토론에 참여 하시겠어요?';
-      popupState.imgSrc = 'assets/images/chatIconRight.png';
+      popupState.imgSrc = 'assets/images/chatIconRight.svg';
       popupState.buttonContentLeft = '토론 참여하기';
       popupState.content = '작성하신 의견을 전송하면\n토론 개설자에게 보여지고\n토론이 본격적으로 시작돼요!';
       await popupViewModel.showDebatePopup(context);
