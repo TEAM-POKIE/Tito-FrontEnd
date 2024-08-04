@@ -3,19 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:percent_indicator/percent_indicator.dart';
+
 import 'package:speech_balloon/speech_balloon.dart';
-import 'package:tito_app/core/api/api_service.dart';
-import 'package:tito_app/core/api/dio_client.dart';
+
 import 'package:tito_app/core/constants/style.dart';
+import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
-import 'package:tito_app/core/provider/login_provider.dart';
+
 import 'package:tito_app/core/provider/popup_provider.dart';
-import 'package:tito_app/src/data/models/debate_crate.dart';
-import 'package:tito_app/src/data/models/popup_state.dart';
-import 'package:tito_app/src/viewModel/popup_viewModel.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 
 class DebateCreateChat extends ConsumerStatefulWidget {
@@ -40,6 +38,7 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
   Widget build(BuildContext context) {
     final debateState = ref.watch(debateCreateProvider);
     final debateViewModel = ref.read(debateCreateProvider.notifier);
+    final chatViewModel = ref.read(chatInfoProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -65,7 +64,7 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
             ),
             iconSize: 24,
             onPressed: () {
-              debateViewModel.showDebatePopup(context);
+              chatViewModel.alarmButton(context);
             },
           ),
           IconButton(
@@ -101,7 +100,6 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
                 child: StaticTextBubble(
                   title: '첫 입론을 입력해주세요!',
                   width: 180.w,
-                  height: 45.h,
                 ),
               ),
             ),
@@ -127,7 +125,6 @@ class StaticTextBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     return SpeechBalloon(
       width: width,
-      height: 12,
       borderRadius: 15.r,
       nipLocation: NipLocation.bottom,
       color: ColorSystem.purple,
@@ -161,10 +158,11 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottom> {
     super.dispose();
   }
 
-  void _sendMessage() async {
+  void _sendMessage() {
     final debateState = ref.read(debateCreateProvider);
     final popupState = ref.read(popupProvider);
-    final PopupViewmodel = ref.read(popupProvider.notifier);
+    final popupViewmodel = ref.read(popupProvider.notifier);
+
     popupState.buttonStyle = 2;
     popupState.buttonContentLeft = '취소';
     popupState.buttonContentRight = '확인';
@@ -173,7 +171,7 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottom> {
     popupState.title = '토론장을 개설하겠습니까?';
     debateState.firstChatContent = _controller.text;
     debateState.debateStatus = 'CREATED';
-    PopupViewmodel.showDebatePopup(context);
+    popupViewmodel.showDebatePopup(context);
 
     _controller.clear();
   }

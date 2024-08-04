@@ -7,6 +7,8 @@ import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/core/provider/popup_provider.dart';
+import 'package:tito_app/core/provider/timer_provider.dart';
 import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:tito_app/src/data/models/debate_participants.dart';
 import 'package:tito_app/src/viewModel/timer_viewModel.dart';
@@ -82,6 +84,19 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     controller.clear();
     focusNode.requestFocus();
     // Reset the timer to 8 minutes
+  }
+
+  void alarmButton(BuildContext context) {
+    final popupState = ref.read(popupProvider);
+    final popupViewModel = ref.read(popupProvider.notifier);
+
+    popupState.title = '토론 시작 시 알림을 보내드릴게요!';
+    popupState.imgSrc = 'assets/images/debatePopUpAlarm.png';
+    popupState.content = '토론 참여자가 정해지고 \n최종 토론이 개설 되면 \n푸시알림을 통해 알려드려요';
+    popupState.buttonContentLeft = '네 알겠어요';
+    popupState.buttonStyle = 1;
+
+    popupViewModel.showDebatePopup(context);
   }
 
   void sendJoinMessage() {

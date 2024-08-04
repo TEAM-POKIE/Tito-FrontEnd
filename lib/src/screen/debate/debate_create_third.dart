@@ -21,9 +21,9 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
   @override
   void initState() {
     super.initState();
-    final debateViewModel = ref.read(debateCreateProvider.notifier);
-    _contentController =
-        TextEditingController(text: debateViewModel.state.firstChatContent);
+
+    final debateState = ref.read(debateCreateProvider);
+    _contentController = TextEditingController(text: debateState.debateContent);
   }
 
   @override

@@ -48,19 +48,6 @@ class DebateCreateViewModel extends StateNotifier<DebateCreateState> {
         debateMakerOpinion: aOpinion, debateJoinerOpinion: bOpinion);
   }
 
-  void showDebatePopup(BuildContext context) {
-    final popupState = ref.read(popupProvider);
-    final popupViewModel = ref.read(popupProvider.notifier);
-
-    popupState.title = '토론 시작 시 알림을 보내드릴게요!';
-    popupState.imgSrc = 'assets/images/debatePopUpAlarm.png';
-    popupState.content = '토론 참여자가 정해지고 \n최종 토론이 개설 되면 \n푸시알림을 통해 알려드려요';
-    popupState.buttonContentLeft = '네 알겠어요';
-    popupState.buttonStyle = 1;
-
-    popupViewModel.showDebatePopup(context);
-  }
-
   void showRulePopup(BuildContext context) {
     final popupViewModel = ref.read(popupProvider.notifier);
     popupViewModel.showRulePopup(context);

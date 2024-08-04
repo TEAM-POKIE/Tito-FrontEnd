@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
 import 'package:tito_app/core/provider/websocket_provider.dart';
 import 'package:tito_app/src/viewModel/popup_viewModel.dart';
@@ -180,7 +181,7 @@ class DebatePopup extends ConsumerWidget {
             onPressed: () {
               if (popupState.title == '토론장을 개설하겠습니까?') {
                 debateState.debateImageUrl = '1221';
-                debateState.debateContent = '12';
+
                 startDebate();
               } else {
                 context.pop();
