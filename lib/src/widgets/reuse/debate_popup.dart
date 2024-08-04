@@ -104,6 +104,7 @@ class DebatePopup extends ConsumerWidget {
   Widget _oneButton(BuildContext context, WidgetRef ref) {
     final popupState = ref.watch(popupProvider);
     final popupViewModel = ref.watch(popupProvider.notifier);
+    final debateState = ref.watch(debateCreateProvider);
 
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -142,7 +143,7 @@ class DebatePopup extends ConsumerWidget {
         final debateData = debateState.toJson();
         print(debateData);
         final response = await ApiService(DioClient.dio).postDebate(debateData);
-
+        debateState.debateContent = '';
         context.push('/chat/${response.id}');
       } catch (error) {
         print('Error posting debate: $error');
@@ -152,8 +153,10 @@ class DebatePopup extends ConsumerWidget {
     void deleteDebate() async {
       final chatState = ref.read(chatInfoProvider);
       try {
-        final response =
-            await ApiService(DioClient.dio).deleteDebate(chatState!.id);
+        await ApiService(DioClient.dio).deleteDebate(chatState!.id);
+        popupState.buttonStyle = 0;
+
+        context.pop();
 
         context.go('/home');
       } catch (error) {

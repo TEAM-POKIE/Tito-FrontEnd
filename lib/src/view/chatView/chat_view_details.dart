@@ -8,6 +8,7 @@ import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/timer_provider.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:tito_app/src/view/chatView/live_comment.dart';
+import 'package:tito_app/src/view/chatView/votingbar.dart';
 
 class ChatViewDetails extends ConsumerStatefulWidget {
   final int id;
@@ -65,7 +66,16 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
           );
 
         default:
-          return LiveComment();
+          if (chatState.debateJoinerTurnCount > 2) {
+            return Column(
+              children: [
+                LiveComment(),
+                VotingBar(),
+              ],
+            );
+          } else {
+            return LiveComment();
+          }
       }
     }
   }

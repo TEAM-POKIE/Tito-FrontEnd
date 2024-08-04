@@ -64,6 +64,7 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
           backgroundColor: ColorSystem.white,
           leading: IconButton(
             onPressed: () {
+              debateState.debateContent = '';
               context.pop();
             },
             icon: const Icon(Icons.arrow_back_ios),
