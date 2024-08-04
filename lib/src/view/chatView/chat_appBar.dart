@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
+import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -44,7 +46,7 @@ class DebateAppbar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final popupViewModel = ref.read(popupProvider.notifier);
-    final popupState = ref.read(popupProvider);
+    final chatViewModel = ref.read(chatInfoProvider.notifier);
     final debateState = ref.read(chatInfoProvider);
     final loginInfo = ref.read(loginInfoProvider);
     String ImgUrl = '';
@@ -56,11 +58,16 @@ class DebateAppbar extends ConsumerWidget {
 
     return AppBar(
       backgroundColor: ColorSystem.white,
-      title: Text(
-        title,
-        style: FontSystem.KR16B,
-        maxLines: 1, // 텍스트를 한 줄로 제한
-        overflow: TextOverflow.ellipsis,
+      title: TextButton(
+        child: Text(
+          title,
+          style: FontSystem.KR16B,
+          maxLines: 1, // 텍스트를 한 줄로 제한
+          overflow: TextOverflow.ellipsis,
+        ),
+        onPressed: () {
+          popupViewModel.showTitlePopup(context);
+        },
       ),
       centerTitle: true,
       leading: IconButton(
@@ -77,14 +84,8 @@ class DebateAppbar extends ConsumerWidget {
         if (notiIcon != null && notiIcon!.isNotEmpty)
           IconButton(
             icon: Image.asset(notiIcon!),
-            onPressed: () async {
-              popupState.title = '토론 시작 시 알림을 보내드릴게요!';
-              popupState.imgSrc = 'assets/images/debatePopUpAlarm.png';
-              popupState.content =
-                  '토론 참여자가 정해지고 \n최종 토론이 개설 되면 \n푸시알림을 통해 알려드려요';
-              popupState.buttonContentLeft = '네 알겠어요';
-              popupState.buttonStyle = 1;
-              await popupViewModel.showDebatePopup(context);
+            onPressed: () {
+              chatViewModel.alarmButton(context);
             },
           ),
         Padding(

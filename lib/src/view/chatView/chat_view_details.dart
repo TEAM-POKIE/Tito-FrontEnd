@@ -63,13 +63,9 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
             downTitle: '당신의 의견 : ${chatState.debateJoinerOpinion}',
             downImage: 'assets/images/chatCuteIconPurple.svg',
           );
-        case 1:
-          return LiveComment();
+
         default:
-          return _DetailState(
-              upImage: 'assets/images/chatDefaultIcon.svg',
-              upTitle: '기본 상태입니다.',
-              downTitle: '토론을 시작해주세요.');
+          return LiveComment();
       }
     }
   }

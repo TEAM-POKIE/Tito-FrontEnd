@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:tito_app/core/constants/style.dart';
+import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/constants/style.dart';
@@ -16,6 +17,7 @@ class ProfilePopup extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final chatState = ref.read(chatInfoProvider);
     return Dialog(
       backgroundColor: ColorSystem.white,
       shape: RoundedRectangleBorder(
@@ -44,8 +46,7 @@ class ProfilePopup extends ConsumerWidget {
             Row(
               children: [
                 SvgPicture.asset('assets/icons/circle_profile.svg',
-                width: 70.w,
-                height: 70.h),
+                    width: 70.w, height: 70.h),
                 SizedBox(width: 20.w),
               ],
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
@@ -14,18 +15,18 @@ class ChatBottomDetail extends ConsumerStatefulWidget {
 }
 
 class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
-  void _handleSendMessage() async {
+  void handleSendMessage(context) async {
     final loginInfo = ref.read(loginInfoProvider);
     final chatViewModel = ref.read(chatInfoProvider.notifier);
     final chatState = ref.read(chatInfoProvider);
     final popupViewModel = ref.read(popupProvider.notifier);
     final popupState = ref.read(popupProvider);
-
+    print(chatState!.debateJoinerId);
     if (loginInfo == null) {
       return;
     }
-    // chatViewModel.sendMessage();
-    if (chatState!.debateJoinerId == 0 &&
+
+    if (chatState.debateJoinerId == 0 &&
         chatState.debateJoinerTurnCount == 0 &&
         chatState.debateOwnerId != loginInfo.id) {
       popupState.buttonStyle = 1;
@@ -51,36 +52,46 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
   Widget build(BuildContext context) {
     final chatViewModel = ref.read(chatInfoProvider.notifier);
 
-    return Padding(
+    return Container(
       padding: const EdgeInsets.all(16.0),
-      child: Row(
+      child: Column(
         children: [
-          Expanded(
-            child: TextField(
-              controller: chatViewModel.controller,
-              autocorrect: false,
-              focusNode: chatViewModel.focusNode,
-              decoration: InputDecoration(
-                hintText: '상대 의견 작성 타임이에요!',
-                fillColor: Colors.grey[200],
-                filled: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide.none,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              IconButton(
+                onPressed: () {},
+                icon: SvgPicture.asset('assets/icons/plus.svg'),
+              ),
+              Expanded(
+                child: TextField(
+                  controller: chatViewModel.controller,
+                  autocorrect: false,
+                  focusNode: chatViewModel.focusNode,
+                  decoration: InputDecoration(
+                    hintText: '상대 의견 작성 타임이에요!',
+                    fillColor: Colors.grey[200],
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  onSubmitted: (value) {
+                    handleSendMessage(context);
+                  },
                 ),
               ),
-              onSubmitted: (value) {
-                _handleSendMessage();
-              },
-            ),
+              const SizedBox(width: 8),
+              IconButton(
+                onPressed: () {
+                  handleSendMessage(context);
+                },
+                icon: Image.asset('assets/images/sendArrow.png'),
+              ),
+            ],
           ),
-          const SizedBox(width: 8),
-          IconButton(
-            onPressed: () {
-              _handleSendMessage();
-            },
-            icon: Image.asset('assets/images/sendArrow.png'),
-          ),
+          Text('갤러리'),
         ],
       ),
     );
