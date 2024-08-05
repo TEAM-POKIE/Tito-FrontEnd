@@ -78,6 +78,7 @@ dependencies:
   animated_size_and_fade: ^4.0.0
   flutter_slidable: ^3.1.1
   flutter_svg: ^2.0.10+1
+  shared_preferences: ^2.3.1
   flutter_spinkit: ^5.2.1
 
 dev_dependencies:
@@ -139,7 +140,10 @@ flutter:
     - assets/icons/timingBell.svg
     - assets/icons/debatePopUpAlarm.svg
     - assets/icons/voting.svg
-    - assets/icons/apple_size.svg
+    - assets/icons/sendArrow.svg
+    - assets/icons/popUpBell.svg
+    - assets/icons/whiteLLM.svg
+    - assets/icons/blackLLM.svg    - assets/icons/apple_size.svg
     - assets/icons/kakao_size.svg
     - assets/icons/google_size.svg
     - assets/icons/email_real.svg
@@ -171,7 +175,6 @@ flutter:
 
     - assets/images/alarm_none.png
     - assets/images/alarm.png
-    - assets/images/sendArrow.png
 
     - assets/images/like_btn.png
     - assets/images/liked_btn.png

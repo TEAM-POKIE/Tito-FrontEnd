@@ -156,9 +156,9 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<List<Debate>> getDebateList() async {
+  Future<List<Debate>> getDebateList(String state) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'state': state};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result = await _dio

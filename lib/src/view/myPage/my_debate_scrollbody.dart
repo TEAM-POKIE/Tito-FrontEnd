@@ -24,17 +24,16 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
   final List<int> _items = List<int>.generate(5, (int index) => index);
   List<Debate> debateList = [];
 
-
   Future<void> _madeInDebate({bool isRefresh = false}) async {
     try {
       final List<Debate> debateResponse =
-          await ApiService(DioClient.dio).getDebateList();
+          await ApiService(DioClient.dio).getDebateList('recentUpdate');
 
       setState(() {
         debateList = debateResponse.map((debate) {
           return Debate(
             id: debate.id,
-            debateTitle: debate.debateTitle, 
+            debateTitle: debate.debateTitle,
             debateCategory:
                 DebateListCategory.fromString(debate.debateCategory).toString(),
             debateStatus:
@@ -55,7 +54,6 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
       print('Error fetching debate list: $error');
     }
   }
-
 
   @override
   Widget build(BuildContext context) {

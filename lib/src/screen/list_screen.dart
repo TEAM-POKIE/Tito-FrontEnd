@@ -68,7 +68,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   Future<void> _fetchDebateList({bool isRefresh = false}) async {
     try {
       final List<Debate> debateResponse =
-          await ApiService(DioClient.dio).getDebateList();
+          await ApiService(DioClient.dio).getDebateList('recentUpdate');
 
       setState(() {
         debateList = debateResponse.map((debate) {
