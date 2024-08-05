@@ -29,8 +29,7 @@ class _ShowCaseScreenState extends State<ShowCaseScreen> {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         Future.delayed(Duration(seconds: 1), () {
-          ShowCaseWidget.of(context)
-              .startShowCase([_keyTimer, _keySuggestion, _keyMessage]);
+          ShowCaseWidget.of(context).startShowCase([_keyTimer, _keyMessage]);
         });
       },
     );
@@ -124,65 +123,24 @@ class _ShowCaseScreenState extends State<ShowCaseScreen> {
                 ],
               ),
             ),
-            Showcase(
-              key: _keyMessage,
-              description: '상대 의견 작성 타임이에요!',
-              tooltipBackgroundColor: Colors.grey,
-              textColor: Colors.white,
-              child: Expanded(
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: ColorSystem.grey3,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 4.0, horizontal: 8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            const SizedBox(width: 8),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Container(
-                                  constraints:
-                                      const BoxConstraints(maxWidth: 250),
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 8.0, horizontal: 16.0),
-                                  decoration: BoxDecoration(
-                                    color: ColorSystem.white,
-                                    borderRadius: BorderRadius.circular(12.0),
-                                  ),
-                                  child: Text(
-                                      '이 넓은 우주에 우리가 유일한 생명체일 리가 없다고 생각해요. 은하만 해도 수백억 개가 있는데 그중에 지구 같은 조건을 가진 행성이 없을까요?'),
-                                ),
-                                const SizedBox(height: 5),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16.0),
-                                  child: Text(
-                                    '10:00pm',
-                                    style: const TextStyle(
-                                        fontSize: 10, color: Colors.black54),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const CircleAvatar(child: Icon(Icons.person)),
-                          ],
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: ColorSystem.grey3,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 4.0, horizontal: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          const CircleAvatar(child: Icon(Icons.person)),
                           const SizedBox(width: 8),
                           Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Container(
                                 constraints:
@@ -194,7 +152,7 @@ class _ShowCaseScreenState extends State<ShowCaseScreen> {
                                   borderRadius: BorderRadius.circular(12.0),
                                 ),
                                 child: Text(
-                                    '만약에 외계인이 정말 있다면 왜 우리랑 접촉을 안 하겠어요? 파미의 역설이라는게 있잖아요 그동안 아무런 접촉이 없었다는 건 애초에 없다는 증거 아닌가요?'),
+                                    '이 넓은 우주에 우리가 유일한 생명체일 리가 없다고 생각해요. 은하만 해도 수백억 개가 있는데 그중에 지구 같은 조건을 가진 행성이 없을까요?'),
                               ),
                               const SizedBox(height: 5),
                               Padding(
@@ -202,16 +160,50 @@ class _ShowCaseScreenState extends State<ShowCaseScreen> {
                                     horizontal: 16.0),
                                 child: Text(
                                   '10:00pm',
-                                  style: FontSystem.KR12R
-                                      .copyWith(color: ColorSystem.grey),
+                                  style: const TextStyle(
+                                      fontSize: 10, color: Colors.black54),
                                 ),
                               ),
                             ],
                           ),
+                          const CircleAvatar(child: Icon(Icons.person)),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const CircleAvatar(child: Icon(Icons.person)),
+                        const SizedBox(width: 8),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              constraints: const BoxConstraints(maxWidth: 250),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8.0, horizontal: 16.0),
+                              decoration: BoxDecoration(
+                                color: ColorSystem.white,
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              child: Text(
+                                  '만약에 외계인이 정말 있다면 왜 우리랑 접촉을 안 하겠어요? 파미의 역설이라는게 있잖아요 그동안 아무런 접촉이 없었다는 건 애초에 없다는 증거 아닌가요?'),
+                            ),
+                            const SizedBox(height: 5),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Text(
+                                '10:00pm',
+                                style: FontSystem.KR12R
+                                    .copyWith(color: ColorSystem.grey),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -254,7 +246,14 @@ class _ShowCaseScreenState extends State<ShowCaseScreen> {
                 ),
               ),
             ),
-            Expanded(
+            Showcase(
+              key: _keyMessage,
+              description: 'AI의 도움을 받아 나의 의견을 완성시켜보세요!',
+              tooltipBackgroundColor: ColorSystem.purple,
+              targetBorderRadius: BorderRadius.circular(12),
+              tooltipPadding: EdgeInsets.all(10),
+              tooltipBorderRadius: BorderRadius.circular(12),
+              textColor: Colors.white,
               child: Container(
                 padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
@@ -263,37 +262,76 @@ class _ShowCaseScreenState extends State<ShowCaseScreen> {
                       topRight: Radius.circular(15)),
                   color: ColorSystem.white,
                 ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                child: Column(
                   children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset('assets/icons/plus.svg'),
-                    ),
-                    Expanded(
-                      child: TextField(
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                          hintText: '상대 의견 작성 타임이에요!',
-                          fillColor: Colors.grey[200],
-                          filled: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                            borderSide: BorderSide.none,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 16.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SvgPicture.asset('assets/icons/blackLLM.svg'),
+                          SizedBox(
+                            width: 10,
                           ),
-                        ),
-                        onSubmitted: (value) {},
+                          Container(
+                            constraints: const BoxConstraints(maxWidth: 250),
+                            decoration: BoxDecoration(
+                              color: ColorSystem.white,
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'LLM의 작성 코칭!',
+                                  style: FontSystem.KR14M
+                                      .copyWith(color: ColorSystem.purple),
+                                ),
+                                Text(
+                                  '지금 작성하신 주장은 주제에서 벗어난 것 같아요. 파미의 역설에 대한 반박글을 한문장으로 작성하는 것을 추천해요!',
+                                  style: FontSystem.KR14R
+                                      .copyWith(color: ColorSystem.purple),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset('assets/icons/sendArrow.svg'),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          onPressed: () {},
+                          icon: SvgPicture.asset('assets/icons/plus.svg'),
+                        ),
+                        Expanded(
+                          child: TextField(
+                            autocorrect: false,
+                            decoration: InputDecoration(
+                              hintText: '상대 의견 작성 타임이에요!',
+                              fillColor: Colors.grey[200],
+                              filled: true,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                                borderSide: BorderSide.none,
+                              ),
+                            ),
+                            onSubmitted: (value) {},
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        IconButton(
+                          onPressed: () {},
+                          icon: SvgPicture.asset('assets/icons/sendArrow.svg'),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
