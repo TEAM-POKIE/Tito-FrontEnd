@@ -22,17 +22,24 @@ class _ShowCaseScreenState extends State<ShowCaseScreen> {
   final GlobalKey _keyTimer = GlobalKey();
   final GlobalKey _keySuggestion = GlobalKey();
   final GlobalKey _keyMessage = GlobalKey();
-
+  int _currentShowcaseIndex = 0;
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         Future.delayed(Duration(seconds: 1), () {
-          ShowCaseWidget.of(context).startShowCase([_keyTimer, _keyMessage]);
+          ShowCaseWidget.of(context)
+              .startShowCase([_keyTimer, _keyMessage, _keySuggestion]);
         });
       },
     );
+  }
+
+  void _onShowcaseStateChanged(int index) {
+    setState(() {
+      _currentShowcaseIndex = index;
+    });
   }
 
   @override
@@ -110,6 +117,8 @@ class _ShowCaseScreenState extends State<ShowCaseScreen> {
                             tooltipPadding: EdgeInsets.all(10),
                             tooltipBorderRadius: BorderRadius.circular(12),
                             textColor: Colors.white,
+                            onTargetClick: () => _onShowcaseStateChanged(1),
+                            disposeOnTap: true,
                             child: Text(
                               '⏳ 7:20 토론 시작 전',
                               style: FontSystem.KR16B
@@ -216,31 +225,42 @@ class _ShowCaseScreenState extends State<ShowCaseScreen> {
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorSystem.black,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 4),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                  child: Showcase(
+                    key: _keySuggestion,
+                    description: 'AI의 도움을 받아 나의 의견을 완성시켜보세요!',
+                    tooltipBackgroundColor: ColorSystem.purple,
+                    targetBorderRadius: BorderRadius.circular(12),
+                    tooltipPadding: EdgeInsets.all(10),
+                    tooltipBorderRadius: BorderRadius.circular(12),
+                    onTargetClick: () => _onShowcaseStateChanged(3),
+                    disposeOnTap: true,
+                    textColor: Colors.white,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ColorSystem.black,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 4),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
                       ),
-                    ),
-                    onPressed: () {},
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SvgPicture.asset(
-                          'assets/icons/timingBell.svg',
-                          width: 20, // 아이콘 크기 조정
-                          height: 20,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          '타이밍 벨',
-                          style: FontSystem.KR16B
-                              .copyWith(color: ColorSystem.yellow),
-                        ),
-                      ],
+                      onPressed: () {},
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icons/timingBell.svg',
+                            width: 20, // 아이콘 크기 조정
+                            height: 20,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            '타이밍 벨',
+                            style: FontSystem.KR16B
+                                .copyWith(color: ColorSystem.yellow),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -253,6 +273,8 @@ class _ShowCaseScreenState extends State<ShowCaseScreen> {
               targetBorderRadius: BorderRadius.circular(12),
               tooltipPadding: EdgeInsets.all(10),
               tooltipBorderRadius: BorderRadius.circular(12),
+              onTargetClick: () => _onShowcaseStateChanged(2),
+              disposeOnTap: true,
               textColor: Colors.white,
               child: Container(
                 padding: const EdgeInsets.all(16.0),
@@ -264,41 +286,47 @@ class _ShowCaseScreenState extends State<ShowCaseScreen> {
                 ),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 16.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SvgPicture.asset('assets/icons/blackLLM.svg'),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Container(
-                            constraints: const BoxConstraints(maxWidth: 250),
-                            decoration: BoxDecoration(
-                              color: ColorSystem.white,
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            child: Column(
+                    _currentShowcaseIndex < 2
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 16.0),
+                            child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  'LLM의 작성 코칭!',
-                                  style: FontSystem.KR14M
-                                      .copyWith(color: ColorSystem.purple),
+                                SvgPicture.asset('assets/icons/blackLLM.svg'),
+                                SizedBox(
+                                  width: 10,
                                 ),
-                                Text(
-                                  '지금 작성하신 주장은 주제에서 벗어난 것 같아요. 파미의 역설에 대한 반박글을 한문장으로 작성하는 것을 추천해요!',
-                                  style: FontSystem.KR14R
-                                      .copyWith(color: ColorSystem.purple),
+                                Container(
+                                  constraints:
+                                      const BoxConstraints(maxWidth: 250),
+                                  decoration: BoxDecoration(
+                                    color: ColorSystem.white,
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'LLM의 작성 코칭!',
+                                        style: FontSystem.KR14M.copyWith(
+                                            color: ColorSystem.purple),
+                                      ),
+                                      Text(
+                                        '지금 작성하신 주장은 주제에서 벗어난 것 같아요. 파미의 역설에 대한 반박글을 한문장으로 작성하는 것을 추천해요!',
+                                        style: FontSystem.KR14R.copyWith(
+                                            color: ColorSystem.purple),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
+                          )
+                        : SizedBox(
+                            width: 0,
                           ),
-                        ],
-                      ),
-                    ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
