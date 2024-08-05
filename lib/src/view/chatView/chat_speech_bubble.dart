@@ -62,11 +62,15 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
           if (chatState.debateJoinerTurnCount > 2) {
             return Column(
               children: [
-                TimingButton(
-                    popupViewModel: popupViewModel,
-                    popupState: popupState,
-                    imgSrc: 'assets/icons/timingBell.svg',
-                    content: '타이밍 벨'),
+                chatState.canTiming == true
+                    ? TimingButton(
+                        popupViewModel: popupViewModel,
+                        popupState: popupState,
+                        imgSrc: 'assets/icons/timingBell.svg',
+                        content: '타이밍 벨')
+                    : SizedBox(
+                        width: 0,
+                      ),
                 VotingBar(),
               ],
             );

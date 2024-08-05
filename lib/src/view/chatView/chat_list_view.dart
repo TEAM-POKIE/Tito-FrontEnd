@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:tito_app/core/provider/websocket_provider.dart';
 import 'package:tito_app/src/data/models/login_info.dart';
 
@@ -25,17 +26,21 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
   List<Map<String, dynamic>> _messages = [];
   late StreamSubscription<Map<String, dynamic>> _subscription;
   bool _isTyping = false;
+  Timer? _typingTimer;
 
   @override
   void initState() {
     super.initState();
-    _fetchDebateInfo();
-    _subscribeToMessages();
+    Future.microtask(() {
+      _fetchDebateInfo();
+      _subscribeToMessages();
+    });
   }
 
   @override
   void dispose() {
     _subscription.cancel();
+    _typingTimer?.cancel();
     super.dispose();
   }
 
@@ -44,22 +49,54 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
     await chatViewModel.fetchDebateInfo(widget.id);
   }
 
-  void _subscribeToMessages() {
-    final webSocketService = ref.read(webSocketProvider);
-    _subscription = webSocketService.stream.listen((message) {
-      if (message.containsKey('content')) {
-        setState(() {
-          _messages.add(message);
+  void _handlePopupIfNeeded(Map<String, dynamic> message, LoginInfo loginInfo) {
+    final chatState = ref.read(chatInfoProvider);
+    final popupViewModel = ref.read(popupProvider.notifier);
+
+    if (message['command'] == 'TIMING_BELL_REQ' &&
+        loginInfo.id != message['userId'] &&
+        message['content'] == 'timing bell request') {
+      if (chatState!.debateJoinerId == loginInfo.id ||
+          chatState.debateOwnerId == loginInfo.id) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            popupViewModel.showTimingReceive(context);
+            chatState.canTiming = false;
+          }
         });
       }
-      if (message['command'] == 'TYPING') {
-        setState(() {
-          _isTyping = true;
-        });
-        Future.delayed(Duration(seconds: 2), () {
+    } else if (message['command'] == 'TIMING_BELL_REQ') {
+      chatState!.canTiming = false;
+    }
+  }
+
+  void _subscribeToMessages() {
+    final webSocketService = ref.read(webSocketProvider);
+    final loginInfo = ref.watch(loginInfoProvider);
+    _subscription = webSocketService.stream.listen((message) {
+      if (message.containsKey('content')) {
+        if (mounted) {
           setState(() {
-            _isTyping = false;
+            _messages.add(message);
+            if (loginInfo != null) {
+              _handlePopupIfNeeded(message, loginInfo);
+            }
           });
+        }
+      }
+      if (message['command'] == 'TYPING') {
+        if (mounted) {
+          setState(() {
+            _isTyping = true;
+          });
+        }
+        _typingTimer?.cancel(); // 기존 타이머를 취소
+        _typingTimer = Timer(Duration(seconds: 2), () {
+          if (mounted) {
+            setState(() {
+              _isTyping = false;
+            });
+          }
         });
       }
     });
@@ -116,6 +153,7 @@ class JoinerChatList extends StatelessWidget {
         final message = messages[index];
         final isMyMessage = message['userId'] == loginInfo.id;
         final chatMessage = message['command'] == 'CHAT';
+        final notifyMessage = message['command'] == 'NOTIFY';
 
         final formattedTime = TimeOfDay.now().format(context);
 
@@ -160,10 +198,14 @@ class JoinerChatList extends StatelessWidget {
                       ],
                     ),
                   )
-                : Container(
-                    padding: EdgeInsets.only(top: 5, bottom: 5),
-                    child: Center(child: Text(message['content'] ?? '')),
-                  ),
+                : notifyMessage
+                    ? Container(
+                        padding: EdgeInsets.only(top: 5, bottom: 5),
+                        child: Center(child: Text(message['content'] ?? '')),
+                      )
+                    : SizedBox(
+                        width: 0,
+                      ),
             index == messages.length - 1 && message['userId'] == loginInfo.id
                 ? Padding(
                     padding: const EdgeInsets.only(left: 8.0),

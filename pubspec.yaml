@@ -139,6 +139,7 @@ flutter:
     - assets/icons/debatePopUpAlarm.svg
     - assets/icons/voting.svg
     - assets/icons/sendArrow.svg
+    - assets/icons/popUpBell.svg
     - assets/images/logo.png
     - assets/images/hotlist.png
     - assets/images/mypage.png

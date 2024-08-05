@@ -73,7 +73,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     if (message.isEmpty) return;
 
     final jsonMessage = json.encode({
-      "type": "CHAT",
+      "command": "CHAT",
       "userId": loginInfo?.id ?? '',
       "debateId": state?.id ?? 0,
       "content": message
@@ -84,6 +84,41 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     controller.clear();
     focusNode.requestFocus();
     // Reset the timer to 8 minutes
+  }
+
+  void timingSend() {
+    final loginInfo = ref.read(loginInfoProvider);
+    final jsonMessage = json.encode({
+      "command": "TIMING_BELL_REQ",
+      "userId": loginInfo?.id ?? '',
+      "debateId": state?.id ?? 0,
+    });
+
+    _channel.sink.add(jsonMessage);
+  }
+
+  void timingOKResponse() {
+    final loginInfo = ref.read(loginInfoProvider);
+    final jsonMessage = json.encode({
+      "command": "TIMING_BELL_RES",
+      "userId": loginInfo?.id ?? '',
+      "debateId": state?.id ?? 0,
+      "content": 'OK',
+    });
+
+    _channel.sink.add(jsonMessage);
+  }
+
+  void timingNOResponse() {
+    final loginInfo = ref.read(loginInfoProvider);
+    final jsonMessage = json.encode({
+      "command": "TIMING_BELL_RES",
+      "userId": loginInfo?.id ?? '',
+      "debateId": state?.id ?? 0,
+      "content": 'REJ',
+    });
+
+    _channel.sink.add(jsonMessage);
   }
 
   void alarmButton(BuildContext context) {
@@ -107,7 +142,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     if (message.isEmpty) return;
 
     final jsonMessage = json.encode({
-      "type": "JOIN",
+      "command": "JOIN",
       "userId": loginInfo?.id ?? '',
       "debateId": state?.id ?? 0,
       "content": message

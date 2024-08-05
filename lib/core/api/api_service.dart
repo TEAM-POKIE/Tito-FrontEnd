@@ -29,7 +29,7 @@ abstract class ApiService {
       @Path("id") int id, @Body() Map<String, dynamic> data);
 
   @GET("debates")
-  Future<List<Debate>> getDebateList();
+  Future<List<Debate>> getDebateList(@Query('state') String state);
   @GET("debates/{id}/participants")
   Future<List<DebateParticipants>> getParicipants(@Path("id") int debateId);
   @GET("debates/{id}")

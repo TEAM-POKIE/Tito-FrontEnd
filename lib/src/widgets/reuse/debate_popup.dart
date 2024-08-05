@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/api/api_service.dart';
@@ -116,11 +115,15 @@ class DebatePopup extends ConsumerWidget {
       ),
       onPressed: () async {
         if (popupState.title == '토론에 참여 하시겠어요?') {
-          popupState.buttonStyle = 0;
-          popupState.title = '토론이 시작 됐어요! 🎵';
-          popupState.content = '서로 존중하는 토론을 부탁드려요!';
+          ref.read(popupProvider.notifier).state = popupState.copyWith(
+            buttonStyle: 0,
+            title: '토론이 시작 됐어요! 🎵',
+            content: '서로 존중하는 토론을 부탁드려요!',
+          );
 
           context.pop();
+          await Future.delayed(
+              Duration(milliseconds: 100)); // ensure popup has closed
           popupViewModel.showDebatePopup(context);
         } else if (popupState.title == '토론 시작 시 알림을 보내드릴게요!') {
           context.pop();
@@ -137,6 +140,7 @@ class DebatePopup extends ConsumerWidget {
     final popupState = ref.watch(popupProvider);
     final popupViewModel = ref.watch(popupProvider.notifier);
     final debateState = ref.watch(debateCreateProvider);
+    final chatViewModel = ref.watch(chatInfoProvider.notifier);
 
     void startDebate() async {
       try {
@@ -154,10 +158,13 @@ class DebatePopup extends ConsumerWidget {
       final chatState = ref.read(chatInfoProvider);
       try {
         await ApiService(DioClient.dio).deleteDebate(chatState!.id);
-        popupState.buttonStyle = 0;
+        ref.read(popupProvider.notifier).state = popupState.copyWith(
+          buttonStyle: 0,
+        );
 
         context.pop();
-
+        await Future.delayed(
+            Duration(milliseconds: 100)); // ensure popup has closed
         context.go('/home');
       } catch (error) {
         print('Error posting debate: $error');
@@ -177,6 +184,9 @@ class DebatePopup extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(vertical: 10),
             ),
             onPressed: () {
+              if (popupState.title == '상대방이 타이밍 벨을 울렸어요!') {
+                chatViewModel.timingNOResponse();
+              }
               context.pop();
             },
             child: Text(
@@ -202,8 +212,16 @@ class DebatePopup extends ConsumerWidget {
                 startDebate();
               } else if (popupState.title == '토론을 삭제 하시겠어요?') {
                 deleteDebate();
+              } else if (popupState.title == '정말 토론을 끝내시려구요?') {
+                chatViewModel.timingSend();
+                context.pop();
+              } else if (popupState.title == '상대방이 타이밍 벨을 울렸어요!') {
+                chatViewModel.timingOKResponse();
+                context.pop();
               } else {
                 context.pop();
+                Future.delayed(
+                    Duration(milliseconds: 100)); // ensure popup has closed
                 popupViewModel.showDebatePopup(context);
               }
             },
