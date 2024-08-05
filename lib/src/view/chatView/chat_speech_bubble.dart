@@ -203,15 +203,15 @@ class _StaticTextBubbleState extends State<StaticTextBubble> {
 }
 
 class TimingButton extends StatelessWidget {
-  final PopupViewmodel popupViewModel;
-  final PopupState popupState;
+  final PopupViewmodel? popupViewModel;
+  final PopupState? popupState;
   final String content;
   final String imgSrc;
 
   const TimingButton({
     super.key,
-    required this.popupViewModel,
-    required this.popupState,
+    this.popupViewModel,
+    this.popupState,
     required this.imgSrc,
     required this.content,
   });
@@ -231,7 +231,7 @@ class TimingButton extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            popupViewModel.showTimingPopup(context);
+            popupViewModel!.showTimingPopup(context);
           },
           child: Row(
             mainAxisSize: MainAxisSize.min,

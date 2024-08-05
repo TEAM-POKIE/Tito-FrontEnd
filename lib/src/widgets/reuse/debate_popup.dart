@@ -124,7 +124,7 @@ class DebatePopup extends ConsumerWidget {
           context.pop();
           await Future.delayed(
               Duration(milliseconds: 100)); // ensure popup has closed
-          popupViewModel.showDebatePopup(context);
+          // popupViewModel.showDebatePopup(context);
         } else if (popupState.title == '토론 시작 시 알림을 보내드릴게요!') {
           context.pop();
         }

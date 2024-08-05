@@ -51,14 +51,14 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
 
     if (chatState!.debateJoinerId == loginInfo.id ||
         chatState.debateOwnerId == loginInfo.id) {
-      return _DetailState(
+      return DetailState(
           upImage: 'assets/images/detailChatIcon.svg',
           upTitle: '상대 반론자를 찾는 중이예요 !',
           downTitle: '⏳ ${remainingTime} 토론 시작 전');
     } else {
       switch (chatState.debateJoinerTurnCount) {
         case 0:
-          return _DetailState(
+          return DetailState(
             upImage: 'assets/images/chatCuteIcon.svg',
             upTitle: '상대의 의견 : ${chatState.debateMakerOpinion}',
             downTitle: '당신의 의견 : ${chatState.debateJoinerOpinion}',
@@ -74,13 +74,13 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
   }
 }
 
-class _DetailState extends StatelessWidget {
+class DetailState extends StatelessWidget {
   final String upImage;
   final String upTitle;
   final String? downImage;
   final String? downTitle;
 
-  const _DetailState({
+  const DetailState({
     required this.upImage,
     required this.upTitle,
     this.downTitle,
