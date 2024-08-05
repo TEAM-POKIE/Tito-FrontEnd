@@ -77,6 +77,24 @@ class PopupViewmodel extends StateNotifier<PopupState> {
     return result ?? false; // return false if result is null
   }
 
+  Future<bool> showEndPopup(BuildContext context) async {
+    state = state.copyWith(
+      title: '토론이 종료 됐어요!',
+      content: '투표가 진행중이에요\n투표가 종료되면 알려드릴게요',
+      buttonStyle: 0,
+      imgSrc: 'assets/icons/chatIconRight.svg',
+    );
+
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return const DebatePopup();
+      },
+    );
+
+    return result ?? false; // return false if result is null
+  }
+
   // 토론 팝업 띄우기
   Future<bool> showDebatePopup(BuildContext context) async {
     final loginInfo = ref.read(loginInfoProvider);

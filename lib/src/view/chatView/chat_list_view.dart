@@ -65,8 +65,14 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
           }
         });
       }
-    } else if (message['command'] == 'TIMING_BELL_REQ') {
+    } else if (message['command'] == 'TIMING_BELL_RES') {
       chatState!.canTiming = false;
+    } else if (message['content'] == "토론이 종료 되었습니다.") {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          popupViewModel.showEndPopup(context);
+        }
+      });
     }
   }
 
