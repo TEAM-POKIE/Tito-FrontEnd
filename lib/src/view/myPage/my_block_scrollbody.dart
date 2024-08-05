@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/src/screen/home_screen.dart';
 import 'package:tito_app/core/constants/style.dart';
-import 'package:tito_app/src/view/chatView/profile_popup.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 

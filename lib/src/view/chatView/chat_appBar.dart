@@ -7,7 +7,7 @@ import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
-
+import 'package:tito_app/core/provider/login_provider.dart';
 
 class ChatAppbar extends ConsumerWidget {
   final int id;

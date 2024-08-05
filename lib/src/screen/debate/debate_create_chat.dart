@@ -81,18 +81,22 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
         child: Column(
           children: [
             SizedBox(height: 20.h),
-            DefaultTextStyle(
-              textAlign: TextAlign.center,
-              style: FontSystem.KR14R.copyWith(color: ColorSystem.purple),
-              child: AnimatedTextKit(
-                repeatForever: true,
-                animatedTexts: [
-                  FadeAnimatedText(
-                    '토론방이 개설되려면 당신의 첫 입론이 필요합니다.\n입론을 작성해주세요!',
-                    textAlign: TextAlign.center,
+            Row(
+              children: [
+                DefaultTextStyle(
+                  textAlign: TextAlign.center,
+                  style: FontSystem.KR14R.copyWith(color: ColorSystem.purple),
+                  child: AnimatedTextKit(
+                    repeatForever: true,
+                    animatedTexts: [
+                      FadeAnimatedText(
+                        '토론방이 개설되려면 당신의 첫 입론이 필요합니다.\n입론을 작성해주세요!',
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             Expanded(
               child: Container(
@@ -101,7 +105,6 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
                 child: StaticTextBubble(
                   title: '첫 입론을 입력해주세요!',
                   width: 180.w,
-                  height: 45.h,
                 ),
               ),
             ),

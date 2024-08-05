@@ -135,6 +135,8 @@ flutter:
     - assets/icons/dot.svg
     - assets/icons/chat_cute.svg
 
+    
+
     - assets/images/logo.png
     - assets/images/hotlist.png
     - assets/images/mypage.png

@@ -16,7 +16,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tito_app/src/view/myPage/exit_popup.dart';
 import 'package:tito_app/src/view/myPage/logout_popup.dart';
 
-
 import 'package:tito_app/src/widgets/reuse/profile_popup.dart';
 
 class MypageMain extends ConsumerStatefulWidget {

@@ -8,6 +8,7 @@ import 'package:tito_app/src/data/models/debate_list.dart';
 import 'package:tito_app/src/data/models/debate_participants.dart';
 import 'package:tito_app/src/data/models/login_info.dart';
 import 'package:tito_app/src/data/models/auth_response.dart';
+import 'package:tito_app/src/data/models/debate_usermade.dart';
 
 part 'api_service.g.dart';
 
@@ -23,6 +24,9 @@ abstract class ApiService {
 
   @GET("users")
   Future<LoginInfo> getUserInfo();
+
+  @GET("users/debates")
+  Future<DebateUsermade> getUserMade();
 
   @PATCH("users/{id}")
   Future<void> updateUserProfile(

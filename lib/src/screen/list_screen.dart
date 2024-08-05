@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
@@ -47,15 +48,15 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 
 // 아래로 내렸을 때 새로고침 되는 코드
   void _onRefresh() async {
-    //await _fetchDebateList();
-    await _fetchDebateList(isRefresh: true); // 새로고침 시 기존 데이터를 대체
+    await _fetchDebateList();
+    // await _fetchDebateList(isRefresh: true); // 새로고침 시 기존 데이터를 대체
     _refreshController.refreshCompleted();
   }
 
 // 리스트 끝에 도달했을 때 호출되는 코드
   void _onLoading() async {
-    //await _fetchDebateList();
-    await _fetchDebateList(isRefresh: false); // 로딩 시 데이터를 추가
+    await _fetchDebateList();
+    // await _fetchDebateList(isRefresh: false); // 로딩 시 데이터를 추가
     _refreshController.loadComplete();
   }
 
@@ -69,85 +70,29 @@ class _ListScreenState extends ConsumerState<ListScreen> {
       final List<Debate> debateResponse =
           await ApiService(DioClient.dio).getDebateList();
 
-      //   setState(() {
-      //     debateList = debateResponse.map((debate) {
-      //       return Debate(
-      //         id: debate.id,
-      //         debateTitle: debate.debateTitle,
-      //         debateCategory:
-      //             DebateListCategory.fromString(debate.debateCategory).toString(),
-      //         debateStatus:
-      //             DebateListStatus.fromString(debate.debateStatus).toString(),
-      //         debateMakerOpinion: debate.debateMakerOpinion,
-      //         debateJoinerOpinion: debate.debateJoinerOpinion,
-      //         debatedTimeLimit: debate.debatedTimeLimit,
-      //         debateViewCount: debate.debateViewCount,
-      //         debateCommentCount: debate.debateCommentCount,
-      //         debateRealtimeParticipants: debate.debateRealtimeParticipants,
-      //         debateAlarmCount: debate.debateAlarmCount,
-      //         createdAt: debate.createdAt,
-      //         updatedAt: debate.updatedAt,
-      //       );
-      //     }).toList();
-      //   });
-      // } catch (error) {
-      //   print('Error fetching debate list: $error');
-      // }
       setState(() {
-        if (isRefresh) {
-          // 새로고침일 경우 기존 데이터를 대체
-          debateList = debateResponse.map((debate) {
-            return Debate(
-              id: debate.id,
-              debateTitle: debate.debateTitle,
-              debateCategory:
-                  DebateListCategory.fromString(debate.debateCategory)
-                      .toString(),
-              debateStatus:
-                  DebateListStatus.fromString(debate.debateStatus).toString(),
-              debateMakerOpinion: debate.debateMakerOpinion,
-              debateJoinerOpinion: debate.debateJoinerOpinion,
-              debatedTimeLimit: debate.debatedTimeLimit,
-              debateViewCount: debate.debateViewCount,
-              debateCommentCount: debate.debateCommentCount,
-              debateRealtimeParticipants: debate.debateRealtimeParticipants,
-              debateAlarmCount: debate.debateAlarmCount,
-              createdAt: debate.createdAt,
-              updatedAt: debate.updatedAt,
-            );
-          }).toList();
-        } else {
-          // 로딩일 경우 기존 리스트에 데이터를 추가
-          debateList.addAll(debateResponse.map((debate) {
-            return Debate(
-              id: debate.id,
-              debateTitle: debate.debateTitle,
-              debateCategory:
-                  DebateListCategory.fromString(debate.debateCategory)
-                      .toString(),
-              debateStatus:
-                  DebateListStatus.fromString(debate.debateStatus).toString(),
-              debateMakerOpinion: debate.debateMakerOpinion,
-              debateJoinerOpinion: debate.debateJoinerOpinion,
-              debatedTimeLimit: debate.debatedTimeLimit,
-              debateViewCount: debate.debateViewCount,
-              debateCommentCount: debate.debateCommentCount,
-              debateRealtimeParticipants: debate.debateRealtimeParticipants,
-              debateAlarmCount: debate.debateAlarmCount,
-              createdAt: debate.createdAt,
-              updatedAt: debate.updatedAt,
-            );
-          }).toList());
-        }
+        debateList = debateResponse.map((debate) {
+          return Debate(
+            id: debate.id,
+            debateTitle: debate.debateTitle,
+            debateCategory:
+                DebateListCategory.fromString(debate.debateCategory).toString(),
+            debateStatus:
+                DebateListStatus.fromString(debate.debateStatus).toString(),
+            debateMakerOpinion: debate.debateMakerOpinion,
+            debateJoinerOpinion: debate.debateJoinerOpinion,
+            debatedTimeLimit: debate.debatedTimeLimit,
+            debateViewCount: debate.debateViewCount,
+            debateCommentCount: debate.debateCommentCount,
+            debateRealtimeParticipants: debate.debateRealtimeParticipants,
+            debateAlarmCount: debate.debateAlarmCount,
+            createdAt: debate.createdAt,
+            updatedAt: debate.updatedAt,
+          );
+        }).toList();
       });
     } catch (error) {
-      if (error is DioException) {
-        print('Error type: ${error.type}');
-        print('Error message: ${error.message}');
-        print('Error response: ${error.response}');
-      } else {
-        print('Error: $error');
-      }
+      print('Error fetching debate list: $error');
     }
   }
 
@@ -305,7 +250,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                 thickness: 8.0,
                 radius: Radius.circular(20.r),
                 child: ListView.builder(
-                  itemCount: 15,
+                  itemCount: debateList.length,
                   itemBuilder: (context, index) {
                     final debate = debateList[index];
                     return Padding(

@@ -8,7 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:tito_app/core/provider/login_provider.dart';
 
 class MyDebateFirstbody extends ConsumerStatefulWidget {
   const MyDebateFirstbody({super.key});
@@ -33,17 +33,37 @@ class _MyDebateFirstbodyState extends ConsumerState<MyDebateFirstbody> {
 
   @override
   Widget build(BuildContext context) {
+    final loginInfo = ref.watch(loginInfoProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: 50.h,
+          height: 20.h,
         ),
         Padding(
           padding: EdgeInsets.only(left: 20.w),
-          child: const Text(
-            '포키님은 12번의 토론 중\n10번을 이기셨어요!',
-            style: FontSystem.KR20R,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Text('${loginInfo?.nickname}',
+                        style: FontSystem.KR20B
+                      ),
+                  const Text(
+                    ' 님은 12번의 토론 중',
+                    style: FontSystem.KR20R,
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  const Text(
+                    '10번을 이기셨어요!',
+                    style: FontSystem.KR20R,
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
         Row(

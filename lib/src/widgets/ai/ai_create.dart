@@ -7,6 +7,7 @@ import 'package:tito_app/src/widgets/ai/selection_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tito_app/core/constants/style.dart';
+import 'package:go_router/go_router.dart';
 
 class AiCreate extends StatelessWidget {
   SelectionController selectionController = Get.put(SelectionController());
@@ -73,7 +74,7 @@ class AiCreate extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              context.pop();
             },
             icon: const Icon(Icons.arrow_back_ios),
           ),
