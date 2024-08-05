@@ -35,7 +35,7 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
       popupState.buttonContentLeft = '토론 참여하기';
       popupState.content = '작성하신 의견을 전송하면\n토론 개설자에게 보여지고\n토론이 본격적으로 시작돼요!';
       await popupViewModel.showDebatePopup(context);
-      chatViewModel.sendJoinMessage();
+      chatViewModel.sendJoinMessage(context);
     } else if (chatState.debateJoinerId == loginInfo.id ||
         chatState.debateOwnerId == loginInfo.id) {
       chatViewModel.sendMessage();

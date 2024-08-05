@@ -13,6 +13,7 @@ import 'package:tito_app/src/screen/myPage/my_debate.dart';
 import 'package:tito_app/src/screen/myPage/my_like.dart';
 import 'package:tito_app/src/screen/myPage/my_block.dart';
 import 'package:tito_app/splash_screen.dart';
+import 'package:tito_app/src/view/chatView/show_case.dart';
 import 'package:tito_app/src/view/myPage/my_personalRule.dart';
 import 'package:tito_app/src/view/myPage/my_rule.dart';
 import 'package:tito_app/src/widgets/ai/ai_create.dart';
@@ -148,6 +149,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/basicLogin',
       builder: (context, state) => const BasicLogin(),
+    ),
+    GoRoute(
+      path: '/showCase',
+      builder: (context, state) => ShowCase(),
     ),
   ],
 );
