@@ -3,14 +3,15 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
-import 'package:tito_app/core/provider/chat_view_provider.dart';
+
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
-import 'package:tito_app/core/provider/timer_provider.dart';
+
 import 'package:tito_app/src/data/models/debate_info.dart';
-import 'package:tito_app/src/data/models/debate_participants.dart';
+
 import 'package:tito_app/src/viewModel/timer_viewModel.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
@@ -73,7 +74,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     if (message.isEmpty) return;
 
     final jsonMessage = json.encode({
-      "type": "CHAT",
+      "command": "CHAT",
       "userId": loginInfo?.id ?? '',
       "debateId": state?.id ?? 0,
       "content": message
@@ -84,6 +85,41 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     controller.clear();
     focusNode.requestFocus();
     // Reset the timer to 8 minutes
+  }
+
+  void timingSend() {
+    final loginInfo = ref.read(loginInfoProvider);
+    final jsonMessage = json.encode({
+      "command": "TIMING_BELL_REQ",
+      "userId": loginInfo?.id ?? '',
+      "debateId": state?.id ?? 0,
+    });
+
+    _channel.sink.add(jsonMessage);
+  }
+
+  void timingOKResponse() {
+    final loginInfo = ref.read(loginInfoProvider);
+    final jsonMessage = json.encode({
+      "command": "TIMING_BELL_RES",
+      "userId": loginInfo?.id ?? '',
+      "debateId": state?.id ?? 0,
+      "content": 'OK',
+    });
+
+    _channel.sink.add(jsonMessage);
+  }
+
+  void timingNOResponse() {
+    final loginInfo = ref.read(loginInfoProvider);
+    final jsonMessage = json.encode({
+      "command": "TIMING_BELL_RES",
+      "userId": loginInfo?.id ?? '',
+      "debateId": state?.id ?? 0,
+      "content": 'REJ',
+    });
+
+    _channel.sink.add(jsonMessage);
   }
 
   void alarmButton(BuildContext context) {
@@ -100,21 +136,22 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     popupViewModel.showDebatePopup(context);
   }
 
-  void sendJoinMessage() {
+  void sendJoinMessage(BuildContext context) {
     final loginInfo = ref.read(loginInfoProvider);
     final message = controller.text;
 
     if (message.isEmpty) return;
 
     final jsonMessage = json.encode({
-      "type": "JOIN",
+      "command": "JOIN",
       "userId": loginInfo?.id ?? '',
       "debateId": state?.id ?? 0,
       "content": message
     });
     print(jsonMessage);
-
+    context.push("/showCase");
     _channel.sink.add(jsonMessage);
+
     controller.clear();
     focusNode.requestFocus();
   }

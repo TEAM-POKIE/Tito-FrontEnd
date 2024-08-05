@@ -16,6 +16,7 @@ class DebateInfo {
   int debateOwnerTurnCount;
   int debateJoinerId;
   int debateJoinerTurnCount;
+  bool canTiming;
 
   DebateInfo({
     required this.id,
@@ -35,6 +36,7 @@ class DebateInfo {
     required this.debateOwnerTurnCount,
     required this.debateJoinerId,
     required this.debateJoinerTurnCount,
+    required this.canTiming,
   });
 
   factory DebateInfo.fromJson(Map<String, dynamic> json) {
@@ -57,6 +59,7 @@ class DebateInfo {
       debateOwnerTurnCount: json['data']['debateOwnerTurnCount'] ?? 0,
       debateJoinerId: json['data']['debateJoinerId'] ?? 0,
       debateJoinerTurnCount: json['data']['debateJoinerTurnCount'] ?? 0,
+      canTiming: true,
     );
   }
 
@@ -79,6 +82,7 @@ class DebateInfo {
       "debateOwnerTurnCount": debateOwnerTurnCount,
       "debateJoinerId": debateOwnerTurnCount,
       "debateJoinerTurnCount": debateOwnerTurnCount,
+      "canTiming": true,
     };
   }
 

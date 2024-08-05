@@ -204,7 +204,7 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottom> {
           const SizedBox(width: 8),
           IconButton(
             onPressed: _sendMessage,
-            icon: Image.asset('assets/images/sendArrow.png'),
+            icon: SvgPicture.asset('assets/icons/sendArrow.svg'),
           ),
         ],
       ),

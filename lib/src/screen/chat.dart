@@ -43,11 +43,11 @@ class _ChatState extends ConsumerState<Chat> {
     final loginInfo = ref.watch(loginInfoProvider);
     final debateInfo = ref.read(chatInfoProvider);
 
-    if (loginInfo != null && debateInfo != null) {
+    if (loginInfo != null) {
       final message = jsonEncode({
-        "type": "ENTER",
+        "command": "ENTER",
         "userId": loginInfo.id,
-        "debateId": debateInfo.id,
+        "debateId": debateInfo!.id,
       });
       webSocketService.sendMessage(message);
 
