@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:tito_app/core/constants/style.dart';
+import 'package:tito_app/core/provider/chat_view_provider.dart';
 
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:speech_balloon/speech_balloon.dart';
@@ -25,6 +27,7 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
     final loginInfo = ref.watch(loginInfoProvider);
     final popupViewModel = ref.read(popupProvider.notifier);
     final popupState = ref.read(popupProvider);
+    final chatState = ref.read(chatInfoProvider);
 
     // if (chatState.debateData == null || loginInfo == null) {
     //   return const SizedBox.shrink();
@@ -44,12 +47,51 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
     // }
 
     // String sendNick = isMyNick ? myNick : opponentNick;
+    if (chatState!.debateJoinerId == loginInfo!.id ||
+        chatState.debateOwnerId == loginInfo.id) {
+      switch (chatState.debateJoinerTurnCount) {
+        case 0:
+          return StaticTextBubble(
+            title: '첫 입론을 입력해주세요!',
+            width: 180.w,
+            height: 45.h,
+          );
+        default:
+          if (chatState.debateJoinerTurnCount > 2) {
+            return TimingButton(
+                popupViewModel: popupViewModel,
+                popupState: popupState,
+                imgSrc: 'assets/icons/timingBell.svg',
+                content: '타이밍 벨');
+          } else {
+            SizedBox(
+              width: 0,
+            );
+          }
+      }
+    } else {
+      switch (chatState.debateJoinerTurnCount) {
+        case 0:
+          return StaticTextBubble(
+            title: '토론 참여자를 기다리고 있어요!\n의견을 작성해보세요',
+            width: 180.w,
+            height: 100.h,
+          );
+        default:
+          if (chatState.debateJoinerTurnCount > 2) {
+            return TimingButton(
+              popupViewModel: popupViewModel,
+              popupState: popupState,
+              imgSrc: 'assets/icons/voting.svg',
+              content: '투표하기',
+            );
+          }
+          return SizedBox(
+            width: 0,
+          );
+      }
+    }
 
-    return StaticTextBubble(
-      title: '첫 입론을 입력해주세요!',
-      width: 180.w,
-      height: 45.h,
-    );
     // if (isMyNick) {
     //   switch (myTurn) {
     //     case 0:
@@ -146,13 +188,15 @@ class _StaticTextBubbleState extends State<StaticTextBubble> {
 class TimingButton extends StatelessWidget {
   final PopupViewmodel popupViewModel;
   final PopupState popupState;
-  final String sendNick;
+  final String content;
+  final String imgSrc;
 
   const TimingButton({
     super.key,
     required this.popupViewModel,
     required this.popupState,
-    required this.sendNick,
+    required this.imgSrc,
+    required this.content,
   });
 
   @override
@@ -170,20 +214,19 @@ class TimingButton extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            popupState.opponentNick = sendNick;
             popupViewModel.showTimingPopup(context);
           },
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(
-                'assets/images/timingBell.png',
+              SvgPicture.asset(
+                imgSrc,
                 width: 20, // 아이콘 크기 조정
                 height: 20,
               ),
               const SizedBox(width: 4),
               Text(
-                '타이밍 벨',
+                content,
                 style: FontSystem.KR16B.copyWith(color: ColorSystem.yellow),
               ),
             ],

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/src/data/models/popup_state.dart';
 import 'package:tito_app/src/widgets/reuse/debate_popup.dart';
+import 'package:tito_app/src/widgets/reuse/profile_popup.dart';
 import 'package:tito_app/src/widgets/reuse/rule_pop_up.dart';
 
 // PopupState 클래스 정의
@@ -39,7 +40,7 @@ class PopupViewmodel extends StateNotifier<PopupState> {
       buttonContentLeft: "토론 더 할래요",
       buttonContentRight: '벨 울릴게요',
       titleLabel: '타이밍 벨',
-      imgSrc: 'assets/images/popupTimingBell.png',
+      imgSrc: 'assets/icons/timingBell.svg',
     );
 
     final result = await showDialog<bool>(
@@ -63,6 +64,41 @@ class PopupViewmodel extends StateNotifier<PopupState> {
       context: context,
       builder: (BuildContext context) {
         return const DebatePopup();
+      },
+    );
+
+    return result ?? false; // return false if result is null
+  }
+
+  Future<bool> showDeletePopup(BuildContext context) async {
+    final loginInfo = ref.read(loginInfoProvider);
+    state = state.copyWith(
+      title: '토론을 삭제 하시겠어요?',
+      content: '진짜루~',
+      buttonStyle: 2,
+      buttonContentLeft: "취소",
+      buttonContentRight: '확인',
+      imgSrc: 'assets/icons/chatIconRight.svg',
+    );
+    if (loginInfo == null) {
+      return false;
+    }
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return const DebatePopup();
+      },
+    );
+
+    return result ?? false; // return false if result is null
+  }
+
+  // 토론 팝업 띄우기
+  Future<bool> showTitlePopup(BuildContext context) async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return const ProfilePopup();
       },
     );
 

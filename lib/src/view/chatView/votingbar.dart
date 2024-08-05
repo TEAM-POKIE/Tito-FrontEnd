@@ -39,23 +39,23 @@ class VotingBar extends HookConsumerWidget {
           backgroundColor: Colors.red,
           width: MediaQuery.sizeOf(context).width,
         ),
-        SizedBox(height: 16),
-        Row(
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                voteNotifier.voteBlue();
-              },
-              child: Text('Vote Blue'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                voteNotifier.voteRed();
-              },
-              child: Text('Vote Red'),
-            ),
-          ],
-        ),
+
+        // Row(
+        //   children: [
+        //     ElevatedButton(
+        //       onPressed: () {
+        //         voteNotifier.voteBlue();
+        //       },
+        //       child: Text('Vote Blue'),
+        //     ),
+        //     ElevatedButton(
+        //       onPressed: () {
+        //         voteNotifier.voteRed();
+        //       },
+        //       child: Text('Vote Red'),
+        //     ),
+        //   ],
+        // ),
       ],
     );
   }

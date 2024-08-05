@@ -200,7 +200,7 @@ class _ApiService implements ApiService {
     )
             .compose(
               _dio.options,
-              '/debates/${debateId}/participants',
+              'debates/${debateId}/participants',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -240,6 +240,32 @@ class _ApiService implements ApiService {
               baseUrl,
             ))));
     final _value = DebateInfo.fromJson(_result.data!);
+    return _value;
+  }
+
+  @override
+  Future<dynamic> deleteDebate(int debateId) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'debates/${debateId}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+    final _value = _result.data;
     return _value;
   }
 

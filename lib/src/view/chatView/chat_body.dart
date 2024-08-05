@@ -24,7 +24,11 @@ class ChatBody extends ConsumerWidget {
               decoration: BoxDecoration(color: ColorSystem.grey3),
               child: ChatListView(id: id)), // id 전달
         ),
-        ChatSpeechBubble(),
+        Container(
+          width: MediaQuery.sizeOf(context).width,
+          decoration: BoxDecoration(color: ColorSystem.grey3),
+          child: ChatSpeechBubble(),
+        ),
         ChatBottomDetail(id: id), // id 전달
       ],
     );

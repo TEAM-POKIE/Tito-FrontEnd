@@ -8,6 +8,7 @@ import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/timer_provider.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:tito_app/src/view/chatView/live_comment.dart';
+import 'package:tito_app/src/view/chatView/votingbar.dart';
 
 class ChatViewDetails extends ConsumerStatefulWidget {
   final int id;
@@ -50,10 +51,22 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
 
     if (chatState!.debateJoinerId == loginInfo.id ||
         chatState.debateOwnerId == loginInfo.id) {
-      return _DetailState(
-          upImage: 'assets/images/detailChatIcon.svg',
-          upTitle: '상대 반론자를 찾는 중이예요 !',
-          downTitle: '⏳ ${remainingTime} 토론 시작 전');
+      if (chatState.debateJoinerTurnCount > 2) {
+        return Column(
+          children: [
+            _DetailState(
+                upImage: 'assets/images/detailChatIcon.svg',
+                upTitle: '상대 반론자를 찾는 중이예요 !',
+                downTitle: '⏳ ${remainingTime} 토론 시작 전'),
+            VotingBar(),
+          ],
+        );
+      } else {
+        return _DetailState(
+            upImage: 'assets/images/detailChatIcon.svg',
+            upTitle: '상대 반론자를 찾는 중이예요 !',
+            downTitle: '⏳ ${remainingTime} 토론 시작 전');
+      }
     } else {
       switch (chatState.debateJoinerTurnCount) {
         case 0:
@@ -63,13 +76,18 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
             downTitle: '당신의 의견 : ${chatState.debateJoinerOpinion}',
             downImage: 'assets/images/chatCuteIconPurple.svg',
           );
-        case 1:
-          return LiveComment();
+
         default:
-          return _DetailState(
-              upImage: 'assets/images/chatDefaultIcon.svg',
-              upTitle: '기본 상태입니다.',
-              downTitle: '토론을 시작해주세요.');
+          if (chatState.debateJoinerTurnCount > 2) {
+            return Column(
+              children: [
+                LiveComment(),
+                VotingBar(),
+              ],
+            );
+          } else {
+            return LiveComment();
+          }
       }
     }
   }

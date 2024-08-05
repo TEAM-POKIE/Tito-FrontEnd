@@ -64,8 +64,8 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
           backgroundColor: ColorSystem.white,
           leading: IconButton(
             onPressed: () {
+              debateState.debateContent = '';
               context.pop();
-              //바로 이전에 실행했던 화면으로 이동
             },
             icon: const Icon(Icons.arrow_back_ios),
           ),

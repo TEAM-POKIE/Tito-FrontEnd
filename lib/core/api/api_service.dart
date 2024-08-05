@@ -34,11 +34,13 @@ abstract class ApiService {
 
   @GET("debates")
   Future<List<Debate>> getDebateList();
-  @GET("/debates/{id}/participants")
+  @GET("debates/{id}/participants")
   Future<List<DebateParticipants>> getParicipants(@Path("id") int debateId);
   @GET("debates/{id}")
   Future<DebateInfo> getDebateInfo(@Path("id") int debateId);
 
+  @DELETE("debates/{id}")
+  Future deleteDebate(@Path("id") int debateId);
   @POST("debates")
   Future<DebateCreateInfo> postDebate(@Body() Map<String, dynamic> debate);
 }
