@@ -87,7 +87,7 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
                 onPressed: () {
                   handleSendMessage(context);
                 },
-                icon: Image.asset('assets/images/sendArrow.png'),
+                icon: SvgPicture.asset('assets/icons/sendArrow.svg'),
               ),
             ],
           ),

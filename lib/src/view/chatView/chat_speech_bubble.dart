@@ -8,6 +8,8 @@ import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:speech_balloon/speech_balloon.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:tito_app/src/data/models/popup_state.dart';
+import 'package:tito_app/src/view/chatView/live_comment.dart';
+import 'package:tito_app/src/view/chatView/votingbar.dart';
 import 'package:tito_app/src/viewModel/popup_viewModel.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -58,11 +60,16 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
           );
         default:
           if (chatState.debateJoinerTurnCount > 2) {
-            return TimingButton(
-                popupViewModel: popupViewModel,
-                popupState: popupState,
-                imgSrc: 'assets/icons/timingBell.svg',
-                content: '타이밍 벨');
+            return Column(
+              children: [
+                TimingButton(
+                    popupViewModel: popupViewModel,
+                    popupState: popupState,
+                    imgSrc: 'assets/icons/timingBell.svg',
+                    content: '타이밍 벨'),
+                VotingBar(),
+              ],
+            );
           } else {
             SizedBox(
               width: 0,
@@ -79,11 +86,17 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
           );
         default:
           if (chatState.debateJoinerTurnCount > 2) {
-            return TimingButton(
-              popupViewModel: popupViewModel,
-              popupState: popupState,
-              imgSrc: 'assets/icons/voting.svg',
-              content: '투표하기',
+            return Column(
+              children: [
+                TimingButton(
+                  popupViewModel: popupViewModel,
+                  popupState: popupState,
+                  imgSrc: 'assets/icons/voting.svg',
+                  content: '투표하기',
+                ),
+                VotingBar(),
+                LiveComment(),
+              ],
             );
           }
           return SizedBox(

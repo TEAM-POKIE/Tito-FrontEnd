@@ -51,22 +51,10 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
 
     if (chatState!.debateJoinerId == loginInfo.id ||
         chatState.debateOwnerId == loginInfo.id) {
-      if (chatState.debateJoinerTurnCount > 2) {
-        return Column(
-          children: [
-            _DetailState(
-                upImage: 'assets/images/detailChatIcon.svg',
-                upTitle: '상대 반론자를 찾는 중이예요 !',
-                downTitle: '⏳ ${remainingTime} 토론 시작 전'),
-            VotingBar(),
-          ],
-        );
-      } else {
-        return _DetailState(
-            upImage: 'assets/images/detailChatIcon.svg',
-            upTitle: '상대 반론자를 찾는 중이예요 !',
-            downTitle: '⏳ ${remainingTime} 토론 시작 전');
-      }
+      return _DetailState(
+          upImage: 'assets/images/detailChatIcon.svg',
+          upTitle: '상대 반론자를 찾는 중이예요 !',
+          downTitle: '⏳ ${remainingTime} 토론 시작 전');
     } else {
       switch (chatState.debateJoinerTurnCount) {
         case 0:
@@ -78,16 +66,9 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
           );
 
         default:
-          if (chatState.debateJoinerTurnCount > 2) {
-            return Column(
-              children: [
-                LiveComment(),
-                VotingBar(),
-              ],
-            );
-          } else {
-            return LiveComment();
-          }
+          return SizedBox(
+            width: 0,
+          );
       }
     }
   }

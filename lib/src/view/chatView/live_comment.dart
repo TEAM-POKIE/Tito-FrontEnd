@@ -99,8 +99,8 @@ class _LiveCommentState extends ConsumerState<LiveComment>
                       ),
                       Icon(
                         _isExpanded
-                            ? Icons.keyboard_arrow_up
-                            : Icons.keyboard_arrow_down,
+                            ? Icons.keyboard_arrow_down
+                            : Icons.keyboard_arrow_up,
                       ),
                     ],
                   ),

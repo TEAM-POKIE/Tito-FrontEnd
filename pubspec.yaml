@@ -138,14 +138,13 @@ flutter:
     - assets/icons/timingBell.svg
     - assets/icons/debatePopUpAlarm.svg
     - assets/icons/voting.svg
-
+    - assets/icons/sendArrow.svg
     - assets/images/logo.png
     - assets/images/hotlist.png
     - assets/images/mypage.png
 
     - assets/images/alarm_none.png
     - assets/images/alarm.png
-    - assets/images/sendArrow.png
 
     - assets/images/like_btn.png
     - assets/images/liked_btn.png
