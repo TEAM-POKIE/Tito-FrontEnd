@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 
@@ -58,9 +59,10 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
         default:
           if (chatState.debateJoinerTurnCount > 2) {
             return TimingButton(
-              popupViewModel: popupViewModel,
-              popupState: popupState,
-            );
+                popupViewModel: popupViewModel,
+                popupState: popupState,
+                imgSrc: 'assets/icons/timingBell.svg',
+                content: '타이밍 벨');
           } else {
             SizedBox(
               width: 0,
@@ -76,6 +78,14 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
             height: 100.h,
           );
         default:
+          if (chatState.debateJoinerTurnCount > 2) {
+            return TimingButton(
+              popupViewModel: popupViewModel,
+              popupState: popupState,
+              imgSrc: 'assets/icons/voting.svg',
+              content: '투표하기',
+            );
+          }
           return SizedBox(
             width: 0,
           );
@@ -178,13 +188,15 @@ class _StaticTextBubbleState extends State<StaticTextBubble> {
 class TimingButton extends StatelessWidget {
   final PopupViewmodel popupViewModel;
   final PopupState popupState;
-  final String? sendNick;
+  final String content;
+  final String imgSrc;
 
   const TimingButton({
     super.key,
     required this.popupViewModel,
     required this.popupState,
-    this.sendNick,
+    required this.imgSrc,
+    required this.content,
   });
 
   @override
@@ -207,14 +219,14 @@ class TimingButton extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(
-                'assets/images/timingBell.png',
+              SvgPicture.asset(
+                imgSrc,
                 width: 20, // 아이콘 크기 조정
                 height: 20,
               ),
               const SizedBox(width: 4),
               Text(
-                '타이밍 벨',
+                content,
                 style: FontSystem.KR16B.copyWith(color: ColorSystem.yellow),
               ),
             ],

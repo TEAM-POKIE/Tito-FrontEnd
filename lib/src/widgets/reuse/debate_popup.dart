@@ -44,9 +44,10 @@ class DebatePopup extends ConsumerWidget {
                     ? Row(
                         children: [
                           if (popupState.imgSrc != null)
-                            Image.asset(
+                            SvgPicture.asset(
                               popupState.imgSrc!,
                               width: 30,
+                              height: 30,
                             ),
                           Text(
                             popupState.titleLabel ?? '',
@@ -56,9 +57,10 @@ class DebatePopup extends ConsumerWidget {
                         ],
                       )
                     : popupState.imgSrc != null
-                        ? Image.asset(
+                        ? SvgPicture.asset(
                             popupState.imgSrc!,
-                            width: 50,
+                            width: 30,
+                            height: 30,
                           )
                         : Container(),
                 IconButton(
@@ -102,6 +104,7 @@ class DebatePopup extends ConsumerWidget {
   Widget _oneButton(BuildContext context, WidgetRef ref) {
     final popupState = ref.watch(popupProvider);
     final popupViewModel = ref.watch(popupProvider.notifier);
+    final debateState = ref.watch(debateCreateProvider);
 
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -140,8 +143,22 @@ class DebatePopup extends ConsumerWidget {
         final debateData = debateState.toJson();
         print(debateData);
         final response = await ApiService(DioClient.dio).postDebate(debateData);
-
+        debateState.debateContent = '';
         context.push('/chat/${response.id}');
+      } catch (error) {
+        print('Error posting debate: $error');
+      }
+    }
+
+    void deleteDebate() async {
+      final chatState = ref.read(chatInfoProvider);
+      try {
+        await ApiService(DioClient.dio).deleteDebate(chatState!.id);
+        popupState.buttonStyle = 0;
+
+        context.pop();
+
+        context.go('/home');
       } catch (error) {
         print('Error posting debate: $error');
       }
@@ -183,6 +200,8 @@ class DebatePopup extends ConsumerWidget {
                 debateState.debateImageUrl = '1221';
 
                 startDebate();
+              } else if (popupState.title == '토론을 삭제 하시겠어요?') {
+                deleteDebate();
               } else {
                 context.pop();
                 popupViewModel.showDebatePopup(context);
