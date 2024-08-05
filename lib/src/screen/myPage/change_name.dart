@@ -34,7 +34,7 @@ class ChangeName extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 51.h),
-            const Text('새로운 닉네임을 수정해주세요.', style: FontSystem.KR16R),
+            const Text('새로운 닉네임을 수정해주세요.', style: FontSystem.KR16SB),
             SizedBox(height: 20.h),
             TextField(
               //controller: _titleController,
@@ -44,7 +44,7 @@ class ChangeName extends ConsumerWidget {
                 filled: true,
                 fillColor: ColorSystem.grey3,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(24.r)),
+                  borderRadius: BorderRadius.all(Radius.circular(20.r)),
                   borderSide: BorderSide.none,
                 ),
               ),
@@ -54,7 +54,7 @@ class ChangeName extends ConsumerWidget {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 40.h),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 47.h),
         child: SizedBox(
           width: 350.w,
           height: 60.h,

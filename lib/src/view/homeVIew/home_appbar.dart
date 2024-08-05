@@ -13,30 +13,27 @@ class HomeAppbar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // final homeViewModel = ref.read(homeViewModelProvider.notifier);
-    return AppBar(
-      backgroundColor: ColorSystem.white,
-      leading: SizedBox(
-        width: 66.w,
-        height: 33.28.h,
-        child: Image.asset(
-          'assets/images/logo.png', // 로고 이미지 경로
-          //fit: BoxFit.contain,
-        ),
-      ),
-      actions: [
-        IconButton(
-          onPressed: () {
-            context.go('/myalarm');
-          },
-          icon: SizedBox(
-            width: 30.w,
-            height: 30.h,
-            child: SvgPicture.asset(
-              'assets/icons/home_alarm.svg',
+    return Padding(
+      padding: EdgeInsets.only(top: 10.h),
+      child: AppBar(
+        backgroundColor: ColorSystem.white,
+        leading: Image.asset('assets/images/logo.png'),
+        leadingWidth: 69.41.w,
+        actions: [
+          IconButton(
+            onPressed: () {
+              context.go('/myalarm');
+            },
+            icon: SizedBox(
+              width: 30.w,
+              height: 30.h,
+              child: SvgPicture.asset(
+                'assets/icons/home_alarm.svg',
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

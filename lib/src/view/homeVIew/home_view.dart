@@ -42,10 +42,9 @@ class HomeView extends ConsumerWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text(
+                                  Text(
                                     '불 붙은 실시간 토론🔥',
-                                    style: TextStyle(color: ColorSystem.white),
-                                  ),
+                                    style: FontSystem.KR14M.copyWith(color: ColorSystem.white)),
                                   Container(
                                     // padding: EdgeInsets.symmetric(
                                     //     horizontal: 10.w, vertical: 5),
@@ -53,10 +52,10 @@ class HomeView extends ConsumerWidget {
                                       color: ColorSystem.purple,
                                       borderRadius: BorderRadius.circular(20.r),
                                     ),
-                                    child: const Text(
+                                    child: Text(
                                       '실시간 토론중',
                                       style:
-                                          TextStyle(color: ColorSystem.white),
+                                          FontSystem.KR14M.copyWith(color: ColorSystem.white)
                                     ),
                                   ),
                                 ],

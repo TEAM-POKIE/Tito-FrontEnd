@@ -103,7 +103,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/icons/bottom_ai.svg
+    - assets/icons/final_ai.svg
     - assets/icons/bottom_debate.svg
     - assets/icons/bottom_home.svg
     - assets/icons/bottom_list.svg
@@ -139,6 +139,29 @@ flutter:
     - assets/icons/timingBell.svg
     - assets/icons/debatePopUpAlarm.svg
     - assets/icons/voting.svg
+    - assets/icons/apple_size.svg
+    - assets/icons/kakao_size.svg
+    - assets/icons/google_size.svg
+    - assets/icons/email_real.svg
+    - assets/icons/mypage_debate.svg
+    - assets/icons/mypage_alarm.svg
+    - assets/icons/mypage_ask.svg
+    - assets/icons/mypage_bann.svg
+    - assets/icons/mypage_pw.svg
+    - assets/icons/mypage_one.svg
+    - assets/icons/mypage_two.svg
+    - assets/icons/bottombar_purple.svg
+    - assets/icons/search.svg
+    - assets/icons/bottom_round_purple.svg
+    - assets/icons/null_profile.svg
+    - assets/icons/mypage_arrow.svg
+    - assets/icons/mypage_real_arrow.svg
+    - assets/icons/mypage_real_black.svg
+    
+
+
+
+
 
     
 
@@ -172,6 +195,8 @@ flutter:
     - assets/images/LogoIcon.png
     - assets/images/hot_fighter.png
     - assets/images/star.png
+
+
 
     - assets/images/debateList.png
     - .env

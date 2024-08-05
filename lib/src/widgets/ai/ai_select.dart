@@ -7,6 +7,7 @@ import 'package:tito_app/src/widgets/ai/ai_select.dart';
 import 'package:get/get.dart';
 import 'package:tito_app/src/widgets/ai/selection_controller.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tito_app/src/widgets/reuse/bottombar.dart';
 
 class AiSelect extends StatefulWidget {
   SelectionController selectionController = Get.put(SelectionController());
@@ -105,99 +106,98 @@ class _AiSelectState extends State<AiSelect> {
         ),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SizedBox(
             height: 37.h,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            padding: EdgeInsets.only(left: 20.w),
+            child: Row(
+              children: [
+                SvgPicture.asset(
+                  'assets/icons/purple_cute.svg',
+                  width: 40.w,
+                  height: 40.h,
+                ),
+                SizedBox(
+                  width: 3.w,
+                ),
+                const Text(
+                  'AI 자동 토론 주제 생성 하기',
+                  style: FontSystem.KR22SB,
+                ),
+              ],
+            ),
           ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(padding: EdgeInsets.symmetric(horizontal: 10.w)),
-              Image.asset(
-                'assets/images/ai_purple.png',
-                width: 40.w,
-                height: 40.h,
-              ),
-              SizedBox(
-                width: 8.w,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  const Text(
-                    'AI 자동 토론 주제 생성 하기',
-                    style: FontSystem.KR18R,
-                  ),
-                  SizedBox(
-                    height: 8.h,
-                  ),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '이런 주제는 어때요?',
-                        style: FontSystem.KR18R,
-                      ),
-                      SizedBox(
-                        height: 1,
-                      ),
-                      Text(
-                        '바로 다른 사람들과 의견을 나눠보세요 !',
-                        style: FontSystem.KR18R,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
+
+          SizedBox(
+            height: 8.h,
           ),
-          SizedBox(height: 78.h), // 간격 추가
+
+          Padding(
+            padding: EdgeInsets.only(left: 23.w),
+            child: const Text('이런 주제는 어때요?', style: FontSystem.KR20SB),
+          ),
+          SizedBox(
+            height: 1.h,
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 23.w),
+            child:
+                const Text('바로 다른 사람들과 의견을 나눠보세요 !', style: FontSystem.KR20SB),
+          ),
+
+          SizedBox(height: 70.h), // 간격 추가
           Expanded(
-            child: GridView.count(
-              crossAxisCount: 1, // 한 줄에 3개의 아이템을 표시
-              childAspectRatio: 4 / 0.75,
-              padding: EdgeInsets.symmetric(
-                horizontal: 20.w,
-              ),
-              mainAxisSpacing: 11.h,
-              children: List.generate(5, (index) {
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      if (_selectedIndex == index) {
-                        _selectedIndex = -1; // 선택 해제
-                      } else {
-                        _selectedIndex = index; // 선택
-                      }
-                    });
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: _selectedIndex == index
-                                ? ColorSystem.purple
-                                : ColorSystem.grey),
-                        borderRadius: BorderRadius.circular(20.r)),
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Item $index',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+            child: Padding(
+              padding: EdgeInsets.only(right: 8.w),
+              child: Scrollbar(
+                thumbVisibility: true,
+                thickness: 5.0,
+                radius: Radius.circular(20.r),
+                child: GridView.count(
+                  crossAxisCount: 1, // 한 줄에 3개의 아이템을 표시
+                  childAspectRatio: 4 / 0.75,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 20.w,
                   ),
-                );
-              }),
+                  mainAxisSpacing: 11.h,
+                  children: List.generate(5, (index) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          if (_selectedIndex == index) {
+                            _selectedIndex = -1; // 선택 해제
+                          } else {
+                            _selectedIndex = index; // 선택
+                          }
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: _selectedIndex == index
+                                    ? ColorSystem.purple
+                                    : ColorSystem.grey),
+                            borderRadius: BorderRadius.circular(20.r)),
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Item $index',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+              ),
             ),
           ),
 
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 40.h),
+            padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h, top: 40.h),
             child: SizedBox(
               width: 350.w,
               height: 60.h,
@@ -217,6 +217,7 @@ class _AiSelectState extends State<AiSelect> {
           )
         ],
       ),
+      bottomNavigationBar: BottomBar(),
     );
   }
 }

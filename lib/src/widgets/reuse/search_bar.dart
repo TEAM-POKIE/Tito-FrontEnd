@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tito_app/core/constants/style.dart';
 
 class CustomSearchBar extends StatelessWidget {
@@ -18,14 +19,13 @@ class CustomSearchBar extends StatelessWidget {
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(24.r),
                 borderSide: BorderSide.none),
-            hintText: '검색어를 입력하세요',
-            hintStyle: const TextStyle(
-              fontSize: 16,
-              color: ColorSystem.grey,
-            ),
-            prefixIcon: const Icon(Icons.search,
-                color: ColorSystem.grey,
-                size: 26.0), // 아이콘 색상 추가
+            hintText: '토론 검색어를 입력하세요',
+            hintStyle: FontSystem.KR16M.copyWith(color: ColorSystem.grey),
+            prefixIcon: SizedBox(
+              width: 28.w,
+              height: 28.h,
+              child: SvgPicture.asset('assets/icons/search.svg'),
+            ), // 아이콘 색상 추가
           ),
           style: const TextStyle(
             color: ColorSystem.black,

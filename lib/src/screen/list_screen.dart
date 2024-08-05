@@ -100,14 +100,17 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70.0),
+        preferredSize: Size.fromHeight(80.0),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 0.w),
+          padding: EdgeInsets.only(top: 10.w),
           child: AppBar(
             backgroundColor: ColorSystem.white,
-            title: const Text(
-              '토론 리스트',
-              style: FontSystem.KR20B,
+            title: Padding(
+              padding: EdgeInsets.only(left: 10.w),
+              child: const Text(
+                '토론 리스트',
+                style: FontSystem.KR20B,
+              ),
             ),
           ),
         ),
@@ -122,53 +125,64 @@ class _ListScreenState extends ConsumerState<ListScreen> {
           ),
           SizedBox(height: 20.h),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 0.w),
+            padding: EdgeInsets.only(left: 20.w),
             child: Container(
               //카테고리 바가 들어가는 Container 부분
-              width: 380.w,
-              height: 30.h,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: List.generate(labels.length, (index) {
-                  return Container(
-                    height: 30.h,
-                    width: 75.w,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          selectedIndex = index;
-                          _fetchDebateList();
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        textStyle: FontSystem.KR10R,
-                        backgroundColor: selectedIndex == index
-                            ? ColorSystem.black
-                            : Colors.grey[200],
-                        foregroundColor: selectedIndex == index
-                            ? ColorSystem.white
-                            : const Color.fromARGB(255, 101, 101, 101),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.r),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal, // 수평 스크롤 가능하게 설정
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: List.generate(labels.length, (index) {
+                    return Padding(
+                      padding: EdgeInsets.only(right: 8.w),
+                      child: Container(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              selectedIndex = index;
+                              _fetchDebateList();
+                            });
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: selectedIndex == index
+                                ? ColorSystem.black
+                                : ColorSystem.ligthGrey,
+                            foregroundColor: selectedIndex == index
+                                ? ColorSystem.white
+                                : ColorSystem.grey1,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.r),
+                              side: BorderSide(
+                                color: selectedIndex == index
+                                    ? ColorSystem.black // 선택된 경우 테두리 색상
+                                    : ColorSystem.grey3, // 선택되지 않은 경우 테두리 색상
+                                width: 1.5, // 테두리 두께
+                              ),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                labels[index],
+                                style: selectedIndex == index
+                                    ? FontSystem.KR14SB
+                                        .copyWith(color: ColorSystem.white)
+                                    : FontSystem.KR14M.copyWith(
+                                        color: ColorSystem.grey1,
+                                      ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            labels[index],
-                            style: TextStyle(fontSize: 10.sp),
-                            // style: FontSystem.KR10B,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }),
+                    );
+                  }),
+                ),
               ),
             ),
           ),
-          SizedBox(height: 35.h),
+          SizedBox(height: 30.h),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Row(
@@ -187,21 +201,20 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                           },
                           child: Text(
                             statuses[index],
-                            style: TextStyle(
-                              color: selectedStatus == statuses[index]
-                                  ? ColorSystem.black
-                                  : ColorSystem.grey,
-                              fontWeight: selectedStatus == statuses[index]
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                            ),
+                            style: selectedIndex == index
+                                ? FontSystem.KR14SB
+                                    .copyWith(color: ColorSystem.black)
+                                : FontSystem.KR14M.copyWith(
+                                    color: ColorSystem.grey1,
+                                  ),
                           ),
                         ),
                         if (index < statuses.length - 1)
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 3.h),
                             child: Text('|',
-                                style: TextStyle(color: ColorSystem.grey)),
+                                style: FontSystem.KR14M
+                                    .copyWith(color: ColorSystem.grey)),
                           ),
                       ],
                     );
@@ -222,7 +235,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                       child: Text(
                         value,
                         style:
-                            FontSystem.KR14R.copyWith(color: ColorSystem.grey),
+                            FontSystem.KR14M.copyWith(color: ColorSystem.grey),
                       ),
                     );
                   }).toList(),
@@ -232,12 +245,12 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                     size: 20.sp,
                   ),
                   underline: SizedBox.shrink(), // 밑줄을 없애기 위해 사용
-                  style: FontSystem.KR14R.copyWith(color: ColorSystem.grey),
+                  style: FontSystem.KR14M.copyWith(color: ColorSystem.grey),
                 ),
               ],
             ),
           ),
-          SizedBox(height: 18.h),
+          SizedBox(height: 10.h),
           Expanded(
             child: SmartRefresher(
               controller: _refreshController,

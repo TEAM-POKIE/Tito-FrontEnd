@@ -23,7 +23,7 @@ class ChangePassword extends ConsumerWidget {
           icon: const Icon(Icons.arrow_back_ios),
         ),
         centerTitle: true,
-        title: const Text('비밀번호 변경', style: FontSystem.KR16B),
+        title: const Text('비밀번호 변경', style: FontSystem.KR16SB),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -31,21 +31,21 @@ class ChangePassword extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 51.h),
-            const Text('현재 비밀번호', style: FontSystem.KR16R),
+            const Text('현재 비밀번호', style: FontSystem.KR16SB),
             SizedBox(height: 10.h),
             TextField(
               decoration: InputDecoration(
                 filled: true,
                 fillColor: ColorSystem.ligthGrey,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(24.r)),
+                  borderRadius: BorderRadius.all(Radius.circular(20.r)),
                   borderSide: BorderSide.none,
                 ),
               ),
               style: const TextStyle(color: ColorSystem.black),
             ),
             SizedBox(height: 20.h),
-            const Text('새 비밀번호', style: FontSystem.KR16R),
+            const Text('새 비밀번호', style: FontSystem.KR16SB),
             SizedBox(height: 10.h),
             TextField(
               decoration: InputDecoration(
@@ -54,21 +54,21 @@ class ChangePassword extends ConsumerWidget {
                 filled: true,
                 fillColor: ColorSystem.ligthGrey,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(24.r)),
+                  borderRadius: BorderRadius.all(Radius.circular(20.r)),
                   borderSide: BorderSide.none,
                 ),
               ),
               style: const TextStyle(color: ColorSystem.black),
             ),
             SizedBox(height: 20.h),
-            const Text('새 비밀번호 재입력', style: FontSystem.KR16R),
+            const Text('새 비밀번호 재입력', style: FontSystem.KR16SB),
             SizedBox(height: 10.h),
             TextField(
               decoration: InputDecoration(
                 filled: true,
                 fillColor: ColorSystem.ligthGrey,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(24.r)),
+                  borderRadius: BorderRadius.all(Radius.circular(20.r)),
                   borderSide: BorderSide.none,
                 ),
               ),
@@ -78,7 +78,7 @@ class ChangePassword extends ConsumerWidget {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 40.h),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 47.h),
         child: SizedBox(
           width: 350.w,
           height: 60.h,

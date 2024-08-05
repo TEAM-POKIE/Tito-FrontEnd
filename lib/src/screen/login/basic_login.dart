@@ -83,7 +83,7 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
           icon: const Icon(Icons.arrow_back_ios),
         ),
         title: const Text('로그인'),
-        titleTextStyle: FontSystem.KR16R,
+        titleTextStyle: FontSystem.KR16SB,
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -95,34 +95,36 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 105.h,
+                  height: 110.h,
                 ),
                 const Text(
                   '이메일',
-                  style: FontSystem.KR20B,
+                  style: FontSystem.KR20SB,
                 ),
                 SizedBox(
-                  height: 12.h,
+                  height: 10.h,
                 ),
                 TextFormField(
-                  maxLength: 50,
+                  //maxLength: 50,
                   keyboardType: TextInputType.emailAddress,
                   autocorrect: false,
-                  style: TextStyle(
-                    color: _enteredEmail.isNotEmpty
-                        ? ColorSystem.purple
-                        : ColorSystem.black,
-                    fontSize: 16,
-                  ),
+                  style: FontSystem.KR16M,
+                  // TextStyle(
+                  //   color: _enteredEmail.isNotEmpty
+                  //       ? ColorSystem.purple
+                  //       : ColorSystem.black,
+                  //   fontSize: 16,
+                  // ),
                   decoration: InputDecoration(
                     hintText: '로그인 시 사용됩니다',
-                    hintStyle: TextStyle(
-                      color: _enteredEmail.isNotEmpty
-                          ? ColorSystem.purple
-                          : ColorSystem.grey,
-                      fontSize: 16,
-                    ),
-                    focusColor: ColorSystem.purple,
+                    hintStyle: FontSystem.KR16M.copyWith(color:ColorSystem.grey),
+                    // TextStyle(
+                    //   color: _enteredEmail.isNotEmpty
+                    //       ? ColorSystem.purple
+                    //       : ColorSystem.grey,
+                    //   fontSize: 16,
+                    // ),
+                    // focusColor: ColorSystem.purple,
                   ),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
@@ -140,17 +142,17 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
                 ),
                 const Text(
                   '비밀번호',
-                  style: FontSystem.KR20B,
+                  style: FontSystem.KR20SB,
+                ),
+                SizedBox(
+                  height: 10.h,
                 ),
                 TextFormField(
-                  maxLength: 20,
+                  //maxLength: 20,
                   obscureText: _obscureText, // 비밀번호 입력처럼 텍스트를 숨길지 여부
                   decoration: InputDecoration(
                     hintText: '비밀번호 (영문, 숫자 조합 8자 이상)',
-                    hintStyle: TextStyle(
-                      color: ColorSystem.grey,
-                      fontSize: 16,
-                    ),
+                    hintStyle:FontSystem.KR16M.copyWith(color:ColorSystem.grey),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscureText ? Icons.visibility_off : Icons.visibility,
@@ -175,7 +177,7 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
                   },
                 ),
                 SizedBox(
-                  height: 50.h,
+                  height: 167.h,
                 ),
                 Container(
                   width: 350.w,
@@ -190,38 +192,29 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
                       // padding:
                       //     EdgeInsets.symmetric(horizontal: 149.w, vertical: 20.h),
                     ),
-                    child: const Text(
+                    child: Text(
                       '로그인',
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: ColorSystem.white,
-                          fontWeight: FontWeight.bold),
+                      style: FontSystem.KR20SB.copyWith(color: ColorSystem.white),
                     ),
                   ),
                 ),
+                SizedBox(height: 20.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      height: 20.h,
-                    ),
                     TextButton(
                       onPressed: _goSignUp,
-                      child: const Text(
+                      child: Text(
                         '회원가입',
-                        style: TextStyle(
-                          color: ColorSystem.purple,
-                        ),
+                        style: FontSystem.KR14M.copyWith(color:ColorSystem.purple),
                       ),
                     ),
                     const Text('|'),
                     TextButton(
                       onPressed: () {},
-                      child: const Text(
+                      child: Text(
                         '비밀번호 찾기',
-                        style: TextStyle(
-                          color: ColorSystem.grey,
-                        ),
+                        style: FontSystem.KR14M.copyWith(color: ColorSystem.grey),
                       ),
                     ),
                   ],

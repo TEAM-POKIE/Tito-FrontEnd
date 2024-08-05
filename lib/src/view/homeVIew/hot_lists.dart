@@ -27,7 +27,7 @@ class HotLists extends ConsumerWidget {
               children: [
                 const Text(
                   'HOT한 토론',
-                  style: FontSystem.KR18B,
+                  style: FontSystem.KR18SB,
                 ),
                 SizedBox(
                   width: 6.w,

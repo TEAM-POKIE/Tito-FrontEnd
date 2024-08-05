@@ -55,8 +55,8 @@ class _SignUpState extends State<Signup> {
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
-        title: const Text('회원가입'),
-        titleTextStyle: FontSystem.KR16R,
+        title: Text('회원가입'),
+        titleTextStyle: FontSystem.KR16SB,
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -72,23 +72,20 @@ class _SignUpState extends State<Signup> {
                 ),
                 const Text(
                   '닉네임',
-                  style: FontSystem.KR20B,
+                  style: FontSystem.KR20SB,
                 ),
                 SizedBox(
-                  height: 12.h,
+                  height: 10.h,
                 ),
                 TextFormField(
-                  maxLength: 10,
-                  decoration: const InputDecoration(
-                    hintText: '닉네임을 입력해주세요',
-                    hintStyle: TextStyle(
-                      color: ColorSystem.grey,
-                      fontSize: 16,
-                    ),
+                  //maxLength: 10,
+                  decoration: InputDecoration(
+                    hintText: '닉네임을 입력해 주세요. (5글자 이하)',
+                    hintStyle: FontSystem.KR16M.copyWith(color:ColorSystem.grey),
                   ),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return '닉네임을 입력해주세요.';
+                      return '닉네임을 입력해 주세요.';
                     }
                     return null;
                   },
@@ -96,23 +93,23 @@ class _SignUpState extends State<Signup> {
                     _nickname = value!;
                   },
                 ),
-                const SizedBox(
-                  height: 12,
+                SizedBox(
+                  height: 30.h,
                 ),
                 const Text(
-                  '이메일',
-                  style: FontSystem.KR20B,
+                  '이메일', 
+                  style: FontSystem.KR20SB,
+                ),
+                SizedBox(
+                  height: 10.h,
                 ),
                 TextFormField(
-                  maxLength: 50,
+                  //maxLength: 50,
                   keyboardType: TextInputType.emailAddress,
                   autocorrect: false,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: '이메일을 입력해주세요',
-                    hintStyle: TextStyle(
-                      color: ColorSystem.grey,
-                      fontSize: 16,
-                    ),
+                    hintStyle: FontSystem.KR16M.copyWith(color:ColorSystem.grey),
                   ),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
@@ -124,22 +121,22 @@ class _SignUpState extends State<Signup> {
                     _email = value!;
                   },
                 ),
-                const SizedBox(
-                  height: 12,
+                SizedBox(
+                  height: 30.h,
                 ),
                 const Text(
                   '비밀번호',
-                  style: FontSystem.KR20B,
+                  style: FontSystem.KR20SB,
+                ),
+                SizedBox(
+                  height: 10.h,
                 ),
                 TextFormField(
-                  maxLength: 20,
+                  //maxLength: 20,
                   obscureText: _obscureText,
                   decoration: InputDecoration(
                     hintText: '비밀번호 (영문, 숫자 조합 8자 이상)',
-                    hintStyle: const TextStyle(
-                      color: ColorSystem.grey,
-                      fontSize: 16,
-                    ),
+                    hintStyle: FontSystem.KR16M.copyWith(color:ColorSystem.grey),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscureText ? Icons.visibility_off : Icons.visibility,
@@ -164,7 +161,7 @@ class _SignUpState extends State<Signup> {
                   },
                 ),
                 SizedBox(
-                  height: 50.h,
+                  height: 60.h,
                 ),
                 Container(
                   width: 350.w,
@@ -177,12 +174,9 @@ class _SignUpState extends State<Signup> {
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       '회원가입',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
+                      style: FontSystem.KR20SB.copyWith(color: ColorSystem.white),
                     ),
                   ),
                 ),

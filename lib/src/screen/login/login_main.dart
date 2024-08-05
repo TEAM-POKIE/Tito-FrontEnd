@@ -21,15 +21,15 @@ class LoginMain extends StatelessWidget {
     final List<Map<String, String>> loginOptions = [
       {
         'text': '카카오로 시작하기',
-        'icon': 'assets/icons/kakao.svg',
+        'icon': 'assets/icons/kakao_size.svg',
       },
       {
         'text': '애플로 시작하기',
-        'icon': 'assets/icons/apple.svg',
+        'icon': 'assets/icons/apple_size.svg',
       },
       {
         'text': '구글로 시작하기',
-        'icon': 'assets/icons/google.svg',
+        'icon': 'assets/icons/google_size.svg',
       },
     ];
 
@@ -139,10 +139,10 @@ class LoginMain extends StatelessWidget {
             SizedBox(height: 102.h),
             ...loginOptions.map((option) {
               return Padding(
-                padding: EdgeInsets.only(bottom: 12.h, left: 32.w, right: 32.w),
+                padding: EdgeInsets.only(bottom: 10.h, left: 32.w, right: 32.w),
                 child: Container(
-                  width: 326.w,
-                  height: 60.h,
+                  width: 327.w,
+                  height: 54.h,
                   child: GestureDetector(
                     onTap: (){},
                     child: SvgPicture.asset(option['icon']!),
@@ -150,13 +150,12 @@ class LoginMain extends StatelessWidget {
                 ),
               );
             }),
-            SizedBox(height: 10.h), // 버튼들 간의 간격 추가
             Container(
-              width: 326.w,
-              height: 60.h,
+              width: 327.w,
+              height: 54.h,
               child: GestureDetector(
                 onTap: goBasicLogin,
-                child: SvgPicture.asset('assets/icons/email.svg'),
+                child: SvgPicture.asset('assets/icons/email_real.svg'),
               ),
             ),
             SizedBox(height: 64.h), // 버튼들 간의 간격 추가

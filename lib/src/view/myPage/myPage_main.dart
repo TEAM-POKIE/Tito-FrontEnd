@@ -15,7 +15,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tito_app/src/view/myPage/exit_popup.dart';
 import 'package:tito_app/src/view/myPage/logout_popup.dart';
-
+import 'package:tito_app/src/widgets/reuse/bottombar.dart';
 import 'package:tito_app/src/widgets/reuse/profile_popup.dart';
 
 class MypageMain extends ConsumerStatefulWidget {
@@ -149,213 +149,251 @@ class _MypageMainState extends ConsumerState<MypageMain> {
     final loginInfo = ref.watch(loginInfoProvider);
     return SingleChildScrollView(
       child: Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Column(
-            children: [
-              SizedBox(height: 22.h),
-              Stack(
-                children: [
-                  SvgPicture.asset(
-                    'assets/icons/circle_profile.svg',
-                    width: 70,
-                    height: 70,
-                    color: ColorSystem.lightPurple,
-                  ),
-                  // CircleAvatar(
-                  //   radius: 35.r,
-                  //   backgroundImage: _image != null
-                  //       ? FileImage(File(_image!.path)) as ImageProvider
-                  //       : loginInfo?.profilePicture == null
-                  //           ? null
-                  //           : NetworkImage(loginInfo!.profilePicture!)
-                  //               as ImageProvider,
-                  //   child: _image == null && loginInfo?.profilePicture == null
-                  //       ? SvgPicture.asset(
-                  //           'assets/icons/circle_profile.svg',
-                  //           fit: BoxFit.cover,
-                  //         )
-                  //       : null,
-                  // ),
-                  Positioned(
-                    bottom: -10,
-                    right: -10,
-                    child: Transform.rotate(
-                      angle: 0.1,
-                      child: IconButton(
-                        iconSize: 30.0,
-                        onPressed: () {
-                          _showImagePickerOptions(context);
-                        },
-                        icon: SvgPicture.asset('assets/icons/mypage_edit.svg'),
-                      ),
+        child: Column(
+          children: [
+            SizedBox(height: 20.h),
+            Stack(
+              children: [
+                SvgPicture.asset(
+                  'assets/icons/null_profile.svg',
+                  width: 80,
+                  height: 80,
+                ),
+                // CircleAvatar(
+                //   radius: 35.r,
+                //   backgroundImage: _image != null
+                //       ? FileImage(File(_image!.path)) as ImageProvider
+                //       : loginInfo?.profilePicture == null
+                //           ? null
+                //           : NetworkImage(loginInfo!.profilePicture!)
+                //               as ImageProvider,
+                //   child: _image == null && loginInfo?.profilePicture == null
+                //       ? SvgPicture.asset(
+                //           'assets/icons/circle_profile.svg',
+                //           fit: BoxFit.cover,
+                //         )
+                //       : null,
+                // ),
+                Positioned(
+                  bottom: -15,
+                  right: -15,
+                  child: Transform.rotate(
+                    angle: 0.1,
+                    child: IconButton(
+                      iconSize: 40.0,
+                      onPressed: () {
+                        _showImagePickerOptions(context);
+                      },
+                      icon: SvgPicture.asset('assets/icons/mypage_edit.svg'),
                     ),
                   ),
-                ],
-              ),
-              SizedBox(height: 10.h),
+                ),
+              ],
+            ),
+            SizedBox(height: 8.h),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '${loginInfo?.nickname}',
-                    style: FontSystem.KR24B.copyWith(color: ColorSystem.purple),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      context.go('/nickname');
-                    },
-                    icon: const Icon(Icons.arrow_forward_ios),
-                  ),
-                ],
-              ),
-
-              Container(
-                width: 90.w,
-                height: 33.h,
-                padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 6.w),
-                decoration: BoxDecoration(
-                  color: ColorSystem.lightPurple,
-                  borderRadius: BorderRadius.circular(10.r),
-                  border: Border.all(color: ColorSystem.purple),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '${loginInfo?.nickname}',
+                  style: FontSystem.KR24B,
                 ),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    '승률 80%',
-                    style: FontSystem.KR18B.copyWith(color: ColorSystem.purple),
-                  ),
+                IconButton(
+                  onPressed: () {
+                    context.go('/nickname');
+                  },
+                  icon: SvgPicture.asset('assets/icons/mypage_real_black.svg'),
                 ),
+              ],
+            ),
+            SizedBox(height: 8.h),
+            Container(
+              width: 100.w,
+              // height: 33.h,
+              padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 6.w),
+              decoration: BoxDecoration(
+                color: ColorSystem.lightPurple,
+                borderRadius: BorderRadius.circular(10.r),
+                border: Border.all(color: ColorSystem.purple),
               ),
-              SizedBox(height: 10.h),
-              const Text(
-                '12전 | 10승 | 2패',
-                style: FontSystem.KR18R,
-              ),
-              SizedBox(height: 34.h),
-              // Divider(thickness: 4),
-              Container(
-                width: double.infinity,
-                height: 4.h,
-                margin: EdgeInsets.symmetric(vertical: 20.h),
-                decoration: BoxDecoration(
-                  color: ColorSystem.grey3,
-                  borderRadius: BorderRadius.circular(4.h),
-                ),
-              ),
-              SizedBox(height: 10.h),
-              const Align(
-                alignment: Alignment.centerLeft,
+              child: Align(
+                alignment: Alignment.center,
                 child: Text(
+                  '승률 80%',
+                  style: FontSystem.KR18B.copyWith(color: ColorSystem.purple),
+                ),
+              ),
+            ),
+            SizedBox(height: 8.h),
+            const Text(
+              '12전 | 10승 | 2패',
+              style: FontSystem.KR18SB,
+            ),
+            SizedBox(height: 40.h),
+            // Divider(thickness: 4),
+            Container(
+              height: 6.h,
+              decoration: BoxDecoration(
+                color: ColorSystem.grey3,
+                borderRadius: BorderRadius.circular(4.h),
+              ),
+            ),
+            SizedBox(height: 30.h),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.only(left: 20.w),
+                child: const Text(
                   '내 활동',
                   style: FontSystem.KR14B,
                 ),
               ),
-              SizedBox(height: 20.h),
-              _buildListTile(
-                context,
-                title: '내가 참여한 토론',
-                onTap: () => context.go('/mydebate'),
+            ),
+            SizedBox(height: 20.h),
+            _buildListTile(
+              context,
+              title: '내가 참여한 토론',
+              leading: SvgPicture.asset(
+                'assets/icons/mypage_debate.svg',
+                width: 24.w,
+                height: 24.h,
               ),
-              _buildListTile(
-                context,
-                title: '알림',
-                onTap: () => context.go('/myalarm'),
+              onTap: () => context.go('/mydebate'),
+            ),
+            _buildListTile(
+              context,
+              title: '알림',
+              leading: SvgPicture.asset(
+                'assets/icons/mypage_alarm.svg',
+                width: 24.w,
+                height: 24.h,
               ),
-              _buildListTile(
-                context,
-                title: '차단 리스트',
-                onTap: () => context.go('/myblock'),
+              onTap: () => context.go('/myalarm'),
+            ),
+            _buildListTile(
+              context,
+              title: '차단 리스트',
+              leading: SvgPicture.asset(
+                'assets/icons/mypage_bann.svg',
+                width: 24.w,
+                height: 24.h,
               ),
-              SizedBox(height: 46.h),
-              Container(
-                width: double.infinity,
-                height: 4.h,
-                margin: EdgeInsets.only(bottom: 10.h),
-                decoration: BoxDecoration(
-                  color: ColorSystem.grey3,
-                  borderRadius: BorderRadius.circular(4.h),
-                ),
+              onTap: () => context.go('/myblock'),
+            ),
+            SizedBox(height: 30.h),
+            Container(
+              height: 6.h,
+              margin: EdgeInsets.only(bottom: 10.h),
+              decoration: BoxDecoration(
+                color: ColorSystem.grey3,
+                borderRadius: BorderRadius.circular(4.h),
               ),
-              SizedBox(height: 20.h),
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
+            ),
+            SizedBox(height: 30.h),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.only(left: 20.w),
+                child: const Text(
                   '설정',
                   style: FontSystem.KR14B,
                 ),
               ),
+            ),
 
-              SizedBox(height: 20.h),
-              _buildListTile(
-                context,
-                title: '비밀번호 변경',
-                onTap: () => context.go('/password'),
+            SizedBox(height: 20.h),
+            _buildListTile(
+              context,
+              title: '비밀번호 변경',
+              leading: SvgPicture.asset(
+                'assets/icons/mypage_pw.svg',
+                width: 24.w,
+                height: 24.h,
               ),
-              _buildListTile(
-                context,
-                title: '문의하기',
-                onTap: () => context.go('/contact'),
+              onTap: () => context.go('/password'),
+            ),
+            _buildListTile(
+              context,
+              title: '문의하기',
+              leading: SvgPicture.asset(
+                'assets/icons/mypage_ask.svg',
+                width: 24.w,
+                height: 24.h,
               ),
-              _buildListTile(
-                context,
-                title: '개인정보처리방침',
-                onTap: () => context.go('/personalRule'),
+              onTap: () => context.go('/contact'),
+            ),
+            _buildListTile(
+              context,
+              title: '개인정보처리방침',
+              leading: SvgPicture.asset(
+                'assets/icons/mypage_one.svg',
+                width: 24.w,
+                height: 24.h,
               ),
-              _buildListTile(
-                context,
-                title: '이용약관',
-                onTap: () => context.go('/rule'),
+              onTap: () => context.go('/personalRule'),
+            ),
+            _buildListTile(
+              context,
+              title: '이용약관',
+              leading: SvgPicture.asset(
+                'assets/icons/mypage_two.svg',
+                width: 24.w,
+                height: 24.h,
               ),
-              SizedBox(height: 30.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  TextButton(
+              onTap: () => context.go('/rule'),
+            ),
+            SizedBox(height: 30.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ProfilePopup();
+                      },
+                    );
+                  },
+                  child: const Text(
+                    '로그아웃',
+                    style: TextStyle(color: ColorSystem.grey),
+                  ),
+                ),
+                const Text(
+                  '|',
+                  style: TextStyle(color: ColorSystem.grey),
+                ),
+                TextButton(
                     onPressed: () {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return ProfilePopup();
+                          return ExitPopup();
                         },
                       );
                     },
                     child: const Text(
-                      '로그아웃',
+                      '회원탈퇴',
                       style: TextStyle(color: ColorSystem.grey),
-                    ),
-                  ),
-                  const Text(
-                    '|',
-                    style: TextStyle(color: ColorSystem.grey),
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return ExitPopup();
-                          },
-                        );
-                      },
-                      child: const Text(
-                        '회원탈퇴',
-                        style: TextStyle(color: ColorSystem.grey),
-                      )),
-                ],
-              ),
-              const SizedBox(height: 20),
-            ],
-          ),
+                    )),
+              ],
+            ),
+            SizedBox(height: 40.h),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildListTile(BuildContext context,
-      {required String title, required VoidCallback onTap}) {
+  Widget _buildListTile(
+    BuildContext context, {
+    required String title,
+    required VoidCallback onTap,
+    Widget? leading,
+  }) {
     return Padding(
       padding: EdgeInsets.only(bottom: 11.h),
       child: Container(
@@ -374,8 +412,14 @@ class _MypageMainState extends ConsumerState<MypageMain> {
           color: ColorSystem.white,
         ),
         child: ListTile(
+          leading: leading,
           title: Text(title),
-          trailing: const Icon(Icons.arrow_forward_ios),
+          trailing: Padding(
+            padding: EdgeInsets.only(top: 7.h),
+            child: SvgPicture.asset(
+              'assets/icons/mypage_real_arrow.svg',
+            ),
+          ),
           onTap: onTap,
         ),
       ),
