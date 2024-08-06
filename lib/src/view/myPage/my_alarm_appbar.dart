@@ -25,7 +25,7 @@ class MyAlarmAppbar extends StatelessWidget {
       ),
       title: const Text(
         '알림',
-        style: FontSystem.KR16B,
+        style: FontSystem.KR16SB,
       ),
       centerTitle: true,
     );

@@ -225,10 +225,19 @@ abstract class FontSystem {
   );
 
 
-    static const TextStyle KR22SB = TextStyle(
+  static const TextStyle KR22SB = TextStyle(
     fontSize: 22,
     fontFamily: 'Pretendard',
     fontWeight: FontWeight.w600,
+    color: Colors.black,
+    letterSpacing: -0.4,
+  );
+
+
+  static const TextStyle KR22B = TextStyle(
+    fontSize: 22,
+    fontFamily: 'Pretendard',
+    fontWeight: FontWeight.bold,
     color: Colors.black,
     letterSpacing: -0.4,
   );

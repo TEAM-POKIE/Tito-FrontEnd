@@ -26,7 +26,7 @@ class ChangeName extends ConsumerWidget {
           icon: const Icon(Icons.arrow_back_ios),
         ),
         centerTitle: true,
-        title: const Text('닉네임 수정', style: FontSystem.KR16B),
+        title: const Text('닉네임 수정', style: FontSystem.KR16SB),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),

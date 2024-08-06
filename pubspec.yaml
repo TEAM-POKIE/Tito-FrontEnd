@@ -111,23 +111,11 @@ flutter:
     - assets/icons/bottom_my.svg
     - assets/icons/purple_cute.svg
     - assets/icons/mypage_edit.svg
-    - assets/icons/profile.svg
-    - assets/icons/circle_profile.svg
-    - assets/icons/list_null.svg
     - assets/icons/list_real_null.svg
     - assets/icons/first_chat_find.svg
     - assets/icons/alarm.svg
     - assets/icons/alarm_new.svg
-    - assets/icons/kakao.svg
-    - assets/icons/google.svg
-    - assets/icons/apple.svg
-    - assets/icons/email.svg
     - assets/icons/hide.svg
-    - assets/icons/arrow_black.svg
-    - assets/icons/arrow_grey.svg
-    - assets/icons/arrow_front.svg
-    - assets/icons/arrow_down.svg
-    - assets/icons/arrow.svg
     - assets/icons/popup_face.svg
     - assets/icons/home_alarm.svg
     - assets/icons/purple_rule.svg
@@ -143,7 +131,8 @@ flutter:
     - assets/icons/sendArrow.svg
     - assets/icons/popUpBell.svg
     - assets/icons/whiteLLM.svg
-    - assets/icons/blackLLM.svg    - assets/icons/apple_size.svg
+    - assets/icons/blackLLM.svg    
+    - assets/icons/apple_size.svg
     - assets/icons/kakao_size.svg
     - assets/icons/google_size.svg
     - assets/icons/email_real.svg
@@ -154,11 +143,9 @@ flutter:
     - assets/icons/mypage_pw.svg
     - assets/icons/mypage_one.svg
     - assets/icons/mypage_two.svg
-    - assets/icons/bottombar_purple.svg
-    - assets/icons/search.svg
+    - assets/icons/search_size_four.svg
     - assets/icons/bottom_round_purple.svg
     - assets/icons/null_profile.svg
-    - assets/icons/mypage_arrow.svg
     - assets/icons/mypage_real_arrow.svg
     - assets/icons/mypage_real_black.svg
     
@@ -183,10 +170,8 @@ flutter:
     - assets/images/chatprofile.png
     - assets/images/chatCuteIcon.svg
     - assets/images/chatCuteIconPurple.svg
-
     - assets/images/detailChatIcon.svg
     - assets/images/popupTimingBell.png
-    - assets/images/changeprofile.png
     - assets/images/ep_arrow-down.png
     - assets/images/ep_arrow-up.png
     - assets/images/livefire.png
@@ -200,8 +185,6 @@ flutter:
     - assets/images/star.png
 
 
-
-    - assets/images/debateList.png
     - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see

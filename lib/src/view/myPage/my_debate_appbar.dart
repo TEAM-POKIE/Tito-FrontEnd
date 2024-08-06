@@ -25,7 +25,7 @@ class MyDebateAppbar extends StatelessWidget {
       ),
       title: const Text(
         '내가 참여한 토론',
-        style: FontSystem.KR16B,
+        style: FontSystem.KR16SB,
       ),
       centerTitle: true,
     );

@@ -8,6 +8,8 @@ import 'package:tito_app/core/constants/style.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import 'package:flutter/services.dart'; // 가로방향 막히기
+
 Future main() async {
   await dotenv.load(fileName: ".env");
 
@@ -15,6 +17,14 @@ Future main() async {
     nativeAppKey: dotenv.env['OAUTH_KAKAO_NATIVE_APP_KEY'],
     javaScriptAppKey: dotenv.env['OAUTH_KAKAO_JAVASCRIPT_APP_KEY'],
   );
+
+  // 세로 모드 고정
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
   runApp(const SafeArea(
     child: MyApp(),
   ));

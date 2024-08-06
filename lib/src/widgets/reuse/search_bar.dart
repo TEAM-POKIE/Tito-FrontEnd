@@ -14,6 +14,9 @@ class CustomSearchBar extends StatelessWidget {
         height: 50.h,
         child: TextField(
           decoration: InputDecoration(
+            prefixIcon: SvgPicture.asset(
+              'assets/icons/search_size_four.svg',
+            ),
             filled: true,
             fillColor: ColorSystem.ligthGrey, // 더 밝은 배경색
             border: OutlineInputBorder(
@@ -21,11 +24,6 @@ class CustomSearchBar extends StatelessWidget {
                 borderSide: BorderSide.none),
             hintText: '토론 검색어를 입력하세요',
             hintStyle: FontSystem.KR16M.copyWith(color: ColorSystem.grey),
-            prefixIcon: SizedBox(
-              width: 28.w,
-              height: 28.h,
-              child: SvgPicture.asset('assets/icons/search.svg'),
-            ), // 아이콘 색상 추가
           ),
           style: const TextStyle(
             color: ColorSystem.black,

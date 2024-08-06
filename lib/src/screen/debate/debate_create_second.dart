@@ -89,7 +89,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                   SizedBox(height: 40.h),
                   const Text(
                     '나의 주장',
-                    style: FontSystem.KR18R,
+                    style: FontSystem.KR18SB,
                   ),
                   SizedBox(height: 20.h),
                   TextFormField(
@@ -99,7 +99,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                       fillColor: ColorSystem.ligthGrey,
                       filled: true,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24.r),
+                        borderRadius: BorderRadius.circular(20.r),
                         borderSide: BorderSide.none,
                       ),
                     ),
@@ -116,7 +116,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                   SizedBox(height: 40.h),
                   const Text(
                     '상대 주장',
-                    style: FontSystem.KR18R,
+                    style: FontSystem.KR18SB,
                   ),
                   SizedBox(height: 20.h),
                   TextFormField(
@@ -126,7 +126,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                       fillColor: ColorSystem.ligthGrey,
                       filled: true,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24.r),
+                        borderRadius: BorderRadius.circular(20.r),
                         borderSide: BorderSide.none,
                       ),
                     ),

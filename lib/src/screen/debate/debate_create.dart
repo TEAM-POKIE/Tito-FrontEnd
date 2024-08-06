@@ -102,7 +102,7 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: const Text(
                     '카테고리 선택',
-                    style: FontSystem.KR18R,
+                    style: FontSystem.KR18SB,
                   ),
                 ),
                 SizedBox(
@@ -160,7 +160,7 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: const Text(
                     '토론 주제',
-                    style: FontSystem.KR18R,
+                    style: FontSystem.KR18SB,
                   ),
                 ),
                 SizedBox(height: 20.h),
@@ -173,7 +173,7 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
                       fillColor: ColorSystem.ligthGrey,
                       filled: true,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24.r),
+                        borderRadius: BorderRadius.circular(20.r),
                         borderSide: BorderSide.none,
                       ),
                     ),

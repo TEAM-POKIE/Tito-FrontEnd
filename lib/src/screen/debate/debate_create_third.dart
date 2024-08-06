@@ -89,7 +89,7 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
                   SizedBox(height: 40.h),
                   const Text(
                     '토론 주제에 대한 본문',
-                    style: FontSystem.KR18R,
+                    style: FontSystem.KR18SB,
                   ),
                   SizedBox(height: 20.h),
                   Container(
@@ -104,7 +104,7 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
                       decoration: InputDecoration(
                         hintText: '입력하세요',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.r),
+                          borderRadius: BorderRadius.circular(20.r),
                           borderSide: BorderSide.none,
                         ),
                       ),
