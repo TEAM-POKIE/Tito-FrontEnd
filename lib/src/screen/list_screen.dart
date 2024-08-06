@@ -27,7 +27,7 @@ class ListScreen extends ConsumerStatefulWidget {
 
 class _ListScreenState extends ConsumerState<ListScreen> {
   final List<String> labels = ['연애', '정치', '연예', '자유', '스포츠'];
-  final List<String> statuses = ['전체', '토론 중', '토론 종료'];
+  final List<String> statuses = ['전체', '실시간', '종료'];
   final List<String> sortOptions = ['최신순', '인기순'];
   int categorySelectedIndex = 0;
   int textSelectedIndex = 0;
@@ -196,8 +196,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              textSelectedIndex =
-                                  index; // selectedIndex를 업데이트
+                              textSelectedIndex = index; // selectedIndex를 업데이트
                               selectedStatus = statuses[index];
                               _fetchDebateList();
                             });
@@ -272,8 +271,8 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                     itemBuilder: (context, index) {
                       final debate = debateList[index];
                       return Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20.h, vertical: 5.w),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 20.h, vertical: 5.w),
                         child: Container(
                           decoration: BoxDecoration(
                             boxShadow: [
@@ -294,29 +293,27 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(height: 8.h),
+                                // 여기에 토론 완료 가은 거 추가로 lightGrey 색깔 만들어서 넣어야 하는 코드 위치
                                 Container(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 6.h, vertical: 4.w),
                                   decoration: BoxDecoration(
-                                    color: debate.debateStatus == '토론 중'
+                                    color: debate.debateStatus == '실시간'
                                         ? ColorSystem.lightPurple
                                         : ColorSystem.lightPurple,
                                     borderRadius: BorderRadius.circular(10.r),
                                   ),
-                                  child: Text(
-                                    debate.debateStatus ?? '상태 없음',
-                                    style: TextStyle(
-                                        color: debate.debateStatus == '토론 중'
+                                  child: Text(debate.debateStatus ?? '상태 없음',
+                                      style: FontSystem.KR16SB.copyWith(
+                                        color: debate.debateStatus == '실시간'
                                             ? ColorSystem.purple
                                             : ColorSystem.purple,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14.sp),
-                                  ),
+                                      )),
                                 ),
                                 SizedBox(height: 5.h),
                                 Text(
                                   debate.debateTitle ?? 'No title',
-                                  style: FontSystem.KR16B,
+                                  style: FontSystem.KR16M,
                                   maxLines: 1, // 텍스트를 한 줄로 제한
                                   overflow:
                                       TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
@@ -324,7 +321,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                 SizedBox(height: 4.h),
                                 Text(
                                   '제한 시간: ${debate.debatedTimeLimit}분',
-                                  style: FontSystem.KR14R
+                                  style: FontSystem.KR14M
                                       .copyWith(color: ColorSystem.purple),
                                   maxLines: 1, // 텍스트를 한 줄로 제한
                                   overflow:

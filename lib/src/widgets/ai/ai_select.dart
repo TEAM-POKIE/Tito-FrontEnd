@@ -180,7 +180,9 @@ class _AiSelectState extends State<AiSelect> {
                             border: Border.all(
                                 color: _selectedIndex == index
                                     ? ColorSystem.purple
-                                    : ColorSystem.grey),
+                                    : ColorSystem.grey,
+                                    //width: _selectedIndex ? 2.0 : 1.0
+                                    ),
                             borderRadius: BorderRadius.circular(20.r)),
                         alignment: Alignment.center,
                         child: Text(
@@ -197,7 +199,8 @@ class _AiSelectState extends State<AiSelect> {
           ),
 
           Padding(
-            padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h, top: 40.h),
+            padding: EdgeInsets.only(
+                left: 20.w, right: 20.w, bottom: 20.h, top: 40.h),
             child: SizedBox(
               width: 350.w,
               height: 60.h,

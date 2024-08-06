@@ -20,8 +20,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
     final notifier = ref.read(selectedIndexProvider.notifier);
     if (index == 2) {
       context.push('/debate_create').then((_) {});
-    } else if (index == 3) {
-      context.push('/ai_create').then((_) {});
     } else if (index == 4) {
       context.push('/mypage');
     } else {
@@ -33,6 +31,9 @@ class _BottomBarState extends ConsumerState<BottomBar> {
         case 1:
           context.go('/list');
           break;
+        case 3:
+          context.go('/ai_create');
+          break;
       }
     }
   }
@@ -41,62 +42,62 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   Widget build(BuildContext context) {
     final selectedIndex = ref.watch(selectedIndexProvider);
     return BottomNavigationBar(
-        backgroundColor: ColorSystem.white,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset('assets/icons/bottom_home.svg',
-              width: 24.w,
-              height: 24.h,
-              color: selectedIndex == 0 ? Colors.black : Colors.grey,
-            ),
-            label: '홈',
-            
+      backgroundColor: ColorSystem.white,
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: SvgPicture.asset(
+            'assets/icons/bottom_home.svg',
+            width: 24.w,
+            height: 24.h,
+            color: selectedIndex == 0 ? Colors.black : Colors.grey,
           ),
-          BottomNavigationBarItem(
-            icon:SvgPicture.asset(
-              'assets/icons/bottom_list.svg',
-              width: 25.w,
-              height: 25.h,
-              color: selectedIndex == 1 ? Colors.black : Colors.grey,
-            ),
-            label: '리스트',
+          label: '홈',
+        ),
+        BottomNavigationBarItem(
+          icon: SvgPicture.asset(
+            'assets/icons/bottom_list.svg',
+            width: 25.w,
+            height: 25.h,
+            color: selectedIndex == 1 ? Colors.black : Colors.grey,
           ),
-          BottomNavigationBarItem(
-            icon: Padding(
-              padding: EdgeInsets.only(top: 10.h),
-              child: SvgPicture.asset(
-                'assets/icons/bottom_round_purple.svg',
-                width: 60.w,
-                height: 60.h,
-              ),
+          label: '리스트',
+        ),
+        BottomNavigationBarItem(
+          icon: Padding(
+            padding: EdgeInsets.only(top: 10.h),
+            child: SvgPicture.asset(
+              'assets/icons/bottom_round_purple.svg',
+              width: 60.w,
+              height: 60.h,
             ),
-            label: '',
           ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/icons/final_ai.svg',
-              // width: 24.w,
-              // height: 24.h,
+          label: '',
+        ),
+        BottomNavigationBarItem(
+          icon: SvgPicture.asset(
+            selectedIndex == 3
+                ? 'assets/icons/bottom_ai_black.svg'
+                : 'assets/icons/final_ai.svg',
+          ),
+          label: 'AI 주제',
+        ),
+        BottomNavigationBarItem(
+          icon: Padding(
+            padding: EdgeInsets.only(top: 0.5.h),
+            child: SvgPicture.asset(
+              'assets/icons/bottom_my.svg',
+              width: 26.w,
+              height: 26.h,
             ),
-            label: 'AI 주제',
           ),
-          BottomNavigationBarItem(
-            icon: Padding(
-              padding: EdgeInsets.only(top: 0.5.h),
-              child: SvgPicture.asset(
-                'assets/icons/bottom_my.svg',
-                width: 26.w,
-                height: 26.h,
-              ),
-            ),
-            label: '마이',
-          ),
-        ],
-        currentIndex: selectedIndex,
-        onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: ColorSystem.black,
-        unselectedItemColor: ColorSystem.grey,
-      );
+          label: '마이',
+        ),
+      ],
+      currentIndex: selectedIndex,
+      onTap: _onItemTapped,
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: ColorSystem.black,
+      unselectedItemColor: ColorSystem.grey,
+    );
   }
 }
