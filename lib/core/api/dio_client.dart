@@ -10,7 +10,7 @@ class DioClient {
     ..interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
         // 여기서 토큰을 추가합니다.
-        final token = await _getToken();
+        final token = await _getToken(); 
         if (token != null) {
           options.headers['Authorization'] = 'Bearer $token';
         }

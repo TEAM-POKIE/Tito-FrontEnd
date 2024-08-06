@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
@@ -45,13 +46,17 @@ class _ListScreenState extends ConsumerState<ListScreen> {
     _fetchDebateList();
   }
 
+// 아래로 내렸을 때 새로고침 되는 코드
   void _onRefresh() async {
     await _fetchDebateList();
+    // await _fetchDebateList(isRefresh: true); // 새로고침 시 기존 데이터를 대체
     _refreshController.refreshCompleted();
   }
 
+// 리스트 끝에 도달했을 때 호출되는 코드
   void _onLoading() async {
     await _fetchDebateList();
+    // await _fetchDebateList(isRefresh: false); // 로딩 시 데이터를 추가
     _refreshController.loadComplete();
   }
 
@@ -59,7 +64,8 @@ class _ListScreenState extends ConsumerState<ListScreen> {
     context.push('/chat/${debateId}');
   }
 
-  Future<void> _fetchDebateList() async {
+// 데이터 fetch 로직 : 새로고침 시 기존데이터를 대체하고 리스트 끝에서 다시 렌더링시키기
+  Future<void> _fetchDebateList({bool isRefresh = false}) async {
     try {
       final List<Debate> debateResponse =
           await ApiService(DioClient.dio).getDebateList('recentUpdate');
@@ -86,13 +92,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
         }).toList();
       });
     } catch (error) {
-      if (error is DioException) {
-        print('Error type: ${error.type}');
-        print('Error message: ${error.message}');
-        print('Error response: ${error.response}');
-      } else {
-        print('Error: $error');
-      }
+      print('Error fetching debate list: $error');
     }
   }
 
@@ -100,14 +100,17 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70.0),
+        preferredSize: Size.fromHeight(80.0),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 0.w),
+          padding: EdgeInsets.only(top: 10.w),
           child: AppBar(
             backgroundColor: ColorSystem.white,
-            title: const Text(
-              '토론 리스트',
-              style: FontSystem.KR20B,
+            title: Padding(
+              padding: EdgeInsets.only(left: 10.w),
+              child: const Text(
+                '토론 리스트',
+                style: FontSystem.KR20B,
+              ),
             ),
           ),
         ),
@@ -122,53 +125,64 @@ class _ListScreenState extends ConsumerState<ListScreen> {
           ),
           SizedBox(height: 20.h),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 0.w),
+            padding: EdgeInsets.only(left: 20.w),
             child: Container(
               //카테고리 바가 들어가는 Container 부분
-              width: 380.w,
-              height: 30.h,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: List.generate(labels.length, (index) {
-                  return Container(
-                    height: 30.h,
-                    width: 75.w,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          selectedIndex = index;
-                          _fetchDebateList();
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        textStyle: FontSystem.KR10R,
-                        backgroundColor: selectedIndex == index
-                            ? ColorSystem.black
-                            : Colors.grey[200],
-                        foregroundColor: selectedIndex == index
-                            ? ColorSystem.white
-                            : const Color.fromARGB(255, 101, 101, 101),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.r),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal, // 수평 스크롤 가능하게 설정
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: List.generate(labels.length, (index) {
+                    return Padding(
+                      padding: EdgeInsets.only(right: 8.w),
+                      child: Container(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              selectedIndex = index;
+                              _fetchDebateList();
+                            });
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: selectedIndex == index
+                                ? ColorSystem.black
+                                : ColorSystem.ligthGrey,
+                            foregroundColor: selectedIndex == index
+                                ? ColorSystem.white
+                                : ColorSystem.grey1,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.r),
+                              side: BorderSide(
+                                color: selectedIndex == index
+                                    ? ColorSystem.black // 선택된 경우 테두리 색상
+                                    : ColorSystem.grey3, // 선택되지 않은 경우 테두리 색상
+                                width: 1.5, // 테두리 두께
+                              ),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                labels[index],
+                                style: selectedIndex == index
+                                    ? FontSystem.KR14SB
+                                        .copyWith(color: ColorSystem.white)
+                                    : FontSystem.KR14M.copyWith(
+                                        color: ColorSystem.grey1,
+                                      ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            labels[index],
-                            style: TextStyle(fontSize: 10.sp),
-                            // style: FontSystem.KR10B,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }),
+                    );
+                  }),
+                ),
               ),
             ),
           ),
-          SizedBox(height: 35.h),
+          SizedBox(height: 30.h),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Row(
@@ -187,21 +201,20 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                           },
                           child: Text(
                             statuses[index],
-                            style: TextStyle(
-                              color: selectedStatus == statuses[index]
-                                  ? ColorSystem.black
-                                  : ColorSystem.grey,
-                              fontWeight: selectedStatus == statuses[index]
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                            ),
+                            style: selectedIndex == index
+                                ? FontSystem.KR14SB
+                                    .copyWith(color: ColorSystem.black)
+                                : FontSystem.KR14M.copyWith(
+                                    color: ColorSystem.grey1,
+                                  ),
                           ),
                         ),
                         if (index < statuses.length - 1)
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 3.h),
                             child: Text('|',
-                                style: TextStyle(color: ColorSystem.grey)),
+                                style: FontSystem.KR14M
+                                    .copyWith(color: ColorSystem.grey)),
                           ),
                       ],
                     );
@@ -222,7 +235,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                       child: Text(
                         value,
                         style:
-                            FontSystem.KR14R.copyWith(color: ColorSystem.grey),
+                            FontSystem.KR14M.copyWith(color: ColorSystem.grey),
                       ),
                     );
                   }).toList(),
@@ -232,12 +245,12 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                     size: 20.sp,
                   ),
                   underline: SizedBox.shrink(), // 밑줄을 없애기 위해 사용
-                  style: FontSystem.KR14R.copyWith(color: ColorSystem.grey),
+                  style: FontSystem.KR14M.copyWith(color: ColorSystem.grey),
                 ),
               ],
             ),
           ),
-          SizedBox(height: 18.h),
+          SizedBox(height: 10.h),
           Expanded(
             child: SmartRefresher(
               controller: _refreshController,

@@ -10,7 +10,6 @@ import 'package:tito_app/src/screen/myPage/myPage_main_screen.dart';
 import 'package:tito_app/src/screen/myPage/my_alarm.dart';
 import 'package:tito_app/src/screen/myPage/my_contact.dart';
 import 'package:tito_app/src/screen/myPage/my_debate.dart';
-import 'package:tito_app/src/screen/myPage/my_like.dart';
 import 'package:tito_app/src/screen/myPage/my_block.dart';
 import 'package:tito_app/splash_screen.dart';
 import 'package:tito_app/src/view/chatView/show_case.dart';
@@ -73,10 +72,6 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/myalarm',
       builder: (context, state) => const MyAlarm(),
-    ),
-    GoRoute(
-      path: '/mylike',
-      builder: (context, state) => const MyLike(),
     ),
     GoRoute(
       path: '/myblock',

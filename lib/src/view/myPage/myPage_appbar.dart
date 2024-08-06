@@ -20,7 +20,7 @@ class MypageAppbar extends ConsumerWidget {
       ),
       title: const Text(
         '마이페이지',
-        style: FontSystem.KR16B
+        style: FontSystem.KR16SB
       ),
       centerTitle: true, // 타이틀 중앙 정렬
     );

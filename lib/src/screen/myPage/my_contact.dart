@@ -42,7 +42,7 @@ class _MyContactState extends State<MyContact> {
         ),
         title: const Text(
           '문의하기',
-          style: FontSystem.KR16B,
+          style: FontSystem.KR16SB,
         ),
         centerTitle: true,
       ),
@@ -56,7 +56,7 @@ class _MyContactState extends State<MyContact> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 51.h),
-              const Text('내용', style: FontSystem.KR16R),
+              const Text('내용', style: FontSystem.KR16SB),
               SizedBox(height: 10.h),
               Container(
                 height: 200.h,
@@ -76,11 +76,8 @@ class _MyContactState extends State<MyContact> {
                   ),
                 ),
               ),
-              SizedBox(height: 18.h),
-              SizedBox(
-                width: 115.w,
-                height: 40.h,
-                child: ElevatedButton(
+              SizedBox(height: 20.h),
+              ElevatedButton(
                   onPressed: _pickImage,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: ColorSystem.purple,
@@ -103,14 +100,31 @@ class _MyContactState extends State<MyContact> {
                       ),
                       Text(
                         '파일 첨부',
-                        style: FontSystem.KR14R.copyWith(color: ColorSystem.white),
+                        style: FontSystem.KR14SB.copyWith(color: ColorSystem.white),
                       ),
                     ],
                   ),
                 ),
+              
+              SizedBox(height: 20.h),
+              const Text('연락받을 이메일', style: FontSystem.KR16SB),
+              SizedBox(height: 10.h),
+              TextField(
+                //controller: _titleController,
+                decoration: InputDecoration(
+                  // hintText: '입력하세요',
+                  // hintStyle: TextStyle(color: Colors.grey),
+                  filled: true,
+                  fillColor: ColorSystem.ligthGrey,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                style: TextStyle(color: ColorSystem.black),
               ),
               SizedBox(height: 20.h),
-              const Text('연락받을 이메일', style: FontSystem.KR16R),
+              const Text('이용자 아이디', style: FontSystem.KR16SB),
               SizedBox(height: 10.h),
               TextField(
                 //controller: _titleController,
@@ -120,33 +134,16 @@ class _MyContactState extends State<MyContact> {
                   filled: true,
                   fillColor: ColorSystem.ligthGrey,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(24.r)),
+                    borderRadius: BorderRadius.all(Radius.circular(20.r)),
                     borderSide: BorderSide.none,
                   ),
                 ),
                 style: TextStyle(color: ColorSystem.black),
               ),
-              SizedBox(height: 18.h),
-              const Text('이용자 아이디', style: FontSystem.KR16R),
-              SizedBox(height: 10.h),
-              TextField(
-                //controller: _titleController,
-                decoration: InputDecoration(
-                  // hintText: '입력하세요',
-                  // hintStyle: TextStyle(color: Colors.grey),
-                  filled: true,
-                  fillColor: ColorSystem.ligthGrey,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(24.r)),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-                style: TextStyle(color: ColorSystem.black),
-              ),
-              SizedBox(height: 18.h),
+              SizedBox(height: 20.h),
               const Text('학교',
                   style:
-                      FontSystem.KR16R),
+                      FontSystem.KR16SB),
               TextField(
                 //controller: _titleController,
                 decoration: InputDecoration(
@@ -155,7 +152,7 @@ class _MyContactState extends State<MyContact> {
                   filled: true,
                   fillColor: ColorSystem.ligthGrey,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(24.r)),
+                    borderRadius: BorderRadius.all(Radius.circular(20.r)),
                     borderSide: BorderSide.none,
                   ),
                 ),
@@ -167,7 +164,7 @@ class _MyContactState extends State<MyContact> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 40.h),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 47.h),
         child: SizedBox(
           width: 350.w,
           height: 60.h,

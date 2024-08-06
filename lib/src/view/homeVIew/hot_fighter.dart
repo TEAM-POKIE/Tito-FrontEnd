@@ -21,7 +21,7 @@ class HotFighter extends ConsumerWidget {
             children: [
               const Text(
                 'HOT한 토론러',
-                style: FontSystem.KR18B,
+                style: FontSystem.KR18SB,
               ),
               SizedBox(
                 width: 4.w,
@@ -34,11 +34,11 @@ class HotFighter extends ConsumerWidget {
           ),
         ),
         SizedBox(
-          height: 16.h,
+          height: 20.h,
         ),
         Container(
-          //padding: EdgeInsets.symmetric(horizontal: 10.w),
-          height: 150.h,
+          padding: EdgeInsets.only(left: 10.w),
+          height: 125.h,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: 10, // 예시로 10개의 아이템
@@ -53,9 +53,9 @@ class HotFighter extends ConsumerWidget {
                           'assets/images/hot_fighter.png'), // 프로필 이미지 경로
                     ),
                     SizedBox(height: 8.h),
-                    Text(
+                    const Text(
                       '일인자',
-                      style: FontSystem.KR16R,
+                      style: FontSystem.KR16M,
                       maxLines: 1, // 텍스트를 한 줄로 제한
                       overflow: TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
                     ),
