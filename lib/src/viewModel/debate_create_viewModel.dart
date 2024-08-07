@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tito_app/core/provider/live_comment.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:tito_app/src/data/models/debate_crate.dart';
@@ -21,7 +24,8 @@ enum DebateCategory {
 
 class DebateCreateViewModel extends StateNotifier<DebateCreateState> {
   final Ref ref;
-
+  final ImagePicker _picker = ImagePicker();
+  File? debateImageFile;
   DebateCreateViewModel(this.ref) : super(DebateCreateState());
 
   final List<String> labels =
@@ -46,6 +50,15 @@ class DebateCreateViewModel extends StateNotifier<DebateCreateState> {
   void updateOpinion(String aOpinion, String bOpinion) {
     state = state.copyWith(
         debateMakerOpinion: aOpinion, debateJoinerOpinion: bOpinion);
+  }
+
+  Future<void> pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      debateImageFile = File(pickedFile.path);
+
+      state = state.copyWith(debateImageUrl: debateImageFile!.path);
+    }
   }
 
   void showRulePopup(BuildContext context) {

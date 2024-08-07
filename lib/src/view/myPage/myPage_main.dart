@@ -148,6 +148,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
   @override
   Widget build(BuildContext context) {
     final loginInfo = ref.watch(loginInfoProvider);
+
     return SingleChildScrollView(
       child: Center(
         child: Column(
@@ -155,25 +156,36 @@ class _MypageMainState extends ConsumerState<MypageMain> {
             SizedBox(height: 20.h),
             Stack(
               children: [
-                CircleAvatar(
-                  radius: 40.r,
-                  child: loginInfo?.profilePicture == null
-                      ? SizedBox(
-                          width: 40.r * 2,
-                          height: 40.r * 2,
-                          child: SvgPicture.asset(
-                            'assets/icons/null_profile.svg',
-                            fit: BoxFit.cover,
-                          ),
-                        )
-                      : SizedBox(
-                          width: 40.r * 2,
-                          height: 40.r * 2,
-                          child: Text('${loginInfo?.profilePicture}',
-
-                          ),
-                        ),
+                // if (loginInfo!.profilePicture != null)
+                //   Image.file(
+                //     File(loginInfo.profilePicture!),
+                //     width: 100.w,
+                //     height: 100.h,
+                //     fit: BoxFit.cover,
+                //   )
+                // else
+                // 기본 이미지나 빈 위젯을 표시하도록 합니다.
+                SvgPicture.asset(
+                  'assets/icons/null_profile.svg',
+                  width: 80,
+                  height: 80,
                 ),
+
+                // CircleAvatar(
+                //   radius: 35.r,
+                //   backgroundImage: _image != null
+                //       ? FileImage(File(_image!.path)) as ImageProvider
+                //       : loginInfo?.profilePicture == null
+                //           ? null
+                //           : NetworkImage(loginInfo!.profilePicture!)
+                //               as ImageProvider,
+                //   child: _image == null && loginInfo?.profilePicture == null
+                //       ? SvgPicture.asset(
+                //           'assets/icons/circle_profile.svg',
+                //           fit: BoxFit.cover,
+                //         )
+                //       : null,
+                // ),
                 Positioned(
                   bottom: -15,
                   right: -15,

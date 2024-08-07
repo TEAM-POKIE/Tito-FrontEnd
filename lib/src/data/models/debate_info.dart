@@ -2,7 +2,7 @@ class DebateInfo {
   final int id;
   final String debateTitle;
   final String debateCategory;
-  final String debateStatus;
+  String debateStatus;
   final String debateMakerOpinion;
   final String debateJoinerOpinion;
   int debatedTimeLimit;

@@ -52,7 +52,6 @@ class DebateCreateState {
       'debateJoinerOpinion': debateJoinerOpinion,
       'firstChatContent': firstChatContent,
       'debateContent': debateContent,
-      'debateImageUrl': debateImageUrl,
     };
   }
 }

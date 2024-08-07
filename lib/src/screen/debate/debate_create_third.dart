@@ -1,9 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tito_app/core/constants/style.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -39,7 +40,7 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
 
     return GestureDetector(
       onTap: () {
-        FocusScope.of(context).unfocus(); // Dismiss keyboard
+        FocusScope.of(context).unfocus(); // 키보드 닫기
       },
       child: Scaffold(
         appBar: AppBar(
@@ -47,7 +48,6 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
           leading: IconButton(
             onPressed: () {
               context.pop();
-              //바로 이전에 실행했던 화면으로 이동
             },
             icon: const Icon(Icons.arrow_back_ios),
           ),
@@ -124,16 +124,16 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
                     '이미지 첨부하기',
                     style: FontSystem.KR18SB,
                   ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
+                  SizedBox(height: 20.h),
                   Row(
                     children: [
                       Container(
                         width: 115.w,
                         height: 45.h,
                         child: TextButton.icon(
-                          onPressed: () {}, //debateViewModel.pickImage,
+                          onPressed: () {
+                            debateViewModel.pickImage();
+                          },
                           icon: const Icon(
                             Icons.camera_alt,
                             color: ColorSystem.white,
@@ -151,6 +151,16 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
                           ),
                         ),
                       ),
+                      if (debateState.debateImageUrl != null)
+                        Padding(
+                          padding: EdgeInsets.only(left: 20.w),
+                          child: Image.file(
+                            File(debateState.debateImageUrl),
+                            width: 100.w,
+                            height: 100.h,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                     ],
                   ),
                 ],
@@ -165,8 +175,7 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
             height: 60.h,
             child: ElevatedButton(
               onPressed: () {
-                debateViewModel.nextChat(
-                    _formKey, context); // formKey와 context 전달
+                debateViewModel.nextChat(_formKey, context);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: ColorSystem.purple,

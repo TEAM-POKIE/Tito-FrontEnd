@@ -1,6 +1,8 @@
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/src/widgets/reuse/purple_button.dart';
@@ -14,7 +16,18 @@ class ChangeName extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    InputTextFieldController _titleController = InputTextFieldController();
     final loginInfo = ref.watch(loginInfoProvider);
+    void changeNickName() async {
+      final respons = await ApiService(DioClient.dio).putNickName({
+        'nickname': _titleController.text,
+      });
+      final userInfoResponse = await ApiService(DioClient.dio).getUserInfo();
+
+      final loginInfoNotifier = ref.read(loginInfoProvider.notifier);
+      loginInfoNotifier.setLoginInfo(userInfoResponse);
+      context.go('/mypage');
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -37,7 +50,7 @@ class ChangeName extends ConsumerWidget {
             const Text('새로운 닉네임을 수정해주세요.', style: FontSystem.KR16SB),
             SizedBox(height: 20.h),
             TextField(
-              //controller: _titleController,
+              controller: _titleController,
               decoration: InputDecoration(
                 hintText: '${loginInfo?.nickname}',
                 hintStyle: TextStyle(color: ColorSystem.grey, fontSize: 16.sp),
@@ -60,7 +73,7 @@ class ChangeName extends ConsumerWidget {
           height: 60.h,
           child: ElevatedButton(
             onPressed: () {
-              context.go('/mypage');
+              changeNickName();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: ColorSystem.purple,

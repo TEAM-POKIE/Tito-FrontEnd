@@ -50,10 +50,9 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
 
       // & Phase 3. 해당 토큰으로 사용자 Detail Data 요청
       final userInfoResponse = await ApiService(DioClient.dio).getUserInfo();
-      final userInfo = userInfoResponse;
 
       final loginInfoNotifier = ref.read(loginInfoProvider.notifier);
-      loginInfoNotifier.setLoginInfo(userInfo);
+      loginInfoNotifier.setLoginInfo(userInfoResponse);
 
       // & Phase 4. HomeScreen으로 이동
       if (!context.mounted) return;

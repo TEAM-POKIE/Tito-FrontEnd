@@ -79,6 +79,7 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
   void _subscribeToMessages() {
     final webSocketService = ref.read(webSocketProvider);
     final loginInfo = ref.watch(loginInfoProvider);
+
     _subscription = webSocketService.stream.listen((message) {
       if (message.containsKey('content')) {
         if (mounted) {
