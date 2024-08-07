@@ -1,6 +1,9 @@
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tito_app/core/api/api_service.dart';
+import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/src/widgets/reuse/purple_button.dart';
 import 'package:tito_app/core/constants/style.dart';
@@ -12,6 +15,18 @@ class ChangePassword extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final loginInfo = ref.watch(loginInfoProvider);
+    InputTextFieldController _currentController = InputTextFieldController();
+    InputTextFieldController _newPasswordController =
+        InputTextFieldController();
+    InputTextFieldController();
+    void changePassWord() async {
+      final response = await ApiService(DioClient.dio).putPassword({
+        "currentPassword": _currentController.text,
+        "newPassword": _newPasswordController.text,
+      });
+
+      context.go('/mypage');
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -34,6 +49,7 @@ class ChangePassword extends ConsumerWidget {
             const Text('현재 비밀번호', style: FontSystem.KR16SB),
             SizedBox(height: 10.h),
             TextField(
+              controller: _currentController,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: ColorSystem.ligthGrey,
@@ -64,6 +80,7 @@ class ChangePassword extends ConsumerWidget {
             const Text('새 비밀번호 재입력', style: FontSystem.KR16SB),
             SizedBox(height: 10.h),
             TextField(
+              controller: _newPasswordController,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: ColorSystem.ligthGrey,
@@ -84,7 +101,7 @@ class ChangePassword extends ConsumerWidget {
           height: 60.h,
           child: ElevatedButton(
             onPressed: () {
-              context.go('/mypage');
+              changePassWord();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: ColorSystem.purple,

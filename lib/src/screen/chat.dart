@@ -77,7 +77,6 @@ class _ChatState extends ConsumerState<Chat> {
       }
       chatState!.debateOwnerTurnCount = _messages.last['ownerTurnCount'];
       chatState.debateJoinerTurnCount = _messages.last['joinerTurnCount'];
-      chatState.debateStatus = _messages.last['status'];
     }
     if (debateInfo == null) {
       return Scaffold(

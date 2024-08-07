@@ -145,9 +145,9 @@ class DebatePopup extends ConsumerWidget {
     final chatViewModel = ref.watch(chatInfoProvider.notifier);
 
     void startDebate() async {
+      final debateData = debateState.toJson();
+      File debateImage = File(debateState.debateImageUrl);
       try {
-        final debateData = debateState.toJson();
-
         if (debateState.debateImageUrl == '') {
           var formData = FormData.fromMap({
             'debate': MultipartFile.fromString(
@@ -157,10 +157,9 @@ class DebatePopup extends ConsumerWidget {
           });
           final response = await ApiService(DioClient.dio).postDebate(formData);
           debateState.debateContent = '';
-          debateState.debateImageUrl = '';
+
           context.push('/chat/${response.id}');
         } else {
-          File debateImage = File(debateState.debateImageUrl);
           var formData = FormData.fromMap({
             'debate': MultipartFile.fromString(
               jsonEncode(debateData),

@@ -29,6 +29,9 @@ abstract class ApiService {
   @PUT("users/nickname")
   Future<void> putNickName(@Body() Map<String, dynamic> nickNameData);
 
+  @PUT("users/password")
+  Future<void> putPassword(@Body() Map<String, dynamic> passwordData);
+
   @GET("users/debates")
   Future<DebateUsermade> getUserMade();
 
