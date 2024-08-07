@@ -161,8 +161,8 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{r'state': state};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<List<Debate>>(Options(
+    final _result =
+        await _dio.fetch<List<dynamic>>(_setStreamType<List<Debate>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -178,13 +178,11 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final List<dynamic> data = _result.data!['data'];
-    var _value = data
+    var _value = _result.data!
         .map((dynamic i) => Debate.fromJson(i as Map<String, dynamic>))
         .toList();
     return _value;
   }
-
 
   @override
   Future<List<DebateParticipants>> getParicipants(int debateId) async {
@@ -270,17 +268,42 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<DebateCreateInfo> postDebate(Map<String, dynamic> debate) async {
+  Future<void> deleteUnblock(Map<String, dynamic> requestBody) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(debate);
+    _data.addAll(requestBody);
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'user-block-list/unblock',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+  }
+
+  @override
+  Future<DebateCreateInfo> postDebate(FormData formData) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = formData;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<DebateCreateInfo>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: 'multipart/form-data',
     )
             .compose(
               _dio.options,
@@ -295,6 +318,31 @@ class _ApiService implements ApiService {
             ))));
     final _value = DebateCreateInfo.fromJson(_result.data!);
     return _value;
+  }
+
+  @override
+  Future<void> postUserBlock(Map<String, dynamic> userId) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(userId);
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'user-block-list/block',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

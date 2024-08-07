@@ -25,38 +25,34 @@ class VotingBar extends HookConsumerWidget {
       return null;
     }, [bluePercent]);
 
-    return Column(
-      children: [
-        LinearPercentIndicator(
-          lineHeight: 5.0,
-          animation: true,
-          padding: EdgeInsets.zero,
-          animationDuration: 500,
-          animateFromLastPercent: true, // 마지막 퍼센트에서 애니메이션 시작
-          percent: bluePercent,
-          linearStrokeCap: LinearStrokeCap.roundAll,
-          progressColor: Colors.blue,
-          backgroundColor: Colors.red,
-          width: MediaQuery.sizeOf(context).width,
-        ),
+    return LinearPercentIndicator(
+      lineHeight: 5.0,
+      animation: true,
+      padding: EdgeInsets.zero,
+      animationDuration: 500,
+      animateFromLastPercent: true, // 마지막 퍼센트에서 애니메이션 시작
+      percent: bluePercent,
+      linearStrokeCap: LinearStrokeCap.roundAll,
+      progressColor: Colors.blue,
+      backgroundColor: Colors.red,
+      width: MediaQuery.sizeOf(context).width,
 
-        // Row(
-        //   children: [
-        //     ElevatedButton(
-        //       onPressed: () {
-        //         voteNotifier.voteBlue();
-        //       },
-        //       child: Text('Vote Blue'),
-        //     ),
-        //     ElevatedButton(
-        //       onPressed: () {
-        //         voteNotifier.voteRed();
-        //       },
-        //       child: Text('Vote Red'),
-        //     ),
-        //   ],
-        // ),
-      ],
+      // Row(
+      //   children: [
+      //     ElevatedButton(
+      //       onPressed: () {
+      //         voteNotifier.voteBlue();
+      //       },
+      //       child: Text('Vote Blue'),
+      //     ),
+      //     ElevatedButton(
+      //       onPressed: () {
+      //         voteNotifier.voteRed();
+      //       },
+      //       child: Text('Vote Red'),
+      //     ),
+      //   ],
+      // ),
     );
   }
 }

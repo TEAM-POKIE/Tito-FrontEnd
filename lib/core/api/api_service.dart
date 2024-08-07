@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 import 'package:tito_app/core/api/multpart_file_with_to_json.dart';
@@ -41,6 +42,12 @@ abstract class ApiService {
 
   @DELETE("debates/{id}")
   Future deleteDebate(@Path("id") int debateId);
+  @DELETE("user-block-list/unblock")
+  Future<void> deleteUnblock(@Body() Map<String, dynamic> requestBody);
+
   @POST("debates")
-  Future<DebateCreateInfo> postDebate(@Body() Map<String, dynamic> debate);
+  @MultiPart()
+  Future<DebateCreateInfo> postDebate(@Body() FormData formData);
+  @POST("user-block-list/block")
+  Future<void> postUserBlock(@Body() Map<String, dynamic> userId);
 }
