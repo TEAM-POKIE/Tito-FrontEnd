@@ -147,34 +147,45 @@ class DebatePopup extends ConsumerWidget {
     void startDebate() async {
       try {
         final debateData = debateState.toJson();
-        File debateImage = File(debateState.debateImageUrl);
 
-        var formData = FormData.fromMap({
-          'debate': MultipartFile.fromString(
-            jsonEncode(debateData),
-            contentType: DioMediaType.parse("application/json"),
-          ),
-          'file': await MultipartFile.fromFile(
-            debateImage.path,
-            filename: debateImage.path.split(Platform.pathSeparator).last,
-          ),
-        });
+        if (debateState.debateImageUrl == '') {
+          var formData = FormData.fromMap({
+            'debate': MultipartFile.fromString(
+              jsonEncode(debateData),
+              contentType: DioMediaType.parse("application/json"),
+            ),
+          });
+          final response = await ApiService(DioClient.dio).postDebate(formData);
+          debateState.debateContent = '';
+          debateState.debateImageUrl = '';
+          context.push('/chat/${response.id}');
+        } else {
+          File debateImage = File(debateState.debateImageUrl);
+          var formData = FormData.fromMap({
+            'debate': MultipartFile.fromString(
+              jsonEncode(debateData),
+              contentType: DioMediaType.parse("application/json"),
+            ),
+            'file': await MultipartFile.fromFile(
+              debateImage.path,
+              filename: debateImage.path.split(Platform.pathSeparator).last,
+            ),
+          });
+          // Print the form data fields
+          formData.fields.forEach((field) {
+            print('Field: ${field.key} = ${field.value}');
+          });
 
-        // Print the form data fields
-        formData.fields.forEach((field) {
-          print('Field: ${field.key} = ${field.value}');
-        });
-
-        // Print the form data files
-        formData.files.forEach((file) {
-          print('File: ${file.key} = ${file.value.filename}');
-          print('File path: ${debateImage.path}');
-        });
-
-        final response = await ApiService(DioClient.dio).postDebate(formData);
-        debateState.debateContent = '';
-
-        context.push('/chat/${response.id}');
+          // Print the form data files
+          formData.files.forEach((file) {
+            print('File: ${file.key} = ${file.value.filename}');
+            print('File path: ${debateImage.path}');
+          });
+          final response = await ApiService(DioClient.dio).postDebate(formData);
+          debateState.debateContent = '';
+          debateState.debateImageUrl = '';
+          context.push('/chat/${response.id}');
+        }
       } catch (error) {
         print('Error posting debate: $error');
       }

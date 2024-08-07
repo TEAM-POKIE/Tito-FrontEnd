@@ -147,6 +147,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
   @override
   Widget build(BuildContext context) {
     final loginInfo = ref.watch(loginInfoProvider);
+
     return SingleChildScrollView(
       child: Center(
         child: Column(
@@ -154,11 +155,21 @@ class _MypageMainState extends ConsumerState<MypageMain> {
             SizedBox(height: 20.h),
             Stack(
               children: [
+                // if (loginInfo!.profilePicture != null)
+                //   Image.file(
+                //     File(loginInfo.profilePicture!),
+                //     width: 100.w,
+                //     height: 100.h,
+                //     fit: BoxFit.cover,
+                //   )
+                // else
+                // 기본 이미지나 빈 위젯을 표시하도록 합니다.
                 SvgPicture.asset(
                   'assets/icons/null_profile.svg',
                   width: 80,
                   height: 80,
                 ),
+
                 // CircleAvatar(
                 //   radius: 35.r,
                 //   backgroundImage: _image != null

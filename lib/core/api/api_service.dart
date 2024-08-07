@@ -26,6 +26,9 @@ abstract class ApiService {
   @GET("users")
   Future<LoginInfo> getUserInfo();
 
+  @PUT("users/nickname")
+  Future<void> putNickName(@Body() Map<String, dynamic> nickNameData);
+
   @GET("users/debates")
   Future<DebateUsermade> getUserMade();
 
