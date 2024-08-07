@@ -44,7 +44,6 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
     if (!context.mounted) return;
     //현재 위젯의 context가 여전히 트리에서 유효한 상태인지 확인하는 것이다. 트리에 없는 상태라면 더 이상 진행하지 않고 함수 실행을 종료한다. 
     context.push('/debate_create_second');
-    //
   }
 
   @override
@@ -65,7 +64,7 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
           backgroundColor: ColorSystem.white,
           leading: IconButton(
             onPressed: () {
-              debateState.debateContent = '';
+              //debateState.debateContent = '';
               context.pop();
             },
             icon: const Icon(Icons.arrow_back_ios),

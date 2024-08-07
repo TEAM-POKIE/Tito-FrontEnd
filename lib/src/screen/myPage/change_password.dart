@@ -18,7 +18,7 @@ class ChangePassword extends ConsumerWidget {
         backgroundColor: ColorSystem.white,
         leading: IconButton(
           onPressed: () {
-            context.go('/mypage');
+            context.pop();
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),

@@ -170,6 +170,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                           width: 40.r * 2,
                           height: 40.r * 2,
                           child: Text('${loginInfo?.profilePicture}',
+
                           ),
                         ),
                 ),
@@ -198,7 +199,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                 ),
                 IconButton(
                   onPressed: () {
-                    context.go('/nickname');
+                    context.push('/nickname');
                   },
                   icon: Padding(
                     padding: EdgeInsets.only(top: 8.h),
@@ -275,7 +276,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                 width: 24.w,
                 height: 24.h,
               ),
-              onTap: () => context.go('/mydebate'),
+              onTap: () => context.push('/mydebate'),
             ),
             _buildListTile(
               context,
@@ -285,7 +286,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                 width: 24.w,
                 height: 24.h,
               ),
-              onTap: () => context.go('/myalarm'),
+              onTap: () => context.push('/myalarm'),
             ),
             _buildListTile(
               context,
@@ -295,7 +296,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                 width: 24.w,
                 height: 24.h,
               ),
-              onTap: () => context.go('/myblock'),
+              onTap: () => context.push('/myblock'),
             ),
             SizedBox(height: 30.h),
             Container(
@@ -327,7 +328,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                 width: 24.w,
                 height: 24.h,
               ),
-              onTap: () => context.go('/password'),
+              onTap: () => context.push('/password'),
             ),
             _buildListTile(
               context,
@@ -337,7 +338,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                 width: 24.w,
                 height: 24.h,
               ),
-              onTap: () => context.go('/contact'),
+              onTap: () => context.push('/contact'),
             ),
             _buildListTile(
               context,
@@ -347,7 +348,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                 width: 24.w,
                 height: 24.h,
               ),
-              onTap: () => context.go('/personalRule'),
+              onTap: () => context.push('/personalRule'),
             ),
             _buildListTile(
               context,
@@ -357,7 +358,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                 width: 24.w,
                 height: 24.h,
               ),
-              onTap: () => context.go('/rule'),
+              onTap: () => context.push('/rule'),
             ),
             SizedBox(height: 30.h),
             Row(

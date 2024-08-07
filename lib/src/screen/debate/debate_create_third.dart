@@ -122,7 +122,7 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
                   SizedBox(height: 40.h),
                   const Text(
                     '이미지 첨부하기',
-                    style: FontSystem.KR18R,
+                    style: FontSystem.KR18SB,
                   ),
                   SizedBox(
                     height: 20.h,

@@ -18,7 +18,7 @@ class MyAlarmAppbar extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 12.w),
         child: IconButton(
           onPressed: () {
-            context.go('/mypage');
+            context.pop();
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),

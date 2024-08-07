@@ -12,16 +12,8 @@ class MypageAppbar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return AppBar(
       backgroundColor: ColorSystem.white,
-      leading: IconButton(
-        onPressed: () {
-          context.go('/home');
-        },
-        icon: const Icon(Icons.arrow_back_ios),
-      ),
-      title: const Text(
-        '마이페이지',
-        style: FontSystem.KR16SB
-      ),
+      automaticallyImplyLeading: false,
+      title: const Text('마이페이지', style: FontSystem.KR16SB),
       centerTitle: true, // 타이틀 중앙 정렬
     );
   }

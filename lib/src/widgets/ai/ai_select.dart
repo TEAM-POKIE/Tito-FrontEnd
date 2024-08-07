@@ -30,7 +30,7 @@ class _AiSelectState extends State<AiSelect> {
         backgroundColor: ColorSystem.white,
         leading: IconButton(
           onPressed: () {
-            context.go('/home');
+            context.pop();
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
@@ -193,7 +193,7 @@ class _AiSelectState extends State<AiSelect> {
               height: 60.h,
               child: ElevatedButton(
                 onPressed: () {
-                  context.go('/debate_create');
+                  context.push('/debate_create');
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor:

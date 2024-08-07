@@ -53,31 +53,30 @@ class AiCreate extends StatelessWidget {
       onTap: () {
         _scrollToItem(index);
       },
-      child:  Container(
+      child: Container(
         key: _itemKeys[index],
-        
+
         height: 30.h,
-        margin: EdgeInsets.symmetric(horizontal: 3.w),  // chip 간의 간격 조절
+        margin: EdgeInsets.symmetric(horizontal: 3.w), // chip 간의 간격 조절
         child: Chip(
-            label: Text(
-              '$index 원숭이다리',
-              style: FontSystem.KR14M.copyWith(color: ColorSystem.white),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            backgroundColor: Colors.black,
-            deleteIcon: const Icon(
-              Icons.close,
-              color: ColorSystem.white,
-              size: 20,
-            ),
-            onDeleted: () => selectionController
-                .toggleSelection(index), // X 아이콘이 눌렸을 때 선택 상태 토글
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.r),
-            ),
+          label: Text(
+            '$index 원숭이다리',
+            style: FontSystem.KR14M.copyWith(color: ColorSystem.white),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
-        
+          backgroundColor: Colors.black,
+          deleteIcon: const Icon(
+            Icons.close,
+            color: ColorSystem.white,
+            size: 20,
+          ),
+          onDeleted: () => selectionController
+              .toggleSelection(index), // X 아이콘이 눌렸을 때 선택 상태 토글
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+        ),
       ),
     );
   }
@@ -96,8 +95,6 @@ class AiCreate extends StatelessWidget {
       );
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -211,10 +208,7 @@ class AiCreate extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: isSelectExist
                       ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => AiSelect()),
-                          );
+                          context.push('/ai_select');
                         }
                       : null,
                   style: ElevatedButton.styleFrom(

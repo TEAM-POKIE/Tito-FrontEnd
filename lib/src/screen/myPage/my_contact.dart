@@ -35,7 +35,7 @@ class _MyContactState extends State<MyContact> {
         backgroundColor: ColorSystem.white,
         leading: IconButton(
           onPressed: () {
-            context.go('/mypage');
+            context.pop();
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
@@ -76,32 +76,32 @@ class _MyContactState extends State<MyContact> {
                 ),
               ),
               SizedBox(height: 20.h),
-             Row(
-                    children: [
-                      Container(
-                        width: 115.w,
-                        height: 45.h,
-                        child: TextButton.icon(
-                          onPressed: () {}, //debateViewModel.pickImage,
-                          icon: const Icon(
-                            Icons.camera_alt,
-                            color: ColorSystem.white,
-                          ),
-                          label: Text(
-                            '파일 첨부',
-                            style: FontSystem.KR14M
-                                .copyWith(color: ColorSystem.white),
-                          ),
-                          style: TextButton.styleFrom(
-                            backgroundColor: ColorSystem.purple,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.r),
-                            ),
-                          ),
+              Row(
+                children: [
+                  Container(
+                    width: 115.w,
+                    height: 45.h,
+                    child: TextButton.icon(
+                      onPressed: () {}, //debateViewModel.pickImage,
+                      icon: const Icon(
+                        Icons.camera_alt,
+                        color: ColorSystem.white,
+                      ),
+                      label: Text(
+                        '파일 첨부',
+                        style:
+                            FontSystem.KR14M.copyWith(color: ColorSystem.white),
+                      ),
+                      style: TextButton.styleFrom(
+                        backgroundColor: ColorSystem.purple,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.r),
                         ),
                       ),
-                    ],
+                    ),
                   ),
+                ],
+              ),
               SizedBox(height: 20.h),
               const Text('연락받을 이메일', style: FontSystem.KR16SB),
               SizedBox(height: 10.h),
