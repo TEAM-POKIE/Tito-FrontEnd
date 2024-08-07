@@ -20,8 +20,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
     final notifier = ref.read(selectedIndexProvider.notifier);
     if (index == 2) {
       context.push('/debate_create').then((_) {});
-    } else if (index == 4) {
-      context.push('/mypage');
     } else {
       notifier.state = index;
       switch (index) {
@@ -33,6 +31,9 @@ class _BottomBarState extends ConsumerState<BottomBar> {
           break;
         case 3:
           context.go('/ai_create');
+          break;
+        case 4:
+          context.go('/mypage');
           break;
       }
     }
@@ -88,6 +89,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
               'assets/icons/bottom_my.svg',
               width: 26.w,
               height: 26.h,
+              color: selectedIndex == 4 ? Colors.black : Colors.grey,
             ),
           ),
           label: '마이',
