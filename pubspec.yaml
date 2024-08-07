@@ -112,6 +112,7 @@ flutter:
     - assets/icons/bottom_my.svg
     - assets/icons/purple_cute.svg
     - assets/icons/mypage_edit.svg
+    - assets/icons/final_edit.svg
     - assets/icons/list_real_null.svg
     - assets/icons/first_chat_find.svg
     - assets/icons/alarm.svg
@@ -149,6 +150,8 @@ flutter:
     - assets/icons/null_profile.svg
     - assets/icons/mypage_real_arrow.svg
     - assets/icons/mypage_real_black.svg
+    - assets/icons/mypage_final_arrow.svg
+    - assets/icons/ai_opinion.svg
     
 
 

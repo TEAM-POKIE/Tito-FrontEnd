@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:tito_app/core/api/multpart_file_with_to_json.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/src/data/models/login_info.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -154,37 +155,33 @@ class _MypageMainState extends ConsumerState<MypageMain> {
             SizedBox(height: 20.h),
             Stack(
               children: [
-                SvgPicture.asset(
-                  'assets/icons/null_profile.svg',
-                  width: 80,
-                  height: 80,
+                CircleAvatar(
+                  radius: 40.r,
+                  child: loginInfo?.profilePicture == null
+                      ? SizedBox(
+                          width: 40.r * 2,
+                          height: 40.r * 2,
+                          child: SvgPicture.asset(
+                            'assets/icons/null_profile.svg',
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : SizedBox(
+                          width: 40.r * 2,
+                          height: 40.r * 2,
+                          child: Text('${loginInfo?.profilePicture}',
+                          ),
+                        ),
                 ),
-                // CircleAvatar(
-                //   radius: 35.r,
-                //   backgroundImage: _image != null
-                //       ? FileImage(File(_image!.path)) as ImageProvider
-                //       : loginInfo?.profilePicture == null
-                //           ? null
-                //           : NetworkImage(loginInfo!.profilePicture!)
-                //               as ImageProvider,
-                //   child: _image == null && loginInfo?.profilePicture == null
-                //       ? SvgPicture.asset(
-                //           'assets/icons/circle_profile.svg',
-                //           fit: BoxFit.cover,
-                //         )
-                //       : null,
-                // ),
                 Positioned(
                   bottom: -15,
                   right: -15,
-                  child: Transform.rotate(
-                    angle: 0.1,
-                    child: IconButton(
-                      iconSize: 40.0,
-                      onPressed: () {
-                        _showImagePickerOptions(context);
-                      },
-                      icon: SvgPicture.asset('assets/icons/mypage_edit.svg'),
+                  child: IconButton(
+                    onPressed: () {
+                      _showImagePickerOptions(context);
+                    },
+                    icon: SvgPicture.asset(
+                      'assets/icons/final_edit.svg',
                     ),
                   ),
                 ),
@@ -193,8 +190,8 @@ class _MypageMainState extends ConsumerState<MypageMain> {
             SizedBox(height: 8.h),
 
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(width: 175.w),
                 Text(
                   '${loginInfo?.nickname}',
                   style: FontSystem.KR24B,
@@ -203,27 +200,46 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                   onPressed: () {
                     context.go('/nickname');
                   },
-                  icon: SvgPicture.asset('assets/icons/mypage_real_black.svg'),
+                  icon: Padding(
+                    padding: EdgeInsets.only(top: 8.h),
+                    child:
+                        SvgPicture.asset('assets/icons/mypage_final_arrow.svg'),
+                  ),
                 ),
               ],
             ),
             SizedBox(height: 8.h),
-            Container(
-              width: 100.w,
-              // height: 33.h,
-              padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 6.w),
-              decoration: BoxDecoration(
-                color: ColorSystem.lightPurple,
-                borderRadius: BorderRadius.circular(10.r),
-                border: Border.all(color: ColorSystem.purple),
-              ),
-              child: Align(
-                alignment: Alignment.center,
-                child: Text(
-                  '승률 80%',
-                  style: FontSystem.KR18B.copyWith(color: ColorSystem.purple),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 6.w),
+                  decoration: BoxDecoration(
+                    color: ColorSystem.lightPurple,
+                    borderRadius: BorderRadius.circular(10.r),
+                    border: Border.all(color: ColorSystem.purple),
+                  ),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Row(
+                      children: [
+                        Text(
+                          '승률',
+                          style: FontSystem.KR18B
+                              .copyWith(color: ColorSystem.purple),
+                        ),
+                        SizedBox(width: 5.w),
+                        Text(
+                          '80%',
+                          style: FontSystem.KR18B
+                              .copyWith(color: ColorSystem.purple),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
             SizedBox(height: 8.h),
             const Text(

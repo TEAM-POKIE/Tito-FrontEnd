@@ -3,7 +3,6 @@ import 'package:tito_app/src/screen/debate/debate_create_chat.dart';
 import 'package:tito_app/src/screen/debate/debate_create_third.dart';
 import 'package:tito_app/src/screen/home_screen.dart';
 import 'package:tito_app/src/screen/list_screen.dart';
-
 import 'package:tito_app/src/screen/myPage/change_name.dart';
 import 'package:tito_app/src/screen/myPage/change_password.dart';
 import 'package:tito_app/src/screen/myPage/myPage_main_screen.dart';

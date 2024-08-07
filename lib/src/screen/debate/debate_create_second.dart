@@ -99,7 +99,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                       fillColor: ColorSystem.ligthGrey,
                       filled: true,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.r),
+                        borderRadius: BorderRadius.circular(10.r),
                         borderSide: BorderSide.none,
                       ),
                     ),
@@ -126,7 +126,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                       fillColor: ColorSystem.ligthGrey,
                       filled: true,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.r),
+                        borderRadius: BorderRadius.circular(10.r),
                         borderSide: BorderSide.none,
                       ),
                     ),

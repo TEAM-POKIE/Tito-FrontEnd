@@ -117,7 +117,8 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
                   // ),
                   decoration: InputDecoration(
                     hintText: '로그인 시 사용됩니다',
-                    hintStyle: FontSystem.KR16M.copyWith(color:ColorSystem.grey),
+                    hintStyle:
+                        FontSystem.KR16M.copyWith(color: ColorSystem.grey),
                     // TextStyle(
                     //   color: _enteredEmail.isNotEmpty
                     //       ? ColorSystem.purple
@@ -152,11 +153,14 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
                   obscureText: _obscureText, // 비밀번호 입력처럼 텍스트를 숨길지 여부
                   decoration: InputDecoration(
                     hintText: '비밀번호 (영문, 숫자 조합 8자 이상)',
-                    hintStyle:FontSystem.KR16M.copyWith(color:ColorSystem.grey),
+                    hintStyle:
+                        FontSystem.KR16M.copyWith(color: ColorSystem.grey),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscureText ? Icons.visibility_off : Icons.visibility,
-                        color: _obscureText ? ColorSystem.grey : ColorSystem.purple, 
+                        color: _obscureText
+                            ? ColorSystem.grey
+                            : ColorSystem.purple,
                         size: 18.sp,
                       ),
                       onPressed: () {
@@ -194,7 +198,8 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
                     ),
                     child: Text(
                       '로그인',
-                      style: FontSystem.KR20SB.copyWith(color: ColorSystem.white),
+                      style:
+                          FontSystem.KR20SB.copyWith(color: ColorSystem.white),
                     ),
                   ),
                 ),
@@ -206,15 +211,8 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
                       onPressed: _goSignUp,
                       child: Text(
                         '회원가입',
-                        style: FontSystem.KR14M.copyWith(color:ColorSystem.purple),
-                      ),
-                    ),
-                    const Text('|'),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        '비밀번호 찾기',
-                        style: FontSystem.KR14M.copyWith(color: ColorSystem.grey),
+                        style: FontSystem.KR14M
+                            .copyWith(color: ColorSystem.purple),
                       ),
                     ),
                   ],

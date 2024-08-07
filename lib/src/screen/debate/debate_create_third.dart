@@ -97,14 +97,14 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
                     height: 240.h,
                     decoration: BoxDecoration(
                         color: ColorSystem.ligthGrey,
-                        borderRadius: BorderRadius.circular(24.r)),
+                        borderRadius: BorderRadius.circular(10.r)),
                     child: TextFormField(
                       controller: _contentController,
                       autocorrect: false,
                       decoration: InputDecoration(
                         hintText: '입력하세요',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.r),
+                          borderRadius: BorderRadius.circular(10.r),
                           borderSide: BorderSide.none,
                         ),
                       ),
@@ -130,8 +130,8 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
                   Row(
                     children: [
                       Container(
-                        width: 120.w,
-                        height: 50.h,
+                        width: 115.w,
+                        height: 45.h,
                         child: TextButton.icon(
                           onPressed: () {}, //debateViewModel.pickImage,
                           icon: const Icon(
@@ -146,7 +146,7 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
                           style: TextButton.styleFrom(
                             backgroundColor: ColorSystem.purple,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(24.r),
+                              borderRadius: BorderRadius.circular(20.r),
                             ),
                           ),
                         ),

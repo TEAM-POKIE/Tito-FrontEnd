@@ -37,16 +37,14 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
 
   void _goNextCreate() async {
     final viewModel = ref.read(debateCreateProvider.notifier);
-
     if (!viewModel.validateForm(_formKey)) {
       return;
     }
-
     viewModel.saveForm(_formKey);
-
     if (!context.mounted) return;
-
+    //현재 위젯의 context가 여전히 트리에서 유효한 상태인지 확인하는 것이다. 트리에 없는 상태라면 더 이상 진행하지 않고 함수 실행을 종료한다. 
     context.push('/debate_create_second');
+    //
   }
 
   @override
@@ -54,6 +52,9 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
     final viewModel = ref.read(debateCreateProvider.notifier);
     final debateState = ref.watch(debateCreateProvider);
     double _progress = (_currentPage + 1) / _totalPages;
+
+    final List<String> labels = ['연애', '정치', '연예', '자유', '스포츠'];
+    int categorySelectedIndex = 0;
 
     return GestureDetector(
       onTap: () {
@@ -109,47 +110,62 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
                   height: 10.h,
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 5.w),
+                  padding: EdgeInsets.only(left: 20.w),
                   child: Container(
-                    width: 380.w,
-                    height: 30.h,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: List.generate(viewModel.labels.length, (index) {
-                        return Container(
-                          height: 30.h,
-                          width: 75.w,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              viewModel.updateCategory(index);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              textStyle: FontSystem.KR10R,
-                              padding: const EdgeInsets.all(0),
-                              backgroundColor: debateState.debateCategory ==
-                                      viewModel.labels[index]
-                                  ? ColorSystem.black
-                                  : Colors.grey[200],
-                              foregroundColor: debateState.debateCategory ==
-                                      viewModel.labels[index]
-                                  ? ColorSystem.white
-                                  : const Color.fromARGB(255, 101, 101, 101),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.r),
+                    //카테고리 바가 들어가는 Container 부분
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal, // 수평 스크롤 가능하게 설정
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: List.generate(labels.length, (index) {
+                          return Padding(
+                            padding: EdgeInsets.only(right: 8.w),
+                            child: Container(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    categorySelectedIndex = index;
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      categorySelectedIndex == index
+                                          ? ColorSystem.black
+                                          : ColorSystem.ligthGrey,
+                                  foregroundColor:
+                                      categorySelectedIndex == index
+                                          ? ColorSystem.white
+                                          : ColorSystem.grey1,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.r),
+                                    side: BorderSide(
+                                      color: categorySelectedIndex == index
+                                          ? ColorSystem.black // 선택된 경우 테두리 색상
+                                          : ColorSystem
+                                              .grey3, // 선택되지 않은 경우 테두리 색상
+                                      width: 1.5, // 테두리 두께
+                                    ),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      labels[index],
+                                      style: categorySelectedIndex == index
+                                          ? FontSystem.KR14SB.copyWith(
+                                              color: ColorSystem.white)
+                                          : FontSystem.KR14M.copyWith(
+                                              color: ColorSystem.grey1,
+                                            ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  viewModel.labels[index],
-                                  style: TextStyle(fontSize: 10.sp),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      }),
+                          );
+                        }),
+                      ),
                     ),
                   ),
                 ),
@@ -173,7 +189,7 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
                       fillColor: ColorSystem.ligthGrey,
                       filled: true,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.r),
+                        borderRadius: BorderRadius.circular(10.r),
                         borderSide: BorderSide.none,
                       ),
                     ),

@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
-import 'package:tito_app/src/widgets/reuse/purple_button.dart';
 import 'dart:io';
 import 'package:tito_app/src/view/myPage/pick_image.dart';
 import 'package:image_picker/image_picker.dart';
@@ -70,42 +69,39 @@ class _MyContactState extends State<MyContact> {
                     filled: true,
                     fillColor: ColorSystem.ligthGrey,
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24.r),
+                      borderRadius: BorderRadius.circular(10.r),
                       borderSide: BorderSide.none,
                     ),
                   ),
                 ),
               ),
               SizedBox(height: 20.h),
-              ElevatedButton(
-                  onPressed: _pickImage,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorSystem.purple,
-                    foregroundColor: ColorSystem.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+             Row(
                     children: [
-                      Icon(
-                        Icons.camera_alt,
-                        size: 16.sp,
-                      ),
-                      SizedBox(
-                        width: 5.w,
-                      ),
-                      Text(
-                        '파일 첨부',
-                        style: FontSystem.KR14SB.copyWith(color: ColorSystem.white),
+                      Container(
+                        width: 115.w,
+                        height: 45.h,
+                        child: TextButton.icon(
+                          onPressed: () {}, //debateViewModel.pickImage,
+                          icon: const Icon(
+                            Icons.camera_alt,
+                            color: ColorSystem.white,
+                          ),
+                          label: Text(
+                            '파일 첨부',
+                            style: FontSystem.KR14M
+                                .copyWith(color: ColorSystem.white),
+                          ),
+                          style: TextButton.styleFrom(
+                            backgroundColor: ColorSystem.purple,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                ),
-              
               SizedBox(height: 20.h),
               const Text('연락받을 이메일', style: FontSystem.KR16SB),
               SizedBox(height: 10.h),
@@ -117,7 +113,7 @@ class _MyContactState extends State<MyContact> {
                   filled: true,
                   fillColor: ColorSystem.ligthGrey,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                    borderRadius: BorderRadius.all(Radius.circular(10.r)),
                     borderSide: BorderSide.none,
                   ),
                 ),
@@ -134,16 +130,14 @@ class _MyContactState extends State<MyContact> {
                   filled: true,
                   fillColor: ColorSystem.ligthGrey,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                    borderRadius: BorderRadius.all(Radius.circular(10.r)),
                     borderSide: BorderSide.none,
                   ),
                 ),
                 style: TextStyle(color: ColorSystem.black),
               ),
               SizedBox(height: 20.h),
-              const Text('학교',
-                  style:
-                      FontSystem.KR16SB),
+              const Text('학교', style: FontSystem.KR16SB),
               TextField(
                 //controller: _titleController,
                 decoration: InputDecoration(
@@ -152,7 +146,7 @@ class _MyContactState extends State<MyContact> {
                   filled: true,
                   fillColor: ColorSystem.ligthGrey,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                    borderRadius: BorderRadius.all(Radius.circular(10.r)),
                     borderSide: BorderSide.none,
                   ),
                 ),

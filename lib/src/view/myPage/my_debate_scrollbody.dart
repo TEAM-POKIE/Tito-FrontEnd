@@ -11,11 +11,12 @@ import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/provider/websocket_provider.dart';
 import 'package:tito_app/src/data/models/debate_usermade.dart';
-import 'package:tito_app/src/data/models/debate_list.dart';
+
+
 
 class MyDebateScrollbody extends ConsumerStatefulWidget {
   const MyDebateScrollbody({super.key});
-
+  
   @override
   _MyDebateScrollbodyState createState() => _MyDebateScrollbodyState();
 }
@@ -61,7 +62,7 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
       itemCount: debateList.length,
       itemBuilder: (context, index) {
         final debate = debateList[index];
-        return _buildItem(context, debate);
+        return _buildItem(context, debate); 
       },
     );
   }
@@ -115,13 +116,13 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Text(
-                            //   '${debate.de}',
-                            //   style: FontSystem.KR14R
-                            //       .copyWith(color: ColorSystem.grey),
-                            //   overflow: TextOverflow.ellipsis,
-                            //   maxLines: 1,
-                            // ),
+                            Text(
+                              '${debate.debateMakerOpinion}',
+                              style: FontSystem.KR14R
+                                  .copyWith(color: ColorSystem.grey),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
                             Padding(
                               padding: EdgeInsets.only(left: 0.w),
                               child: Column(
