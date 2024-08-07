@@ -143,7 +143,8 @@ flutter:
     - assets/icons/sendArrow.svg
     - assets/icons/popUpBell.svg
     - assets/icons/whiteLLM.svg
-    - assets/icons/blackLLM.svg    - assets/icons/apple_size.svg
+    - assets/icons/blackLLM.svg
+    - assets/icons/apple_size.svg
     - assets/icons/kakao_size.svg
     - assets/icons/google_size.svg
     - assets/icons/email_real.svg
@@ -161,13 +162,6 @@ flutter:
     - assets/icons/mypage_arrow.svg
     - assets/icons/mypage_real_arrow.svg
     - assets/icons/mypage_real_black.svg
-    
-
-
-
-
-
-    
 
     - assets/images/logo.png
     - assets/images/hotlist.png
@@ -198,8 +192,6 @@ flutter:
     - assets/images/LogoIcon.png
     - assets/images/hot_fighter.png
     - assets/images/star.png
-
-
 
     - assets/images/debateList.png
     - .env

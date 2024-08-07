@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/api/api_service.dart';
@@ -143,12 +145,46 @@ class DebatePopup extends ConsumerWidget {
     final chatViewModel = ref.watch(chatInfoProvider.notifier);
 
     void startDebate() async {
+      final debateData = debateState.toJson();
+      File debateImage = File(debateState.debateImageUrl);
       try {
-        final debateData = debateState.toJson();
-        print(debateData);
-        final response = await ApiService(DioClient.dio).postDebate(debateData);
-        debateState.debateContent = '';
-        context.push('/chat/${response.id}');
+        if (debateState.debateImageUrl == '') {
+          var formData = FormData.fromMap({
+            'debate': MultipartFile.fromString(
+              jsonEncode(debateData),
+              contentType: DioMediaType.parse("application/json"),
+            ),
+          });
+          final response = await ApiService(DioClient.dio).postDebate(formData);
+          debateState.debateContent = '';
+
+          context.push('/chat/${response.id}');
+        } else {
+          var formData = FormData.fromMap({
+            'debate': MultipartFile.fromString(
+              jsonEncode(debateData),
+              contentType: DioMediaType.parse("application/json"),
+            ),
+            'file': await MultipartFile.fromFile(
+              debateImage.path,
+              filename: debateImage.path.split(Platform.pathSeparator).last,
+            ),
+          });
+          // Print the form data fields
+          formData.fields.forEach((field) {
+            print('Field: ${field.key} = ${field.value}');
+          });
+
+          // Print the form data files
+          formData.files.forEach((file) {
+            print('File: ${file.key} = ${file.value.filename}');
+            print('File path: ${debateImage.path}');
+          });
+          final response = await ApiService(DioClient.dio).postDebate(formData);
+          debateState.debateContent = '';
+          debateState.debateImageUrl = '';
+          context.push('/chat/${response.id}');
+        }
       } catch (error) {
         print('Error posting debate: $error');
       }
@@ -156,6 +192,7 @@ class DebatePopup extends ConsumerWidget {
 
     void deleteDebate() async {
       final chatState = ref.read(chatInfoProvider);
+
       try {
         await ApiService(DioClient.dio).deleteDebate(chatState!.id);
         ref.read(popupProvider.notifier).state = popupState.copyWith(
@@ -207,8 +244,6 @@ class DebatePopup extends ConsumerWidget {
             ),
             onPressed: () {
               if (popupState.title == '토론장을 개설하겠습니까?') {
-                debateState.debateImageUrl = '1221';
-
                 startDebate();
               } else if (popupState.title == '토론을 삭제 하시겠어요?') {
                 deleteDebate();
