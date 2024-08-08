@@ -218,7 +218,7 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
                       ),
                       TextButton(
                         onPressed: () {
-                          context.go('/ai_create');
+                          context.push('/ai_create');
                         },
                         child: Text(
                           'AI 자동 주제 생성 하기',

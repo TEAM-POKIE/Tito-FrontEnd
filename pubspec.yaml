@@ -123,6 +123,8 @@ flutter:
     - assets/icons/purple_rule.svg
     - assets/icons/black_talk.svg
     - assets/icons/chat_alarm.svg
+    - assets/icons/chat_big_alarm.svg
+    - assets/icons/chat_final_alarm.svg
     - assets/icons/dot.svg
     - assets/icons/chat_cute.svg
     - assets/icons/plus.svg

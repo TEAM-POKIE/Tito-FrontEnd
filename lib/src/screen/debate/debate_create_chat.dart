@@ -11,9 +11,8 @@ import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
 
 import 'package:tito_app/core/provider/popup_provider.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:tito_app/core/constants/style.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
 class DebateCreateChat extends ConsumerStatefulWidget {
@@ -60,15 +59,14 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
         actions: [
           IconButton(
             icon: SvgPicture.asset(
-              'assets/icons/chat_alarm.svg',
+              'assets/icons/chat_final_alarm.svg',
             ),
-            iconSize: 24,
             onPressed: () {
               chatViewModel.alarmButton(context);
             },
           ),
           IconButton(
-            icon: SvgPicture.asset('assets/icons/dot.svg'),
+            icon: Icon(Icons.more_vert),
             onPressed: () {
               debateViewModel.showRulePopup(context);
             },
@@ -193,7 +191,10 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottom> {
               focusNode: _focusNode,
               decoration: InputDecoration(
                 hintText: '상대 의견 작성 타임이에요!',
-                fillColor: Colors.grey[200],
+                hintStyle: const TextStyle(
+                  color: ColorSystem.grey
+                ),
+                fillColor: ColorSystem.grey3,
                 filled: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30.0),

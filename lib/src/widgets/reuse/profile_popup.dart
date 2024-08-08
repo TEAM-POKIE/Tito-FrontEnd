@@ -52,14 +52,22 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                        color: ColorSystem.grey3,
-                        borderRadius: BorderRadius.circular(12.r)),
+                      color: ColorSystem.white,
+                      borderRadius: BorderRadius.circular(12.r),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x669795A3),
+                          spreadRadius: 0,
+                          blurRadius: 4,
+                        )
+                      ],
+                    ),
                     child: Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
                       child: const Text(
                         '사용자 차단',
-                        style: FontSystem.KR14R,
+                        style: FontSystem.KR14SB,
                       ),
                     ),
                   ),
@@ -120,16 +128,13 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
               ],
             ),
             _buildProfileHeader(ref),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.w),
-              child: Divider(
-                color: ColorSystem.grey3,
-                thickness: 2,
-              ),
+            const Divider(
+              color: ColorSystem.grey3,
+              thickness: 2,
             ),
             SizedBox(height: 20.h),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.w),
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: const Text(
                 '참여한 토론',
                 style: FontSystem.KR14B,
@@ -166,7 +171,7 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
                     'assets/icons/circle_profile.svg'), // 본인의 이미지 자산으로 대체
                 radius: 35.r,
               ),
-              SizedBox(width: 5.w),
+              SizedBox(width: 15.w),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -179,9 +184,11 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
                           SizedBox(width: 5.w),
                           Container(
                             decoration: BoxDecoration(
-                              color: ColorSystem.lightPurple,
-                              borderRadius: BorderRadius.circular(10.r),
-                            ),
+                                color: ColorSystem.lightPurple,
+                                borderRadius: BorderRadius.circular(10.r),
+                                border: Border.all(
+                                  color: ColorSystem.purple,
+                                )),
                             child: Padding(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 6.h, vertical: 6.h),
@@ -191,21 +198,25 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
                                       .copyWith(color: ColorSystem.purple)),
                             ),
                           ),
-                          IconButton(
-                            onPressed: () {
-                              if (_overlayEntry == null) {
-                                _showOverlay(context);
-                              } else {
-                                _removeOverlay();
-                              }
-                            },
-                            icon: Icon(Icons.more_vert),
+                          //SizedBox(width: 24.w),
+                          Stack(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  if (_overlayEntry == null) {
+                                    _showOverlay(context);
+                                  } else {
+                                    _removeOverlay();
+                                  }
+                                },
+                                icon: Icon(Icons.more_vert),
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ],
                   ),
-                  SizedBox(height: 5.h),
                   Text('12전 | 10승 | 2패', style: FontSystem.KR18R),
                 ],
               ),
@@ -218,7 +229,7 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
 
   Widget _buildListItem(BuildContext context, int index) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 13.w),
+      padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 20.w),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
