@@ -214,15 +214,6 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
                             .copyWith(color: ColorSystem.purple),
                       ),
                     ),
-                    const Text('|'),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        '비밀번호 찾기',
-                        style:
-                            FontSystem.KR14M.copyWith(color: ColorSystem.grey),
-                      ),
-                    ),
                   ],
                 ),
                 // SizedBox(height: 200.h),

@@ -51,7 +51,7 @@ class _SocialSignUpState extends State<SocialSignup> {
           icon: const Icon(Icons.arrow_back_ios),
         ),
         title: const Text('회원가입'),
-        titleTextStyle: FontSystem.KR16R,
+        titleTextStyle: FontSystem.KR16SB,  
         centerTitle: true,
       ),
       body: SingleChildScrollView(

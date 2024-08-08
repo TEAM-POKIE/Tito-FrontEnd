@@ -18,14 +18,14 @@ class MyDebateAppbar extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 10.w),
         child: IconButton(
           onPressed: () {
-            context.go('/mypage');
+            context.pop();
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
       ),
       title: const Text(
         '내가 참여한 토론',
-        style: FontSystem.KR16B,
+        style: FontSystem.KR16SB,
       ),
       centerTitle: true,
     );

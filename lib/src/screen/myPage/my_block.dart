@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/src/view/myPage/my_block_appbar.dart';
 import 'package:tito_app/src/view/myPage/my_block_scrollbody.dart';
-import 'package:tito_app/src/view/myPage/my_like_appbar.dart';
-import 'package:tito_app/src/view/myPage/my_like_scrollbody.dart';
+
 
 
 class MyBlock extends ConsumerWidget {

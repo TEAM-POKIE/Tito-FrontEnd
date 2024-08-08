@@ -12,6 +12,8 @@ import 'package:tito_app/src/widgets/reuse/bottombar.dart';
 
 class AiCreate extends StatelessWidget {
   SelectionController selectionController = Get.put(SelectionController());
+  final ScrollController _scrollController = ScrollController();
+  final Map<int, GlobalKey> _itemKeys = {};
 
   AiCreate({super.key});
 
@@ -26,7 +28,6 @@ class AiCreate extends StatelessWidget {
                 color: isSelected ? ColorSystem.purple : ColorSystem.grey,
                 width: isSelected ? 2.0 : 1.0),
             borderRadius: BorderRadius.circular(10.r),
-            
           ),
           margin: EdgeInsets.all(4.5.w),
           child: Center(
@@ -44,13 +45,23 @@ class AiCreate extends StatelessWidget {
   }
 
   Widget _buildSelectedItem(int index) {
-    return Transform.scale(
-      scale: 0.8,
+    // 각 아이템마다 고유한 GlobalKey를 부여해서 각 아이템 크기 계산하기
+    if (!_itemKeys.containsKey(index)) {
+      _itemKeys[index] = GlobalKey();
+    }
+    return GestureDetector(
+      onTap: () {
+        _scrollToItem(index);
+      },
       child: Container(
+        key: _itemKeys[index],
+
+        height: 30.h,
+        margin: EdgeInsets.symmetric(horizontal: 3.w), // chip 간의 간격 조절
         child: Chip(
           label: Text(
             '$index 원숭이다리',
-            style: FontSystem.KR16M.copyWith(color: ColorSystem.white),
+            style: FontSystem.KR14M.copyWith(color: ColorSystem.white),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -68,6 +79,21 @@ class AiCreate extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _scrollToItem(int index) {
+    final key = _itemKeys[index];
+    if (key == null) return;
+
+    final context = key.currentContext;
+    if (context != null) {
+      Scrollable.ensureVisible(
+        context,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        alignment: 0.5, // 중앙에 위치하도록 조정
+      );
+    }
   }
 
   @override
@@ -114,22 +140,24 @@ class AiCreate extends StatelessWidget {
           Container(
             height: 60.h,
             child: Obx(() {
-              return selectionController.selectedItems.isNotEmpty
-                  ? Padding(
-                      padding: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Wrap(
-                          // spacing:
-                          //     -28.0, // Chip 간의 수평 간격 최소화 (음수로 설정하여 더 좁게 할 수 있음)
-                          // runSpacing: -10.0, // Chip 줄 간의 수직 간격 최소화
-                          children: selectionController.selectedItems
-                              .map((index) => _buildSelectedItem(index))
-                              .toList(),
+              return Container(
+                child: selectionController.selectedItems.isNotEmpty
+                    ? Padding(
+                        padding:
+                            EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: ListView(
+                            controller: _scrollController,
+                            scrollDirection: Axis.horizontal, // 가로로 스크롤 가능하게 설정
+                            children: selectionController.selectedItems
+                                .map((index) => _buildSelectedItem(index))
+                                .toList(),
+                          ),
                         ),
-                      ),
-                    )
-                  : Container();
+                      )
+                    : Container(),
+              );
             }),
           ),
           Padding(
@@ -143,7 +171,8 @@ class AiCreate extends StatelessWidget {
                     onPressed: selectionController.resetSelection,
                     child: Text(
                       '새로고침',
-                      style: FontSystem.KR16SB.copyWith(decoration: TextDecoration.underline),
+                      style: FontSystem.KR16SB
+                          .copyWith(decoration: TextDecoration.underline),
                     ),
                   ),
                 ),
@@ -179,10 +208,7 @@ class AiCreate extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: isSelectExist
                       ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => AiSelect()),
-                          );
+                          context.push('/ai_select');
                         }
                       : null,
                   style: ElevatedButton.styleFrom(

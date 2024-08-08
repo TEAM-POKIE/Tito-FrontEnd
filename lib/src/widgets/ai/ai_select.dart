@@ -10,32 +10,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tito_app/src/widgets/reuse/bottombar.dart';
 
 class AiSelect extends StatefulWidget {
-  SelectionController selectionController = Get.put(SelectionController());
-  AiSelect({super.key});
-
-  Widget _buildGridItem(BuildContext context, String text, int index) {
-    return Obx(() {
-      bool isSelected = selectionController.selectedItems.contains(index);
-      return InkWell(
-        onTap: () => selectionController.toggleSelection(index),
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-                color: isSelected ? ColorSystem.purple : ColorSystem.grey),
-            borderRadius: BorderRadius.circular(24.r),
-          ),
-          margin: EdgeInsets.all(4.5.w),
-          child: Center(
-            child: Text(
-              text,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ),
-      );
-    });
-  }
+  //AiSelect({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -44,65 +19,20 @@ class AiSelect extends StatefulWidget {
 }
 
 class _AiSelectState extends State<AiSelect> {
-  int _selectedIndex = -1;
-  // 각 아이템의 테두리 색상을 저장할 리스트
-  List<Color> borderColors =
-      List<Color>.generate(9, (index) => ColorSystem.grey);
-  //선택한 아이템들을 저장할 리스트
-  List<int> selectedSentence = [];
-
-  void _resetGrid() {
-    setState(() {
-      borderColors = List<Color>.generate(9, (index) => ColorSystem.grey);
-      selectedSentence.clear();
-    });
-  }
-
-  void _sentenceSelection(int index) {
-    setState(() {
-      if (selectedSentence.contains(index)) {
-        selectedSentence.remove(index);
-        borderColors[index] = ColorSystem.grey;
-      } else {
-        selectedSentence.add(index);
-        borderColors[index] = ColorSystem.purple;
-      }
-    });
-  }
-
-  Widget _createSentence(BuildContext context, String text, int index) {
-    return InkWell(
-      onTap: () => _sentenceSelection(index),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: borderColors[index]), // 상태에 따른 테두리 색상
-          borderRadius: BorderRadius.circular(20.r),
-        ),
-        child: Center(
-          child: Text(
-            text,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ),
-    );
-  }
+  int expandedIndex = -1; //초기 상태에는 아무 항목도 확장되지 않도록 하기
 
   @override
   Widget build(BuildContext context) {
-    bool isSelectExist = selectedSentence.isNotEmpty;
+    bool hasSelection = expandedIndex != -1;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorSystem.white,
-        leading: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: IconButton(
-            onPressed: () {
-              context.go('/home');
-            },
-            icon: const Icon(Icons.arrow_back_ios),
-          ),
+        leading: IconButton(
+          onPressed: () {
+            context.pop();
+          },
+          icon: const Icon(Icons.arrow_back_ios),
         ),
       ),
       body: Column(
@@ -149,7 +79,7 @@ class _AiSelectState extends State<AiSelect> {
                 const Text('바로 다른 사람들과 의견을 나눠보세요 !', style: FontSystem.KR20SB),
           ),
 
-          SizedBox(height: 70.h), // 간격 추가
+          SizedBox(height: 60.h), // 간격 추가
           Expanded(
             child: Padding(
               padding: EdgeInsets.only(right: 8.w),
@@ -157,55 +87,119 @@ class _AiSelectState extends State<AiSelect> {
                 thumbVisibility: true,
                 thickness: 5.0,
                 radius: Radius.circular(20.r),
-                child: GridView.count(
-                  crossAxisCount: 1, // 한 줄에 3개의 아이템을 표시
-                  childAspectRatio: 4 / 0.75,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20.w,
-                  ),
-                  mainAxisSpacing: 11.h,
-                  children: List.generate(5, (index) {
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          if (_selectedIndex == index) {
-                            _selectedIndex = -1; // 선택 해제
-                          } else {
-                            _selectedIndex = index; // 선택
-                          }
-                        });
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: _selectedIndex == index
+                child: ListView.builder(
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      bool isExpanded = expandedIndex == index;
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            expandedIndex =
+                                isExpanded ? -1 : index; // 클릭한 항목 확장 또는 축소
+                          });
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 5.h, horizontal: 20.w),
+                          child: AnimatedContainer(
+                            duration: Duration(milliseconds: 150),
+                            curve: Curves.linear,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: isExpanded
                                     ? ColorSystem.purple
-                                    : ColorSystem.grey),
-                            borderRadius: BorderRadius.circular(20.r)),
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Item $index',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                                    : ColorSystem.grey,
+                                width: isExpanded ? 2.0 : 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            height: isExpanded ? 200 : 70,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(top: 10.h),
+                                  child: Text('Question $index',
+                                      style: isExpanded
+                                          ? FontSystem.KR20SB
+                                          : FontSystem.KR20M),
+                                ),
+                                if (isExpanded)
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 20.w),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(height: 10),
+                                          Row(
+                                            children: [
+                                              SvgPicture.asset(
+                                                  'assets/icons/ai_opinion.svg'),
+                                              SizedBox(width: 5.w),
+                                              Expanded(
+                                                child: Text(
+                                                  '이것도 길때 과연 이 컨테이너 박스가 유동적으로 움직일 수 있을지!!! 시험하고 있지롱',
+                                                  style: FontSystem.KR16SB,
+                                                  softWrap: true, // 자동 줄바꿈 설정
+                                                  overflow:
+                                                      TextOverflow.visible,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 6.h),
+                                          Row(
+                                            children: [
+                                              SvgPicture.asset(
+                                                  'assets/icons/ai_opinion.svg'),
+                                              SizedBox(width: 5.w),
+                                              Expanded(
+                                                child: Text(
+                                                  '과연 긴 의견이 있을때는 어떻게 보여질지 테스트하기 위한 장문의견을 작성함',
+                                                  style: FontSystem.KR16SB,
+                                                  softWrap: true, // 자동 줄바꿈 설정
+                                                  overflow: TextOverflow
+                                                      .visible, // 텍스트가 넘칠 때 어떻게 처리할지 설정
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
-                    );
-                  }),
-                ),
+                      );
+                    }),
               ),
             ),
           ),
 
           Padding(
-            padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h, top: 40.h),
+            padding: EdgeInsets.only(
+                left: 20.w, right: 20.w, bottom: 20.h, top: 40.h),
             child: SizedBox(
               width: 350.w,
               height: 60.h,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.push('/debate_create');
+                },
                 style: ElevatedButton.styleFrom(
                     backgroundColor:
-                        isSelectExist ? ColorSystem.purple : ColorSystem.grey,
+                        hasSelection ? ColorSystem.purple : ColorSystem.grey,
+                    // backgroundColor:
+                    //     isSelectExist ? ColorSystem.purple : ColorSystem.grey,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.r))),
                 child: Text(

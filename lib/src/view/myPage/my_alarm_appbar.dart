@@ -18,14 +18,14 @@ class MyAlarmAppbar extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 12.w),
         child: IconButton(
           onPressed: () {
-            context.go('/mypage');
+            context.pop();
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
       ),
       title: const Text(
         '알림',
-        style: FontSystem.KR16B,
+        style: FontSystem.KR16SB,
       ),
       centerTitle: true,
     );

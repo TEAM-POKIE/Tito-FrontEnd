@@ -18,7 +18,7 @@ class MyRule extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios),
         ),
         centerTitle: true,
-        title: const Text('이용약관', style: FontSystem.KR16B),
+        title: const Text('이용약관', style: FontSystem.KR16SB),
       ),
     );
   }

@@ -3,7 +3,6 @@ import 'package:tito_app/src/screen/debate/debate_create_chat.dart';
 import 'package:tito_app/src/screen/debate/debate_create_third.dart';
 import 'package:tito_app/src/screen/home_screen.dart';
 import 'package:tito_app/src/screen/list_screen.dart';
-
 import 'package:tito_app/src/screen/myPage/change_name.dart';
 import 'package:tito_app/src/screen/myPage/change_password.dart';
 import 'package:tito_app/src/screen/myPage/myPage_main_screen.dart';
@@ -22,6 +21,7 @@ import 'package:tito_app/src/screen/login/basic_login.dart';
 import 'package:tito_app/src/screen/login/login_main.dart';
 import 'package:tito_app/src/screen/login/signup.dart';
 import 'package:flutter/material.dart';
+import 'package:tito_app/src/widgets/ai/ai_select.dart';
 import 'package:tito_app/src/widgets/reuse/bottombar.dart';
 import 'package:tito_app/src/screen/chat.dart';
 
@@ -136,6 +136,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/ai_create',
       builder: (context, state) => AiCreate(),
+    ),
+    GoRoute(
+      path: '/ai_select', 
+      builder: (context, state) => AiSelect()
     ),
     GoRoute(
       path: '/signup',
