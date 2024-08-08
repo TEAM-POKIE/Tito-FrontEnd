@@ -8,6 +8,7 @@ import 'package:tito_app/core/constants/style.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
+import 'package:tito_app/core/provider/userProfile_provider.dart';
 import 'package:tito_app/core/provider/websocket_provider.dart';
 import 'package:tito_app/src/viewModel/popup_viewModel.dart';
 import 'package:tito_app/core/api/dio_client.dart';
@@ -143,6 +144,7 @@ class DebatePopup extends ConsumerWidget {
     final popupViewModel = ref.watch(popupProvider.notifier);
     final debateState = ref.watch(debateCreateProvider);
     final chatViewModel = ref.watch(chatInfoProvider.notifier);
+    final userState = ref.watch(userProfileProvider);
 
     void startDebate() async {
       try {
@@ -255,6 +257,8 @@ class DebatePopup extends ConsumerWidget {
               } else if (popupState.title == '상대방이 타이밍 벨을 울렸어요!') {
                 chatViewModel.timingOKResponse();
                 context.pop();
+              } else if (popupState.title == '차단 하시겠어요?') {
+                popupViewModel.postBlock(userState!.id);
               } else {
                 context.pop();
                 Future.delayed(

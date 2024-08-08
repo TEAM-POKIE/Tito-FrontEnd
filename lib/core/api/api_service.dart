@@ -10,6 +10,7 @@ import 'package:tito_app/src/data/models/debate_participants.dart';
 import 'package:tito_app/src/data/models/login_info.dart';
 import 'package:tito_app/src/data/models/auth_response.dart';
 import 'package:tito_app/src/data/models/debate_usermade.dart';
+import 'package:tito_app/src/data/models/user_profile.dart';
 
 part 'api_service.g.dart';
 
@@ -38,6 +39,9 @@ abstract class ApiService {
   @PATCH("users/{id}")
   Future<void> updateUserProfile(
       @Path("id") int id, @Body() Map<String, dynamic> data);
+
+  @GET("users/{id}")
+  Future<UserProfile> getUserProfile(@Path("id") int debateId);
 
   @GET("debates")
   Future<List<Debate>> getDebateList(@Query('state') String state);
