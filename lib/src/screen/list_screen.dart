@@ -72,25 +72,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
           await ApiService(DioClient.dio).getDebateList('recentUpdate');
 
       setState(() {
-        debateList = debateResponse.map((debate) {
-          return Debate(
-            id: debate.id,
-            debateTitle: debate.debateTitle,
-            debateCategory:
-                DebateListCategory.fromString(debate.debateCategory).toString(),
-            debateStatus:
-                DebateListStatus.fromString(debate.debateStatus).toString(),
-            debateMakerOpinion: debate.debateMakerOpinion,
-            debateJoinerOpinion: debate.debateJoinerOpinion,
-            debatedTimeLimit: debate.debatedTimeLimit,
-            debateViewCount: debate.debateViewCount,
-            debateCommentCount: debate.debateCommentCount,
-            debateRealtimeParticipants: debate.debateRealtimeParticipants,
-            debateAlarmCount: debate.debateAlarmCount,
-            createdAt: debate.createdAt,
-            updatedAt: debate.updatedAt,
-          );
-        }).toList();
+        debateList = debateResponse;
       });
     } catch (error) {
       print('Error fetching debate list: $error');

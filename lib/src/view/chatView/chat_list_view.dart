@@ -9,6 +9,7 @@ import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:tito_app/core/provider/websocket_provider.dart';
 import 'package:tito_app/src/data/models/login_info.dart';
+import 'package:tito_app/src/viewModel/chat_viewModel.dart';
 
 class ChatListView extends ConsumerStatefulWidget {
   final int id;
@@ -113,6 +114,7 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
   Widget build(BuildContext context) {
     final loginInfo = ref.watch(loginInfoProvider);
     final chatState = ref.watch(chatInfoProvider);
+    final chatViewModel = ref.read(chatInfoProvider.notifier);
 
     if (chatState == null || loginInfo == null) {
       return Center(child: CircularProgressIndicator());
@@ -127,11 +129,13 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
                   messages: _messages,
                   loginInfo: loginInfo,
                   isTyping: _isTyping,
+                  chatViewModel: chatViewModel,
                 )
               : ParticipantsList(
                   messages: _messages,
                   loginInfo: loginInfo,
                   isTyping: _isTyping,
+                  chatViewModel: chatViewModel,
                 ),
         ),
         if (_isTyping) TypingIndicator(),
@@ -143,11 +147,13 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
 class JoinerChatList extends StatelessWidget {
   final List<Map<String, dynamic>> messages;
   final LoginInfo loginInfo;
+  final ChatViewModel chatViewModel;
   final bool isTyping;
 
   const JoinerChatList({
     required this.messages,
     required this.loginInfo,
+    required this.chatViewModel,
     required this.isTyping,
   });
 
@@ -177,7 +183,15 @@ class JoinerChatList extends StatelessWidget {
                           : MainAxisAlignment.start,
                       children: [
                         if (!isMyMessage)
-                          const CircleAvatar(child: Icon(Icons.person)),
+                          CircleAvatar(
+                            child: IconButton(
+                              icon: Icon(Icons.person),
+                              onPressed: () {
+                                chatViewModel.getProfile(
+                                    message['userId'], context);
+                              },
+                            ),
+                          ),
                         const SizedBox(width: 8),
                         Column(
                           children: [
@@ -201,7 +215,15 @@ class JoinerChatList extends StatelessWidget {
                         ),
                         if (isMyMessage) const SizedBox(width: 8),
                         if (isMyMessage)
-                          const CircleAvatar(child: Icon(Icons.person)),
+                          CircleAvatar(
+                            child: IconButton(
+                              icon: Icon(Icons.person),
+                              onPressed: () {
+                                chatViewModel.getProfile(
+                                    message['userId'], context);
+                              },
+                            ),
+                          ),
                       ],
                     ),
                   )
@@ -246,12 +268,14 @@ class JoinerChatList extends StatelessWidget {
 class ParticipantsList extends StatelessWidget {
   final List<Map<String, dynamic>> messages;
   final LoginInfo loginInfo;
+  final ChatViewModel chatViewModel;
   final bool isTyping;
 
   const ParticipantsList({
     required this.messages,
     required this.loginInfo,
     required this.isTyping,
+    required this.chatViewModel,
   });
 
   @override
@@ -279,7 +303,15 @@ class ParticipantsList extends StatelessWidget {
                             : MainAxisAlignment.start,
                         children: [
                           if (!isMyMessage)
-                            const CircleAvatar(child: Icon(Icons.person)),
+                            CircleAvatar(
+                              child: IconButton(
+                                icon: Icon(Icons.person),
+                                onPressed: () {
+                                  chatViewModel.getProfile(
+                                      message['userId'], context);
+                                },
+                              ),
+                            ),
                           const SizedBox(width: 8),
                           Column(
                             children: [
@@ -304,7 +336,15 @@ class ParticipantsList extends StatelessWidget {
                           ),
                           if (isMyMessage) const SizedBox(width: 8),
                           if (isMyMessage)
-                            const CircleAvatar(child: Icon(Icons.person)),
+                            CircleAvatar(
+                              child: IconButton(
+                                icon: Icon(Icons.person),
+                                onPressed: () {
+                                  chatViewModel.getProfile(
+                                      message['userId'], context);
+                                },
+                              ),
+                            ),
                         ],
                       ),
                     )

@@ -9,6 +9,7 @@ import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/core/provider/userProfile_provider.dart';
 import 'package:tito_app/src/widgets/reuse/block_popup.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 
@@ -27,7 +28,7 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
 
   void _showOverlay(BuildContext context) {
     final RenderBox renderBox = context.findRenderObject() as RenderBox;
-
+    final popupViewModel = ref.read(popupProvider.notifier);
     _overlayEntry = OverlayEntry(
       builder: (context) => GestureDetector(
         onTap: () {
@@ -43,12 +44,7 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
                 child: InkResponse(
                   onTap: () {
                     _removeOverlay();
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return BlockPopup();
-                      },
-                    );
+                    popupViewModel.showBlockPopup(context);
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -157,6 +153,7 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
 
   Widget _buildProfileHeader(WidgetRef ref) {
     final loginInfo = ref.watch(loginInfoProvider);
+    final userState = ref.read(userProfileProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -179,7 +176,7 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
                     children: [
                       Row(
                         children: [
-                          Text('${loginInfo?.nickname}',
+                          Text('${userState!.nickname}',
                               style: FontSystem.KR24B),
                           SizedBox(width: 5.w),
                           Container(

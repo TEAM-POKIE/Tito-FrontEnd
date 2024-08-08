@@ -9,6 +9,7 @@ import 'package:tito_app/core/api/dio_client.dart';
 
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
+import 'package:tito_app/core/provider/userProfile_provider.dart';
 
 import 'package:tito_app/src/data/models/debate_info.dart';
 
@@ -85,6 +86,17 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     controller.clear();
     focusNode.requestFocus();
     // Reset the timer to 8 minutes
+  }
+
+  void getProfile(id, context) async {
+    final userState = ref.read(userProfileProvider);
+    final userInfo = await ApiService(DioClient.dio).getUserProfile(id);
+    final popupViewModel = ref.read(popupProvider.notifier);
+    final userProfileViewModel = ref.read(userProfileProvider.notifier);
+    print(userInfo.nickname);
+    userProfileViewModel.setUserInfo(userInfo);
+    print(userState!.nickname);
+    popupViewModel.showTitlePopup(context);
   }
 
   void timingSend() {

@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tito_app/core/api/api_client.dart';
+import 'package:tito_app/core/api/api_service.dart';
+import 'package:tito_app/core/api/dio_client.dart';
 
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/src/data/models/popup_state.dart';
@@ -32,6 +35,12 @@ class PopupViewmodel extends StateNotifier<PopupState> {
     );
   }
 
+  void postBlock(id) async {
+    final response = await ApiService(DioClient.dio).postUserBlock({
+      'blockUserId': id,
+    });
+  }
+
   // 타이밍 팝업 띄우기
   Future<bool> showTimingPopup(BuildContext context) async {
     state = state.copyWith(
@@ -43,6 +52,27 @@ class PopupViewmodel extends StateNotifier<PopupState> {
       buttonContentRight: '벨 울릴게요',
       titleLabel: '타이밍 벨',
       imgSrc: 'assets/icons/popUpBell.svg',
+    );
+
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return const DebatePopup();
+      },
+    );
+
+    return result ?? false; // return false if result is null
+  }
+
+  // 타이밍 팝업 띄우기
+  Future<bool> showBlockPopup(BuildContext context) async {
+    state = state.copyWith(
+      title: '차단 하시겠어요?',
+      content: '해당 유저와 토론할 수 없으며 개설된 토론 및 게시글이 더 이상 노출되지 않습니다',
+      buttonStyle: 2,
+      buttonContentLeft: "취소",
+      buttonContentRight: '확인',
+      imgSrc: 'assets/icons/chatIconRight.svg',
     );
 
     final result = await showDialog<bool>(
