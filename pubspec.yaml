@@ -154,6 +154,8 @@ flutter:
     - assets/icons/mypage_real_black.svg
     - assets/icons/mypage_final_arrow.svg
     - assets/icons/ai_opinion.svg
+    - assets/icons/send_arrow.svg
+    - assets/icons/back_arrow.svg
     
 
 

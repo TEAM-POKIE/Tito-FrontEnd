@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:speech_balloon/speech_balloon.dart';
@@ -9,7 +10,6 @@ import 'package:speech_balloon/speech_balloon.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
-
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
@@ -43,9 +43,24 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
       appBar: AppBar(
         backgroundColor: ColorSystem.white,
         title: Center(
-          child: Text(
-            debateState.debateTitle,
-            style: FontSystem.KR16B,
+          child: Row(
+            children: [
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: 100.0,
+                ),
+                child: Text(
+                  debateState.debateTitle,
+                  overflow: TextOverflow.ellipsis,
+                  style: FontSystem.KR16SB,
+                ),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.arrow_drop_down),
+                iconSize: 30.sp,
+              ),
+            ],
           ),
         ),
         centerTitle: true,
@@ -57,14 +72,6 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
           },
         ),
         actions: [
-          IconButton(
-            icon: SvgPicture.asset(
-              'assets/icons/chat_final_alarm.svg',
-            ),
-            onPressed: () {
-              chatViewModel.alarmButton(context);
-            },
-          ),
           IconButton(
             icon: Icon(Icons.more_vert),
             onPressed: () {
@@ -78,33 +85,38 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
         child: Column(
           children: [
             SizedBox(height: 20.h),
-            Row(
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                DefaultTextStyle(
-                  textAlign: TextAlign.center,
-                  style: FontSystem.KR14R.copyWith(color: ColorSystem.purple),
-                  child: AnimatedTextKit(
-                    repeatForever: true,
-                    animatedTexts: [
-                      FadeAnimatedText(
-                        '토론방이 개설되려면 당신의 첫 입론이 필요합니다.\n입론을 작성해주세요!',
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset('assets/icons/chat_cute.svg'),
+                    SizedBox(width: 5.w),
+                    Text('토론방이 개설되려면 당신의 첫 입론이 필요합니다.',
+                        style: FontSystem.KR14SB
+                            .copyWith(color: ColorSystem.purple)),
+                  ],
                 ),
+                Text('입론을 잘성해주세요 !',
+                    style:
+                        FontSystem.KR14SB.copyWith(color: ColorSystem.purple)),
               ],
             ),
             Expanded(
               child: Container(
+                height: 56.h,
                 alignment: Alignment.bottomCenter,
                 color: ColorSystem.grey3,
-                child: StaticTextBubble(
+                child: AnimatedTextBubble(
                   title: '첫 입론을 입력해주세요!',
                   width: 180.w,
                 ),
               ),
             ),
+            SizedBox(height: 20.h),
             ChatBottom(),
           ],
         ),
@@ -113,29 +125,60 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
   }
 }
 
-class StaticTextBubble extends StatelessWidget {
+class AnimatedTextBubble extends StatefulWidget {
   final String title;
   final double width;
 
-  const StaticTextBubble({
-    super.key,
-    required this.title,
-    required this.width,
-  });
+  const AnimatedTextBubble({required this.title, required this.width});
+
+  @override
+  _AnimatedTextBubbleState createState() => _AnimatedTextBubbleState();
+}
+
+class _AnimatedTextBubbleState extends State<AnimatedTextBubble>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<Offset> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _animation = Tween<Offset>(
+      begin: Offset(0, 0),
+      end: Offset(0, 0.1), // 위아래로 움직이는 범위 설정
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SpeechBalloon(
-      width: width,
-      borderRadius: 15.r,
-      nipLocation: NipLocation.bottom,
-      color: ColorSystem.purple,
-      child: Padding(
+    return SlideTransition(
+      position: _animation,
+      child: Container(
+        width: widget.width,
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
+        decoration: BoxDecoration(
+          color: ColorSystem.purple, // 버블 배경색
+          borderRadius: BorderRadius.circular(12.r),
+        ),
         child: Text(
-          title,
+          widget.title,
           textAlign: TextAlign.center,
-          style: FontSystem.KR16R.copyWith(color: Colors.white),
+          style: FontSystem.KR16SB.copyWith(color: Colors.white),
         ),
       ),
     );
@@ -180,38 +223,45 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottom> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: _controller,
-              autocorrect: false,
-              focusNode: _focusNode,
-              decoration: InputDecoration(
-                hintText: '상대 의견 작성 타임이에요!',
-                hintStyle: const TextStyle(
-                  color: ColorSystem.grey
-                ),
-                fillColor: ColorSystem.grey3,
-                filled: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide.none,
+    return Container(
+      height: 70.h,
+      color: Colors.white, // 입력바 배경색 설정
+      child: Padding(
+        padding: EdgeInsets.only(left: 20.w, right: 4.w),
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
+                width: 320.w,
+                height: 40.h,
+                child: TextField(
+                  controller: _controller,
+                  autocorrect: false,
+                  focusNode: _focusNode,
+                  decoration: InputDecoration(
+                    hintText: '첫 입론을 입력해주세요 !',
+                    hintStyle:
+                        FontSystem.KR16M.copyWith(color: ColorSystem.grey),
+                    fillColor: ColorSystem.ligthGrey,
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16.r),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  onSubmitted: (value) {
+                    _sendMessage();
+                  },
                 ),
               ),
-              onSubmitted: (value) {
-                _sendMessage();
-              },
             ),
-          ),
-          const SizedBox(width: 8),
-          IconButton(
-            onPressed: _sendMessage,
-            icon: SvgPicture.asset('assets/icons/sendArrow.svg'),
-          ),
-        ],
+            const SizedBox(width: 8),
+            IconButton(
+              onPressed: _sendMessage,
+              icon: SvgPicture.asset('assets/icons/send_arrow.svg'),
+            ),
+          ],
+        ),
       ),
     );
   }

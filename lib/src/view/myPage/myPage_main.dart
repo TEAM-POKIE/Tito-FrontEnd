@@ -345,7 +345,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
               context,
               title: '비밀번호 변경',
               leading: Padding(
-                padding: EdgeInsets.only(top: 10.h),
+                padding: EdgeInsets.only(top: 8.h),
                 child: SvgPicture.asset(
                   'assets/icons/mypage_pw.svg',
                   width: 24.w,

@@ -10,6 +10,7 @@ import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ChatAppbar extends ConsumerWidget {
   final int id;
@@ -60,23 +61,30 @@ class DebateAppbar extends ConsumerWidget {
 
     return AppBar(
       backgroundColor: ColorSystem.white,
-      title: TextButton(
-        child: Text(
-          title,
-          style: FontSystem.KR16B,
-          maxLines: 1, // 텍스트를 한 줄로 제한
-          overflow: TextOverflow.ellipsis,
-        ),
-        onPressed: () {
-          popupViewModel.showTitlePopup(context);
-        },
+      title: Row(
+        children: [
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: 100.0,
+            ),
+            child: Text(
+              title,
+              style: FontSystem.KR16SB,
+              maxLines: 1, // 텍스트를 한 줄로 제한
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.arrow_drop_down),
+            iconSize: 30.sp,
+          ),
+        ],
       ),
       centerTitle: true,
       leading: IconButton(
-        icon: const Icon(
-          Icons.arrow_back_ios,
-          color: ColorSystem.black,
-          size: 24,
+        icon: SvgPicture.asset(
+          'assets/icons/back_arrow.svg'
         ),
         onPressed: () {
           context.go('/list');
