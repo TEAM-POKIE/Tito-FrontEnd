@@ -44,10 +44,12 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
         backgroundColor: ColorSystem.white,
         title: Center(
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ConstrainedBox(
                 constraints: BoxConstraints(
-                  maxWidth: 100.0,
+                  maxWidth: 200.0,
                 ),
                 child: Text(
                   debateState.debateTitle,
@@ -57,7 +59,9 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
               ),
               IconButton(
                 onPressed: () {},
-                icon: const Icon(Icons.arrow_drop_down),
+                padding: EdgeInsets.zero, // 아이콘 버튼 간 패딩 없애기 1
+                constraints: BoxConstraints(), // 아이콘 버튼 간 패딩 없애기 2
+                icon: Icon(Icons.arrow_drop_down),
                 iconSize: 30.sp,
               ),
             ],
@@ -73,6 +77,8 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
         ),
         actions: [
           IconButton(
+            padding: EdgeInsets.zero, // 아이콘 버튼 간 패딩 없애기 1
+            constraints: BoxConstraints(), // 아이콘 버튼 간 패딩 없애기 2
             icon: Icon(Icons.more_vert),
             onPressed: () {
               debateViewModel.showRulePopup(context);
@@ -224,12 +230,17 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottom> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70.h,
+      height: 80.h,
       color: Colors.white, // 입력바 배경색 설정
       child: Padding(
-        padding: EdgeInsets.only(left: 20.w, right: 4.w),
+        padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 10.w),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            IconButton(
+              onPressed: () {},
+              icon: SvgPicture.asset('assets/icons/plus.svg'),
+            ),
             Expanded(
               child: Container(
                 width: 320.w,
@@ -244,6 +255,9 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottom> {
                         FontSystem.KR16M.copyWith(color: ColorSystem.grey),
                     fillColor: ColorSystem.ligthGrey,
                     filled: true,
+                    contentPadding: EdgeInsets.symmetric(
+                        vertical: 10.h,
+                        horizontal: 20.w), // 세로 가운데 정렬을 위한 패딩 설정
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.r),
                       borderSide: BorderSide.none,
@@ -255,10 +269,9 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottom> {
                 ),
               ),
             ),
-            const SizedBox(width: 8),
             IconButton(
               onPressed: _sendMessage,
-              icon: SvgPicture.asset('assets/icons/send_arrow.svg'),
+              icon: SvgPicture.asset('assets/icons/final_send_arrow.svg'),
             ),
           ],
         ),

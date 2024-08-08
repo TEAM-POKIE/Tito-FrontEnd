@@ -62,10 +62,12 @@ class DebateAppbar extends ConsumerWidget {
     return AppBar(
       backgroundColor: ColorSystem.white,
       title: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ConstrainedBox(
             constraints: BoxConstraints(
-              maxWidth: 100.0,
+              maxWidth: 200.0,
             ),
             child: Text(
               title,
