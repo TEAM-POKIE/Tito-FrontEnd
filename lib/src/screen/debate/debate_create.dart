@@ -16,44 +16,31 @@ class DebateCreate extends ConsumerStatefulWidget {
 
 class _DebateCreateState extends ConsumerState<DebateCreate> {
   final _formKey = GlobalKey<FormState>();
+  int categorySelectedIndex = 0;
   int _currentPage = 0;
   final int _totalPages = 3;
 
-  void _nextPage() {
-    setState(() {
-      if (_currentPage < _totalPages - 1) {
-        _currentPage++;
-      }
-    });
-  }
-
-  void _previousPage() {
-    setState(() {
-      if (_currentPage > 0) {
-        _currentPage--;
-      }
-    });
-  }
-
   void _goNextCreate() async {
+    final debateViewModel = ref.watch(debateCreateProvider.notifier);
     final viewModel = ref.read(debateCreateProvider.notifier);
     if (!viewModel.validateForm(_formKey)) {
       return;
     }
     viewModel.saveForm(_formKey);
+    debateViewModel.updateCategory(categorySelectedIndex);
     if (!context.mounted) return;
-    //현재 위젯의 context가 여전히 트리에서 유효한 상태인지 확인하는 것이다. 트리에 없는 상태라면 더 이상 진행하지 않고 함수 실행을 종료한다. 
+
+    //현재 위젯의 context가 여전히 트리에서 유효한 상태인지 확인하는 것이다. 트리에 없는 상태라면 더 이상 진행하지 않고 함수 실행을 종료한다.
     context.push('/debate_create_second');
   }
 
   @override
   Widget build(BuildContext context) {
     final viewModel = ref.read(debateCreateProvider.notifier);
-    final debateState = ref.watch(debateCreateProvider);
+
     double _progress = (_currentPage + 1) / _totalPages;
 
     final List<String> labels = ['연애', '정치', '연예', '자유', '스포츠'];
-    int categorySelectedIndex = 0;
 
     return GestureDetector(
       onTap: () {
