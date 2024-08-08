@@ -54,6 +54,7 @@ class DebateCreateViewModel extends StateNotifier<DebateCreateState> {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       debateImageFile = File(pickedFile.path);
+      print(debateImageFile);
 
       state = state.copyWith(debateImageUrl: debateImageFile!.path);
     }

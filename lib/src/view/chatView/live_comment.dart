@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
@@ -79,6 +81,8 @@ class _LiveCommentState extends ConsumerState<LiveComment>
   }
 
   void _startAnimation() {
+    final chatViewModel = ref.read(chatInfoProvider.notifier);
+    chatViewModel.sendFire();
     setState(() {
       final startPosition = Random().nextDouble() * 50;
 
@@ -139,7 +143,7 @@ class _LiveCommentState extends ConsumerState<LiveComment>
                             color: ColorSystem.purple,
                           ),
                           SizedBox(width: 8),
-                          Text('15명 관전중',
+                          Text('${_messages.length}명 관전중',
                               style: FontSystem.KR14R
                                   .copyWith(color: ColorSystem.purple)),
                         ],
@@ -170,14 +174,17 @@ class _LiveCommentState extends ConsumerState<LiveComment>
                                 horizontal: 16.0, vertical: 8.0),
                             child: Row(
                               children: [
-                                Icon(
-                                  Icons.person,
+                                CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                    message['userImgUrl'],
+                                  ),
+                                  radius: 35.r,
                                 ),
                                 SizedBox(
                                   width: 10,
                                 ),
                                 Text(
-                                  '타카',
+                                  message['userNickName'] ?? '',
                                   style: FontSystem.KR16B
                                       .copyWith(color: ColorSystem.grey),
                                 ),

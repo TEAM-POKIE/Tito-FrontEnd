@@ -115,7 +115,23 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
       "command": "CHAT",
       "userId": loginInfo?.id ?? '',
       "debateId": state?.id ?? 0,
+      "userNickName": loginInfo!.nickname,
+      "userImgUrl":
+          'https://dev-tito.owsla.duckdns.org/images/20240808/afbf7130-312d-46e7-972b-69dcb1b0b5e8.png',
       "content": message,
+    });
+    print(jsonMessage);
+
+    _liveChannel.sink.add(jsonMessage);
+    controller.clear();
+    focusNode.requestFocus();
+    // Reset the timer to 8 minutes
+  }
+
+  void sendFire() {
+    final jsonMessage = json.encode({
+      "command": "FIRE",
+      "debateId": state?.id ?? 0,
     });
     print(jsonMessage);
 
