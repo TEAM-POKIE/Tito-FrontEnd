@@ -3,11 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tito_app/core/provider/live_comment.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:tito_app/src/data/models/debate_crate.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tito_app/src/viewModel/popup_viewModel.dart';
 
 enum DebateCategory {
   ROMANCE('연애', 'ROMANCE'),

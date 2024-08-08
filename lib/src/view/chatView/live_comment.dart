@@ -1,7 +1,11 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tito_app/core/constants/style.dart';
+import 'package:tito_app/core/provider/chat_view_provider.dart';
+import 'package:tito_app/core/provider/live_webSocket_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 
 class LiveComment extends ConsumerStatefulWidget {
@@ -12,7 +16,8 @@ class LiveComment extends ConsumerStatefulWidget {
 class _LiveCommentState extends ConsumerState<LiveComment>
     with TickerProviderStateMixin {
   bool _isExpanded = false;
-
+  List<Map<String, dynamic>> _messages = [];
+  late StreamSubscription<Map<String, dynamic>> _subscription;
   List<AnimationController> _animationControllers = [];
   List<Animation<double>> _animations = [];
   List<double> _positions = [];
@@ -24,11 +29,53 @@ class _LiveCommentState extends ConsumerState<LiveComment>
   }
 
   @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      _fetchDebateInfo();
+      _subscribeToMessages();
+    });
+  }
+
+  @override
   void dispose() {
     for (var controller in _animationControllers) {
       controller.dispose();
     }
     super.dispose();
+  }
+
+  Future<void> _fetchDebateInfo() async {
+    final liveWebSocketService = ref.read(liveWebSocketProvider);
+    final loginInfo = ref.watch(loginInfoProvider);
+    final debateInfo = ref.read(chatInfoProvider);
+
+    if (loginInfo != null) {
+      final message = jsonEncode({
+        "command": "ENTER",
+        "userId": loginInfo.id,
+        "debateId": debateInfo!.id,
+      });
+      liveWebSocketService.sendMessage(message);
+    } else {
+      print("Error: Login info or Debate info is null.");
+    }
+  }
+
+  void _subscribeToMessages() {
+    final webSocketService = ref.read(liveWebSocketProvider);
+    final loginInfo = ref.watch(loginInfoProvider);
+
+    _subscription = webSocketService.stream.listen((message) {
+      if (message.containsKey('content')) {
+        if (mounted) {
+          setState(() {
+            _messages.add(message);
+            print(message);
+          });
+        }
+      }
+    });
   }
 
   void _startAnimation() {
@@ -114,8 +161,10 @@ class _LiveCommentState extends ConsumerState<LiveComment>
                 child: _isExpanded
                     ? ListView.builder(
                         shrinkWrap: true,
-                        itemCount: 5, // 예시를 위해 고정된 수의 항목을 표시합니다.
+                        controller: ScrollController(),
+                        itemCount: _messages.length, // 예시를 위해 고정된 수의 항목을 표시합니다.
                         itemBuilder: (context, index) {
+                          final message = _messages[index];
                           return Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 16.0, vertical: 8.0),
@@ -136,7 +185,7 @@ class _LiveCommentState extends ConsumerState<LiveComment>
                                   width: 10,
                                 ),
                                 Text(
-                                  '아냐아아아',
+                                  message['content'] ?? '',
                                   style: FontSystem.KR16B,
                                 ),
                               ],
