@@ -178,7 +178,7 @@ class JoinerChatList extends StatelessWidget {
           children: [
             chatMessage
                 ? Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    padding: EdgeInsets.symmetric(horizontal: 10.w),
                     child: Row(
                       mainAxisAlignment: isMyMessage
                           ? MainAxisAlignment.end

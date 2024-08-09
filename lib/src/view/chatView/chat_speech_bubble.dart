@@ -221,7 +221,7 @@ class TimingButton extends StatelessWidget {
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: ColorSystem.black,

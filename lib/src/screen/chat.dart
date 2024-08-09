@@ -17,7 +17,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-
 class Chat extends ConsumerStatefulWidget {
   final int id;
 
@@ -91,7 +90,7 @@ class _ChatState extends ConsumerState<Chat> {
           child: SpinKitThreeBounce(
             color: ColorSystem.lightPurple,
             size: 30.sp,
-            duration: Duration(seconds: 2), //속도 설정 
+            duration: Duration(seconds: 2), //속도 설정
           ),
         ),
       );
@@ -121,7 +120,7 @@ class _BasicDebate extends StatelessWidget {
         preferredSize: Size.fromHeight(60.h),
         child: ChatAppbar(id: id), // id 전달
       ),
-      body: ChatBody(id: id), // id 전달
+      body: ChatBody(id: id),
     );
   }
 }
