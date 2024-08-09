@@ -26,6 +26,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
   }
 
   late WebSocketChannel _channel;
+  late WebSocketChannel _liveChannel;
   final _messageController = StreamController<Map<String, dynamic>>.broadcast();
   final TextEditingController controller = TextEditingController();
   final FocusNode focusNode = FocusNode();
@@ -51,8 +52,23 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     _channel = WebSocketChannel.connect(
       Uri.parse('wss://dev-tito.owsla.duckdns.org/ws/debate'),
     );
-
     _channel.stream.listen((message) {
+      if (message is String && message.startsWith('{')) {
+        final decodedMessage = json.decode(message) as Map<String, dynamic>;
+        _messages.add(decodedMessage);
+        _messageController.sink.add(decodedMessage);
+      } else {
+        print('Invalid message format or non-JSON string received: $message');
+      }
+    }, onError: (error) {
+      print('WebSocket error: $error');
+    }, onDone: () {
+      print('WebSocket connection closed');
+    });
+    _liveChannel = WebSocketChannel.connect(
+      Uri.parse('wss://dev-tito.owsla.duckdns.org/ws/debate/realtime'),
+    );
+    _liveChannel.stream.listen((message) {
       if (message is String && message.startsWith('{')) {
         final decodedMessage = json.decode(message) as Map<String, dynamic>;
         _messages.add(decodedMessage);
@@ -83,6 +99,43 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     print(jsonMessage);
 
     _channel.sink.add(jsonMessage);
+    controller.clear();
+    focusNode.requestFocus();
+    // Reset the timer to 8 minutes
+  }
+
+  void sendChatMessage() {
+    final loginInfo = ref.read(loginInfoProvider);
+
+    final message = controller.text;
+
+    if (message.isEmpty) return;
+
+    final jsonMessage = json.encode({
+      "command": "CHAT",
+      "userId": loginInfo?.id ?? '',
+      "debateId": state?.id ?? 0,
+      "userNickName": loginInfo!.nickname,
+      "userImgUrl":
+          'https://dev-tito.owsla.duckdns.org/images/20240808/afbf7130-312d-46e7-972b-69dcb1b0b5e8.png',
+      "content": message,
+    });
+    print(jsonMessage);
+
+    _liveChannel.sink.add(jsonMessage);
+    controller.clear();
+    focusNode.requestFocus();
+    // Reset the timer to 8 minutes
+  }
+
+  void sendFire() {
+    final jsonMessage = json.encode({
+      "command": "FIRE",
+      "debateId": state?.id ?? 0,
+    });
+    print(jsonMessage);
+
+    _liveChannel.sink.add(jsonMessage);
     controller.clear();
     focusNode.requestFocus();
     // Reset the timer to 8 minutes

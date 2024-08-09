@@ -36,7 +36,7 @@ class PopupViewmodel extends StateNotifier<PopupState> {
   }
 
   void postBlock(id) async {
-    final response = await ApiService(DioClient.dio).postUserBlock({
+    await ApiService(DioClient.dio).postUserBlock({
       'blockUserId': id,
     });
   }
