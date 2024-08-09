@@ -85,8 +85,8 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
         case 0:
           return StaticTextBubble(
             title: '토론 참여자를 기다리고 있어요!\n의견을 작성해보세요',
-            width: 180.w,
-            height: 100.h,
+            width: 210.w,
+            height: 80.h,
           );
         default:
           if (chatState.debateJoinerTurnCount > 2) {
@@ -177,7 +177,7 @@ class StaticTextBubble extends StatefulWidget {
   _StaticTextBubbleState createState() => _StaticTextBubbleState();
 }
 
-class _StaticTextBubbleState extends State<StaticTextBubble> {
+class _StaticTextBubbleState extends State<StaticTextBubble>{
   @override
   Widget build(BuildContext context) {
     // if (!mounted || widget.chatState.isVisible == false) {
@@ -191,7 +191,7 @@ class _StaticTextBubbleState extends State<StaticTextBubble> {
       nipLocation: NipLocation.bottom,
       color: ColorSystem.purple,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
+        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 15.h),
         child: Text(
           widget.title,
           textAlign: TextAlign.center,

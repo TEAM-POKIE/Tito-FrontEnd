@@ -25,10 +25,9 @@ class ChatBody extends ConsumerWidget {
               child: ChatListView(id: id)), // id 전달
         ),
         Container(
-          width: MediaQuery.sizeOf(context).width,
-          decoration: BoxDecoration(color: ColorSystem.white),
-          child: ChatSpeechBubble(),
-        ),
+            // 여기가 그 입력바 클릭시 뜨는 윗 공간임
+                child: ChatSpeechBubble(),
+            ),
         ChatBottomDetail(id: id), // id 전달
       ],
     );

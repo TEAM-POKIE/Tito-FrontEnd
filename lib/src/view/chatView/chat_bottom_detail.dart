@@ -55,7 +55,7 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
     final chatViewModel = ref.read(chatInfoProvider.notifier);
 
     return Container(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(5.0),
       child: Column(
         children: [
           Row(

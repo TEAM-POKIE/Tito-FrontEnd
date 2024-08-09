@@ -6,6 +6,7 @@ import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
+import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/websocket_provider.dart';
@@ -13,6 +14,9 @@ import 'package:tito_app/src/view/chatView/chat_appBar.dart';
 import 'package:tito_app/src/view/chatView/chat_body.dart';
 import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 
 class Chat extends ConsumerStatefulWidget {
   final int id;
@@ -81,10 +85,14 @@ class _ChatState extends ConsumerState<Chat> {
     if (debateInfo == null) {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Loading...'),
+          automaticallyImplyLeading: false,
         ),
         body: Center(
-          child: CircularProgressIndicator(),
+          child: SpinKitThreeBounce(
+            color: ColorSystem.lightPurple,
+            size: 30.sp,
+            duration: Duration(seconds: 2), //속도 설정 
+          ),
         ),
       );
     }
@@ -110,7 +118,7 @@ class _BasicDebate extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60.0),
+        preferredSize: Size.fromHeight(60.h),
         child: ChatAppbar(id: id), // id 전달
       ),
       body: ChatBody(id: id), // id 전달
