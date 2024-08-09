@@ -80,6 +80,7 @@ dependencies:
   flutter_svg: ^2.0.10+1
   shared_preferences: ^2.3.1
   flutter_spinkit: ^5.2.1
+  loading_animation_widget: ^1.2.1
 
 dev_dependencies:
   flutter_test:
@@ -158,6 +159,8 @@ flutter:
     - assets/icons/back_arrow.svg
     - assets/icons/keyboard_plus.svg
     - assets/icons/final_send_arrow.svg
+    - assets/icons/new_timingbell.svg
+    - assets/icons/chat_avatar.svg
     
 
 

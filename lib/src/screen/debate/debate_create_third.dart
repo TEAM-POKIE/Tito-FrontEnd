@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
+
 class DebateCreateThird extends ConsumerStatefulWidget {
   const DebateCreateThird({super.key});
 
@@ -45,7 +46,7 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: ColorSystem.white,
-          leading: IconButton(
+          leading: IconButton(  
             onPressed: () {
               context.pop();
             },

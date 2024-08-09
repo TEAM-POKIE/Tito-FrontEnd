@@ -5,6 +5,8 @@ import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:tito_app/core/provider/timer_provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tito_app/core/constants/style.dart';
 
 class ChatBottomDetail extends ConsumerStatefulWidget {
   final int id;
@@ -64,30 +66,37 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
                 icon: SvgPicture.asset('assets/icons/plus.svg'),
               ),
               Expanded(
-                child: TextField(
-                  controller: chatViewModel.controller,
-                  autocorrect: false,
-                  focusNode: chatViewModel.focusNode,
-                  decoration: InputDecoration(
-                    hintText: '상대 의견 작성 타임이에요!',
-                    fillColor: Colors.grey[200],
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: BorderSide.none,
+                child: Container(
+                  width: 320.w,
+                  height: 40.h,
+                  child: TextField(
+                    controller: chatViewModel.controller,
+                    autocorrect: false,
+                    focusNode: chatViewModel.focusNode,
+                    decoration: InputDecoration(
+                      hintText: '상대 의견 작성 타임이에요!',
+                      hintStyle:
+                          FontSystem.KR16M.copyWith(color: ColorSystem.grey),
+                      fillColor: ColorSystem.ligthGrey,
+                      filled: true,
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 10.h, horizontal: 20.w),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16.r),
+                        borderSide: BorderSide.none,
+                      ),
                     ),
+                    onSubmitted: (value) {
+                      handleSendMessage(context);
+                    },
                   ),
-                  onSubmitted: (value) {
-                    handleSendMessage(context);
-                  },
                 ),
               ),
-              const SizedBox(width: 8),
               IconButton(
                 onPressed: () {
                   handleSendMessage(context);
                 },
-                icon: SvgPicture.asset('assets/icons/sendArrow.svg'),
+                icon: SvgPicture.asset('assets/icons/final_send_arrow.svg'),
               ),
             ],
           ),
