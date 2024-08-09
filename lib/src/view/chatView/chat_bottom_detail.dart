@@ -41,6 +41,8 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
     } else if (chatState.debateJoinerId == loginInfo.id ||
         chatState.debateOwnerId == loginInfo.id) {
       chatViewModel.sendMessage();
+    } else {
+      chatViewModel.sendChatMessage();
     }
 
     if (popupState.title == '토론이 시작 됐어요! 🎵') {

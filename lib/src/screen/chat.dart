@@ -31,7 +31,7 @@ class Chat extends ConsumerStatefulWidget {
 
 class _ChatState extends ConsumerState<Chat> {
   List<Map<String, dynamic>> _messages = [];
-  late StreamSubscription<Map<String, dynamic>> _subscription;
+
   @override
   void initState() {
     super.initState();
