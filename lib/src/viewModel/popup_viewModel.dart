@@ -42,17 +42,26 @@ class PopupViewmodel extends StateNotifier<PopupState> {
   }
 
   // 타이밍 팝업 띄우기
-  Future<bool> showTimingPopup(BuildContext context) async {
-    state = state.copyWith(
-      title: '정말 토론을 끝내시려구요?',
-      content:
-          '타이밍 벨을 울리시면 상대방의 동의에 따라\n마지막 최후 변론 후 토론이 종료돼요\n상대 거절 시 2턴 후 종료돼요',
-      buttonStyle: 2,
-      buttonContentLeft: "토론 더 할래요",
-      buttonContentRight: '벨 울릴게요',
-      titleLabel: '타이밍 벨',
-      imgSrc: 'assets/icons/popUpBell.svg',
-    );
+  Future<bool> showTimingPopup(BuildContext context, String function) async {
+    if (function == 'timing') {
+      state = state.copyWith(
+        title: '정말 토론을 끝내시려구요?',
+        content:
+            '타이밍 벨을 울리시면 상대방의 동의에 따라\n마지막 최후 변론 후 토론이 종료돼요\n상대 거절 시 2턴 후 종료돼요',
+        buttonStyle: 2,
+        buttonContentLeft: "토론 더 할래요",
+        buttonContentRight: '벨 울릴게요',
+        titleLabel: '타이밍 벨',
+        imgSrc: 'assets/icons/popUpBell.svg',
+      );
+    } else {
+      state = state.copyWith(
+        title: '토론의 승자를 투표해주세요!',
+        buttonStyle: 1,
+        buttonContentLeft: "투표 하기",
+        imgSrc: 'assets/icons/popUpBell.svg',
+      );
+    }
 
     final result = await showDialog<bool>(
       context: context,

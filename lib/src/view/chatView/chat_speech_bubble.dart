@@ -231,7 +231,11 @@ class TimingButton extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            popupViewModel!.showTimingPopup(context);
+            if (content == '타이밍 벨') {
+              popupViewModel!.showTimingPopup(context, 'timing');
+            } else {
+              popupViewModel!.showTimingPopup(context, 'vote');
+            }
           },
           child: Row(
             mainAxisSize: MainAxisSize.min,
