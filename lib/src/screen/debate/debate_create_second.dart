@@ -6,6 +6,7 @@ import 'package:tito_app/core/provider/debate_create_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
 
+
 class DebateCreateSecond extends ConsumerStatefulWidget {
   const DebateCreateSecond({super.key});
 
@@ -17,11 +18,41 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
   final _formKey = GlobalKey<FormState>();
   String aArgument = '';
   String bArgument = '';
+  int _currentPage = 1;
+  final int _totalPages = 3;
+  double _progress = 0.0;
+
+  void updateProgress(int _currentPage) {
+    // 각 페이지에 대한 진행률 범위 설정
+    List<double> progressRanges = [
+      0.0, 0.3, // 첫 번째 페이지: 0% ~ 30%
+      0.3, 0.6, // 두 번째 페이지: 30% ~ 60%
+      0.6, 0.9, // 세 번째 페이지: 60% ~ 90%
+      0.9, 1.0 // 네 번째 페이지: 90% ~ 100%
+    ];
+
+    // 현재 페이지의 시작과 끝 범위를 가져옵니다.
+    double startRange = progressRanges[_currentPage * 2];
+    double endRange = progressRanges[_currentPage * 2 + 1];
+
+    // 현재 페이지에서의 진행률 계산
+    double pageProgress =
+        (endRange - startRange) * ((_currentPage + 1) / _totalPages);
+
+    // 전체 진행률로 변환
+    _progress = startRange + pageProgress;
+
+    // 진행 상황 업데이트
+    setState(() {
+      _progress = _progress;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final debateViewModel = ref.read(debateCreateProvider.notifier);
     final debateState = ref.watch(debateCreateProvider);
+    double _progress = (_currentPage + 1) / _totalPages;
 
     void _nextCreate(BuildContext context) async {
       if (!debateViewModel.validateForm(_formKey)) {

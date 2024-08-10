@@ -14,8 +14,11 @@ class CustomSearchBar extends StatelessWidget {
         height: 50.h,
         child: TextField(
           decoration: InputDecoration(
-            prefixIcon: SvgPicture.asset(
-              'assets/icons/search_size_four.svg',
+            prefixIcon: Padding(
+              padding: EdgeInsets.only(left: 10.w),
+              child: SvgPicture.asset(
+                'assets/icons/search_size_four.svg',
+              ),
             ),
             filled: true,
             fillColor: ColorSystem.ligthGrey, // 더 밝은 배경색

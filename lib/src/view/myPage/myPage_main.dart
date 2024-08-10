@@ -283,30 +283,39 @@ class _MypageMainState extends ConsumerState<MypageMain> {
             _buildListTile(
               context,
               title: '내가 참여한 토론',
-              leading: SvgPicture.asset(
-                'assets/icons/mypage_debate.svg',
-                width: 24.w,
-                height: 24.h,
+              leading: Padding(
+                padding: EdgeInsets.only(top: 6.h),
+                child: SvgPicture.asset(
+                  'assets/icons/mypage_debate.svg',
+                  width: 24.w,
+                  height: 24.h,
+                ),
               ),
               onTap: () => context.push('/mydebate'),
             ),
             _buildListTile(
               context,
               title: '알림',
-              leading: SvgPicture.asset(
-                'assets/icons/mypage_alarm.svg',
-                width: 24.w,
-                height: 24.h,
+              leading: Padding(
+                padding: EdgeInsets.only(top: 6.h),
+                child: SvgPicture.asset(
+                  'assets/icons/mypage_alarm.svg',
+                  width: 24.w,
+                  height: 24.h,
+                ),
               ),
               onTap: () => context.push('/myalarm'),
             ),
             _buildListTile(
               context,
               title: '차단 리스트',
-              leading: SvgPicture.asset(
-                'assets/icons/mypage_bann.svg',
-                width: 24.w,
-                height: 24.h,
+              leading: Padding(
+                padding: EdgeInsets.only(top: 6.h),
+                child: SvgPicture.asset(
+                  'assets/icons/mypage_bann.svg',
+                  width: 24.w,
+                  height: 24.h,
+                ),
               ),
               onTap: () => context.push('/myblock'),
             ),
@@ -335,40 +344,52 @@ class _MypageMainState extends ConsumerState<MypageMain> {
             _buildListTile(
               context,
               title: '비밀번호 변경',
-              leading: SvgPicture.asset(
-                'assets/icons/mypage_pw.svg',
-                width: 24.w,
-                height: 24.h,
+              leading: Padding(
+                padding: EdgeInsets.only(top: 8.h),
+                child: SvgPicture.asset(
+                  'assets/icons/mypage_pw.svg',
+                  width: 24.w,
+                  height: 24.h,
+                ),
               ),
               onTap: () => context.push('/password'),
             ),
             _buildListTile(
               context,
               title: '문의하기',
-              leading: SvgPicture.asset(
-                'assets/icons/mypage_ask.svg',
-                width: 24.w,
-                height: 24.h,
+              leading: Padding(
+                padding: EdgeInsets.only(top: 10.h),
+                child: SvgPicture.asset(
+                  'assets/icons/mypage_ask.svg',
+                  width: 24.w,
+                  height: 24.h,
+                ),
               ),
               onTap: () => context.push('/contact'),
             ),
             _buildListTile(
               context,
               title: '개인정보처리방침',
-              leading: SvgPicture.asset(
-                'assets/icons/mypage_one.svg',
-                width: 24.w,
-                height: 24.h,
+              leading: Padding(
+                padding: EdgeInsets.only(top: 10.h),
+                child: SvgPicture.asset(
+                  'assets/icons/mypage_one.svg',
+                  width: 24.w,
+                  height: 24.h,
+                ),
               ),
               onTap: () => context.push('/personalRule'),
             ),
             _buildListTile(
               context,
               title: '이용약관',
-              leading: SvgPicture.asset(
-                'assets/icons/mypage_two.svg',
-                width: 24.w,
-                height: 24.h,
+              leading: Padding(
+                padding: EdgeInsets.only(top: 10.h),
+                child: SvgPicture.asset(
+                  'assets/icons/mypage_two.svg',
+                  width: 24.w,
+                  height: 24.h,
+                ),
               ),
               onTap: () => context.push('/rule'),
             ),
@@ -442,9 +463,12 @@ class _MypageMainState extends ConsumerState<MypageMain> {
         ),
         child: ListTile(
           leading: leading,
-          title: Text(title),
+          title: Padding(
+            padding: EdgeInsets.only(top: 6.h),
+            child: Text(title),
+          ),
           trailing: Padding(
-            padding: EdgeInsets.only(top: 7.h),
+            padding: EdgeInsets.only(top: 10.h),
             child: SvgPicture.asset(
               'assets/icons/mypage_real_arrow.svg',
             ),
