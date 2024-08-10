@@ -11,19 +11,8 @@ class VotingBar extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final voteState = ref.watch(voteProvider);
-    final voteNotifier = ref.read(voteProvider.notifier);
-
-    final totalVotes = voteState.blueVotes + voteState.redVotes;
-
-    final bluePercent =
-        totalVotes == 0 ? 0.5 : voteState.blueVotes / totalVotes.toDouble();
 
     // 이전의 퍼센트 값 유지
-    final previousBluePercent = useRef(bluePercent);
-    useEffect(() {
-      previousBluePercent.value = bluePercent;
-      return null;
-    }, [bluePercent]);
 
     return LinearPercentIndicator(
       lineHeight: 6.0,
@@ -31,7 +20,7 @@ class VotingBar extends HookConsumerWidget {
       padding: EdgeInsets.zero,
       animationDuration: 500,
       animateFromLastPercent: true, // 마지막 퍼센트에서 애니메이션 시작
-      percent: bluePercent,
+      percent: voteState.bluePercent,
       linearStrokeCap: LinearStrokeCap.roundAll,
       progressColor: ColorSystem.voteBlue,
       backgroundColor: ColorSystem.voteRed,

@@ -17,6 +17,8 @@ import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+String selectedDebate = '';
+
 class DebatePopup extends ConsumerStatefulWidget {
   const DebatePopup({super.key});
 
@@ -25,8 +27,6 @@ class DebatePopup extends ConsumerStatefulWidget {
 }
 
 class _DebatePopupState extends ConsumerState<DebatePopup> {
-  String? selectedDebate; // 선택된 debateOwnerNick 또는 debateJoinerNick
-
   @override
   Widget build(BuildContext context) {
     final popupState = ref.watch(popupProvider);
@@ -208,6 +208,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
     final popupState = ref.watch(popupProvider);
     final popupViewModel = ref.watch(popupProvider.notifier);
     final debateState = ref.watch(debateCreateProvider);
+    final chatViewModel = ref.watch(chatInfoProvider.notifier);
 
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -231,6 +232,9 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
           // popupViewModel.showDebatePopup(context);
         } else if (popupState.title == '토론 시작 시 알림을 보내드릴게요!') {
           context.pop();
+        } else if (popupState.title == '토론의 승자를 투표해주세요!') {
+          print(selectedDebate);
+          chatViewModel.sendVote(selectedDebate);
         }
       },
       child: Text(

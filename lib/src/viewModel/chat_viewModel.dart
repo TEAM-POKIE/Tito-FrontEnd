@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/api/api_service.dart';
@@ -100,6 +101,24 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     print(jsonMessage);
 
     _channel.sink.add(jsonMessage);
+    controller.clear();
+    focusNode.requestFocus();
+    // Reset the timer to 8 minutes
+  }
+
+  void sendVote(String selectedDebate) {
+    final loginInfo = ref.read(loginInfoProvider);
+
+    final jsonMessage = json.encode({
+      "command": "VOTE",
+      "userId": loginInfo?.id ?? '',
+      "debateId": state?.id ?? 0,
+      "participantIsOwner":
+          selectedDebate == state!.debateOwnerNick ? true : false,
+    });
+    print(jsonMessage);
+
+    _liveChannel.sink.add(jsonMessage);
     controller.clear();
     focusNode.requestFocus();
     // Reset the timer to 8 minutes
