@@ -1,5 +1,7 @@
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -10,6 +12,7 @@ import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 const FlutterSecureStorage secureStorage = FlutterSecureStorage();
@@ -150,6 +153,66 @@ class LoginMain extends StatelessWidget {
                 ),
               );
             }),
+            // SignInWithAppleButton(
+            //   onPressed: () async {
+            //     try {
+            //       final credential = await SignInWithApple.getAppleIDCredential(
+            //         scopes: [
+            //           AppleIDAuthorizationScopes.email,
+            //           AppleIDAuthorizationScopes.fullName,
+            //         ],
+            //         webAuthenticationOptions: WebAuthenticationOptions(
+            //           clientId: 'titoApp.example.com', // 서비스 ID에 해당하는 clientId
+            //           redirectUri: kIsWeb
+            //               ? Uri.parse('https://titoApp.example.com')
+            //               : Uri.parse(
+            //                   'https://dev-tito.owsla.duckdns.org/callbacks/sign_in_with_apple'),
+            //         ),
+            //         nonce: 'example-nonce',
+            //         state: 'example-state',
+            //       );
+
+            //       if (credential != null) {
+            //         // 인증 성공 시 처리
+            //         print(credential);
+
+            //         final signInWithAppleEndpoint = Uri(
+            //           scheme: 'https',
+            //           host: 'dev-tito.owsla.duckdns.org',
+            //           path: '/sign_in_with_apple',
+            //           queryParameters: <String, String>{
+            //             'code': credential.authorizationCode,
+            //             if (credential.givenName != null)
+            //               'firstName': credential.givenName!,
+            //             if (credential.familyName != null)
+            //               'lastName': credential.familyName!,
+            //             'useBundleId':
+            //                 !kIsWeb && (Platform.isIOS || Platform.isMacOS)
+            //                     ? 'true'
+            //                     : 'false',
+            //             if (credential.state != null)
+            //               'state': credential.state!,
+            //           },
+            //         );
+
+            //         final session = await http.Client().post(
+            //           signInWithAppleEndpoint,
+            //         );
+
+            //         print(session);
+            //       } else {
+            //         // credential이 null인 경우에 대한 처리
+            //         debugPrint('Error: credential is null');
+            //       }
+            //     } on SignInWithAppleAuthorizationException catch (e) {
+            //       // Apple 인증 중 발생한 예외 처리
+            //       debugPrint('SignInWithAppleAuthorizationException: $e');
+            //     } catch (e) {
+            //       // 기타 예외 처리
+            //       debugPrint('Error during Apple sign in: $e');
+            //     }
+            //   },
+            // ),
             Container(
               width: 327.w,
               height: 54.h,
