@@ -10,6 +10,7 @@ import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
@@ -20,15 +21,12 @@ class LoginMain extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Map<String, String>> loginOptions = [
       {
-        'text': '카카오로 시작하기',
         'icon': 'assets/icons/kakao_size.svg',
       },
       {
-        'text': '애플로 시작하기',
         'icon': 'assets/icons/apple_size.svg',
       },
       {
-        'text': '구글로 시작하기',
         'icon': 'assets/icons/google_size.svg',
       },
     ];
@@ -144,8 +142,10 @@ class LoginMain extends StatelessWidget {
                   width: 327.w,
                   height: 54.h,
                   child: GestureDetector(
-                    onTap: (){},
-                    child: SvgPicture.asset(option['icon']!),
+                    onTap: () {},
+                    child: SvgPicture.asset(
+                      option['icon']!,
+                    ),
                   ),
                 ),
               );

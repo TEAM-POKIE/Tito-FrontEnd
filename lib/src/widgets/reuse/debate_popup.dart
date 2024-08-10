@@ -251,7 +251,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
       try {
         if (debateState.debateImageUrl == '') {
           final debateData = debateState.toJson();
-          print(debateData);
+
           var formData = FormData.fromMap({
             'debate': MultipartFile.fromString(
               jsonEncode(debateData),
@@ -264,6 +264,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
           context.push('/chat/${response.id}');
         } else {
           final debateData = debateState.toJson();
+
           File debateImage = File(debateState.debateImageUrl);
           var formData = FormData.fromMap({
             'debate': MultipartFile.fromString(
@@ -348,7 +349,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
               padding: const EdgeInsets.symmetric(vertical: 10),
             ),
             onPressed: () {
-              if (popupState.title == '토론장을 개설하겠습니까?') {
+              if (popupState.title == '토론장을 개설하시겠어요?') {
                 startDebate();
               } else if (popupState.title == '토론을 삭제 하시겠어요?') {
                 deleteDebate();
