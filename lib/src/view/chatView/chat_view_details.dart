@@ -64,7 +64,6 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
             downTitle: '당신의 의견 : ${chatState.debateJoinerOpinion}',
             downImage: 'assets/images/chatCuteIconPurple.svg',
           );
-
         default:
           return SizedBox(
             width: 0,
@@ -91,7 +90,7 @@ class DetailState extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.only(bottom: 5),
+      padding: const EdgeInsets.only(bottom: 12),
       color: ColorSystem.white,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -113,7 +112,7 @@ class DetailState extends StatelessWidget {
                   const SizedBox(width: 8),
                   Text(
                     upTitle,
-                    style: FontSystem.KR16R,
+                    style: FontSystem.KR16SB,
                   ),
                 ],
               ),
@@ -121,32 +120,35 @@ class DetailState extends StatelessWidget {
           ),
           const SizedBox(height: 3),
           Center(
-            child: Container(
-              padding: const EdgeInsets.all(8.0),
-              width: MediaQuery.of(context).size.width - 50,
-              decoration: BoxDecoration(
-                color: downImage == 'assets/images/chatCuteIconPurple.svg'
-                    ? ColorSystem.lightPurple
-                    : ColorSystem.white,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: (upImage == 'assets/images/chatCuteIcon.svg')
-                    ? MainAxisAlignment.start
-                    : MainAxisAlignment.center,
-                children: [
-                  downImage != null && downImage!.isNotEmpty
-                      ? SvgPicture.asset(downImage!)
-                      : const SizedBox(width: 0),
-                  const SizedBox(width: 8),
-                  Text(
-                    downTitle ?? '',
-                    style: downImage != null && downImage!.isNotEmpty
-                        ? FontSystem.KR16B
-                        : FontSystem.KR16B.copyWith(color: ColorSystem.purple),
-                  ),
-                ],
+            child: Padding(
+              padding: const EdgeInsets.only(left: 6.0),
+              child: Container(
+                padding: const EdgeInsets.all(8.0),
+                width: MediaQuery.of(context).size.width - 50,
+                decoration: BoxDecoration(
+                  color: downImage == 'assets/images/chatCuteIconPurple.svg'
+                      ? ColorSystem.lightPurple
+                      : ColorSystem.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: (upImage == 'assets/images/chatCuteIcon.svg')
+                      ? MainAxisAlignment.start
+                      : MainAxisAlignment.center,
+                  children: [
+                    downImage != null && downImage!.isNotEmpty
+                        ? SvgPicture.asset(downImage!)
+                        : const SizedBox(width: 0),
+                    const SizedBox(width: 11),
+                    Text(
+                      downTitle ?? '',
+                      style: downImage != null && downImage!.isNotEmpty
+                          ? FontSystem.KR16SB
+                          : FontSystem.KR16SB.copyWith(color: ColorSystem.purple),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

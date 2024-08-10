@@ -5,6 +5,7 @@ import 'package:showcaseview/showcaseview.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/src/view/chatView/chat_view_details.dart';
 import 'package:tito_app/src/view/chatView/votingbar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 int currentShowcaseIndex = 0;
 
@@ -52,23 +53,46 @@ class _ShowCaseScreenState extends State<ShowCaseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text('외계인 있다? 없다?', style: TextStyle(color: Colors.black)),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Icon(Icons.more_vert, color: Colors.black),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(60.h),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
+            onPressed: () {},
           ),
-        ],
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1.0),
-          child: Container(
-            color: Colors.grey,
-            height: 1.0,
+          title: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  '외계인 있다? 없다?',
+                  style: FontSystem.KR16SB,
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.arrow_drop_down),
+                  iconSize: 30,
+                ),
+              ],
+            ),
+          ),
+          centerTitle: true,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(Icons.more_vert, color: Colors.black),
+            ),
+          ],
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(1.0),
+            child: Container(
+              color: Colors.grey,
+              height: 1.0,
+            ),
           ),
         ),
       ),
@@ -118,6 +142,8 @@ class _ShowCaseScreenState extends State<ShowCaseScreen> {
                           Showcase(
                             key: _keyTimer,
                             description: '⏳발언 제안 시간이 카운팅 돼요!',
+                            descTextStyle: FontSystem.KR16SB
+                                .copyWith(color: ColorSystem.white),
                             tooltipBackgroundColor: ColorSystem.purple,
                             targetPadding: EdgeInsets.all(10),
                             targetBorderRadius: BorderRadius.circular(12),
@@ -143,11 +169,13 @@ class _ShowCaseScreenState extends State<ShowCaseScreen> {
                   Showcase(
                     key: _keyShowCase,
                     description: '3턴이 지난 후부터 실시간 투표율이 보여요!',
+                    descTextStyle:
+                        FontSystem.KR16SB.copyWith(color: ColorSystem.white),
+                    descriptionAlignment: TextAlign.center,
                     tooltipBackgroundColor: ColorSystem.purple,
                     targetPadding: EdgeInsets.all(10),
-                    targetBorderRadius: BorderRadius.circular(12),
-                    tooltipBorderRadius: BorderRadius.circular(12),
-                    textColor: Colors.white,
+                    targetBorderRadius: BorderRadius.circular(12.r),
+                    tooltipBorderRadius: BorderRadius.circular(12.r),
                     child: VotingBar(),
                   ),
                   Container(
@@ -258,12 +286,15 @@ class _ShowCaseScreenState extends State<ShowCaseScreen> {
                   onPressed: () {},
                   child: Showcase(
                     key: _keySuggestion,
-                    description: '토론을 마무리하고 싶을 때 타이밍벨을 눌러주세요! 거절시 2턴 후 종료됩니다!',
+                    description:
+                        '토론을 마무리하고 싶을 때\n타이밍벨을 눌러주세요!\n거절시 2턴 후 종료됩니다!',
+                    descTextStyle:
+                        FontSystem.KR16SB.copyWith(color: ColorSystem.white),
+                    descriptionAlignment: TextAlign.center,
                     tooltipBackgroundColor: ColorSystem.purple,
-                    targetBorderRadius: BorderRadius.circular(12),
+                    targetBorderRadius: BorderRadius.circular(12.r),
                     tooltipPadding: EdgeInsets.all(10),
-                    tooltipBorderRadius: BorderRadius.circular(12),
-                    textColor: Colors.white,
+                    tooltipBorderRadius: BorderRadius.circular(12.r),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -286,41 +317,42 @@ class _ShowCaseScreenState extends State<ShowCaseScreen> {
             ),
             Showcase(
               key: _keyMessage,
-              description: 'AI의 도움을 받아 나의 의견을 완성시켜보세요!',
+              description: 'AI의 도움을 받아\n나의 의견을 완성시켜보세요!',
+              descTextStyle:
+                  FontSystem.KR16SB.copyWith(color: ColorSystem.white),
+              descriptionAlignment: TextAlign.center,
               tooltipBackgroundColor: ColorSystem.purple,
               targetBorderRadius: BorderRadius.circular(12),
               tooltipPadding: EdgeInsets.all(10),
               tooltipBorderRadius: BorderRadius.circular(12),
-              textColor: Colors.white,
               child: Column(
                 children: [
                   Container(
                     padding: const EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(15),
-                          topRight: Radius.circular(15)),
+                          topLeft: Radius.circular(15.r),
+                          topRight: Radius.circular(15.r)),
                       color: ColorSystem.white,
                     ),
                     child: currentShowcaseIndex < 8
                         ? Container(
-                            height: 100,
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 8.0, horizontal: 16.0),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 8.h, horizontal: 16.w),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SvgPicture.asset('assets/icons/blackLLM.svg'),
                                   SizedBox(
-                                    width: 10,
+                                    width: 10.w,
                                   ),
                                   Container(
                                     constraints:
-                                        const BoxConstraints(maxWidth: 250),
+                                        BoxConstraints(maxWidth: 250.w),
                                     decoration: BoxDecoration(
                                       color: ColorSystem.white,
-                                      borderRadius: BorderRadius.circular(12.0),
+                                      borderRadius: BorderRadius.circular(12.r),
                                     ),
                                     child: Column(
                                       crossAxisAlignment:
@@ -328,12 +360,12 @@ class _ShowCaseScreenState extends State<ShowCaseScreen> {
                                       children: [
                                         Text(
                                           'LLM의 작성 코칭!',
-                                          style: FontSystem.KR14M.copyWith(
+                                          style: FontSystem.KR16SB.copyWith(
                                               color: ColorSystem.purple),
                                         ),
                                         Text(
                                           '지금 작성하신 주장은 주제에서 벗어난 것 같아요. 파미의 역설에 대한 반박글을 한문장으로 작성하는 것을 추천해요!',
-                                          style: FontSystem.KR14R.copyWith(
+                                          style: FontSystem.KR16M.copyWith(
                                               color: ColorSystem.purple),
                                         ),
                                       ],
@@ -351,42 +383,6 @@ class _ShowCaseScreenState extends State<ShowCaseScreen> {
                               child: Text('ds'),
                             ),
                           ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 10),
-                    decoration: BoxDecoration(
-                      color: ColorSystem.white,
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: SvgPicture.asset('assets/icons/plus.svg'),
-                        ),
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            alignment: Alignment.centerLeft,
-                            decoration: BoxDecoration(
-                                color: ColorSystem.grey3,
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Text(
-                              '상대 의견 작성 타임이에요!',
-                              style: FontSystem.KR14R
-                                  .copyWith(color: ColorSystem.grey),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        IconButton(
-                          onPressed: () {},
-                          icon: SvgPicture.asset('assets/icons/sendArrow.svg'),
-                        ),
-                      ],
-                    ),
                   ),
                 ],
               ),
