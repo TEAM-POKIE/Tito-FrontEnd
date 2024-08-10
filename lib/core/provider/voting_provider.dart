@@ -8,7 +8,7 @@ final voteProvider = StateNotifierProvider<VoteNotifier, VoteState>((ref) {
 class VoteNotifier extends StateNotifier<VoteState> {
   VoteNotifier()
       : super(VoteState(
-            blueVotes: 0, redVotes: 0, totalVoted: 0, bluePercent: 0));
+            blueVotes: 0, redVotes: 0, totalVoted: 0, bluePercent: 0.5));
 
   void updateVotes(int newBlueVotes, int newRedVotes) {
     final newTotalVotes = newBlueVotes + newRedVotes;
