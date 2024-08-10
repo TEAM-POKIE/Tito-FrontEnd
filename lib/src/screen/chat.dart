@@ -93,7 +93,7 @@ class _ChatState extends ConsumerState<Chat> {
         ),
         body: Center(
           child: SpinKitThreeBounce(
-            color: ColorSystem.lightPurple,
+            color: ColorSystem.grey3,
             size: 30.sp,
             duration: Duration(seconds: 2), //속도 설정
           ),

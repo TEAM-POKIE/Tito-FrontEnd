@@ -234,7 +234,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     final popupViewModel = ref.read(popupProvider.notifier);
 
     popupState.title = '토론 시작 시 알림을 보내드릴게요!';
-    popupState.imgSrc = 'assets/icons/debatePopUpAlarm.svg';
+    popupState.imgSrc = 'assets/icons/bell_big_alarm.svg';
     popupState.content = '토론 참여자가 정해지고 \n최종 토론이 개설 되면 \n푸시알림을 통해 알려드려요';
     popupState.buttonContentLeft = '네 알겠어요';
 

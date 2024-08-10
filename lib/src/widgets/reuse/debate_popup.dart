@@ -46,15 +46,17 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(width: 35),
+                SizedBox(
+                  width: 45.w,
+                ),
                 popupState.buttonStyle == 2
                     ? Row(
                         children: [
                           if (popupState.imgSrc != null)
                             SvgPicture.asset(
                               popupState.imgSrc!,
-                              width: 30,
-                              height: 30,
+                              width: 40.w,
+                              height: 40.h,
                             ),
                           Text(popupState.titleLabel ?? '',
                               style: FontSystem.KR14SB),
@@ -63,8 +65,8 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                     : popupState.imgSrc != null
                         ? SvgPicture.asset(
                             popupState.imgSrc!,
-                            width: 30,
-                            height: 30,
+                            width: 40.w,
+                            height: 40.h,
                           )
                         : Container(),
                 IconButton(
@@ -75,10 +77,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
               ],
             ),
             const SizedBox(height: 10),
-            Text(
-              popupState.title ?? '',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
+            Text(popupState.title ?? '', style: FontSystem.KR18SB),
             const SizedBox(height: 10),
             popupState.title == '토론의 승자를 투표해주세요!'
                 ? Container(
@@ -220,7 +219,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
       ),
       onPressed: () async {
         if (popupState.title == '토론에 참여 하시겠어요?') {
-          popupState.copyWith(
+          ref.read(popupProvider.notifier).state = popupState.copyWith(
             buttonStyle: 0,
             title: '토론이 시작 됐어요! 🎵',
             content: '서로 존중하는 토론을 부탁드려요!',
@@ -230,16 +229,16 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
           await Future.delayed(
               Duration(milliseconds: 100)); // ensure popup has closed
           // popupViewModel.showDebatePopup(context);
-        } else if (popupState.title == '토론 시작 시 알림을 보내드릴게요!') {
-          context.pop();
         } else if (popupState.title == '토론의 승자를 투표해주세요!') {
           print(selectedDebate);
           chatViewModel.sendVote(selectedDebate);
+        } else if (popupState.title == '토론 시작 시 알림을 보내드릴게요!') {
+          context.pop();
         }
       },
       child: Text(
         popupState.buttonContentLeft!,
-        style: FontSystem.KR14B.copyWith(color: ColorSystem.white),
+        style: FontSystem.KR14M.copyWith(color: ColorSystem.white),
       ),
     );
   }

@@ -86,7 +86,7 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
           return StaticTextBubble(
             title: '토론 참여자를 기다리고 있어요!\n의견을 작성해보세요',
             width: 210.w,
-            height: 80.h,
+            height: 70.h,
           );
         default:
           if (chatState.debateJoinerTurnCount > 2) {
@@ -225,11 +225,11 @@ class TimingButton extends StatelessWidget {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: ColorSystem.black,
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            padding:  EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(16.r),
             ),
-          ),
+          ), 
           onPressed: () {
             if (content == '타이밍 벨') {
               popupViewModel!.showTimingPopup(context, 'timing');
@@ -242,8 +242,8 @@ class TimingButton extends StatelessWidget {
             children: [
               SvgPicture.asset(
                 imgSrc,
-                width: 20, // 아이콘 크기 조정
-                height: 20,
+                width: 20.w, // 아이콘 크기 조정
+                height: 20.h,
               ),
               const SizedBox(width: 4),
               Text(
