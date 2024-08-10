@@ -8,8 +8,11 @@ import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:tito_app/core/provider/websocket_provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tito_app/src/data/models/login_info.dart';
 import 'package:tito_app/src/viewModel/chat_viewModel.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class ChatListView extends ConsumerStatefulWidget {
   final int id;
@@ -175,88 +178,112 @@ class JoinerChatList extends StatelessWidget {
           children: [
             chatMessage
                 ? Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 4.0, horizontal: 8.0),
+                    padding: EdgeInsets.symmetric(horizontal: 10.w),
                     child: Row(
                       mainAxisAlignment: isMyMessage
                           ? MainAxisAlignment.end
                           : MainAxisAlignment.start,
                       children: [
                         if (!isMyMessage)
-                          CircleAvatar(
-                            child: IconButton(
-                              icon: Icon(Icons.person),
-                              onPressed: () {
-                                chatViewModel.getProfile(
-                                    message['userId'], context);
-                              },
+                          IconButton(
+                            icon: SvgPicture.asset(
+                              'assets/icons/chat_avatar.svg',
                             ),
+                            onPressed: () {
+                              chatViewModel.getProfile(
+                                  message['userId'], context);
+                            },
                           ),
-                        const SizedBox(width: 8),
+                        SizedBox(width: 8.w),
                         Column(
                           children: [
-                            Container(
-                              constraints: const BoxConstraints(maxWidth: 250),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 8.0, horizontal: 16.0),
-                              decoration: BoxDecoration(
-                                color: ColorSystem.white,
-                                borderRadius: BorderRadius.circular(12.0),
+                            if (!isMyMessage)
+                              Container(
+                                constraints: BoxConstraints(maxWidth: 250.w),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 10.h, horizontal: 12.w),
+                                decoration: BoxDecoration(
+                                  color: ColorSystem.white,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(16.r),
+                                    topRight: Radius.circular(16.r),
+                                    bottomRight: Radius.circular(16.r),
+                                    bottomLeft: Radius.circular(4.r),
+                                  ),
+                                ),
+                                child: Text(message['content'] ?? ''),
                               ),
-                              child: Text(message['content'] ?? ''),
-                            ),
-                            const SizedBox(height: 5),
+                            if (isMyMessage)
+                              Container(
+                                constraints: BoxConstraints(maxWidth: 250.w),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 10.h, horizontal: 12.w),
+                                decoration: BoxDecoration(
+                                  color: ColorSystem.white,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(16.r),
+                                    topRight: Radius.circular(16.r),
+                                    bottomRight: Radius.circular(4.r),
+                                    bottomLeft: Radius.circular(16.r),
+                                  ),
+                                ),
+                                child: Text(message['content'] ?? ''),
+                              ),
+                            SizedBox(height: 8.h),
                             Text(
                               formattedTime,
-                              style: const TextStyle(
-                                  fontSize: 10, color: Colors.black54),
+                              style: FontSystem.KR12R
+                                  .copyWith(color: ColorSystem.grey1),
                             ),
                           ],
                         ),
-                        if (isMyMessage) const SizedBox(width: 8),
+                        if (isMyMessage) SizedBox(width: 8.w),
                         if (isMyMessage)
-                          CircleAvatar(
-                            child: IconButton(
-                              icon: Icon(Icons.person),
-                              onPressed: () {
-                                chatViewModel.getProfile(
-                                    message['userId'], context);
-                              },
+                          IconButton(
+                            icon: SvgPicture.asset(
+                              'assets/icons/chat_avatar.svg',
                             ),
+                            onPressed: () {
+                              chatViewModel.getProfile(
+                                  message['userId'], context);
+                            },
                           ),
                       ],
                     ),
                   )
                 : notifyMessage
                     ? Container(
-                        padding: EdgeInsets.only(top: 5, bottom: 5),
+                        padding: EdgeInsets.only(top: 5.h, bottom: 5.h),
                         child: Center(child: Text(message['content'] ?? '')),
                       )
                     : SizedBox(
                         width: 0,
                       ),
             index == messages.length - 1 && message['userId'] == loginInfo.id
-                ? Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const CircleAvatar(
-                          child: Icon(Icons.person),
+                ? Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 20.w),
+                        child: SvgPicture.asset(
+                          'assets/icons/chat_avatar.svg',
                         ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          '답변 작성중',
-                          style: FontSystem.KR16B
-                              .copyWith(color: ColorSystem.purple),
-                        ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(width: 20.w),
+                      Text(
+                        '답변 작성중',
+                        style: FontSystem.KR16B
+                            .copyWith(color: ColorSystem.purple),
+                      ),
+                      SizedBox(width: 6.w),
+                      LoadingAnimationWidget.waveDots(
+                        color: ColorSystem.purple,
+                        size: 15.sp,
+                      ),
+                    ],
                   )
+                  
                 : SizedBox(
-                    width: 0,
+                    width: 0.w,
                   ),
           ],
         );
@@ -295,8 +322,8 @@ class ParticipantsList extends StatelessWidget {
             Container(
               child: chatMessage
                   ? Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 4.0, horizontal: 8.0),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 4.0, horizontal: 10.0),
                       child: Row(
                         mainAxisAlignment: isMyMessage
                             ? MainAxisAlignment.end

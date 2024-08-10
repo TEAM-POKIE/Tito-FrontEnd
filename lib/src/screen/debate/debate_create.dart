@@ -7,6 +7,7 @@ import 'package:tito_app/core/provider/debate_create_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+
 class DebateCreate extends ConsumerStatefulWidget {
   const DebateCreate({super.key});
 
@@ -37,8 +38,8 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
   @override
   Widget build(BuildContext context) {
     final viewModel = ref.read(debateCreateProvider.notifier);
-
     double _progress = (_currentPage + 1) / _totalPages;
+    // 현재 페이지를 기준으로 진행 상황을 계산하는 코드
 
     final List<String> labels = ['연애', '정치', '연예', '자유', '스포츠'];
 
@@ -205,7 +206,7 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
                       ),
                       TextButton(
                         onPressed: () {
-                          context.go('/ai_create');
+                          context.push('/ai_create');
                         },
                         child: Text(
                           'AI 자동 주제 생성 하기',

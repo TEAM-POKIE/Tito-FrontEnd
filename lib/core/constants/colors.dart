@@ -17,4 +17,6 @@ class ColorSystem {
   static const Color grey = Color(0XFFA5A4AE);
   static const Color blue = Color.fromARGB(128, 97, 213, 238);
   static const Color red = Color(0XFFFF3B30);
+  static const Color voteBlue = Color(0xFF5D6CF7);
+  static const Color voteRed = Color(0xFFF75D5D);
 }

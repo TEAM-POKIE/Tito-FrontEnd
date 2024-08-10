@@ -113,18 +113,25 @@ class _AiSelectState extends State<AiSelect> {
                               ),
                               borderRadius: BorderRadius.circular(10.r),
                             ),
-                            height: isExpanded ? 200 : 70,
+                            height: isExpanded ? 250 : null,
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(top: 10.h),
-                                  child: Text('Question $index',
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 20.h, horizontal: 10.w),
+                                  child: Expanded(
+                                    child: Text(
+                                      '긴 제목으로 테스트를 해보기 위한 주제선정중이다 $index',
                                       style: isExpanded
                                           ? FontSystem.KR20SB
-                                          : FontSystem.KR20M),
+                                          : FontSystem.KR20M,
+                                      softWrap: true, // 자동 줄바꿈 설정
+                                      overflow: TextOverflow.visible,
+                                    ),
+                                  ),
                                 ),
                                 if (isExpanded)
                                   Expanded(

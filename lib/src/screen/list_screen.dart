@@ -134,7 +134,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                 ? ColorSystem.white
                                 : ColorSystem.grey1,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.r),
+                              borderRadius: BorderRadius.circular(16.r),
                               side: BorderSide(
                                 color: categorySelectedIndex == index
                                     ? ColorSystem.black // 선택된 경우 테두리 색상
@@ -149,9 +149,9 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                               Text(
                                 labels[index],
                                 style: categorySelectedIndex == index
-                                    ? FontSystem.KR14SB
+                                    ? FontSystem.KR16SB
                                         .copyWith(color: ColorSystem.white)
-                                    : FontSystem.KR14M.copyWith(
+                                    : FontSystem.KR16M.copyWith(
                                         color: ColorSystem.grey1,
                                       ),
                               ),
@@ -186,9 +186,9 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                           child: Text(
                             statuses[index],
                             style: textSelectedIndex == index
-                                ? FontSystem.KR14SB
+                                ? FontSystem.KR16SB
                                     .copyWith(color: ColorSystem.black)
-                                : FontSystem.KR14M.copyWith(
+                                : FontSystem.KR16M.copyWith(
                                     color: ColorSystem.grey1,
                                   ),
                           ),
@@ -197,7 +197,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 3.h),
                             child: Text('|',
-                                style: FontSystem.KR14M
+                                style: FontSystem.KR16M
                                     .copyWith(color: ColorSystem.grey)),
                           ),
                       ],
@@ -243,7 +243,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
               onRefresh: _onRefresh,
               onLoading: _onLoading,
               child: Padding(
-                padding: EdgeInsets.only(right: 8.0.w),
+                padding: EdgeInsets.only(right: 0.0.w),
                 child: Scrollbar(
                   thumbVisibility: true,
                   thickness: 8.0,
@@ -271,51 +271,61 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                             onTap: () {
                               _enterChat(debate.id);
                             },
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 8.h),
-                                // 여기에 토론 완료 가은 거 추가로 lightGrey 색깔 만들어서 넣어야 하는 코드 위치
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 6.h, vertical: 4.w),
-                                  decoration: BoxDecoration(
-                                    color: debate.debateStatus == '실시간'
-                                        ? ColorSystem.lightPurple
-                                        : ColorSystem.lightPurple,
-                                    borderRadius: BorderRadius.circular(10.r),
+                            title: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 0.h, vertical: 2.h),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 8.h),
+                                  // 여기에 토론 완료 가은 거 추가로 lightGrey 색깔 만들어서 넣어야 하는 코드 위치
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 6.w, vertical: 2.h),
+                                    decoration: BoxDecoration(
+                                      color: debate.debateStatus == '실시간'
+                                          ? ColorSystem.lightPurple
+                                          : ColorSystem.lightPurple,
+                                      borderRadius: BorderRadius.circular(10.r),
+                                    ),
+                                    child: Text(debate.debateStatus ?? '상태 없음',
+                                        style: FontSystem.KR14SB.copyWith(
+                                          color: debate.debateStatus == '실시간'
+                                              ? ColorSystem.purple
+                                              : ColorSystem.purple,
+                                        )),
+                                        
                                   ),
-                                  child: Text(debate.debateStatus ?? '상태 없음',
-                                      style: FontSystem.KR16SB.copyWith(
-                                        color: debate.debateStatus == '실시간'
-                                            ? ColorSystem.purple
-                                            : ColorSystem.purple,
-                                      )),
-                                ),
-                                SizedBox(height: 5.h),
-                                Text(
-                                  debate.debateTitle ?? 'No title',
-                                  style: FontSystem.KR16M,
-                                  maxLines: 1, // 텍스트를 한 줄로 제한
-                                  overflow:
-                                      TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
-                                ),
-                                SizedBox(height: 4.h),
-                                Text(
-                                  '제한 시간: ${debate.debatedTimeLimit}분',
-                                  style: FontSystem.KR14M
-                                      .copyWith(color: ColorSystem.purple),
-                                  maxLines: 1, // 텍스트를 한 줄로 제한
-                                  overflow:
-                                      TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
-                                ),
-                              ],
+                                  SizedBox(height: 10.h),
+                                  Text(
+                                    debate.debateTitle ?? 'No title',
+                                    style: FontSystem.KR18M.copyWith(height: 1),
+                                    maxLines: 1, // 텍스트를 한 줄로 제한 
+                                    overflow:
+                                        TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  Text(
+                                    '제한 시간: ${debate.debatedTimeLimit}분',
+                                    style: FontSystem.KR16M
+                                        .copyWith(color: ColorSystem.purple),
+                                    maxLines: 1, // 텍스트를 한 줄로 제한
+                                    overflow:
+                                        TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
+                                  ),
+                                ],
+                              ),
                             ),
-                            trailing: SvgPicture.asset(
-                              'assets/icons/list_real_null.svg',
-                              // wi10th: 100.w,
-                              // height: 80.h,
-                              fit: BoxFit.contain,
+                            trailing: Container(
+                              width: 100.w,
+                              height: 100.h,
+                              child: Padding(
+                                padding: EdgeInsets.only(bottom: 20.w),
+                                child: SvgPicture.asset(
+                                  'assets/icons/list_real_null.svg',
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
                             ),
                           ),
                         ),

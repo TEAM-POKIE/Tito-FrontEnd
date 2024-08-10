@@ -26,16 +26,15 @@ class VotingBar extends HookConsumerWidget {
     }, [bluePercent]);
 
     return LinearPercentIndicator(
-      lineHeight: 5.0,
+      lineHeight: 6.0,
       animation: true,
       padding: EdgeInsets.zero,
       animationDuration: 500,
       animateFromLastPercent: true, // 마지막 퍼센트에서 애니메이션 시작
       percent: bluePercent,
       linearStrokeCap: LinearStrokeCap.roundAll,
-      progressColor: Colors.blue,
-      backgroundColor: Colors.red,
-      width: MediaQuery.sizeOf(context).width,
+      progressColor: ColorSystem.voteBlue,
+      backgroundColor: ColorSystem.voteRed,
 
       // Row(
       //   children: [

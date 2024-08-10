@@ -51,11 +51,8 @@ class DebatePopup extends ConsumerWidget {
                               width: 30,
                               height: 30,
                             ),
-                          Text(
-                            popupState.titleLabel ?? '',
-                            style: FontSystem.KR14M
-                                .copyWith(color: ColorSystem.black),
-                          ),
+                          Text(popupState.titleLabel ?? '',
+                              style: FontSystem.KR14SB),
                         ],
                       )
                     : popupState.imgSrc != null
@@ -75,7 +72,7 @@ class DebatePopup extends ConsumerWidget {
             const SizedBox(height: 10),
             Text(
               popupState.title ?? '',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             Container(
@@ -84,6 +81,7 @@ class DebatePopup extends ConsumerWidget {
               decoration: BoxDecoration(
                 color: ColorSystem.ligthGrey,
                 borderRadius: BorderRadius.circular(10),
+                //border
               ),
               child: Text(
                 popupState.content ?? '',

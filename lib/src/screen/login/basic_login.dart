@@ -210,7 +210,7 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
                       onPressed: _goSignUp,
                       child: Text(
                         '회원가입',
-                        style: FontSystem.KR14M
+                        style: FontSystem.KR16SB
                             .copyWith(color: ColorSystem.purple),
                       ),
                     ),
