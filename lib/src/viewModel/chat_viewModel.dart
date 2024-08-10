@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
+import 'package:tito_app/core/provider/chat_view_provider.dart';
 
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
@@ -141,15 +142,32 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     // Reset the timer to 8 minutes
   }
 
-  void getProfile(id, context) async {
-    final userState = ref.read(userProfileProvider);
+  void getProfile(
+    id,
+    context,
+  ) async {
     final userInfo = await ApiService(DioClient.dio).getUserProfile(id);
     final popupViewModel = ref.read(popupProvider.notifier);
     final userProfileViewModel = ref.read(userProfileProvider.notifier);
-    print(userInfo.nickname);
+
     userProfileViewModel.setUserInfo(userInfo);
-    print(userState!.nickname);
+
     popupViewModel.showTitlePopup(context);
+  }
+
+  void getInfo(
+    id,
+    context,
+  ) async {
+    final userInfo = await ApiService(DioClient.dio).getUserProfile(id);
+    final userProfileViewModel = ref.read(userProfileProvider.notifier);
+
+    userProfileViewModel.setUserInfo(userInfo);
+    if (id == state!.debateOwnerId) {
+      state!.debateOwnerNick = userInfo.nickname;
+    } else if (id == state!.debateJoinerId) {
+      state!.debateJoinerNick = userInfo.nickname;
+    }
   }
 
   void timingSend() {

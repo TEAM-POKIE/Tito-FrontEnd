@@ -70,12 +70,17 @@ class _ChatState extends ConsumerState<Chat> {
   Widget build(BuildContext context) {
     final debateInfo = ref.watch(chatInfoProvider);
     final chatState = ref.read(chatInfoProvider);
+    final chatViewModel = ref.read(chatInfoProvider.notifier);
 
     if (_messages.isNotEmpty) {
       if (_messages.length > 2) {
         chatState!.debateOwnerId = _messages[2]['userId'];
+
+        chatViewModel.getInfo(chatState.debateOwnerId, context);
+
         if (_messages.length > 3) {
           chatState.debateJoinerId = _messages[3]['userId'];
+          // chatViewModel.getProfile(_messages[3]['userId'], context);
         }
       }
       chatState!.debateOwnerTurnCount = _messages.last['ownerTurnCount'];

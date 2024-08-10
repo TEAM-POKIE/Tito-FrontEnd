@@ -59,7 +59,7 @@ class PopupViewmodel extends StateNotifier<PopupState> {
         title: '토론의 승자를 투표해주세요!',
         buttonStyle: 1,
         buttonContentLeft: "투표 하기",
-        imgSrc: 'assets/icons/popUpBell.svg',
+        imgSrc: 'assets/icons/debatePopUpAlarm.svg',
       );
     }
 
