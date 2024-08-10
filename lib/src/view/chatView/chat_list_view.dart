@@ -323,7 +323,7 @@ class ParticipantsList extends StatelessWidget {
               child: chatMessage
                   ? Padding(
                       padding:
-                          EdgeInsets.symmetric(vertical: 4.0, horizontal: 10.0),
+                          EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
                       child: Row(
                         mainAxisAlignment: isMyMessage
                             ? MainAxisAlignment.end

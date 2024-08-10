@@ -40,7 +40,7 @@ class DebatePopup extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: 35,
+                  width: 45.w,
                 ),
                 popupState.buttonStyle == 2
                     ? Row(
@@ -48,8 +48,8 @@ class DebatePopup extends ConsumerWidget {
                           if (popupState.imgSrc != null)
                             SvgPicture.asset(
                               popupState.imgSrc!,
-                              width: 30,
-                              height: 30,
+                              width: 40.w,
+                              height: 40.h,
                             ),
                           Text(popupState.titleLabel ?? '',
                               style: FontSystem.KR14SB),
@@ -58,8 +58,8 @@ class DebatePopup extends ConsumerWidget {
                     : popupState.imgSrc != null
                         ? SvgPicture.asset(
                             popupState.imgSrc!,
-                            width: 30,
-                            height: 30,
+                            width: 40.w,
+                            height: 40.h,
                           )
                         : Container(),
                 IconButton(
@@ -72,16 +72,19 @@ class DebatePopup extends ConsumerWidget {
             const SizedBox(height: 10),
             Text(
               popupState.title ?? '',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: FontSystem.KR18SB
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 20.h),
             Container(
-              width: MediaQuery.of(context).size.width * 0.7,
-              padding: const EdgeInsets.symmetric(vertical: 20),
+              width: 248.w,
+              height: 100.h,
+              padding: EdgeInsets.symmetric(vertical: 20.h),
               decoration: BoxDecoration(
                 color: ColorSystem.ligthGrey,
-                borderRadius: BorderRadius.circular(10),
-                //border
+                borderRadius: BorderRadius.circular(12.r),
+                border: Border.all(
+                  color: ColorSystem.grey3
+                )
               ),
               child: Text(
                 popupState.content ?? '',
@@ -106,33 +109,38 @@ class DebatePopup extends ConsumerWidget {
     final popupViewModel = ref.watch(popupProvider.notifier);
     final debateState = ref.watch(debateCreateProvider);
 
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        fixedSize: Size(MediaQuery.of(context).size.width * 0.7, 45),
-        backgroundColor: ColorSystem.purple,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25.0),
+    return Container(
+      width: 200.w,
+      height: 40.h,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          
+          backgroundColor: ColorSystem.purple,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.r),
+          ),
         ),
-      ),
-      onPressed: () async {
-        if (popupState.title == '토론에 참여 하시겠어요?') {
-          ref.read(popupProvider.notifier).state = popupState.copyWith(
-            buttonStyle: 0,
-            title: '토론이 시작 됐어요! 🎵',
-            content: '서로 존중하는 토론을 부탁드려요!',
-          );
-
-          context.pop();
-          await Future.delayed(
-              Duration(milliseconds: 100)); // ensure popup has closed
-          // popupViewModel.showDebatePopup(context);
-        } else if (popupState.title == '토론 시작 시 알림을 보내드릴게요!') {
-          context.pop();
-        }
-      },
-      child: Text(
-        popupState.buttonContentLeft!,
-        style: FontSystem.KR14M.copyWith(color: ColorSystem.white),
+        onPressed: () async {
+          if (popupState.title == '토론에 참여 하시겠어요?') {
+            ref.read(popupProvider.notifier).state = popupState.copyWith(
+              buttonStyle: 0,
+              title: '토론이 시작 됐어요! 🎵',
+              imgSrc: 'assets/icons/popup_face.svg',
+              content: '서로 존중하는 토론을 부탁드려요!',
+            );
+      
+            context.pop();
+            await Future.delayed(
+                Duration(milliseconds: 100)); // ensure popup has closed
+            // popupViewModel.showDebatePopup(context);
+          } else if (popupState.title == '토론 시작 시 알림을 보내드릴게요!') {
+            context.pop();
+          }
+        },
+        child: Text(
+          popupState.buttonContentLeft!,
+          style: FontSystem.KR14SB.copyWith(color: ColorSystem.white),
+        ),
       ),
     );
   }

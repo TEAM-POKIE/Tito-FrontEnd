@@ -161,6 +161,11 @@ flutter:
     - assets/icons/final_send_arrow.svg
     - assets/icons/new_timingbell.svg
     - assets/icons/chat_avatar.svg
+    - assets/icons/new_appbar_grey.svg
+    - assets/icons/new_appbar_purple.svg
+    - assets/icons/bell_alarm.svg
+    - assets/icons/bell_big_alarm.svg
+    - assets/icons/chat_appbar_bell.svg
     
 
 
