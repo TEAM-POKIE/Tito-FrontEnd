@@ -47,14 +47,14 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
       return "$twoDigitMinutes:$twoDigitSeconds";
     }
 
-    String remainingTime = formatDuration(timerState.remainingTime);
+    String remainingTime = formatDuration(chatState!.remainingTime);
 
-    if (chatState!.debateJoinerId == loginInfo.id ||
+    if (chatState.debateJoinerId == loginInfo.id ||
         chatState.debateOwnerId == loginInfo.id) {
       return DetailState(
           upImage: 'assets/images/detailChatIcon.svg',
           upTitle: '상대 반론자를 찾는 중이예요 !',
-          downTitle: '⏳ ${remainingTime} 토론 시작 전');
+          downTitle: '⏳ ${remainingTime} 남았어요!');
     } else {
       switch (chatState.debateJoinerTurnCount) {
         case 0:

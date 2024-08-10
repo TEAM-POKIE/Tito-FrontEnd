@@ -20,6 +20,7 @@ class DebateInfo {
   int debateJoinerTurnCount;
   bool canTiming;
   double bluePercent;
+  Duration remainingTime;
 
   DebateInfo({
     required this.id,
@@ -43,6 +44,7 @@ class DebateInfo {
     required this.debateJoinerTurnCount,
     required this.canTiming,
     required this.bluePercent,
+    required this.remainingTime,
   });
 
   factory DebateInfo.fromJson(Map<String, dynamic> json) {
@@ -69,6 +71,7 @@ class DebateInfo {
       debateJoinerTurnCount: json['data']['debateJoinerTurnCount'] ?? 0,
       canTiming: true,
       bluePercent: 0.5,
+      remainingTime: Duration(minutes: 8),
     );
   }
 

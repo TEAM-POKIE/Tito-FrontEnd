@@ -11,6 +11,7 @@ import 'package:tito_app/core/provider/chat_view_provider.dart';
 
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
+import 'package:tito_app/core/provider/timer_provider.dart';
 import 'package:tito_app/core/provider/userProfile_provider.dart';
 
 import 'package:tito_app/src/data/models/debate_info.dart';
@@ -198,6 +199,10 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     });
 
     _channel.sink.add(jsonMessage);
+  }
+
+  void updateRemainTimer(Duration newRemainTimer) {
+    state!.remainingTime = newRemainTimer;
   }
 
   void timingOKResponse() {
