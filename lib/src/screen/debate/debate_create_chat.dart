@@ -48,9 +48,7 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ConstrainedBox(
-              
                 constraints: BoxConstraints(
-                  
                   maxWidth: 200.0,
                 ),
                 child: Text(
@@ -219,7 +217,7 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottom> {
     popupState.buttonStyle = 2;
     popupState.buttonContentLeft = '취소';
     popupState.buttonContentRight = '확인';
-    popupState.imgSrc = 'assets/images/chatIconRight.svg';
+    popupState.imgSrc = 'assets/icons/chatIconRight.svg';
     popupState.content = '토론을 시작하시겠어요?';
     popupState.title = '토론장을 개설하시겠어요?';
     debateState.firstChatContent = _controller.text;

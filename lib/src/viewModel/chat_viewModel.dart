@@ -2,13 +2,16 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
+import 'package:tito_app/core/provider/chat_view_provider.dart';
 
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
+import 'package:tito_app/core/provider/timer_provider.dart';
 import 'package:tito_app/core/provider/userProfile_provider.dart';
 
 import 'package:tito_app/src/data/models/debate_info.dart';
@@ -104,6 +107,24 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     // Reset the timer to 8 minutes
   }
 
+  void sendVote(String selectedDebate) {
+    final loginInfo = ref.read(loginInfoProvider);
+
+    final jsonMessage = json.encode({
+      "command": "VOTE",
+      "userId": loginInfo?.id ?? '',
+      "debateId": state?.id ?? 0,
+      "participantIsOwner":
+          selectedDebate == state!.debateOwnerNick ? true : false,
+    });
+    print(jsonMessage);
+
+    _liveChannel.sink.add(jsonMessage);
+    controller.clear();
+    focusNode.requestFocus();
+    // Reset the timer to 8 minutes
+  }
+
   void sendChatMessage() {
     final loginInfo = ref.read(loginInfoProvider);
 
@@ -141,15 +162,32 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     // Reset the timer to 8 minutes
   }
 
-  void getProfile(id, context) async {
-    final userState = ref.read(userProfileProvider);
+  void getProfile(
+    id,
+    context,
+  ) async {
     final userInfo = await ApiService(DioClient.dio).getUserProfile(id);
     final popupViewModel = ref.read(popupProvider.notifier);
     final userProfileViewModel = ref.read(userProfileProvider.notifier);
-    print(userInfo.nickname);
+
     userProfileViewModel.setUserInfo(userInfo);
-    print(userState!.nickname);
+
     popupViewModel.showTitlePopup(context);
+  }
+
+  void getInfo(
+    id,
+    context,
+  ) async {
+    final userInfo = await ApiService(DioClient.dio).getUserProfile(id);
+    final userProfileViewModel = ref.read(userProfileProvider.notifier);
+
+    userProfileViewModel.setUserInfo(userInfo);
+    if (id == state!.debateOwnerId) {
+      state!.debateOwnerNick = userInfo.nickname;
+    } else if (id == state!.debateJoinerId) {
+      state!.debateJoinerNick = userInfo.nickname;
+    }
   }
 
   void timingSend() {
@@ -161,6 +199,10 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     });
 
     _channel.sink.add(jsonMessage);
+  }
+
+  void updateRemainTimer(Duration newRemainTimer) {
+    state!.remainingTime = newRemainTimer;
   }
 
   void timingOKResponse() {

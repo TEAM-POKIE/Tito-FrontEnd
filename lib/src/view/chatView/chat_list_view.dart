@@ -7,6 +7,7 @@ import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
+import 'package:tito_app/core/provider/timer_provider.dart';
 import 'package:tito_app/core/provider/websocket_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -56,7 +57,12 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
   void _handlePopupIfNeeded(Map<String, dynamic> message, LoginInfo loginInfo) {
     final chatState = ref.read(chatInfoProvider);
     final popupViewModel = ref.read(popupProvider.notifier);
-
+    final timerViewModel = ref.read(timerProvider.notifier);
+    if (message['command'] == 'CHAT') {
+      final createdAt = DateTime.parse(message['createdAt']);
+      timerViewModel.resetTimer(
+          startTime: createdAt); // 타이머를 메시지의 createdAt 시간을 기준으로 시작
+    }
     if (message['command'] == 'TIMING_BELL_REQ' &&
         loginInfo.id != message['userId'] &&
         message['content'] == 'timing bell request') {
@@ -64,11 +70,16 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
           chatState.debateOwnerId == loginInfo.id) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
-            popupViewModel.showTimingReceive(context);
+            if (chatState.canTiming) {
+              popupViewModel.showTimingReceive(context);
+            }
+
             chatState.canTiming = false;
           }
         });
       }
+    } else if (message['command'] == 'TIMING_BELL_REQ') {
+      chatState!.canTiming = false;
     } else if (message['command'] == 'TIMING_BELL_RES') {
       chatState!.canTiming = false;
     } else if (message['content'] == "토론이 종료 되었습니다.") {
@@ -281,7 +292,6 @@ class JoinerChatList extends StatelessWidget {
                       ),
                     ],
                   )
-                  
                 : SizedBox(
                     width: 0.w,
                   ),

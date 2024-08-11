@@ -17,14 +17,20 @@ import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class DebatePopup extends ConsumerWidget {
-  const DebatePopup({
-    super.key,
-  });
+String selectedDebate = '';
+
+class DebatePopup extends ConsumerStatefulWidget {
+  const DebatePopup({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _DebatePopupState createState() => _DebatePopupState();
+}
+
+class _DebatePopupState extends ConsumerState<DebatePopup> {
+  @override
+  Widget build(BuildContext context) {
     final popupState = ref.watch(popupProvider);
+    final chatState = ref.read(chatInfoProvider);
 
     return Dialog(
       backgroundColor: ColorSystem.white,
@@ -36,6 +42,7 @@ class DebatePopup extends ConsumerWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // 상단 제목 및 닫기 버튼
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -70,29 +77,121 @@ class DebatePopup extends ConsumerWidget {
               ],
             ),
             const SizedBox(height: 10),
-            Text(
-              popupState.title ?? '',
-              style: FontSystem.KR18SB
-            ),
-            SizedBox(height: 20.h),
-            Container(
-              width: 248.w,
-              height: 100.h,
-              padding: EdgeInsets.symmetric(vertical: 20.h),
-              decoration: BoxDecoration(
-                color: ColorSystem.ligthGrey,
-                borderRadius: BorderRadius.circular(12.r),
-                border: Border.all(
-                  color: ColorSystem.grey3
-                )
-              ),
-              child: Text(
-                popupState.content ?? '',
-                textAlign: TextAlign.center,
-                style: FontSystem.KR14R,
-              ),
-            ),
-            const SizedBox(height: 25),
+            Text(popupState.title ?? '', style: FontSystem.KR18SB),
+            const SizedBox(height: 10),
+            popupState.title == '토론의 승자를 투표해주세요!'
+                ? Container(
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedDebate = chatState.debateOwnerNick;
+                                });
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 5, vertical: 10),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: selectedDebate ==
+                                              chatState!.debateOwnerNick
+                                          ? ColorSystem.purple
+                                          : ColorSystem.grey3,
+                                      width: 2),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Column(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 30,
+                                      backgroundImage: NetworkImage(
+                                        'https://dev-tito.owsla.duckdns.org/images/20240808/afbf7130-312d-46e7-972b-69dcb1b0b5e8.png',
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      chatState.debateOwnerNick,
+                                      style: FontSystem.KR14M,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 20),
+                              decoration: BoxDecoration(
+                                color: ColorSystem.black,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                'VS',
+                                style: FontSystem.KR16SB
+                                    .copyWith(color: ColorSystem.white),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedDebate = chatState.debateJoinerNick;
+                                });
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 5, vertical: 10),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: selectedDebate ==
+                                              chatState.debateJoinerNick
+                                          ? ColorSystem.purple
+                                          : ColorSystem.grey3,
+                                      width: 2),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Column(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 30,
+                                      backgroundImage: NetworkImage(
+                                        'https://dev-tito.owsla.duckdns.org/images/20240808/afbf7130-312d-46e7-972b-69dcb1b0b5e8.png',
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      chatState.debateJoinerNick,
+                                      style: FontSystem.KR14M,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                      ],
+                    ),
+                  )
+                : Container(
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    decoration: BoxDecoration(
+                      color: ColorSystem.ligthGrey,
+                      borderRadius: BorderRadius.circular(10),
+                      //border
+                    ),
+                    child: Text(
+                      popupState.content ?? '',
+                      textAlign: TextAlign.center,
+                      style: FontSystem.KR14R,
+                    ),
+                  ),
             if (popupState.buttonStyle == 2)
               _twoButtons(context, ref)
             else if (popupState.buttonStyle == 1)
@@ -108,39 +207,38 @@ class DebatePopup extends ConsumerWidget {
     final popupState = ref.watch(popupProvider);
     final popupViewModel = ref.watch(popupProvider.notifier);
     final debateState = ref.watch(debateCreateProvider);
+    final chatViewModel = ref.watch(chatInfoProvider.notifier);
 
-    return Container(
-      width: 200.w,
-      height: 40.h,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          
-          backgroundColor: ColorSystem.purple,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
-          ),
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        fixedSize: Size(MediaQuery.of(context).size.width * 0.7, 45),
+        backgroundColor: ColorSystem.purple,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25.0),
         ),
-        onPressed: () async {
-          if (popupState.title == '토론에 참여 하시겠어요?') {
-            ref.read(popupProvider.notifier).state = popupState.copyWith(
-              buttonStyle: 0,
-              title: '토론이 시작 됐어요! 🎵',
-              imgSrc: 'assets/icons/popup_face.svg',
-              content: '서로 존중하는 토론을 부탁드려요!',
-            );
-      
-            context.pop();
-            await Future.delayed(
-                Duration(milliseconds: 100)); // ensure popup has closed
-            // popupViewModel.showDebatePopup(context);
-          } else if (popupState.title == '토론 시작 시 알림을 보내드릴게요!') {
-            context.pop();
-          }
-        },
-        child: Text(
-          popupState.buttonContentLeft!,
-          style: FontSystem.KR14SB.copyWith(color: ColorSystem.white),
-        ),
+      ),
+      onPressed: () async {
+        if (popupState.title == '토론에 참여 하시겠어요?') {
+          ref.read(popupProvider.notifier).state = popupState.copyWith(
+            buttonStyle: 0,
+            title: '토론이 시작 됐어요! 🎵',
+            content: '서로 존중하는 토론을 부탁드려요!',
+          );
+
+          context.pop();
+          await Future.delayed(
+              Duration(milliseconds: 100)); // ensure popup has closed
+          // popupViewModel.showDebatePopup(context);
+        } else if (popupState.title == '토론의 승자를 투표해주세요!') {
+          print(selectedDebate);
+          chatViewModel.sendVote(selectedDebate);
+        } else if (popupState.title == '토론 시작 시 알림을 보내드릴게요!') {
+          context.pop();
+        }
+      },
+      child: Text(
+        popupState.buttonContentLeft!,
+        style: FontSystem.KR14M.copyWith(color: ColorSystem.white),
       ),
     );
   }
@@ -156,7 +254,7 @@ class DebatePopup extends ConsumerWidget {
       try {
         if (debateState.debateImageUrl == '') {
           final debateData = debateState.toJson();
-          print(debateData);
+
           var formData = FormData.fromMap({
             'debate': MultipartFile.fromString(
               jsonEncode(debateData),
@@ -169,6 +267,7 @@ class DebatePopup extends ConsumerWidget {
           context.push('/chat/${response.id}');
         } else {
           final debateData = debateState.toJson();
+
           File debateImage = File(debateState.debateImageUrl);
           var formData = FormData.fromMap({
             'debate': MultipartFile.fromString(
@@ -253,7 +352,7 @@ class DebatePopup extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(vertical: 10),
             ),
             onPressed: () {
-              if (popupState.title == '토론장을 개설하겠습니까?') {
+              if (popupState.title == '토론장을 개설하시겠어요?') {
                 startDebate();
               } else if (popupState.title == '토론을 삭제 하시겠어요?') {
                 deleteDebate();
