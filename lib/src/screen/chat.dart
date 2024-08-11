@@ -80,7 +80,7 @@ class _ChatState extends ConsumerState<Chat> {
 
         if (_messages.length > 3) {
           chatState.debateJoinerId = _messages[3]['userId'];
-          // chatViewModel.getProfile(_messages[3]['userId'], context);
+          chatViewModel.getInfo(_messages[3]['userId'], context);
         }
       }
       chatState!.debateOwnerTurnCount = _messages.last['ownerTurnCount'];

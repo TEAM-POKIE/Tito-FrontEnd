@@ -137,8 +137,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
       "userId": loginInfo?.id ?? '',
       "debateId": state?.id ?? 0,
       "userNickName": loginInfo!.nickname,
-      "userImgUrl":
-          'https://dev-tito.owsla.duckdns.org/images/20240808/afbf7130-312d-46e7-972b-69dcb1b0b5e8.png',
+      "userImgUrl": loginInfo.profilePicture,
       "content": message,
     });
     print(jsonMessage);
@@ -183,10 +182,16 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     final userProfileViewModel = ref.read(userProfileProvider.notifier);
 
     userProfileViewModel.setUserInfo(userInfo);
+
     if (id == state!.debateOwnerId) {
       state!.debateOwnerNick = userInfo.nickname;
+      state!.debateOwnerPicture = userInfo.profilePicture;
+
+      print(state!.debateOwnerPicture);
     } else if (id == state!.debateJoinerId) {
       state!.debateJoinerNick = userInfo.nickname;
+      state!.debateJoinerPicture = userInfo.profilePicture;
+      print(state!.debateJoinerPicture);
     }
   }
 

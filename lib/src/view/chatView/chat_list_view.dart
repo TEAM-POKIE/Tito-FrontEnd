@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart';
 import 'package:tito_app/core/constants/style.dart';
@@ -11,6 +12,7 @@ import 'package:tito_app/core/provider/timer_provider.dart';
 import 'package:tito_app/core/provider/websocket_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:tito_app/src/data/models/login_info.dart';
 import 'package:tito_app/src/viewModel/chat_viewModel.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -58,6 +60,7 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
     final chatState = ref.read(chatInfoProvider);
     final popupViewModel = ref.read(popupProvider.notifier);
     final timerViewModel = ref.read(timerProvider.notifier);
+
     if (message['command'] == 'CHAT') {
       final createdAt = DateTime.parse(message['createdAt']);
       timerViewModel.resetTimer(
@@ -133,7 +136,16 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
     if (chatState == null || loginInfo == null) {
       return Center(child: CircularProgressIndicator());
     }
+    if (_messages.length > 2) {
+      chatState.debateOwnerId = _messages[2]['userId'];
 
+      chatViewModel.getInfo(chatState.debateOwnerId, context);
+      print('여기');
+      if (_messages.length > 3) {
+        chatState.debateJoinerId = _messages[3]['userId'];
+        chatViewModel.getInfo(_messages[3]['userId'], context);
+      }
+    }
     return Column(
       children: [
         Expanded(
@@ -142,12 +154,14 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
               ? JoinerChatList(
                   messages: _messages,
                   loginInfo: loginInfo,
+                  chatState: chatState,
                   isTyping: _isTyping,
                   chatViewModel: chatViewModel,
                 )
               : ParticipantsList(
                   messages: _messages,
                   loginInfo: loginInfo,
+                  chatState: chatState,
                   isTyping: _isTyping,
                   chatViewModel: chatViewModel,
                 ),
@@ -161,6 +175,7 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
 class JoinerChatList extends StatelessWidget {
   final List<Map<String, dynamic>> messages;
   final LoginInfo loginInfo;
+  final DebateInfo chatState;
   final ChatViewModel chatViewModel;
   final bool isTyping;
 
@@ -169,6 +184,7 @@ class JoinerChatList extends StatelessWidget {
     required this.loginInfo,
     required this.chatViewModel,
     required this.isTyping,
+    required this.chatState,
   });
 
   @override
@@ -197,8 +213,15 @@ class JoinerChatList extends StatelessWidget {
                       children: [
                         if (!isMyMessage)
                           IconButton(
-                            icon: SvgPicture.asset(
-                              'assets/icons/chat_avatar.svg',
+                            icon: CircleAvatar(
+                              radius: 16.0, // 아이콘 크기
+                              backgroundImage: NetworkImage(
+                                chatState.debateJoinerPicture,
+                              ),
+// 캐시
+                              onBackgroundImageError: (_, __) {
+                                // 이미지 로드 오류 처리
+                              },
                             ),
                             onPressed: () {
                               chatViewModel.getProfile(
@@ -251,8 +274,16 @@ class JoinerChatList extends StatelessWidget {
                         if (isMyMessage) SizedBox(width: 8.w),
                         if (isMyMessage)
                           IconButton(
-                            icon: SvgPicture.asset(
-                              'assets/icons/chat_avatar.svg',
+                            icon: CircleAvatar(
+                              radius: 16.0, // 아이콘 크기
+                              backgroundImage: message['userId'] ==
+                                      chatState.debateOwnerId
+                                  ? NetworkImage(chatState.debateOwnerPicture)
+                                  : NetworkImage(chatState.debateJoinerPicture),
+                              // 기본 이미지로 대체
+                              onBackgroundImageError: (_, __) {
+                                // 이미지 로드 오류 처리
+                              },
                             ),
                             onPressed: () {
                               chatViewModel.getProfile(
@@ -305,6 +336,7 @@ class JoinerChatList extends StatelessWidget {
 class ParticipantsList extends StatelessWidget {
   final List<Map<String, dynamic>> messages;
   final LoginInfo loginInfo;
+  final DebateInfo chatState;
   final ChatViewModel chatViewModel;
   final bool isTyping;
 
@@ -313,6 +345,7 @@ class ParticipantsList extends StatelessWidget {
     required this.loginInfo,
     required this.isTyping,
     required this.chatViewModel,
+    required this.chatState,
   });
 
   @override
@@ -332,22 +365,28 @@ class ParticipantsList extends StatelessWidget {
             Container(
               child: chatMessage
                   ? Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
+                      padding: EdgeInsets.symmetric(
+                          vertical: 20.h, horizontal: 20.w),
                       child: Row(
                         mainAxisAlignment: isMyMessage
                             ? MainAxisAlignment.end
                             : MainAxisAlignment.start,
                         children: [
                           if (!isMyMessage)
-                            CircleAvatar(
-                              child: IconButton(
-                                icon: Icon(Icons.person),
-                                onPressed: () {
-                                  chatViewModel.getProfile(
-                                      message['userId'], context);
+                            IconButton(
+                              icon: CircleAvatar(
+                                radius: 16.0, // 아이콘 크기
+                                backgroundImage:
+                                    NetworkImage(chatState.debateOwnerPicture),
+                                // 기본 이미지로 대체
+                                onBackgroundImageError: (_, __) {
+                                  // 이미지 로드 오류 처리
                                 },
                               ),
+                              onPressed: () {
+                                chatViewModel.getProfile(
+                                    message['userId'], context);
+                              },
                             ),
                           const SizedBox(width: 8),
                           Column(
@@ -373,14 +412,20 @@ class ParticipantsList extends StatelessWidget {
                           ),
                           if (isMyMessage) const SizedBox(width: 8),
                           if (isMyMessage)
-                            CircleAvatar(
-                              child: IconButton(
-                                icon: Icon(Icons.person),
-                                onPressed: () {
-                                  chatViewModel.getProfile(
-                                      message['userId'], context);
+                            IconButton(
+                              icon: CircleAvatar(
+                                radius: 16.0, // 아이콘 크기
+                                backgroundImage:
+                                    NetworkImage(chatState.debateJoinerPicture),
+                                // 기본 이미지로 대체
+                                onBackgroundImageError: (_, __) {
+                                  // 이미지 로드 오류 처리
                                 },
                               ),
+                              onPressed: () {
+                                chatViewModel.getProfile(
+                                    message['userId'], context);
+                              },
                             ),
                         ],
                       ),

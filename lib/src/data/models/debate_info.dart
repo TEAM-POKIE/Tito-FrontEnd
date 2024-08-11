@@ -4,7 +4,9 @@ class DebateInfo {
   final String debateCategory;
   String debateStatus;
   String debateOwnerNick;
+  String debateOwnerPicture;
   String debateJoinerNick;
+  String debateJoinerPicture;
   final String debateMakerOpinion;
   final String debateJoinerOpinion;
   int debatedTimeLimit;
@@ -38,9 +40,11 @@ class DebateInfo {
     required this.updatedAt,
     required this.debateOwnerId,
     required this.debateOwnerNick,
+    required this.debateOwnerPicture,
     required this.debateOwnerTurnCount,
     required this.debateJoinerId,
     required this.debateJoinerNick,
+    required this.debateJoinerPicture,
     required this.debateJoinerTurnCount,
     required this.canTiming,
     required this.bluePercent,
@@ -72,6 +76,8 @@ class DebateInfo {
       canTiming: true,
       bluePercent: 0.5,
       remainingTime: Duration(minutes: 8),
+      debateJoinerPicture: '',
+      debateOwnerPicture: '',
     );
   }
 
