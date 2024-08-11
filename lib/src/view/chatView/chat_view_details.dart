@@ -48,10 +48,18 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
 
     if (chatState.debateJoinerId == loginInfo.id ||
         chatState.debateOwnerId == loginInfo.id) {
-      return DetailState(
-          upImage: 'assets/images/detailChatIcon.svg',
-          upTitle: '상대 반론자를 찾는 중이예요 !',
-          downTitle: '⏳ ${remainingTime} 남았어요!');
+      switch (chatState.debateJoinerTurnCount) {
+        case 0:
+          return DetailState(
+              upImage: 'assets/images/detailChatIcon.svg',
+              upTitle: '상대 반론자를 찾는 중이예요 !',
+              downTitle: '⏳ 8:00 시작 전');
+        default:
+          return DetailState(
+              upImage: 'assets/images/detailChatIcon.svg',
+              upTitle: '상대 반론 타임이에요!',
+              downTitle: '⏳ ${remainingTime} 남았어요!');
+      }
     } else {
       switch (chatState.debateJoinerTurnCount) {
         case 0:
