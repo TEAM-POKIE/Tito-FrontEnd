@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -164,9 +165,12 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CircleAvatar(
-                backgroundImage: AssetImage(
-                    'assets/icons/circle_profile.svg'), // 본인의 이미지 자산으로 대체
-                radius: 35.r,
+                radius: 35.r, // 아이콘 크기
+                backgroundImage: NetworkImage(userState!.profilePicture),
+// 캐시
+                onBackgroundImageError: (_, __) {
+                  // 이미지 로드 오류 처리
+                },
               ),
               SizedBox(width: 15.w),
               Column(

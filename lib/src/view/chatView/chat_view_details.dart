@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/timer_provider.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:tito_app/src/view/chatView/live_comment.dart';
-import 'package:tito_app/src/view/chatView/votingbar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatViewDetails extends ConsumerStatefulWidget {
   final int id;
@@ -32,8 +30,7 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
   @override
   Widget build(BuildContext context) {
     final loginInfo = ref.watch(loginInfoProvider);
-    final timerState = ref.watch(timerProvider);
-    final chatViewModel = ref.watch(chatInfoProvider.notifier);
+
     final chatState = ref.watch(chatInfoProvider);
 
     if (loginInfo == null) {
@@ -65,9 +62,17 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
             downImage: 'assets/images/chatCuteIconPurple.svg',
           );
         default:
-          return SizedBox(
-            width: 0,
-          );
+          if (chatState.debateStatus == 'VOTING') {
+            return ProfileVsWidget(
+                myNick: chatState.debateOwnerNick,
+                myImage: chatState.debateOwnerPicture,
+                opponentNick: chatState.debateJoinerNick,
+                opponentImage: chatState.debateJoinerPicture);
+          } else {
+            return SizedBox(
+              width: 0,
+            );
+          }
       }
     }
   }
@@ -133,9 +138,10 @@ class DetailState extends StatelessWidget {
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: (upImage == 'assets/images/chatCuteIcon.svg')
-                      ? MainAxisAlignment.start
-                      : MainAxisAlignment.center,
+                  mainAxisAlignment:
+                      (upImage == 'assets/images/chatCuteIcon.svg')
+                          ? MainAxisAlignment.start
+                          : MainAxisAlignment.center,
                   children: [
                     downImage != null && downImage!.isNotEmpty
                         ? SvgPicture.asset(downImage!)
@@ -145,7 +151,8 @@ class DetailState extends StatelessWidget {
                       downTitle ?? '',
                       style: downImage != null && downImage!.isNotEmpty
                           ? FontSystem.KR16SB
-                          : FontSystem.KR16SB.copyWith(color: ColorSystem.purple),
+                          : FontSystem.KR16SB
+                              .copyWith(color: ColorSystem.purple),
                     ),
                   ],
                 ),
@@ -160,15 +167,15 @@ class DetailState extends StatelessWidget {
 
 class ProfileVsWidget extends StatelessWidget {
   final String myNick;
-  final String myArgument;
+  final String myImage;
   final String opponentNick;
-  final String opponentArgument;
+  final String opponentImage;
 
   const ProfileVsWidget({
     required this.myNick,
-    required this.myArgument,
+    required this.myImage,
     required this.opponentNick,
-    required this.opponentArgument,
+    required this.opponentImage,
   });
 
   @override
@@ -182,9 +189,10 @@ class ProfileVsWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               CircleAvatar(
-                radius: 30,
-                backgroundImage: AssetImage('assets/images/chatCuteIcon.png'),
+                radius: 30.r,
+                backgroundImage: NetworkImage(opponentImage),
               ),
+              Text(opponentNick),
             ],
           ),
           SizedBox(width: 16),
@@ -198,7 +206,7 @@ class ProfileVsWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  '토론 진행중',
+                  '투표 중',
                   style: FontSystem.KR14B.copyWith(color: ColorSystem.purple),
                 ),
               ),
@@ -223,10 +231,10 @@ class ProfileVsWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               CircleAvatar(
-                radius: 30,
-                backgroundImage: AssetImage(
-                    'assets/images/chatCuteIcon.png'), // 두 번째 프로필 이미지
+                radius: 30.r,
+                backgroundImage: NetworkImage(myImage),
               ),
+              Text(myNick),
             ],
           ),
         ],

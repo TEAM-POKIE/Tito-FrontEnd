@@ -171,7 +171,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
 
     userProfileViewModel.setUserInfo(userInfo);
 
-    popupViewModel.showTitlePopup(context);
+    popupViewModel.showUserPopup(context);
   }
 
   void getInfo(

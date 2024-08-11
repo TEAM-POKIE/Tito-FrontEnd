@@ -77,7 +77,9 @@ class DebateAppbar extends ConsumerWidget {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              popupViewModel.showTitlePopup(context);
+            },
             icon: const Icon(Icons.arrow_drop_down),
             iconSize: 30.sp,
           ),
@@ -85,9 +87,7 @@ class DebateAppbar extends ConsumerWidget {
       ),
       centerTitle: true,
       leading: IconButton(
-        icon: SvgPicture.asset(
-          'assets/icons/back_arrow.svg'
-        ),
+        icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
         onPressed: () {
           context.go('/list');
         },
