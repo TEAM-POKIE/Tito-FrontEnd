@@ -1,57 +1,87 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:tito_app/core/constants/style.dart';
+import 'package:tito_app/core/provider/chat_view_provider.dart';
+import 'package:tito_app/core/provider/live_webSocket_provider.dart';
+import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/voting_provider.dart';
+import 'dart:convert';
 
-class VotingBar extends HookConsumerWidget {
+import 'package:tito_app/core/provider/websocket_provider.dart';
+
+class VotingBar extends ConsumerStatefulWidget {
   const VotingBar({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _VotingBarState createState() => _VotingBarState();
+}
+
+class _VotingBarState extends ConsumerState<VotingBar> {
+  List<Map<String, dynamic>> _messages = [];
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      _fetchDebateInfo();
+      _subscribeToMessages();
+    });
+  }
+
+  Future<void> _fetchDebateInfo() async {
+    final liveWebSocketService = ref.read(liveWebSocketProvider);
+    final loginInfo = ref.read(loginInfoProvider);
+    final debateInfo = ref.read(chatInfoProvider);
+
+    if (loginInfo != null && debateInfo != null) {
+      final message = jsonEncode({
+        "command": "ENTER",
+        "userId": loginInfo.id,
+        "debateId": debateInfo.id,
+      });
+      liveWebSocketService.sendMessage(message);
+    } else {
+      print("Error: Login info or Debate info is null.");
+    }
+  }
+
+  void _subscribeToMessages() {
+    final webSocketService = ref.read(liveWebSocketProvider);
+    final voteViewModel = ref.watch(voteProvider.notifier);
+
+    webSocketService.stream.listen((message) {
+      if (message.containsKey('content')) {
+        if (mounted) {
+          setState(() {
+            _messages.add(message);
+          });
+        }
+      }
+      if (message['command'] == "VOTE_RATE_RES") {
+        final newBlueVotes = message["ownerVoteRate"];
+        final newRedVotes = message["joinerVoteRate"];
+
+        // StateNotifier를 사용하여 상태를 업데이트합니다.
+        voteViewModel.updateVotes(newBlueVotes, newRedVotes);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final chatState = ref.watch(chatInfoProvider);
     final voteState = ref.watch(voteProvider);
-    final voteNotifier = ref.read(voteProvider.notifier);
-
-    final totalVotes = voteState.blueVotes + voteState.redVotes;
-
-    final bluePercent =
-        totalVotes == 0 ? 0.5 : voteState.blueVotes / totalVotes.toDouble();
-
-    // 이전의 퍼센트 값 유지
-    final previousBluePercent = useRef(bluePercent);
-    useEffect(() {
-      previousBluePercent.value = bluePercent;
-      return null;
-    }, [bluePercent]);
-
+    chatState!.bluePercent = voteState.bluePercent;
     return LinearPercentIndicator(
       lineHeight: 6.0,
       animation: true,
       padding: EdgeInsets.zero,
       animationDuration: 500,
       animateFromLastPercent: true, // 마지막 퍼센트에서 애니메이션 시작
-      percent: bluePercent,
+      percent: chatState.bluePercent,
       linearStrokeCap: LinearStrokeCap.roundAll,
       progressColor: ColorSystem.voteBlue,
       backgroundColor: ColorSystem.voteRed,
-
-      // Row(
-      //   children: [
-      //     ElevatedButton(
-      //       onPressed: () {
-      //         voteNotifier.voteBlue();
-      //       },
-      //       child: Text('Vote Blue'),
-      //     ),
-      //     ElevatedButton(
-      //       onPressed: () {
-      //         voteNotifier.voteRed();
-      //       },
-      //       child: Text('Vote Red'),
-      //     ),
-      //   ],
-      // ),
     );
   }
 }

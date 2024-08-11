@@ -9,6 +9,7 @@ import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/live_webSocket_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/core/provider/voting_provider.dart';
 
 class LiveComment extends ConsumerStatefulWidget {
   @override
@@ -34,7 +35,6 @@ class _LiveCommentState extends ConsumerState<LiveComment>
   void initState() {
     super.initState();
     Future.microtask(() {
-      _fetchDebateInfo();
       _subscribeToMessages();
     });
   }
@@ -47,33 +47,14 @@ class _LiveCommentState extends ConsumerState<LiveComment>
     super.dispose();
   }
 
-  Future<void> _fetchDebateInfo() async {
-    final liveWebSocketService = ref.read(liveWebSocketProvider);
-    final loginInfo = ref.watch(loginInfoProvider);
-    final debateInfo = ref.read(chatInfoProvider);
-
-    if (loginInfo != null) {
-      final message = jsonEncode({
-        "command": "ENTER",
-        "userId": loginInfo.id,
-        "debateId": debateInfo!.id,
-      });
-      liveWebSocketService.sendMessage(message);
-    } else {
-      print("Error: Login info or Debate info is null.");
-    }
-  }
-
   void _subscribeToMessages() {
     final webSocketService = ref.read(liveWebSocketProvider);
-    final loginInfo = ref.watch(loginInfoProvider);
 
     _subscription = webSocketService.stream.listen((message) {
       if (message.containsKey('content')) {
         if (mounted) {
           setState(() {
             _messages.add(message);
-            print(message);
           });
         }
       }
@@ -120,6 +101,7 @@ class _LiveCommentState extends ConsumerState<LiveComment>
   @override
   Widget build(BuildContext context) {
     final loginInfo = ref.read(loginInfoProvider);
+
     return Stack(
       children: [
         Container(

@@ -3,6 +3,8 @@ class DebateInfo {
   final String debateTitle;
   final String debateCategory;
   String debateStatus;
+  String debateOwnerNick;
+  String debateJoinerNick;
   final String debateMakerOpinion;
   final String debateJoinerOpinion;
   int debatedTimeLimit;
@@ -17,6 +19,8 @@ class DebateInfo {
   int debateJoinerId;
   int debateJoinerTurnCount;
   bool canTiming;
+  double bluePercent;
+  Duration remainingTime;
 
   DebateInfo({
     required this.id,
@@ -33,10 +37,14 @@ class DebateInfo {
     required this.createdAt,
     required this.updatedAt,
     required this.debateOwnerId,
+    required this.debateOwnerNick,
     required this.debateOwnerTurnCount,
     required this.debateJoinerId,
+    required this.debateJoinerNick,
     required this.debateJoinerTurnCount,
     required this.canTiming,
+    required this.bluePercent,
+    required this.remainingTime,
   });
 
   factory DebateInfo.fromJson(Map<String, dynamic> json) {
@@ -56,10 +64,14 @@ class DebateInfo {
       createdAt: json['data']['createdAt'] ?? '',
       updatedAt: json['data']['updatedAt'] ?? '',
       debateOwnerId: json['data']['debateOwnerId'] ?? 0,
+      debateOwnerNick: '티토',
       debateOwnerTurnCount: json['data']['debateOwnerTurnCount'] ?? 0,
       debateJoinerId: json['data']['debateJoinerId'] ?? 0,
+      debateJoinerNick: '티토',
       debateJoinerTurnCount: json['data']['debateJoinerTurnCount'] ?? 0,
       canTiming: true,
+      bluePercent: 0.5,
+      remainingTime: Duration(minutes: 8),
     );
   }
 
@@ -81,6 +93,8 @@ class DebateInfo {
       "debateOwnerId": debateOwnerId,
       "debateOwnerTurnCount": debateOwnerTurnCount,
       "debateJoinerId": debateOwnerTurnCount,
+      "debateJoinerNick": debateJoinerNick,
+      "debateOwnerNick": debateOwnerNick,
       "debateJoinerTurnCount": debateOwnerTurnCount,
       "canTiming": true,
     };
