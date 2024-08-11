@@ -24,7 +24,7 @@ class HomeScreen extends ConsumerWidget {
           child: const HomeAppbar(),
         ),
       ),
-      body:  const Column(
+      body:  Column(
               children: [
                 CustomSearchBar(),
                 HomeView(),
@@ -32,20 +32,20 @@ class HomeScreen extends ConsumerWidget {
                 HotFighter()
               ],
             ),
-      // body: homeState.isLoading
-      //     ? const Center(child: SpinKitWanderingCubes(
-      //       color: ColorSystem.purple,
-      //       size: 50,
-      //       duration: Duration(seconds: 2),
-      //     ))
-      //     : const Column(
-      //         children: [
-      //           CustomSearchBar(),
-      //           HomeView(),
-      //           HotLists(),
-      //           HotFighter()
-      //         ],
-      //       ),
+    //   body: homeState.isLoading
+    //       ? const Center(child: SpinKitThreeBounce(
+    //         color: ColorSystem.lightPurple,
+    //         size: 30,
+    //         duration: Duration(seconds: 2),
+    //       ))
+    //       : const Column(
+    //           children: [
+    //             CustomSearchBar(),
+    //             HomeView(),
+    //             HotLists(),
+    //             HotFighter()
+    //           ],
+    //         ),
     );
   }
 }
