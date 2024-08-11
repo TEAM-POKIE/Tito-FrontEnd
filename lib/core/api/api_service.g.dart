@@ -178,23 +178,20 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<void> updateUserProfile(
-    int id,
-    Map<String, dynamic> data,
-  ) async {
+  Future<void> putUpdatePicture(FormData profileFile) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(data);
+    final _data = profileFile;
     await _dio.fetch<void>(_setStreamType<void>(Options(
-      method: 'PATCH',
+      method: 'PUT',
       headers: _headers,
       extra: _extra,
+      contentType: 'multipart/form-data',
     )
         .compose(
           _dio.options,
-          'users/${id}',
+          'users/profile-picture',
           queryParameters: queryParameters,
           data: _data,
         )
