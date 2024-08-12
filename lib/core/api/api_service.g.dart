@@ -271,8 +271,8 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{r'state': state};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<List<Debate>>(Options(
+    final _result =
+        await _dio.fetch<List<dynamic>>(_setStreamType<List<Debate>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -288,8 +288,7 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final List<dynamic> data = _result.data!['data'];
-    var _value = data
+    var _value = _result.data!
         .map((dynamic i) => Debate.fromJson(i as Map<String, dynamic>))
         .toList();
     return _value;
@@ -322,6 +321,87 @@ class _ApiService implements ApiService {
         .map((dynamic i) =>
             DebateParticipants.fromJson(i as Map<String, dynamic>))
         .toList();
+    return _value;
+  }
+
+  @override
+  Future<DebateBenner> getDebateBenner() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<DebateBenner>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'debates/on-fire-debate',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = DebateBenner.fromJson(_result.data!);
+    return _value;
+  }
+
+  @override
+  Future<DebateHotfighter> getDebateHotfighter() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<DebateHotfighter>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'debates/hot-debate-participants',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = DebateHotfighter.fromJson(_result.data!);
+    return _value;
+  }
+
+  @override
+  Future<DebateHotdebate> getDebateHotdebate() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<DebateHotdebate>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'debates/hot-debate',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = DebateHotdebate.fromJson(_result.data!);
     return _value;
   }
 

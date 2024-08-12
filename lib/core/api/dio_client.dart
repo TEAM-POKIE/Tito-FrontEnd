@@ -5,7 +5,7 @@ class DioClient {
     ..options = BaseOptions(
       baseUrl: 'https://dev-tito.owsla.mywire.org/',
       connectTimeout: Duration(milliseconds: 2000), // 변경: int -> Duration
-      receiveTimeout: Duration(milliseconds: 5000), // 변경: int -> Duration
+      receiveTimeout: Duration(milliseconds: 2000), // 변경: int -> Duration
     )
     ..interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
