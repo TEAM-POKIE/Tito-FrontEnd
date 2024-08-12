@@ -3,31 +3,31 @@ class DebateBenner {
   final String debateTitle;
   final String debateStatus;
   final String debateMakerOpinion;
-  final String debateJoinerOpinioin;
+  final String debateJoinerOpinion;
 
   DebateBenner(
       {required this.id,
       required this.debateTitle,
       required this.debateStatus,
       required this.debateMakerOpinion,
-      required this.debateJoinerOpinioin});
+      required this.debateJoinerOpinion});
 
   factory DebateBenner.fromJson(Map<String, dynamic> json) {
     return DebateBenner(
-        id: json['data']['id'] ?? 0,
-        debateTitle: json['data']['debateTitle'] ?? '',
-        debateStatus: json['data']['debateStatus'] ?? '',
-        debateMakerOpinion: json['data']['debateMakerOpinion'] ?? '',
-        debateJoinerOpinioin: json['data']['debateJoinerOpinioin'] ?? '');
+        id: json['id'] ?? 0,
+        debateTitle: json['debateTitle'] ?? '',
+        debateStatus: json['debateStatus'] ?? '',
+        debateMakerOpinion: json['debateMakerOpinion'] ?? '',
+        debateJoinerOpinion: json['debateJoinerOpinion'] ?? '');
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'debateTitle': debateTitle,
-      'debateStatus' : debateStatus,
+      'debateStatus': debateStatus,
       'debateMakerOpinion': debateMakerOpinion,
-      'debateJoinerOpinion': debateJoinerOpinioin,
+      'debateJoinerOpinion': debateJoinerOpinion,
     };
   }
 }

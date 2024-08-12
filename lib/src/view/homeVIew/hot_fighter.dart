@@ -20,19 +20,19 @@ class HotFighter extends ConsumerStatefulWidget {
 class _HotFighterState extends ConsumerState<HotFighter> {
   List<DebateHotfighter> hotFighters = [];
 
-  @override
-  void initState() {
-    super.initState();
-    fetchHotfighters();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   fetchHotfighters();
+  // }
 
-  Future<void> fetchHotfighters() async {
-    final List<DebateHotfighter> fighters = [];
+  // Future<void> fetchHotfighters() async {
+  //   final List<DebateHotfighter> fighters = [];
 
-    setState(() {
-      hotFighters = fighters;
-    });
-  }
+  //   setState(() {
+  //     hotFighters = fighters;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -22,7 +22,7 @@ class WebSocketService {
   void _connect() {
     try {
       channel = WebSocketChannel.connect(
-          Uri.parse('wss://dev-titio.owsla.mywire.org/ws/debate/realtime'));
+          Uri.parse('wss://dev-tito.owsla.mywire.org//ws/debate/realtime'));
       print('WebSocket connection established');
 
       channel.stream.listen((message) {
