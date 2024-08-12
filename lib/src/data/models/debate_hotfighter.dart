@@ -1,5 +1,3 @@
-import 'package:tito_app/src/data/models/debate_list.dart';
-
 class DebateHotfighter {
   final int userId;
   final String nickname;

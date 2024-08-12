@@ -22,7 +22,7 @@ class HomeScreen extends ConsumerWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: const HomeAppbar(),
-        ),
+        ), 
       ),
       body:  Column(
               children: [
@@ -30,6 +30,7 @@ class HomeScreen extends ConsumerWidget {
                 HomeView(),
                 HotLists(),
                 HotFighter()
+
               ],
             ),
     //   body: homeState.isLoading

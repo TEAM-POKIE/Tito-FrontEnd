@@ -24,7 +24,7 @@ class DebateHotdebate {
       debateStatus: json['data']['debateStatus'] ?? '',
       debateMakerOpinion: json['data']['debateMakerOpinion'] ?? '',
       debateJoinerOpinion: json['data']['debateJoinerOpinion'] ?? '',
-      debateImageUrl: json['data']['debateImageUrl'],
+      debateImageUrl: json['data']['debateImageUrl'] ?? '',
       debateFireCount: json['data']['debateFireCount'] ?? 1,
     );
   }

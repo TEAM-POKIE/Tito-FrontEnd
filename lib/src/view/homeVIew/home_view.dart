@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:dio/dio.dart';
+import 'package:tito_app/core/api/api_service.dart';
+import 'package:tito_app/core/api/dio_client.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tito_app/core/provider/home_state_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
+import 'package:tito_app/src/data/models/debate_benner.dart';
 
 class HomeView extends ConsumerWidget {
   const HomeView({super.key});
@@ -12,6 +17,17 @@ class HomeView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final homeState = ref.watch(homeViewModelProvider);
     final homeViewModel = ref.read(homeViewModelProvider.notifier);
+
+    //Future<DebateBenner> fetchDebateBenner() async {
+      // try {
+      //   final response = await ApiService(DioClient.dio).getDebateBenner();
+      //   final debateBenner = DebateBenner.fromJson(response);
+      //   homeViewModel.setDebateBenner(debateBenner); // 받아온 데이터를 상태에 저장
+      // } catch (e) {
+      //   // 에러 처리
+      //   print('Error fetching DebateBenner: $e');
+      // }
+    //}
 
     return Column(
       children: [
@@ -42,9 +58,9 @@ class HomeView extends ConsumerWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    '불 붙은 실시간 토론🔥',
-                                    style: FontSystem.KR14M.copyWith(color: ColorSystem.white)),
+                                  Text('불 붙은 실시간 토론🔥',
+                                      style: FontSystem.KR14M
+                                          .copyWith(color: ColorSystem.white)),
                                   Container(
                                     // padding: EdgeInsets.symmetric(
                                     //     horizontal: 10.w, vertical: 5),
@@ -52,11 +68,9 @@ class HomeView extends ConsumerWidget {
                                       color: ColorSystem.purple,
                                       borderRadius: BorderRadius.circular(20.r),
                                     ),
-                                    child: Text(
-                                      '실시간 토론중',
-                                      style:
-                                          FontSystem.KR14M.copyWith(color: ColorSystem.white)
-                                    ),
+                                    child: Text('실시간 토론중',
+                                        style: FontSystem.KR14M.copyWith(
+                                            color: ColorSystem.white)),
                                   ),
                                 ],
                               ),

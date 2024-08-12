@@ -13,7 +13,7 @@ import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+//import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 

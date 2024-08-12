@@ -292,6 +292,33 @@ class _ApiService implements ApiService {
   }
 
   @override
+  Future<DebateBenner> getDebateBenner() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<DebateBenner>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'debates/on-fire-debate',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final _value = DebateBenner.fromJson(_result.data!);
+    return _value;
+  }
+
+  @override
   Future<DebateHotfighter> getDebateHotfighter() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -319,13 +346,13 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<DebateHotdebate> getDebateHotdebate() async {
+  Future<List<DebateHotdebate>> getDebateHotdebate() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<DebateHotdebate>(Options(
+        .fetch<List<dynamic>>(_setStreamType<List<DebateHotdebate>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -341,7 +368,9 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final _value = DebateHotdebate.fromJson(_result.data!);
+    var _value = _result.data!
+        .map((dynamic i) => DebateHotdebate.fromJson(i as Map<String, dynamic>))
+        .toList();
     return _value;
   }
 

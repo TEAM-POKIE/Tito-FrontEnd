@@ -9,11 +9,32 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/src/data/models/debate_hotfighter.dart';
 
-class HotFighter extends ConsumerWidget {
+class HotFighter extends ConsumerStatefulWidget {
   const HotFighter({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HotFighter> createState() => _HotFighterState();
+}
+
+class _HotFighterState extends ConsumerState<HotFighter> {
+  List<DebateHotfighter> hotFighters = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchHotfighters();
+  }
+
+  Future<void> fetchHotfighters() async {
+    final List<DebateHotfighter> fighters = [];
+
+    setState(() {
+      hotFighters = fighters;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -43,20 +64,24 @@ class HotFighter extends ConsumerWidget {
           height: 125.h,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: 10, // 예시로 10개의 아이템
+            itemCount: hotFighters.length, // API에서 가져온 데이터 길이
             itemBuilder: (context, index) {
+              final fighter = hotFighters[index]; // 해당 index의 데이터를 가져
+
               return Container(
                 margin: EdgeInsets.symmetric(horizontal: 8.w),
                 child: Column(
                   children: [
                     CircleAvatar(
                       radius: 30.w,
-                      backgroundImage: AssetImage(
-                          'assets/images/hot_fighter.png'), // 프로필 이미지 경로
+                      backgroundImage: fighter.profilePicture != null
+                          ? NetworkImage(fighter.profilePicture!)
+                          : AssetImage('assets/images/hot_fighter.png')
+                              as ImageProvider, // 프로필 이미지 경로
                     ),
                     SizedBox(height: 8.h),
-                    const Text(
-                      '일인자',
+                    Text(
+                      fighter.nickname,
                       style: FontSystem.KR16M,
                       maxLines: 1, // 텍스트를 한 줄로 제한
                       overflow: TextOverflow.ellipsis, // 넘칠 경우 "..." 처리

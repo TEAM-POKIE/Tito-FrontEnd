@@ -86,10 +86,14 @@ class _HotListState extends ConsumerState<HotLists> {
 
   Future<void> fetchHotDebates() async {
     try {
-      final debateResponse =
+      final List<DebateHotdebate> debateResponse =
           await ApiService(DioClient.dio).getDebateHotdebate();
+
+      // 디버깅을 위해 API 응답을 출력
+      print('API Response: $debateResponse');
+      
       setState(() {
-        hotlist = [debateResponse]; // response를 리스트로 감싸서 할당
+        hotlist = debateResponse; // response를 리스트로 감싸서 할당
         isLoading = false;
       });
     } catch (e) {
@@ -136,7 +140,8 @@ class _HotListState extends ConsumerState<HotLists> {
               : hotlist.isEmpty
                   ? Center(child: Text('No debates available')) // 데이터가 없을 때
                   : ListView.builder(
-                      itemCount: hotlist.length, // hotlist의 길이로 설정
+                      itemCount: hotlist.length,
+                       // hotlist의 길이로 설정
                       itemBuilder: (context, index) {
                         return Container(
                           decoration: BoxDecoration(
@@ -146,7 +151,6 @@ class _HotListState extends ConsumerState<HotLists> {
                                 hotlist[index].debateTitle), // 각 항목의 제목을 표시
                             subtitle: Text(hotlist[index]
                                 .debateMakerOpinion), // 필요에 따라 다른 속성도 표시 가능
-                                
                           ),
                         );
                       },

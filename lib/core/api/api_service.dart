@@ -13,6 +13,7 @@ import 'package:tito_app/src/data/models/debate_usermade.dart';
 import 'package:tito_app/src/data/models/user_profile.dart';
 import 'package:tito_app/src/data/models/debate_hotdebate.dart';
 import 'package:tito_app/src/data/models/debate_hotfighter.dart';
+import 'package:tito_app/src/data/models/debate_benner.dart';
 part 'api_service.g.dart';
 
 @RestApi(baseUrl: "https://dev-tito.owsla.duckdns.org/")
@@ -49,10 +50,12 @@ abstract class ApiService {
   @GET("debates/{id}/participants")
   Future<List<DebateParticipants>> getParicipants(@Path("id") int debateId);
 
+  @GET("debates/on-fire-debate")
+  Future<DebateBenner> getDebateBenner();
   @GET("debates/hot-debate-participants")
   Future<DebateHotfighter> getDebateHotfighter();
   @GET("debates/hot-debate")
-  Future<DebateHotdebate> getDebateHotdebate();
+  Future<List<DebateHotdebate>> getDebateHotdebate();
 
   @GET("debates/{id}")
   Future<DebateInfo> getDebateInfo(@Path("id") int debateId);
