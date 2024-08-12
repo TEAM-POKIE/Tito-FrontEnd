@@ -1,5 +1,6 @@
 class DebateUsermade {
   final int id;
+  final String debateTitle;
   final String debateCategory;
   final String debateStatus;
   final String debateMakerOpinion;
@@ -10,11 +11,12 @@ class DebateUsermade {
   final int debateRealtimeParticipants;
   final int debateAlarmCount;
   final String createdAt;
-  final String updateAt;
+  final String updatedAt;
 
   DebateUsermade({
     required this.id,
     required this.debateCategory,
+    required this.debateTitle,
     required this.debateStatus,
     required this.debateMakerOpinion,
     required this.debateJoinerOpinion,
@@ -24,30 +26,30 @@ class DebateUsermade {
     required this.debateRealtimeParticipants,
     required this.debateAlarmCount,
     required this.createdAt,
-    required this.updateAt,
+    required this.updatedAt,
   });
 
   factory DebateUsermade.fromJson(Map<String, dynamic> json) {
     return DebateUsermade(
-        id: json['data']['id'] ?? 0,
-        debateCategory: json['data']['debateCategory'] ?? '',
-        debateStatus: json['data']['debateStatus'] ?? '',
-        debateMakerOpinion: json['data']['debateMakerOpinion'] ?? '',
-        debateJoinerOpinion: json['data']['debateJoinerOpinion'] ?? '',
-        debatedTimeLimit: json['data']['debatedTimeLimit'] ?? 0,
-        debateViewCount: json['data']['debateViewCount'] ?? 0,
-        debateCommentCount: json['data']['debateCommentCount'] ?? 0,
-        debateRealtimeParticipants:
-            json['data']['debateRealtimeParticipants'] ?? 0,
-        debateAlarmCount: json['data']['debateAlarmCount'] ?? 0,
-        createdAt: json['data']['createdAt'] ?? '',
-        updateAt: json['data']['updateAt'] ?? '');
+        id: json['id'] ?? 0,
+        debateTitle: json['debateTitle'] ?? '',
+        debateCategory: json['debateCategory'] ?? '',
+        debateStatus: json['debateStatus'] ?? '',
+        debateMakerOpinion: json['debateMakerOpinion'] ?? '',
+        debateJoinerOpinion: json['debateJoinerOpinion'] ?? '',
+        debatedTimeLimit: json['debatedTimeLimit'] ?? 0,
+        debateViewCount: json['debateViewCount'] ?? 0,
+        debateCommentCount: json['debateCommentCount'] ?? 0,
+        debateRealtimeParticipants: json['debateRealtimeParticipants'] ?? 0,
+        debateAlarmCount: json['debateAlarmCount'] ?? 0,
+        createdAt: json['createdAt'] ?? '',
+        updatedAt: json['updatedAt'] ?? '');
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'debateCategory' : debateCategory,
+      'debateCategory': debateCategory,
       'debateStatus': debateStatus,
       'debateMakerOpinion': debateMakerOpinion,
       'debateJoinerOpinion': debateJoinerOpinion,
@@ -57,7 +59,7 @@ class DebateUsermade {
       'debateRealtimeParticipants': debateRealtimeParticipants,
       'debateAlarmCount': debateAlarmCount,
       'createdAt': createdAt,
-      'updateAt': updateAt,
+      'updatedAt': updatedAt,
     };
   }
 }

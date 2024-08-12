@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:tito_app/src/screen/home_screen.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,48 +13,52 @@ import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/provider/websocket_provider.dart';
 import 'package:tito_app/src/data/models/debate_usermade.dart';
 
-
-
 class MyDebateScrollbody extends ConsumerStatefulWidget {
   const MyDebateScrollbody({super.key});
-  
+
   @override
   _MyDebateScrollbodyState createState() => _MyDebateScrollbodyState();
 }
 
 class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
   final List<int> _items = List<int>.generate(5, (int index) => index);
-  List<Debate> debateList = [];
+  List<DebateUsermade> debateList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _madeInDebate(); // 위젯 초기화 시 _madeInDebate 호출
+  }
 
   Future<void> _madeInDebate({bool isRefresh = false}) async {
     try {
-      final List<Debate> debateResponse =
-          await ApiService(DioClient.dio).getDebateList('recentUpdate');
+      // Map<String, dynamic> 타입으로 응답을 받아옴
+      final Map<String, dynamic> debateResponse =
+          await ApiService(DioClient.dio).getUserDebate();
+
+      // 응답에서 'data' 필드를 추출하여 List<DebateUsermade>로 캐스팅
+      final List<dynamic> data = debateResponse['data'];
+
+      // 만약 데이터가 이미 DebateUsermade 타입인 경우 변환하지 않고 사용
+      final List<DebateUsermade> debates = data.map((item) {
+        if (item is DebateUsermade) {
+          return item; // 이미 DebateUsermade 객체라면 그대로 사용
+        } else {
+          return DebateUsermade.fromJson(item as Map<String, dynamic>);
+        }
+      }).toList();
 
       setState(() {
-        debateList = debateResponse.map((debate) {
-          return Debate(
-            id: debate.id,
-            debateTitle: debate.debateTitle,
-            debateCategory:
-                DebateListCategory.fromString(debate.debateCategory).toString(),
-            debateStatus:
-                DebateListStatus.fromString(debate.debateStatus).toString(),
-            debateMakerOpinion: debate.debateMakerOpinion,
-            debateJoinerOpinion: debate.debateJoinerOpinion,
-            debatedTimeLimit: debate.debatedTimeLimit,
-            debateViewCount: debate.debateViewCount,
-            debateCommentCount: debate.debateCommentCount,
-            debateRealtimeParticipants: debate.debateRealtimeParticipants,
-            debateAlarmCount: debate.debateAlarmCount,
-            createdAt: debate.createdAt,
-            updatedAt: debate.updatedAt,
-          );
-        }).toList();
+        debateList = debates; // 변환된 리스트를 할당
       });
     } catch (error) {
       print('Error fetching debate list: $error');
     }
+  }
+
+  String _formatDate(String date) {
+    final DateTime parsedDate = DateTime.parse(date);
+    return DateFormat('yyyy.M.d').format(parsedDate);
   }
 
   @override
@@ -62,12 +67,12 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
       itemCount: debateList.length,
       itemBuilder: (context, index) {
         final debate = debateList[index];
-        return _buildItem(context, debate); 
+        return _buildItem(context, debate);
       },
     );
   }
 
-  Widget _buildItem(BuildContext context, Debate debate) {
+  Widget _buildItem(BuildContext context, DebateUsermade debate) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
       child: Row(
@@ -93,7 +98,7 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
                   Padding(
                     padding: EdgeInsets.only(left: 0.w),
                     child: Text(
-                      '${debate.createdAt}',
+                      _formatDate(debate.createdAt),
                       style:
                           TextStyle(fontSize: 14.sp, color: ColorSystem.grey),
                     ),
