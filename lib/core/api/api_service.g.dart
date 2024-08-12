@@ -331,6 +331,53 @@ class _ApiService implements ApiService {
   }
 
   @override
+  Future<List<DebateHotdebate>> getDebateHotdebate() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+
+    try {
+      final _result = await _dio.fetch<Map<String, dynamic>>(
+          _setStreamType<List<DebateHotdebate>>(Options(
+        method: 'GET',
+        headers: _headers,
+        extra: _extra,
+      )
+              .compose(
+                _dio.options,
+                'debates/hot-debate',
+                queryParameters: queryParameters,
+                data: _data,
+              )
+              .copyWith(
+                  baseUrl: _combineBaseUrls(
+                _dio.options.baseUrl,
+                baseUrl,
+              ))));
+
+      // 응답 데이터 디버깅
+      print('API Response Data: ${_result.data}');
+
+      if (_result.data == null || _result.data!['data'] == null) {
+        throw Exception('Response data is null');
+      }
+
+      final data = _result.data!['data'] as List<dynamic>;
+
+      // 리스트의 각 항목을 DebateHotdebate 객체로 변환합니다.
+      final List<DebateHotdebate> debateList = data
+          .map((item) => DebateHotdebate.fromJson(item as Map<String, dynamic>))
+          .toList();
+
+      return debateList;
+    } catch (e) {
+      print('Error fetching debates: $e');
+      throw Exception('Failed to load debates');
+    }
+  }
+
+  @override
   Future<List<DebateParticipants>> getParicipants(int debateId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -384,33 +431,6 @@ class _ApiService implements ApiService {
               baseUrl,
             ))));
     final _value = DebateHotfighter.fromJson(_result.data!);
-    return _value;
-  }
-
-  @override
-  Future<DebateHotdebate> getDebateHotdebate() async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<DebateHotdebate>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'debates/hot-debate',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final _value = DebateHotdebate.fromJson(_result.data!);
     return _value;
   }
 
