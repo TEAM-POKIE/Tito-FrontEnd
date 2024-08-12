@@ -6,7 +6,6 @@ import 'package:tito_app/src/screen/home_screen.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 class MyBlockScrollbody extends StatefulWidget {
   @override
   _MyBlockScrollBodyState createState() => _MyBlockScrollBodyState();
@@ -38,7 +37,8 @@ class _MyBlockScrollBodyState extends State<MyBlockScrollbody> {
               key: _listKey,
               initialItemCount: _bannedUsers.length,
               itemBuilder: (context, index, animation) {
-                return _buildItem(context, _bannedUsers[index], animation, index);
+                return _buildItem(
+                    context, _bannedUsers[index], animation, index);
               },
             ),
           ),
@@ -59,21 +59,24 @@ class _MyBlockScrollBodyState extends State<MyBlockScrollbody> {
             backgroundImage:
                 AssetImage('assets/images/hot_fighter.png'), // 이미지 경로 설정
           ),
-          title: Text(user,
-          style: FontSystem.KR16R,),
+          title: Text(
+            user,
+            style: FontSystem.KR16R,
+          ),
           trailing: Container(
             width: 97.w,
             height: 33.h,
             child: OutlinedButton(
               style: OutlinedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.r)
-                )
-              ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.r))),
               onPressed: () {
                 _removeItem(index);
               },
-              child: Text('차단 해제', style: FontSystem.KR14R,),
+              child: Text(
+                '차단 해제',
+                style: FontSystem.KR14R,
+              ),
             ),
           ),
         ),

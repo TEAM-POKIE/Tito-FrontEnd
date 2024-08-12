@@ -42,6 +42,8 @@ abstract class ApiService {
 
   @GET("users/{id}")
   Future<UserProfile> getUserProfile(@Path("id") int debateId);
+  @GET('users/debates')
+  Future<Map<String, dynamic>> getUserDebate();
 
   @GET("debates")
   Future<List<Debate>> getDebateList(@Query('state') String state);

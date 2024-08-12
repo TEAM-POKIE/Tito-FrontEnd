@@ -17,7 +17,6 @@ abstract class FontSystem {
     letterSpacing: -0.4,
   );
 
-
   static const TextStyle KR10B = TextStyle(
     fontSize: 10,
     fontWeight: FontWeight.bold,
@@ -33,7 +32,7 @@ abstract class FontSystem {
     letterSpacing: -0.4,
   );
 
-    static const TextStyle KR10M = TextStyle(
+  static const TextStyle KR10M = TextStyle(
     fontSize: 10,
     fontFamily: 'Pretendard',
     fontWeight: FontWeight.w600,
@@ -41,15 +40,13 @@ abstract class FontSystem {
     letterSpacing: -0.4,
   );
 
-
-    static const TextStyle KR12M = TextStyle(
+  static const TextStyle KR12M = TextStyle(
     fontSize: 12,
     fontFamily: 'Pretendard',
     fontWeight: FontWeight.w600,
     color: Colors.black,
     letterSpacing: -0.4,
   );
-
 
   static const TextStyle KR12B = TextStyle(
     fontSize: 12,
@@ -66,7 +63,7 @@ abstract class FontSystem {
     letterSpacing: -0.4,
   );
 
-    static const TextStyle KR14M = TextStyle(
+  static const TextStyle KR14M = TextStyle(
     fontSize: 14,
     fontFamily: 'Pretendard',
     fontWeight: FontWeight.w500,
@@ -97,8 +94,7 @@ abstract class FontSystem {
     letterSpacing: -0.4,
   );
 
-
-    static const TextStyle KR15B = TextStyle(
+  static const TextStyle KR15B = TextStyle(
     fontSize: 15,
     fontWeight: FontWeight.bold,
     fontFamily: 'Pretendard',
@@ -129,7 +125,6 @@ abstract class FontSystem {
     letterSpacing: -0.4,
   );
 
-
   static const TextStyle KR16B = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.bold,
@@ -153,7 +148,7 @@ abstract class FontSystem {
     color: Colors.black,
   );
 
-    static const TextStyle KR16SB = TextStyle(
+  static const TextStyle KR16SB = TextStyle(
     fontSize: 16,
     fontFamily: 'Pretendard',
     letterSpacing: -0.4,
@@ -191,7 +186,6 @@ abstract class FontSystem {
     letterSpacing: -0.4,
   );
 
-
   static const TextStyle KR18B = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.bold,
@@ -200,7 +194,6 @@ abstract class FontSystem {
     letterSpacing: -0.4,
   );
 
-
   static const TextStyle KR18R = TextStyle(
     fontSize: 18,
     fontFamily: 'Pretendard',
@@ -208,7 +201,6 @@ abstract class FontSystem {
     letterSpacing: -0.4,
   );
 
-    
   static const TextStyle KR20B = TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.bold,
@@ -240,7 +232,6 @@ abstract class FontSystem {
     letterSpacing: -0.4,
   );
 
-
   static const TextStyle KR22SB = TextStyle(
     fontSize: 22,
     fontFamily: 'Pretendard',
@@ -249,7 +240,6 @@ abstract class FontSystem {
     letterSpacing: -0.4,
   );
 
-
   static const TextStyle KR22B = TextStyle(
     fontSize: 22,
     fontFamily: 'Pretendard',
@@ -257,7 +247,6 @@ abstract class FontSystem {
     color: Colors.black,
     letterSpacing: -0.4,
   );
-
 
   static const TextStyle KR24B = TextStyle(
     fontSize: 24,
