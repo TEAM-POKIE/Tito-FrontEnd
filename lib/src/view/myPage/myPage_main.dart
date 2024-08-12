@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
+import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/api/multpart_file_with_to_json.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/src/data/models/login_info.dart';
@@ -27,7 +28,7 @@ class MypageMain extends ConsumerStatefulWidget {
 }
 
 class _MypageMainState extends ConsumerState<MypageMain> {
-  XFile? _image;
+  File? _image;
   final ImagePicker picker = ImagePicker();
 
   Future<void> requestPermissions() async {
@@ -36,54 +37,31 @@ class _MypageMainState extends ConsumerState<MypageMain> {
 
   Future<void> getImage(ImageSource source) async {
     await requestPermissions();
-    final XFile? pickedFile = await picker.pickImage(source: source);
+
+    final pickedFile = await picker.pickImage(source: source);
     if (pickedFile != null) {
       setState(() {
-        _image = pickedFile;
+        _image = File(pickedFile.path); // 여기서 파일을 올바르게 처리
       });
-      // 이미지 업로드 및 프로필 업데이트
-      String? imageUrl = await uploadImage(File(_image!.path));
-      if (imageUrl != null) {
-        await updateUserProfile(imageUrl);
-        // 프로필 정보 다시 불러오기
-        ref.refresh(loginInfoProvider);
+
+      try {
+        File profileImage = File(_image!.path);
+
+        var formData = FormData.fromMap({
+          'profilePicture': await MultipartFile.fromFile(
+            profileImage.path,
+            filename: profileImage.path.split(Platform.pathSeparator).last,
+          ),
+        });
+
+        await ApiService(DioClient.dio).putUpdatePicture(formData);
+        final userInfoResponse = await ApiService(DioClient.dio).getUserInfo();
+
+        final loginInfoNotifier = ref.read(loginInfoProvider.notifier);
+        loginInfoNotifier.setLoginInfo(userInfoResponse);
+      } catch (e) {
+        print('Error updating profile picture: $e');
       }
-    }
-  }
-
-  Future<String?> uploadImage(File imageFile) async {
-    // final dio = Dio();
-    // final apiService = ApiService(dio);
-    // try {
-    //   FormData formData = FormData.fromMap({
-    //     "file": await MultipartFile.fromFile(imageFile.path,
-    //         filename: "upload.jpg"),
-    //   });
-    //   final response = await apiService.uploadImage(MultipartFileWithToJson(
-    //     await MultipartFile.fromFile(imageFile.path, filename: "upload.jpg"),
-    //   ));
-    //   return response['fileUrl'];
-    // } catch (e) {
-    //   print(e);
-    //   return null;
-    // }
-  }
-
-  Future<void> updateUserProfile(String profileImageUrl) async {
-    final dio = Dio();
-    final apiService = ApiService(dio);
-    final loginInfo = ref.read(loginInfoProvider);
-    try {
-      await apiService.updateUserProfile(loginInfo!.id, {
-        "profilePicture": profileImageUrl,
-      });
-
-      // // 로그인 정보를 상태로 업데이트
-      // ref.read(loginInfoProvider.notifier).state = loginInfo.copyWith(
-      //   profilePicture: profileImageUrl,
-      // );
-    } catch (e) {
-      print(e);
     }
   }
 
@@ -156,20 +134,18 @@ class _MypageMainState extends ConsumerState<MypageMain> {
             SizedBox(height: 20.h),
             Stack(
               children: [
-                // if (loginInfo!.profilePicture != null)
-                //   Image.file(
-                //     File(loginInfo.profilePicture!),
-                //     width: 100.w,
-                //     height: 100.h,
-                //     fit: BoxFit.cover,
-                //   )
-                // else
-                // 기본 이미지나 빈 위젯을 표시하도록 합니다.
-                SvgPicture.asset(
-                  'assets/icons/null_profile.svg',
-                  width: 80,
-                  height: 80,
-                ),
+                loginInfo!.profilePicture != null
+                    ? CircleAvatar(
+                        backgroundImage: NetworkImage(
+                          loginInfo.profilePicture!,
+                        ),
+                        radius: 35.r,
+                      )
+                    : SvgPicture.asset(
+                        'assets/icons/null_profile.svg',
+                        width: 80,
+                        height: 80,
+                      ),
 
                 // CircleAvatar(
                 //   radius: 35.r,

@@ -86,6 +86,7 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
           popupViewModel.showEndPopup(context);
+          chatState!.debateStatus = 'VOTING';
         }
       });
     }
@@ -332,8 +333,8 @@ class ParticipantsList extends StatelessWidget {
             Container(
               child: chatMessage
                   ? Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
+                      padding: EdgeInsets.symmetric(
+                          vertical: 20.h, horizontal: 20.w),
                       child: Row(
                         mainAxisAlignment: isMyMessage
                             ? MainAxisAlignment.end

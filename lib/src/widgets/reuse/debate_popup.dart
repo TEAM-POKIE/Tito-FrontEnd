@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/constants/style.dart';
@@ -112,7 +113,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                                     CircleAvatar(
                                       radius: 30,
                                       backgroundImage: NetworkImage(
-                                        'https://dev-tito.owsla.duckdns.org/images/20240808/afbf7130-312d-46e7-972b-69dcb1b0b5e8.png',
+                                        chatState.debateJoinerPicture,
                                       ),
                                     ),
                                     SizedBox(height: 8),
@@ -160,7 +161,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                                     CircleAvatar(
                                       radius: 30,
                                       backgroundImage: NetworkImage(
-                                        'https://dev-tito.owsla.duckdns.org/images/20240808/afbf7130-312d-46e7-972b-69dcb1b0b5e8.png',
+                                        chatState.debateOwnerPicture,
                                       ),
                                     ),
                                     SizedBox(height: 8),
@@ -248,6 +249,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
     final popupViewModel = ref.watch(popupProvider.notifier);
     final debateState = ref.watch(debateCreateProvider);
     final chatViewModel = ref.watch(chatInfoProvider.notifier);
+    final chatState = ref.watch(chatInfoProvider);
     final userState = ref.watch(userProfileProvider);
 
     void startDebate() async {
@@ -292,6 +294,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
           final response = await ApiService(DioClient.dio).postDebate(formData);
           debateState.debateContent = '';
           debateState.debateImageUrl = '';
+
           context.push('/chat/${response.id}');
         }
       } catch (error) {
