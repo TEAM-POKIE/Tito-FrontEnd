@@ -1,70 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'dart:convert';
-import 'package:dio/dio.dart';
-import 'package:tito_app/core/api/api_service.dart';
-import 'package:tito_app/core/api/dio_client.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/home_state_provider.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tito_app/core/constants/style.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tito_app/core/constants/style.dart';
-import 'package:tito_app/src/data/models/debate_hotdebate.dart';
-import '../../../core/api/api_service.dart';
 
-// Column(
-//   children: List.generate(homeState.hotItems.length, (index) {
-//     final hotItem = homeState.hotItems[index];
-//     return Padding(
-//       padding:
-//           const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-//       child: Container(
-//         decoration: BoxDecoration(
-//           color: ColorSystem.white,
-//           borderRadius: BorderRadius.circular(20.r),
-//         ),
-//         child: ListTile(
-//           leading: Image.asset(
-//             'assets/images/hotlist.png', // Add your image path here
-//             width: 40,
-//             height: 40,
-//           ),
-//           title: Text(
-//             '바보',
-//             style: const TextStyle(
-//               fontWeight: FontWeight.bold,
-//               fontSize: 16,
-//             ),
-//             maxLines: 1, // 텍스트를 한 줄로 제한
-//             overflow: TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
-//           ),
-//           subtitle: Text(
-//             '멍청이',
-//             maxLines: 1, // 텍스트를 한 줄로 제한
-//             overflow: TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
-//           ),
-//           trailing: Row(
-//             mainAxisSize: MainAxisSize.min,
-//             children: [
-//               const Icon(
-//                 Icons.whatshot,
-//                 color: ColorSystem.purple,
-//               ),
-//               const SizedBox(width: 5),
-//               Text(
-//                 hotItem.hotScore.toString(),
-//                 style: const TextStyle(
-//                   fontSize: 14,
-//                   color: ColorSystem.grey,
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }),
-// ),
 class HotLists extends ConsumerStatefulWidget {
   const HotLists({super.key});
 
@@ -75,87 +14,117 @@ class HotLists extends ConsumerStatefulWidget {
 }
 
 class _HotListState extends ConsumerState<HotLists> {
-  List<DebateHotdebate> hotlist = [];
-  bool isLoading = true;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   fetchHotDebates(); // API 호출
-  // }
-
-  // Future<void> fetchHotDebates() async {
-  //   try {
-  //     final debateResponse =
-  //         await ApiService(DioClient.dio).getDebateHotdebate();
-
-  //     // 디버깅을 위해 API 응답을 출력
-  //     print('API Response: $debateResponse');
-
-  //     setState(() {
-  //       hotlist = [debateResponse]; // response를 리스트로 감싸서 할당
-  //       isLoading = false;
-  //     });
-  //   } catch (e) {
-  //     print('Error fetching debates: $e');
-  //     setState(() {
-  //       isLoading = false;
-  //     });
-  //   }
-  // }
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final homeViewModel = ref.read(homeViewModelProvider.notifier);
+      homeViewModel.fetchHotDebates();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final homeState = ref.watch(homeViewModelProvider);
-    final homeViewModel = ref.read(homeViewModelProvider.notifier);
 
     return Column(
       children: [
         SizedBox(height: 30.h),
-        // Padding(
-        //   padding: EdgeInsets.symmetric(
-        //     horizontal: 20.h,
-        //   ),
-        //   child: Row(
-        //     //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //     children: [
-        //       const Text(
-        //         'HOT한 토론',
-        //         style: FontSystem.KR18SB,
-        //       ),
-        //       SizedBox(
-        //         width: 6.w,
-        //       ),
-        //       Container(
-        //           width: 39.5.w,
-        //           height: 29.06.h,
-        //           child: Image.asset('assets/images/hotlist.png')),
-        //     ],
-        //   ),
-        // ),
-        // Container(
-        //   height: 150.h,
-        //   child: isLoading
-        //       ? Center(child: CircularProgressIndicator()) // 로딩 중일 때
-        //       : hotlist.isEmpty
-        //           ? Center(child: Text('No debates available')) // 데이터가 없을 때
-        //           : ListView.builder(
-        //               itemCount: hotlist.length,
-        //               // hotlist의 길이로 설정
-        //               itemBuilder: (context, index) {
-        //                 return Container(
-        //                   decoration: BoxDecoration(
-        //                       border: Border.all(color: ColorSystem.red)),
-        //                   child: ListTile(
-        //                     title: Text(
-        //                         hotlist[index].debateTitle), // 각 항목의 제목을 표시
-        //                     subtitle: Text(hotlist[index]
-        //                         .debateMakerOpinion), // 필요에 따라 다른 속성도 표시 가능
-        //                   ),
-        //                 );
-        //               },
-        //             ),
-        // ),
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 20.h,
+          ),
+          child: Row(
+            children: [
+              const Text(
+                'HOT한 토론',
+                style: FontSystem.KR18SB,
+              ),
+              SizedBox(
+                width: 6.w,
+              ),
+              Container(
+                  width: 39.5.w,
+                  height: 29.06.h,
+                  child: Image.asset('assets/images/hotlist.png')),
+            ],
+          ),
+        ),
+        SizedBox(height: 10.h),
+        Container(
+          height: 400.h, // 리스트 높이를 충분히 키움
+          child: homeState.isLoading
+              ? Center(child: CircularProgressIndicator()) // 로딩 중일 때
+              : homeState.hotlist.isEmpty
+                  ? Center(child: Text('No debates available')) // 데이터가 없을 때
+                  : ListView.builder(
+                      itemCount: homeState.hotlist.length,
+                      itemBuilder: (context, index) {
+                        final debate = homeState.hotlist[index];
+                        return Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8.h),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15.r),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: ListTile(
+                              contentPadding: EdgeInsets.all(15.w),
+                              trailing: ClipRRect(
+                                borderRadius: BorderRadius.circular(8.r),
+                                child: Image.network(
+                                  debate.debateImageUrl ??
+                                      'https://via.placeholder.com/150',
+                                  width: 100.w,
+                                  height: 100.h,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              title: Text(
+                                debate.debateTitle,
+                                style: FontSystem.KR16B,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 8.h),
+                                  Text(
+                                    '${debate.debateMakerOpinion} VS ${debate.debateJoinerOpinion}',
+                                    style: FontSystem.KR14R.copyWith(
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8.h),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.whatshot,
+                                          color: Colors.purple, size: 20.w),
+                                      SizedBox(width: 4.w),
+                                      Text(
+                                        '${debate.debateFireCount}',
+                                        style: FontSystem.KR14M
+                                            .copyWith(color: Colors.grey),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+        ),
       ],
     );
   }

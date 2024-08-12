@@ -19,13 +19,13 @@ class DebateHotdebate {
 
   factory DebateHotdebate.fromJson(Map<String, dynamic> json) {
     return DebateHotdebate(
-      id: json['data']['id'] ?? 0, // null인 경우 0으로 기본값 설정
-      debateTitle: json['data']['debateTitle'] ?? '', // 문자열도 기본값 설정
-      debateStatus: json['data']['debateStatus'] ?? '',
-      debateMakerOpinion: json['data']['debateMakerOpinion'] ?? '',
-      debateJoinerOpinion: json['data']['debateJoinerOpinion'] ?? '',
-      debateImageUrl: json['data']['debateImageUrl'] ?? '',
-      debateFireCount: json['data']['debateFireCount'] ?? 1,
+      id: json['id'] ?? 0, // null인 경우 0으로 기본값 설정
+      debateTitle: json['debateTitle'] ?? '', // 문자열도 기본값 설정
+      debateStatus: json['debateStatus'] ?? '',
+      debateMakerOpinion: json['debateMakerOpinion'] ?? '',
+      debateJoinerOpinion: json['debateJoinerOpinion'] ?? '',
+      debateImageUrl: json['debateImageUrl'] ?? '',
+      debateFireCount: json['debateFireCount'] ?? 1,
     );
   }
 
