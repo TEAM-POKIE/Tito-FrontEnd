@@ -170,6 +170,9 @@ flutter:
     - assets/icons/chat_appbar_bell.svg
     - assets/icons/bottom_bell.svg
     - assets/icons/star.svg
+    - assets/icons/bottom_plus_create.svg
+    - assets/icons/bottom_plus_ai.svg
+    - assets/icons/close.svg
     
 
 
