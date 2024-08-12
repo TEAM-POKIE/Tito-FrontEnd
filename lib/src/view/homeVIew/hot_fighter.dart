@@ -8,6 +8,7 @@ import 'package:tito_app/core/provider/home_state_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/src/data/models/debate_hotfighter.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HotFighter extends ConsumerStatefulWidget {
   const HotFighter({super.key});
@@ -52,7 +53,7 @@ class _HotFighterState extends ConsumerState<HotFighter> {
               Container(
                   width: 20.w,
                   height: 20.h,
-                  child: Image.asset('assets/images/star.png')),
+                  child: SvgPicture.asset('assets/icons/star.svg')),
             ],
           ),
         ),

@@ -169,6 +169,7 @@ flutter:
     - assets/icons/bell_big_alarm.svg
     - assets/icons/chat_appbar_bell.svg
     - assets/icons/bottom_bell.svg
+    - assets/icons/star.svg
     
 
 
@@ -203,7 +204,6 @@ flutter:
     - assets/images/splashs.png
     - assets/images/LogoIcon.png
     - assets/images/hot_fighter.png
-    - assets/images/star.png
 
 
     - .env
