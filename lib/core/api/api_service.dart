@@ -49,11 +49,12 @@ abstract class ApiService {
 
   @GET("debates")
   Future<List<Debate>> getDebateList(@Query('state') String state);
+
+  @GET("debates/on-fire-debate")
+  Future<List<DebateBenner>> getDebateBenner();
   @GET("debates/{id}/participants")
   Future<List<DebateParticipants>> getParicipants(@Path("id") int debateId);
 
-  @GET("debates/on-fire-debate")
-  Future<DebateBenner> getDebateBenner();
   @GET("debates/hot-debate-participants")
   Future<DebateHotfighter> getDebateHotfighter();
   @GET("debates/hot-debate")
