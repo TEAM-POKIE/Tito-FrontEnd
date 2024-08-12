@@ -53,7 +53,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
 
   void _connectWebSocket() {
     _channel = WebSocketChannel.connect(
-      Uri.parse('wss://dev-tito.owsla.duckdns.org/ws/debate'),
+      Uri.parse('wss://dev-tito.owsla.mywire.org/ws/debate'),
     );
     _channel.stream.listen((message) {
       if (message is String && message.startsWith('{')) {
@@ -69,7 +69,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
       print('WebSocket connection closed');
     });
     _liveChannel = WebSocketChannel.connect(
-      Uri.parse('wss://dev-tito.owsla.duckdns.org/ws/debate/realtime'),
+      Uri.parse('wss://dev-tito.owsla.mywire.org/ws/debate/realtime'),
     );
     _liveChannel.stream.listen((message) {
       if (message is String && message.startsWith('{')) {
