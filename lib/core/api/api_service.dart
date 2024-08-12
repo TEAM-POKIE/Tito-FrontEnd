@@ -16,7 +16,7 @@ import 'package:tito_app/src/data/models/debate_hotfighter.dart';
 import 'package:tito_app/src/data/models/debate_benner.dart';
 part 'api_service.g.dart';
 
-@RestApi(baseUrl: "https://dev-tito.owsla.duckdns.org/")
+@RestApi(baseUrl: "https://dev-tito.owsla.mywire.org/")
 abstract class ApiService {
   factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
 

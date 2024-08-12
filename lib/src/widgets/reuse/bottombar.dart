@@ -75,13 +75,9 @@ class _BottomBarState extends ConsumerState<BottomBar> {
           label: '',
         ),
         BottomNavigationBarItem(
-          icon: Padding(
-            padding: EdgeInsets.only(top: 10.h),
-            child: SvgPicture.asset(
-              'assets/icons/bottom_bell.svg',
-              width: 60.w,
-              height: 60.h,
-            ),
+          icon: SvgPicture.asset(
+            'assets/icons/bottom_bell.svg',
+            color: selectedIndex == 3 ? Colors.black : Colors.grey,
           ),
           label: '알림',
         ),
