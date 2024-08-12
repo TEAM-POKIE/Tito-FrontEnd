@@ -47,9 +47,13 @@ abstract class ApiService {
   @GET('users/debates')
   Future<Map<String, dynamic>> getUserDebate();
 
-  @GET("debates")
-  Future<List<Debate>> getDebateList(@Query('state') String state);
-
+  @GET("debates/debate-list")
+  Future<List<Debate>> getDebateList({
+    @Query('page') int? page,
+    @Query('sortBy') String? sortBy,
+    @Query('status') String? status,
+    @Query('category') String? category,
+  });
   @GET("debates/on-fire-debate")
   Future<List<DebateBenner>> getDebateBenner();
   @GET("debates/hot-debate")

@@ -35,10 +35,16 @@ class DebateCreateViewModel extends StateNotifier<DebateCreateState> {
 
   void updateCategory(int index) {
     String selectedLabel = labels[index];
-    String? selectedCategory = DebateCategory.values
-        .firstWhere((category) => category.label == selectedLabel)
-        .value;
-    state = state.copyWith(debateCategory: selectedCategory);
+
+    try {
+      String selectedCategory = DebateCategory.values
+          .firstWhere((category) => category.label == selectedLabel)
+          .value;
+
+      state = state.copyWith(debateCategory: selectedCategory);
+    } catch (e) {
+      print('Error in mapping label to category: $e');
+    }
   }
 
   void updateContent(String content) {

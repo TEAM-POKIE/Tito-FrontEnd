@@ -1,14 +1,9 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
-import 'package:tito_app/core/provider/websocket_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tito_app/src/data/models/debate_list.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -33,7 +28,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   String selectedStatus = '전체';
   String selectedSortOption = '최신순';
   List<Debate> debateList = [];
-
+  int page = 0;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
@@ -48,6 +43,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 
 // 아래로 내렸을 때 새로고침 되는 코드
   void _onRefresh() async {
+    page = 0;
     await _fetchDebateList();
     // await _fetchDebateList(isRefresh: true); // 새로고침 시 기존 데이터를 대체
     _refreshController.refreshCompleted();
@@ -55,6 +51,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 
 // 리스트 끝에 도달했을 때 호출되는 코드
   void _onLoading() async {
+    page += 1;
     await _fetchDebateList();
     // await _fetchDebateList(isRefresh: false); // 로딩 시 데이터를 추가
     _refreshController.loadComplete();
@@ -67,14 +64,66 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 // 데이터 fetch 로직 : 새로고침 시 기존데이터를 대체하고 리스트 끝에서 다시 렌더링시키기
   Future<void> _fetchDebateList({bool isRefresh = false}) async {
     try {
+      String sortBy = _convertSortOption(selectedSortOption);
+      String status = _convertStatus(selectedStatus);
+      String category = _convertCategory(labels[categorySelectedIndex]);
+      print(sortBy);
+      print(status);
+      print(category);
       final List<Debate> debateResponse =
-          await ApiService(DioClient.dio).getDebateList('recentUpdate');
+          await ApiService(DioClient.dio).getDebateList(
+        page: page,
+        sortBy: sortBy,
+        status: status,
+        category: category,
+      );
 
       setState(() {
         debateList = debateResponse;
       });
     } catch (error) {
       print('Error fetching debate list: $error');
+    }
+  }
+
+  String _convertSortOption(String sortOption) {
+    switch (sortOption) {
+      case '최신순':
+        return 'latest';
+      case '인기순':
+        return 'popularity';
+      default:
+        return 'latest';
+    }
+  }
+
+  String _convertStatus(String status) {
+    switch (status) {
+      case '전체':
+        return 'allStatus';
+      case '실시간':
+        return 'realTime';
+      case '종료':
+        return 'end';
+      default:
+        return 'allStatus';
+    }
+  }
+
+  String _convertCategory(String category) {
+    switch (category) {
+      case '연애':
+        return 'ROMANCE';
+      case '정치':
+        return 'POLITICS';
+      case '연예':
+        return 'ENTERTAINMENT';
+      case '자유':
+        return 'FREE';
+      case '스포츠':
+        return 'SPORTS';
+      default:
+        return 'allCategory';
     }
   }
 
@@ -315,14 +364,14 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                         TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
                                   ),
                                   SizedBox(height: 4.h),
-                                  Text(
-                                    '제한 시간: ${debate.debatedTimeLimit}분',
-                                    style: FontSystem.KR16M
-                                        .copyWith(color: ColorSystem.purple),
-                                    maxLines: 1, // 텍스트를 한 줄로 제한
-                                    overflow:
-                                        TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
-                                  ),
+                                  // Text(
+                                  //   '제한 시간: ${debate.debatedTimeLimit}분',
+                                  //   style: FontSystem.KR16M
+                                  //       .copyWith(color: ColorSystem.purple),
+                                  //   maxLines: 1, // 텍스트를 한 줄로 제한
+                                  //   overflow:
+                                  //       TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
+                                  // ),
                                 ],
                               ),
                             ),
@@ -331,10 +380,22 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                               height: 100.h,
                               child: Padding(
                                 padding: EdgeInsets.only(bottom: 20.w),
-                                child: SvgPicture.asset(
-                                  'assets/icons/list_real_null.svg',
-                                  fit: BoxFit.contain,
-                                ),
+                                child: debate.debateImageUrl == ''
+                                    ? SvgPicture.asset(
+                                        'assets/icons/list_real_null.svg',
+                                        fit: BoxFit.contain,
+                                      )
+                                    : ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                            12.r), // 둥근 모서리 설정
+                                        child: Image.network(
+                                          debate.debateImageUrl ?? '',
+                                          width: 260.w, // 원하는 너비 설정
+                                          height: 250.h,
+                                          fit: BoxFit
+                                              .cover, // 이미지가 잘리지 않도록 맞춤 설정
+                                        ),
+                                      ),
                               ),
                             ),
                           ),
