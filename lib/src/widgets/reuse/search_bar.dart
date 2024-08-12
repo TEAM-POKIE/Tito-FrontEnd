@@ -10,7 +10,7 @@ class CustomSearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
-        width: 350.w,
+        width: 310.w,
         height: 50.h,
         child: TextField(
           decoration: InputDecoration(
@@ -25,7 +25,7 @@ class CustomSearchBar extends StatelessWidget {
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(24.r),
                 borderSide: BorderSide.none),
-            hintText: '토론 검색어를 입력하세요',
+            hintText: '카테고리, 제목, 내용',
             hintStyle: FontSystem.KR16M.copyWith(color: ColorSystem.grey),
           ),
           style: const TextStyle(

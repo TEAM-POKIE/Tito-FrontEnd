@@ -7,7 +7,6 @@ import 'package:tito_app/src/widgets/ai/ai_select.dart';
 import 'package:get/get.dart';
 import 'package:tito_app/src/widgets/ai/selection_controller.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tito_app/src/widgets/reuse/bottombar.dart';
 
 class AiSelect extends StatefulWidget {
   //AiSelect({super.key});
@@ -32,7 +31,7 @@ class _AiSelectState extends State<AiSelect> {
           onPressed: () {
             context.pop();
           },
-          icon: const Icon(Icons.arrow_back_ios),
+          icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
         ),
       ),
       body: Column(
@@ -218,7 +217,6 @@ class _AiSelectState extends State<AiSelect> {
           )
         ],
       ),
-      bottomNavigationBar: BottomBar(),
     );
   }
 }

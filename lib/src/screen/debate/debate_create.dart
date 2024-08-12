@@ -7,7 +7,6 @@ import 'package:tito_app/core/provider/debate_create_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-
 class DebateCreate extends ConsumerStatefulWidget {
   const DebateCreate({super.key});
 
@@ -55,7 +54,7 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
               //debateState.debateContent = '';
               context.pop();
             },
-            icon: const Icon(Icons.arrow_back_ios),
+            icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
           ),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,

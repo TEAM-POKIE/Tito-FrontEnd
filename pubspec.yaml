@@ -151,6 +151,7 @@ flutter:
     - assets/icons/mypage_one.svg
     - assets/icons/mypage_two.svg
     - assets/icons/search_size_four.svg
+    - assets/icons/new_search.svg
     - assets/icons/bottom_round_purple.svg
     - assets/icons/null_profile.svg
     - assets/icons/mypage_real_arrow.svg
@@ -173,6 +174,10 @@ flutter:
     - assets/icons/bottom_plus_create.svg
     - assets/icons/bottom_plus_ai.svg
     - assets/icons/close.svg
+    - assets/icons/kakao_new.svg
+    - assets/icons/google_new.svg
+    - assets/icons/apple_new.svg
+
     
 
 

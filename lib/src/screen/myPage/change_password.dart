@@ -8,6 +8,7 @@ import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/src/widgets/reuse/purple_button.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ChangePassword extends ConsumerWidget {
   const ChangePassword({super.key});
@@ -35,7 +36,7 @@ class ChangePassword extends ConsumerWidget {
           onPressed: () {
             context.pop();
           },
-          icon: const Icon(Icons.arrow_back_ios),
+          icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
         ),
         centerTitle: true,
         title: const Text('비밀번호 변경', style: FontSystem.KR16SB),

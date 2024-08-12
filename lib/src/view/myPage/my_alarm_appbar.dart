@@ -14,14 +14,11 @@ class MyAlarmAppbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: ColorSystem.white,
-      leading: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.w),
-        child: IconButton(
-          onPressed: () {
-            context.pop();
-          },
-          icon: const Icon(Icons.arrow_back_ios),
-        ),
+      leading: IconButton(
+        onPressed: () {
+          context.pop();
+        },
+        icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
       ),
       title: const Text(
         '알림',

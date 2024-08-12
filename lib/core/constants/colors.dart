@@ -19,4 +19,6 @@ class ColorSystem {
   static const Color red = Color(0XFFFF3B30);
   static const Color voteBlue = Color(0xFF5D6CF7);
   static const Color voteRed = Color(0xFFF75D5D);
+  static const Color kakao = Color(0xFFFEE500);
+  static const Color googleFont = Color(0xFF757575);
 }
