@@ -266,9 +266,20 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<List<Debate>> getDebateList(String state) async {
+  Future<List<Debate>> getDebateList({
+    int? page,
+    String? sortBy,
+    String? status,
+    String? category,
+  }) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'state': state};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'sortBy': sortBy,
+      r'status': status,
+      r'category': category,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result = await _dio
@@ -279,7 +290,7 @@ class _ApiService implements ApiService {
     )
             .compose(
               _dio.options,
-              'debates',
+              'debates/debate-list',
               queryParameters: queryParameters,
               data: _data,
             )
