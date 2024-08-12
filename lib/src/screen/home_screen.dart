@@ -24,8 +24,15 @@ class HomeScreen extends ConsumerWidget {
           child: const HomeAppbar(),
         ),
       ),
-      body: Column(
-        children: [HomeView(), HotLists(), HotFighter()],
+      body: ListView(
+        padding: EdgeInsets.all(16.w),
+        children: [
+          HomeView(), // 첫 번째 위젯
+          SizedBox(height: 20.h), // 위젯 간의 간격
+          HotLists(), // 두 번째 위젯
+          SizedBox(height: 20.h), // 위젯 간의 간격
+          HotFighter(), // 세 번째 위젯
+        ],
       ),
       //   body: homeState.isLoading
       //       ? const Center(child: SpinKitThreeBounce(
