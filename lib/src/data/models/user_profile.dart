@@ -3,7 +3,7 @@ class UserProfile {
   final String nickname;
   final String email;
   final String role;
-  final String? profilePicture;
+  String profilePicture;
   final String createdAt;
   final String updatedAt;
   final bool tutorialCompleted;
@@ -14,7 +14,7 @@ class UserProfile {
     required this.nickname,
     required this.email,
     required this.role,
-    this.profilePicture,
+    required this.profilePicture,
     required this.createdAt,
     required this.updatedAt,
     required this.tutorialCompleted,

@@ -7,7 +7,9 @@ import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 
 import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:tito_app/src/data/models/popup_state.dart';
+import 'package:tito_app/src/widgets/reuse/debateInfoPopup.dart';
 import 'package:tito_app/src/widgets/reuse/debate_popup.dart';
 import 'package:tito_app/src/widgets/reuse/profile_popup.dart';
 import 'package:tito_app/src/widgets/reuse/rule_pop_up.dart';
@@ -176,6 +178,17 @@ class PopupViewmodel extends StateNotifier<PopupState> {
 
   // 토론 팝업 띄우기
   Future<bool> showTitlePopup(BuildContext context) async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return const Debateinfopopup();
+      },
+    );
+
+    return result ?? false; // return false if result is null
+  }
+
+  Future<bool> showUserPopup(BuildContext context) async {
     final result = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {

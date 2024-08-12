@@ -36,9 +36,9 @@ abstract class ApiService {
   @GET("users/debates")
   Future<DebateUsermade> getUserMade();
 
-  @PATCH("users/{id}")
-  Future<void> updateUserProfile(
-      @Path("id") int id, @Body() Map<String, dynamic> data);
+  @PUT("users/profile-picture")
+  @MultiPart()
+  Future<void> putUpdatePicture(@Body() FormData profileFile);
 
   @GET("users/{id}")
   Future<UserProfile> getUserProfile(@Path("id") int debateId);
