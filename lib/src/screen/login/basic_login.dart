@@ -9,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+//import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 

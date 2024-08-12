@@ -30,7 +30,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
           context.go('/list');
           break;
         case 3:
-          context.go('/ai_create');
+          context.push('/myalarm');
           break;
         case 4:
           context.go('/mypage');
@@ -76,11 +76,10 @@ class _BottomBarState extends ConsumerState<BottomBar> {
         ),
         BottomNavigationBarItem(
           icon: SvgPicture.asset(
-            selectedIndex == 3
-                ? 'assets/icons/bottom_ai_black.svg'
-                : 'assets/icons/final_ai.svg',
+            'assets/icons/bottom_bell.svg',
+            color: selectedIndex == 3 ? Colors.black : Colors.grey,
           ),
-          label: 'AI 주제',
+          label: '알림',
         ),
         BottomNavigationBarItem(
           icon: Padding(
