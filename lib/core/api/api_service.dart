@@ -55,7 +55,7 @@ abstract class ApiService {
   @GET("debates/hot-debate-participants")
   Future<DebateHotfighter> getDebateHotfighter();
   @GET("debates/hot-debate")
-  Future<List<DebateHotdebate>> getDebateHotdebate();
+  Future<DebateHotdebate> getDebateHotdebate();
 
   @GET("debates/{id}")
   Future<DebateInfo> getDebateInfo(@Path("id") int debateId);

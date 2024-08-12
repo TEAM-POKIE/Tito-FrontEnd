@@ -75,12 +75,15 @@ class _BottomBarState extends ConsumerState<BottomBar> {
           label: '',
         ),
         BottomNavigationBarItem(
-          icon: SvgPicture.asset(
-            selectedIndex == 3
-                ? 'assets/icons/bottom_ai_black.svg'
-                : 'assets/icons/final_ai.svg',
+          icon: Padding(
+            padding: EdgeInsets.only(top: 10.h),
+            child: SvgPicture.asset(
+              'assets/icons/bottom_bell.svg',
+              width: 60.w,
+              height: 60.h,
+            ),
           ),
-          label: 'AI 주제',
+          label: '알림',
         ),
         BottomNavigationBarItem(
           icon: Padding(

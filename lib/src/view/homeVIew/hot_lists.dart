@@ -86,14 +86,14 @@ class _HotListState extends ConsumerState<HotLists> {
 
   Future<void> fetchHotDebates() async {
     try {
-      final List<DebateHotdebate> debateResponse =
+      final debateResponse =
           await ApiService(DioClient.dio).getDebateHotdebate();
 
       // 디버깅을 위해 API 응답을 출력
       print('API Response: $debateResponse');
       
       setState(() {
-        hotlist = debateResponse; // response를 리스트로 감싸서 할당
+        hotlist = [debateResponse]; // response를 리스트로 감싸서 할당
         isLoading = false;
       });
     } catch (e) {
