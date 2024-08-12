@@ -378,6 +378,39 @@ class _ApiService implements ApiService {
   }
 
   @override
+  Future<List<DebateHotfighter>> getDebateHotfighter() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<List<DebateHotfighter>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'debates/hot-debate-participants',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final data = _result.data!['data'] as List<dynamic>;
+
+    // 리스트의 각 항목을 DebateHotdebate 객체로 변환합니다.
+    final List<DebateHotfighter> debateList = data
+        .map((item) => DebateHotfighter.fromJson(item as Map<String, dynamic>))
+        .toList();
+
+    return debateList;
+  }
+
+  @override
   Future<List<DebateParticipants>> getParicipants(int debateId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -404,33 +437,6 @@ class _ApiService implements ApiService {
         .map((dynamic i) =>
             DebateParticipants.fromJson(i as Map<String, dynamic>))
         .toList();
-    return _value;
-  }
-
-  @override
-  Future<DebateHotfighter> getDebateHotfighter() async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<DebateHotfighter>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'debates/hot-debate-participants',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final _value = DebateHotfighter.fromJson(_result.data!);
     return _value;
   }
 

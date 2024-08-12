@@ -4,15 +4,13 @@ class DebateHotfighter {
   final String? profilePicture;
 
   DebateHotfighter(
-      {required this.userId,
-      required this.nickname,
-      this.profilePicture});
+      {required this.userId, required this.nickname, this.profilePicture});
 
   factory DebateHotfighter.fromJson(Map<String, dynamic> json) {
     return DebateHotfighter(
-        userId: json['data']['userId'] ?? 0,
-        nickname: json['data']['nickname'] ?? '',
-        profilePicture: json['data']['profilePicture']);
+        userId: json['userId'] ?? 0,
+        nickname: json['nickname'] ?? '',
+        profilePicture: json['profilePicture']);
   }
 
   Map<String, dynamic> toJson() {

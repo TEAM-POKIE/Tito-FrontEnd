@@ -3,16 +3,19 @@ import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/src/data/models/debate_benner.dart';
 import 'package:tito_app/src/data/models/debate_hotdebate.dart';
+import 'package:tito_app/src/data/models/debate_hotfighter.dart';
 
 class HomeState {
   final List<DebateBenner> debateBanners;
   final List<DebateHotdebate> hotlist;
+  final List<DebateHotfighter> hotfighter;
   final bool isLoading;
   final bool hasError;
 
   HomeState({
     this.debateBanners = const [],
     this.hotlist = const [],
+    this.hotfighter = const [],
     this.isLoading = true,
     this.hasError = false,
   });
@@ -20,11 +23,13 @@ class HomeState {
   HomeState copyWith({
     List<DebateBenner>? debateBanners,
     List<DebateHotdebate>? hotlist,
+    List<DebateHotfighter>? hotfighter,
     bool? isLoading,
     bool? hasError,
   }) {
     return HomeState(
       debateBanners: debateBanners ?? this.debateBanners,
+      hotfighter: hotfighter ?? this.hotfighter,
       hotlist: hotlist ?? this.hotlist,
       isLoading: isLoading ?? this.isLoading,
       hasError: hasError ?? this.hasError,
@@ -66,6 +71,26 @@ class HomeViewModel extends StateNotifier<HomeState> {
       // 상태를 업데이트
       state = state.copyWith(
         hotlist: response,
+        isLoading: false,
+      );
+    } catch (e) {
+      print('Error fetching debates: $e');
+      state = state.copyWith(
+        hasError: true,
+        isLoading: false,
+      );
+    }
+  }
+
+  Future<void> fetchHotfighter() async {
+    try {
+      // API에서 DebateHotdebate 객체의 리스트를 가져옴
+      final List<DebateHotfighter> response =
+          await apiService.getDebateHotfighter();
+      print(response);
+      // 상태를 업데이트
+      state = state.copyWith(
+        hotfighter: response,
         isLoading: false,
       );
     } catch (e) {
