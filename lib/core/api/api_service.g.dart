@@ -271,8 +271,8 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{r'state': state};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result =
-        await _dio.fetch<List<dynamic>>(_setStreamType<List<Debate>>(Options(
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<List<Debate>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -288,10 +288,46 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var _value = _result.data!
+    final List<dynamic> data = _result.data!['data'];
+    var _value = data
         .map((dynamic i) => Debate.fromJson(i as Map<String, dynamic>))
         .toList();
     return _value;
+  }
+
+  @override
+  Future<List<DebateBenner>> getDebateBenner() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+
+    // API 요청을 통해 데이터를 가져옵니다.
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<List<DebateBenner>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'debates/on-fire-debate',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+              baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
+            )));
+
+    // API 응답의 'data' 필드가 리스트 형태로 오는지 확인합니다.
+    final data = _result.data!['data'] as List<dynamic>;
+
+    // 리스트의 각 항목을 DebateBenner 객체로 변환합니다.
+    final List<DebateBenner> debateList = data
+        .map((item) => DebateBenner.fromJson(item as Map<String, dynamic>))
+        .toList();
+
+    return debateList;
   }
 
   @override
@@ -321,33 +357,6 @@ class _ApiService implements ApiService {
         .map((dynamic i) =>
             DebateParticipants.fromJson(i as Map<String, dynamic>))
         .toList();
-    return _value;
-  }
-
-  @override
-  Future<DebateBenner> getDebateBenner() async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<DebateBenner>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'debates/on-fire-debate',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final _value = DebateBenner.fromJson(_result.data!);
     return _value;
   }
 

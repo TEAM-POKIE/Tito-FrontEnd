@@ -1,120 +1,57 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:tito_app/src/data/models/list_info.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
+import 'package:tito_app/src/data/models/debate_benner.dart';
 
-// State class
 class HomeState {
-  final List<String> titles;
-  final List<String> contents;
-  final List<HotList> hotItems;
+  final List<DebateBenner> debateBanners;
   final bool isLoading;
   final bool hasError;
 
   HomeState({
-    this.titles = const [],
-    this.contents = const [],
-    this.hotItems = const [],
+    this.debateBanners = const [],
     this.isLoading = true,
     this.hasError = false,
   });
 
   HomeState copyWith({
-    List<String>? titles,
-    List<String>? contents,
-    List<HotList>? hotItems,
+    List<DebateBenner>? debateBanners,
     bool? isLoading,
     bool? hasError,
   }) {
     return HomeState(
-      titles: titles ?? this.titles,
-      contents: contents ?? this.contents,
-      hotItems: hotItems ?? this.hotItems,
+      debateBanners: debateBanners ?? this.debateBanners,
       isLoading: isLoading ?? this.isLoading,
       hasError: hasError ?? this.hasError,
     );
   }
 }
 
-// StateNotifier class
 class HomeViewModel extends StateNotifier<HomeState> {
-  HomeViewModel() : super(HomeState()) {
-    _init();
-  }
+  HomeViewModel() : super(HomeState());
 
-  final PageController _controller = PageController();
-  PageController get controller => _controller;
   final ApiService apiService = ApiService(DioClient.dio);
 
-  Future<void> _init() async {
-    await fetchTitles();
-    // await hotList();
-  }
-
-  // void goMyPage(BuildContext context) {
-  //  context.push('/mypage')
-  // }
-
-  void goListPage(BuildContext context) {
-    context.push('list');
-  }
-
-  Future<void> fetchTitles() async {
+  Future<void> hotList() async {
     try {
-      // final response = await apiService.getData('live_debate_list');
+      // API에서 DebateBenner 객체의 리스트를 가져옴
+      final List<DebateBenner> debateBanners =
+          await apiService.getDebateBenner();
 
-      // final List<ListBanner> loadedItems = [];
-      // for (final item in response.entries) {
-      //   loadedItems.add(
-      //     ListBanner(
-      //       id: item.key,
-      //       title: item.value['title'],
-      //       content: item.value['content'],
-      //     ),
-      //   );
-      // }
+      // 가져온 데이터를 출력해서 확인
+      print('Fetched debate banners: $debateBanners');
 
-      // state = state.copyWith(
-      //   titles: loadedItems.map((item) => item.title).toList(),
-      //   contents: loadedItems.map((item) => item.content).toList(),
-      //   isLoading: false,
-      // );
+      // 상태를 업데이트
+      state = state.copyWith(
+        debateBanners: debateBanners,
+        isLoading: false,
+      );
     } catch (error) {
+      print('Error fetching debate banners: $error');
       state = state.copyWith(
         hasError: true,
         isLoading: false,
       );
-      // UI쪽에서 Snackbar나 에러처리를 해야함
     }
   }
-
-  // Future<void> hotList() async {
-  //   // try {
-  //     // // final response = await apiService.getData('hot_debate_list');
-
-  //     // final List<HotList> hotItems = [];
-  //     // for (final item in response.entries) {
-  //     //   hotItems.add(
-  //     //     HotList(
-  //     //       id: item.key,
-  //     //       hotTitle: item.value['title'],
-  //     //       hotContent: item.value['content'],
-  //     //       hotScore: item.value['hot_count'],
-  //     //     ),
-  //     //   );
-  //     // }
-
-  //   //   state = state.copyWith(
-  //   //     hotItems: hotItems,
-  //   //     isLoading: false,
-  //   //   );
-  //   // } catch (error) {
-  //   //   state = state.copyWith(
-  //   //     hasError: true,
-  //   //     isLoading: false,
-  //   //   );
-  //     // UI쪽에서 Snackbar나 에러처리를 해야함
-  //   }
 }

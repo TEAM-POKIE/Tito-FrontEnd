@@ -55,6 +55,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
         });
 
         await ApiService(DioClient.dio).putUpdatePicture(formData);
+
         final userInfoResponse = await ApiService(DioClient.dio).getUserInfo();
 
         final loginInfoNotifier = ref.read(loginInfoProvider.notifier);
