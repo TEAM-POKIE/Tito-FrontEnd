@@ -60,6 +60,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
                 child: Container(
+                  width: 352.w,
+                  height: 140.h,
                   decoration: BoxDecoration(
                     color: ColorSystem.black,
                     borderRadius: BorderRadius.circular(20.r),
@@ -75,8 +77,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '불 붙은 실시간 토론🔥',
-                              style: FontSystem.KR14M.copyWith(
+                              '불 붙은 실시간 토론 🔥',
+                              style: FontSystem.KR16M.copyWith(
                                 color: ColorSystem.white,
                               ),
                             ),
@@ -89,7 +91,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                               ),
                               child: Text(
                                 debate.debateStatus,
-                                style: FontSystem.KR14M.copyWith(
+                                style: FontSystem.KR14SB.copyWith(
                                   color: ColorSystem.white,
                                 ),
                               ),
@@ -99,45 +101,36 @@ class _HomeViewState extends ConsumerState<HomeView> {
                         SizedBox(height: 12.h),
                         Text(
                           debate.debateTitle,
-                          style: const TextStyle(
-                            color: ColorSystem.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                          maxLines: 2,
+                          style: FontSystem.KR18B
+                              .copyWith(color: ColorSystem.white),
+                          maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        SizedBox(height: 8.h),
+                        SizedBox(height: 4.h),
                         Row(
                           children: [
                             Text(
                               debate.debateMakerOpinion,
-                              style: const TextStyle(
-                                color: ColorSystem.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
+                              style: FontSystem.KR18B
+                                  .copyWith(color: ColorSystem.white),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                             SizedBox(
-                              width: 10,
+                              width: 10.w,
                             ),
                             Text(
                               'vs',
-                              style: FontSystem.KR16B
+                              style: FontSystem.KR18B
                                   .copyWith(color: ColorSystem.white),
                             ),
                             SizedBox(
-                              width: 10,
+                              width: 10.w,
                             ),
                             Text(
                               debate.debateJoinerOpinion,
-                              style: const TextStyle(
-                                color: ColorSystem.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
+                              style: FontSystem.KR18B
+                                  .copyWith(color: ColorSystem.white),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -154,9 +147,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
         SmoothPageIndicator(
           controller: _pageController, // 동일한 PageController 사용
           count: homeState.debateBanners.length,
-          effect: const WormEffect(
-            dotWidth: 10.0,
-            dotHeight: 10.0,
+          effect: WormEffect(
+            dotWidth: 6.w,
+            dotHeight: 6.h,
             activeDotColor: ColorSystem.black,
             dotColor: ColorSystem.grey,
           ),
