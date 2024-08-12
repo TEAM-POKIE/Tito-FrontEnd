@@ -69,8 +69,7 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios,
-              color: ColorSystem.black, size: 24),
+          icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
           onPressed: () {
             context.pop();
           },

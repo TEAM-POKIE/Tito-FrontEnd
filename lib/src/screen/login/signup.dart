@@ -4,6 +4,7 @@ import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -53,7 +54,7 @@ class _SignUpState extends State<Signup> {
           onPressed: () {
             context.go('/login');
           },
-          icon: const Icon(Icons.arrow_back_ios),
+          icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
         ),
         title: Text('회원가입'),
         titleTextStyle: FontSystem.KR16SB,

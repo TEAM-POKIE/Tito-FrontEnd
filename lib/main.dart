@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true, // 분할 화면 모드를 활성화
       builder: (context, child) => ProviderScope(
         child: MaterialApp.router(
+          debugShowCheckedModeBanner: false,
           routerConfig: router,
           title: 'Tito',
           theme: ThemeData(

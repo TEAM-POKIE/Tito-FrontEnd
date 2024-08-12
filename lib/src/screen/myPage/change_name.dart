@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:dio/dio.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/multpart_file_with_to_json.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ChangeName extends ConsumerWidget {
   const ChangeName({super.key});
@@ -36,7 +37,7 @@ class ChangeName extends ConsumerWidget {
           onPressed: () {
             context.pop();
           },
-          icon: const Icon(Icons.arrow_back_ios),
+          icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
         ),
         centerTitle: true,
         title: const Text('닉네임 수정', style: FontSystem.KR16SB),

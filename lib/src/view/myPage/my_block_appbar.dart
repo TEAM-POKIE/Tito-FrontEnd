@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/src/screen/home_screen.dart';
 import 'package:tito_app/core/constants/style.dart';
+import 'package:flutter_svg/svg.dart';
 
 class MyBlockAppbar extends StatelessWidget {
   const MyBlockAppbar({super.key});
@@ -15,7 +16,7 @@ class MyBlockAppbar extends StatelessWidget {
         onPressed: () {
           context.pop();
         },
-        icon: const Icon(Icons.arrow_back_ios),
+        icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
       ),
       title: const Text('차단 리스트', style: FontSystem.KR16SB),
       centerTitle: true,

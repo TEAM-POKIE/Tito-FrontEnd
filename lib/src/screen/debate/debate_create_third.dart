@@ -7,6 +7,7 @@ import 'package:tito_app/core/provider/debate_create_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 
 class DebateCreateThird extends ConsumerStatefulWidget {
@@ -50,7 +51,7 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
             onPressed: () {
               context.pop();
             },
-            icon: const Icon(Icons.arrow_back_ios),
+            icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
           ),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,

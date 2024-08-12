@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/nav_provider.dart';
@@ -19,7 +20,74 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   void _onItemTapped(int index) {
     final notifier = ref.read(selectedIndexProvider.notifier);
     if (index == 2) {
-      context.push('/debate_create').then((_) {});
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            height: 130.h,
+            margin: EdgeInsets.only(
+              left: 72.w,
+              right: 72.w,
+              bottom: 100.h,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.white, // 모달 배경색
+              borderRadius: BorderRadius.all(
+                Radius.circular(20.r), // 모달 전체 라운딩 처리
+              ),
+            ),
+            child: Stack(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 20.w),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          context.push('/debate_create');
+                        },
+                        child: Row(
+                          children: [
+                            SvgPicture.asset('assets/icons/bottom_plus_ai.svg'),
+                            SizedBox(width: 10.w),
+                            const Text('토론장 개설', style: FontSystem.KR16M),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      TextButton(
+                        onPressed: () {
+                          context.push('/ai_create');
+                        },
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                                'assets/icons/bottom_plus_create.svg'),
+                            SizedBox(width: 10.w),
+                            const Text('AI 랜덤 주제 생성기', style: FontSystem.KR16M),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  right: 0.h,
+                  child: IconButton(
+                    onPressed: () {
+                      context.pop();
+                    },
+                    icon: const Icon(Icons.close),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+        backgroundColor: Colors.transparent,
+      );
     } else {
       notifier.state = index;
       switch (index) {
@@ -30,7 +98,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
           context.go('/list');
           break;
         case 3:
-          context.push('/myalarm');
+          context.go('/myalarm');
           break;
         case 4:
           context.go('/mypage');

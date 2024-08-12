@@ -22,13 +22,13 @@ class HomeAppbar extends ConsumerWidget {
         actions: [
           IconButton(
             onPressed: () {
-              context.go('/myalarm');
+              context.push('/search');
             },
             icon: SizedBox(
-              width: 30.w,
-              height: 30.h,
+              // width: 30.w,
+              // height: 30.h,
               child: SvgPicture.asset(
-                'assets/icons/home_alarm.svg',
+                'assets/icons/new_search.svg',
               ),
             ),
           ),

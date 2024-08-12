@@ -11,7 +11,6 @@ import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/websocket_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tito_app/src/data/models/debate_list.dart';
-import 'package:tito_app/src/widgets/reuse/search_bar.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
@@ -95,17 +94,29 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                 style: FontSystem.KR22B,
               ),
             ),
+            leadingWidth: 69.41.w,
+            actions: [
+              IconButton(
+                onPressed: () {
+                  context.push('/search');
+                },
+                icon: SizedBox(
+                  // width: 30.w,
+                  // height: 30.h,
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 24.w),
+                    child: SvgPicture.asset(
+                      'assets/icons/new_search.svg',
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
       body: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 20.w,
-            ),
-            child: const CustomSearchBar(),
-          ),
           SizedBox(height: 20.h),
           Padding(
             padding: EdgeInsets.only(left: 20.w),
@@ -294,13 +305,12 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                               ? ColorSystem.purple
                                               : ColorSystem.purple,
                                         )),
-                                        
                                   ),
                                   SizedBox(height: 10.h),
                                   Text(
                                     debate.debateTitle ?? 'No title',
                                     style: FontSystem.KR18M.copyWith(height: 1),
-                                    maxLines: 1, // 텍스트를 한 줄로 제한 
+                                    maxLines: 1, // 텍스트를 한 줄로 제한
                                     overflow:
                                         TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
                                   ),

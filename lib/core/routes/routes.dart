@@ -11,6 +11,7 @@ import 'package:tito_app/src/screen/myPage/my_contact.dart';
 import 'package:tito_app/src/screen/myPage/my_debate.dart';
 import 'package:tito_app/src/screen/myPage/my_block.dart';
 import 'package:tito_app/splash_screen.dart';
+import 'package:tito_app/src/screen/searchPage.dart';
 import 'package:tito_app/src/view/chatView/show_case.dart';
 import 'package:tito_app/src/view/myPage/my_personalRule.dart';
 import 'package:tito_app/src/view/myPage/my_rule.dart';
@@ -152,6 +153,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/showCase',
       builder: (context, state) => ShowCase(),
+    ),
+    GoRoute(
+      path: '/search',
+      builder: (context, state) => const Searchpage(),
     ),
   ],
 );

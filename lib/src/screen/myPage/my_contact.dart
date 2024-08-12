@@ -8,6 +8,7 @@ import 'package:tito_app/src/view/myPage/pick_image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 class MyContact extends StatefulWidget {
   const MyContact({super.key});
@@ -37,7 +38,7 @@ class _MyContactState extends State<MyContact> {
           onPressed: () {
             context.pop();
           },
-          icon: const Icon(Icons.arrow_back_ios),
+          icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
         ),
         title: const Text(
           '문의하기',

@@ -8,7 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tito_app/src/widgets/reuse/bottombar.dart';
 
 class AiCreate extends StatelessWidget {
   SelectionController selectionController = Get.put(SelectionController());
@@ -99,6 +98,15 @@ class AiCreate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: ColorSystem.white,
+        leading: IconButton(
+          onPressed: () {
+            context.pop();
+          },
+          icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
+        ),
+      ),
       body: Column(
         children: [
           SizedBox(
@@ -227,7 +235,6 @@ class AiCreate extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomBar(),
     );
   }
 }

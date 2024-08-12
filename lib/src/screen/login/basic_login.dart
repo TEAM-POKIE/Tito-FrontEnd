@@ -80,7 +80,7 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
           onPressed: () {
             context.go('/login');
           },
-          icon: const Icon(Icons.arrow_back_ios),
+          icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
         ),
         title: const Text('로그인'),
         titleTextStyle: FontSystem.KR16SB,
