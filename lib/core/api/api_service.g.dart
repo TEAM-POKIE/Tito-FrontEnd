@@ -446,6 +446,38 @@ class _ApiService implements ApiService {
   }
 
   @override
+  Future<List<GetUserBlock>> getBlockedUser() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<List<GetUserBlock>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'user-block-list/blocked-users',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final data = _result.data!['data'] as List<dynamic>;
+
+    final List<GetUserBlock> debateList = data
+        .map((item) => GetUserBlock.fromJson(item as Map<String, dynamic>))
+        .toList();
+
+    return debateList;
+  }
+
+  @override
   Future<List<DebateParticipants>> getParicipants(int debateId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

@@ -27,7 +27,7 @@ class UserProfile {
       nickname: json['data']['nickname'] ?? '',
       email: json['data']['email'] ?? '',
       role: json['data']['role'] ?? '',
-      profilePicture: json['data']['profilePicture'],
+      profilePicture: json['data']['profilePicture'] ?? '',
       createdAt: json['data']['createdAt'] ?? '',
       updatedAt: json['data']['updatedAt'] ?? '',
       tutorialCompleted: json['data']['tutorialCompleted'] ?? false,
