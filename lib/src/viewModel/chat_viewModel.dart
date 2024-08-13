@@ -261,7 +261,10 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
       "content": message
     });
     print(jsonMessage);
-    context.push("/showCase");
+    if (loginInfo!.tutorialCompleted == false) {
+      context.push("/showCase");
+    }
+
     _channel.sink.add(jsonMessage);
 
     controller.clear();

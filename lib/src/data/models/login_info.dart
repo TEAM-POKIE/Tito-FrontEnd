@@ -6,7 +6,7 @@ class LoginInfo {
   final String? profilePicture;
   final String createdAt;
   final String updatedAt;
-  final bool tutorialCompleted;
+  bool tutorialCompleted;
 
   LoginInfo({
     required this.id,
