@@ -8,7 +8,7 @@ class ColorSystem {
   static const Color startPurple = Color.fromARGB(153, 255, 255, 255);
   static const Color lightPurple = Color.fromARGB(51, 142, 72, 248);
   static const Color white = Color(0xFFFFFFFF);
-  static const Color yellow = Color(0xFFDCF333);
+  static const Color yellow = Color(0xFFDEF008);
   static const Color lightYellow = Color.fromARGB(128, 220, 243, 51);
   static const Color ligthGrey = Color(0xFFF6F6F6);
   static const Color grey1 = Color(0xFF6B6B6B);

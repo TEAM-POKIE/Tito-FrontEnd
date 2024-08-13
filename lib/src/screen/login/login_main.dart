@@ -22,17 +22,17 @@ class LoginMain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, String>> loginOptions = [
-      {
-        'icon': 'assets/icons/kakao_size.svg',
-      },
-      {
-        'icon': 'assets/icons/apple_size.svg',
-      },
-      {
-        'icon': 'assets/icons/google_size.svg',
-      },
-    ];
+    // final List<Map<String, String>> loginOptions = [
+    //   {
+    //     'icon': 'assets/icons/kakao_size.svg',
+    //   },
+    //   {
+    //     'icon': 'assets/icons/apple_size.svg',
+    //   },
+    //   {
+    //     'icon': 'assets/icons/google_size.svg',
+    //   },
+    // ];
 
     void goBasicLogin() {
       context.push('/basicLogin');
@@ -138,21 +138,108 @@ class LoginMain extends StatelessWidget {
               height: 127.29.h,
             ),
             SizedBox(height: 102.h),
-            ...loginOptions.map((option) {
-              return Padding(
-                padding: EdgeInsets.only(bottom: 10.h, left: 32.w, right: 32.w),
-                child: Container(
+            Column(
+              children: [
+                Container(
                   width: 327.w,
                   height: 54.h,
+                  decoration: BoxDecoration(
+                      color: ColorSystem.kakao,
+                      borderRadius: BorderRadius.circular(6.r)),
                   child: GestureDetector(
                     onTap: () {},
-                    child: SvgPicture.asset(
-                      option['icon']!,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset('assets/icons/kakao_new.svg'),
+                        SizedBox(width: 5.w),
+                        Text('카카오계정으로 로그인', style: FontSystem.Login16M)
+                      ],
                     ),
                   ),
                 ),
-              );
-            }),
+                SizedBox(height: 10.h),
+                Container(
+                  width: 327.w,
+                  height: 54.h,
+                  decoration: BoxDecoration(
+                      color: ColorSystem.black,
+                      borderRadius: BorderRadius.circular(6.r)),
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset('assets/icons/apple_new.svg'),
+                        SizedBox(width: 5.w),
+                        Text('Apple로 로그인',
+                            style: FontSystem.Login16M.copyWith(
+                                color: ColorSystem.white))
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10.h),
+                Container(
+                  width: 327.w,
+                  height: 54.h,
+                  decoration: BoxDecoration(
+                      color: ColorSystem.white,
+                      borderRadius: BorderRadius.circular(6.r)),
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset('assets/icons/google_new.svg'),
+                        SizedBox(width: 5.w),
+                        Text('Google 계정으로 로그인', style: FontSystem.Login16M.copyWith(color: ColorSystem.googleFont))
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10.h),
+                Container(
+                  width: 327.w,
+                  height: 54.h,
+                  decoration: BoxDecoration(
+                      color: ColorSystem.black,
+                      borderRadius: BorderRadius.circular(6.r)),
+                  child: GestureDetector(
+                    onTap: goBasicLogin,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text('이메일로 로그인',
+                            style: FontSystem.Login16M.copyWith(
+                                color: ColorSystem.white))
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            // ...loginOptions.map((option) {
+            //   return Padding(
+            //     padding: EdgeInsets.only(bottom: 10.h, left: 32.w, right: 32.w),
+            //     child: Container(
+            //       width: 327.w,
+            //       height: 54.h,
+            //       child: GestureDetector(
+            //         onTap: () {},
+            //         child: SvgPicture.asset(
+            //           option['icon']!,
+            //         ),
+            //       ),
+            //     ),
+            //   );
+            // }),
+
             // SignInWithAppleButton(
             //   onPressed: () async {
             //     try {
@@ -213,14 +300,7 @@ class LoginMain extends StatelessWidget {
             //     }
             //   },
             // ),
-            Container(
-              width: 327.w,
-              height: 54.h,
-              child: GestureDetector(
-                onTap: goBasicLogin,
-                child: SvgPicture.asset('assets/icons/email_real.svg'),
-              ),
-            ),
+
             SizedBox(height: 64.h), // 버튼들 간의 간격 추가
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

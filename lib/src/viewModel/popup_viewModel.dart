@@ -9,6 +9,7 @@ import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:tito_app/src/data/models/popup_state.dart';
+import 'package:tito_app/src/view/myPage/logout_popup.dart';
 import 'package:tito_app/src/widgets/reuse/debateInfoPopup.dart';
 import 'package:tito_app/src/widgets/reuse/debate_popup.dart';
 import 'package:tito_app/src/widgets/reuse/profile_popup.dart';
@@ -214,4 +215,16 @@ class PopupViewmodel extends StateNotifier<PopupState> {
 
     return result ?? false; // return false if result is null
   }
+
+  //Future<bool> showLogoutPopup(BuildContext context) async {
+  // final result = await showDialog<bool>(
+  //   context: context,
+  //   builder: (BuildContext context) {
+  //     return const LogoutPopup();
+  //   },
+  // );
+
+  //   return result ?? false; // return false if result is null
+  // }
+  //}
 }

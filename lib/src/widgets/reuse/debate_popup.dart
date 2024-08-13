@@ -66,7 +66,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                     : popupState.imgSrc != null
                         ? SvgPicture.asset(
                             popupState.imgSrc!,
-                            width: 40.w,
+                            width: 40.w, 
                             height: 40.h,
                           )
                         : Container(),
@@ -225,7 +225,6 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
             title: '토론이 시작 됐어요! 🎵',
             content: '서로 존중하는 토론을 부탁드려요!',
           );
-
           context.pop();
           await Future.delayed(
               Duration(milliseconds: 100)); // ensure popup has closed
@@ -235,7 +234,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
           chatViewModel.sendVote(selectedDebate);
         } else if (popupState.title == '토론 시작 시 알림을 보내드릴게요!') {
           context.pop();
-        }
+        } 
       },
       child: Text(
         popupState.buttonContentLeft!,

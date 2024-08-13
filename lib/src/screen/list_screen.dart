@@ -149,7 +149,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                               side: BorderSide(
                                 color: categorySelectedIndex == index
                                     ? ColorSystem.black // 선택된 경우 테두리 색상
-                                    : ColorSystem.grey3, // 선택되지 않은 경우 테두리 색상
+                                    : ColorSystem.red,// 선택되지 않은 경우 테두리 색상
                                 width: 1.5, // 테두리 두께
                               ),
                             ),

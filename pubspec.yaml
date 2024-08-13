@@ -107,9 +107,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/icons/final_ai.svg
-    - assets/icons/bottom_ai_black.svg
-    - assets/icons/bottom_debate.svg
+    - assets/icons/bottom_bell.svg
     - assets/icons/bottom_home.svg
     - assets/icons/bottom_list.svg
     - assets/icons/bottom_my.svg
@@ -125,9 +123,6 @@ flutter:
     - assets/icons/home_alarm.svg
     - assets/icons/purple_rule.svg
     - assets/icons/black_talk.svg
-    - assets/icons/chat_alarm.svg
-    - assets/icons/chat_big_alarm.svg
-    - assets/icons/chat_final_alarm.svg
     - assets/icons/dot.svg
     - assets/icons/chat_cute.svg
     - assets/icons/plus.svg
@@ -169,7 +164,6 @@ flutter:
     - assets/icons/bell_alarm.svg
     - assets/icons/bell_big_alarm.svg
     - assets/icons/chat_appbar_bell.svg
-    - assets/icons/bottom_bell.svg
     - assets/icons/star.svg
     - assets/icons/bottom_plus_create.svg
     - assets/icons/bottom_plus_ai.svg
@@ -244,6 +238,13 @@ flutter:
         - asset: assets/fonts/Pretendard-Regular.ttf
           weight: 400
         - asset: assets/fonts/Pretendard-Bold.ttf
+          weight: 700
+
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Roboto-Bold.ttf
           weight: 700
   #
   # For details regarding fonts from package dependencies,
