@@ -39,7 +39,10 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
         borderRadius: BorderRadius.circular(20.r),
       ),
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 13.w),
+        width: 280.w,
+        height: 300.h,
+        padding:
+            EdgeInsets.only(top: 12.h, left: 16.w, right: 16.w),    // 팝업 안의 전체 내용 패딩 부분
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -60,13 +63,13 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                               height: 40.h,
                             ),
                           Text(popupState.titleLabel ?? '',
-                              style: FontSystem.KR14SB),
+                              style: FontSystem.KR18SB),
                         ],
                       )
                     : popupState.imgSrc != null
                         ? SvgPicture.asset(
                             popupState.imgSrc!,
-                            width: 40.w, 
+                            width: 40.w,
                             height: 40.h,
                           )
                         : Container(),
@@ -77,9 +80,9 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                 ),
               ],
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 16.h), // 팝업 아이콘과 팝업 제목 간 간격
             Text(popupState.title ?? '', style: FontSystem.KR18SB),
-            const SizedBox(height: 10),
+            SizedBox(height: 20.h), // 팝업 제목 과 팝업 내용컨테이너 간 간격
             popupState.title == '토론의 승자를 투표해주세요!'
                 ? Container(
                     width: MediaQuery.of(context).size.width * 0.7,
@@ -180,19 +183,25 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                     ),
                   )
                 : Container(
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    // 팝업 창 안 내용 부분
+                    width: 248.w,
+                    height: 100.h,
                     decoration: BoxDecoration(
-                      color: ColorSystem.ligthGrey,
-                      borderRadius: BorderRadius.circular(10),
-                      //border
-                    ),
-                    child: Text(
-                      popupState.content ?? '',
-                      textAlign: TextAlign.center,
-                      style: FontSystem.KR14R,
+                        color: ColorSystem.ligthGrey,
+                        borderRadius: BorderRadius.circular(12.r),
+                        border: Border.all(
+                          color: ColorSystem.grey3,
+                        )),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 22.h),
+                      child: Text(
+                        popupState.content ?? '',
+                        textAlign: TextAlign.center,
+                        style: FontSystem.KR14R,
+                      ),
                     ),
                   ),
+                  SizedBox(height: 20.h),   // 팝업 내용과 팝업 버튼 간 간격
             if (popupState.buttonStyle == 2)
               _twoButtons(context, ref)
             else if (popupState.buttonStyle == 1)
@@ -210,35 +219,41 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
     final debateState = ref.watch(debateCreateProvider);
     final chatViewModel = ref.watch(chatInfoProvider.notifier);
 
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        fixedSize: Size(MediaQuery.of(context).size.width * 0.7, 45),
-        backgroundColor: ColorSystem.purple,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25.0),
+// 팝업창 보라색 버튼 부분
+
+    return Container(
+      width: 200.w,
+      height: 40.h,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: ColorSystem.purple,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.r),
+          ),
         ),
-      ),
-      onPressed: () async {
-        if (popupState.title == '토론에 참여 하시겠어요?') {
-          ref.read(popupProvider.notifier).state = popupState.copyWith(
-            buttonStyle: 0,
-            title: '토론이 시작 됐어요! 🎵',
-            content: '서로 존중하는 토론을 부탁드려요!',
-          );
-          context.pop();
-          await Future.delayed(
-              Duration(milliseconds: 100)); // ensure popup has closed
-          // popupViewModel.showDebatePopup(context);
-        } else if (popupState.title == '토론의 승자를 투표해주세요!') {
-          print(selectedDebate);
-          chatViewModel.sendVote(selectedDebate);
-        } else if (popupState.title == '토론 시작 시 알림을 보내드릴게요!') {
-          context.pop();
-        } 
-      },
-      child: Text(
-        popupState.buttonContentLeft!,
-        style: FontSystem.KR14M.copyWith(color: ColorSystem.white),
+        onPressed: () async {
+          if (popupState.title == '토론에 참여 하시겠어요?') {
+            ref.read(popupProvider.notifier).state = popupState.copyWith(
+              buttonStyle: 0,
+              title: '토론이 시작 됐어요! 🎵',
+              content: '서로 존중하는 토론을 부탁드려요!',
+            );
+            context.pop();
+            await Future.delayed(
+                Duration(milliseconds: 100)); // ensure popup has closed
+            // popupViewModel.showDebatePopup(context);
+          } else if (popupState.title == '토론의 승자를 투표해주세요!') {
+            print(selectedDebate);
+            chatViewModel.sendVote(selectedDebate);
+          } else if (popupState.title == '토론 시작 시 알림을 보내드릴게요!') {
+            context.pop();
+          }
+        },
+        child: Text(
+          // " 네 알겠어요 " 같은 확인 버튼 텍스트 부분
+          popupState.buttonContentLeft!,
+          style: FontSystem.KR14SB.copyWith(color: ColorSystem.white),
+        ),
       ),
     );
   }

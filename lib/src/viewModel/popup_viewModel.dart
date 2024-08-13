@@ -97,7 +97,7 @@ class PopupViewmodel extends StateNotifier<PopupState> {
     return result ?? false; // return false if result is null
   }
 
-  // 타이밍 팝업 띄우기
+  // 타이밍 팝업 띄우기             
   Future<bool> showTimingReceive(BuildContext context) async {
     state = state.copyWith(
       title: '상대방이 타이밍 벨을 울렸어요!',
