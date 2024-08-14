@@ -1,24 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
+import 'package:tito_app/core/api/api_service.dart';
+import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/constants/style.dart';
+import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/src/view/chatView/chat_view_details.dart';
 import 'package:tito_app/src/view/chatView/votingbar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 int currentShowcaseIndex = 0;
 
-class ShowCase extends StatelessWidget {
+class ShowCase extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final loginInfo = ref.read(loginInfoProvider);
     return ShowCaseWidget(
-      onFinish: () {
+      onFinish: () async {
+        loginInfo!.tutorialCompleted = true;
+        await ApiService(DioClient.dio).putTutorialCompleted();
+        final userInfoResponse = await ApiService(DioClient.dio).getUserInfo();
+
+        final loginInfoNotifier = ref.read(loginInfoProvider.notifier);
+        loginInfoNotifier.setLoginInfo(userInfoResponse);
         context.pop();
       },
       onComplete: (index, key) {
         currentShowcaseIndex++;
-        print(currentShowcaseIndex);
       },
       builder: (context) => ShowCaseScreen(),
     );

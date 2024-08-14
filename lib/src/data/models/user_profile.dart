@@ -8,6 +8,10 @@ class UserProfile {
   final String updatedAt;
   final bool tutorialCompleted;
   final bool quit;
+  final int winningRate;
+  final int debateTotalCount;
+  final int debateVictoryCount;
+  final int debateDefeatCount;
 
   UserProfile({
     required this.id,
@@ -19,6 +23,10 @@ class UserProfile {
     required this.updatedAt,
     required this.tutorialCompleted,
     required this.quit,
+    required this.winningRate,
+    required this.debateTotalCount,
+    required this.debateVictoryCount,
+    required this.debateDefeatCount,
   });
 
   factory UserProfile.fromJson(Map<String, dynamic> json) {
@@ -27,11 +35,15 @@ class UserProfile {
       nickname: json['data']['nickname'] ?? '',
       email: json['data']['email'] ?? '',
       role: json['data']['role'] ?? '',
-      profilePicture: json['data']['profilePicture'],
+      profilePicture: json['data']['profilePicture'] ?? '',
       createdAt: json['data']['createdAt'] ?? '',
       updatedAt: json['data']['updatedAt'] ?? '',
       tutorialCompleted: json['data']['tutorialCompleted'] ?? false,
       quit: json['data']['quit'] ?? false,
+      winningRate: json['data']['winningRate'] ?? 0,
+      debateTotalCount: json['data']['debateTotalCount'] ?? 0,
+      debateVictoryCount: json['data']['debateVictoryCount'] ?? 0,
+      debateDefeatCount: json['data']['debateDefeatCount'] ?? 0,
     );
   }
 
@@ -46,6 +58,10 @@ class UserProfile {
       'updatedAt': updatedAt,
       'tutorialCompleted': tutorialCompleted,
       'quit': quit,
+      'winningRate': winningRate,
+      'debateTotalCount': debateTotalCount,
+      'debateVictoryCount': debateVictoryCount,
+      ' debateDefeatCount': debateDefeatCount,
     };
   }
 }

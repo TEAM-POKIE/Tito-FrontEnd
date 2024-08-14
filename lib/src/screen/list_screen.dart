@@ -364,14 +364,14 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                         TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
                                   ),
                                   SizedBox(height: 4.h),
-                                  // Text(
-                                  //   '제한 시간: ${debate.debatedTimeLimit}분',
-                                  //   style: FontSystem.KR16M
-                                  //       .copyWith(color: ColorSystem.purple),
-                                  //   maxLines: 1, // 텍스트를 한 줄로 제한
-                                  //   overflow:
-                                  //       TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
-                                  // ),
+                                  Text(
+                                    '승률 ${debate.winnerRate}% 토론러 대기중',
+                                    style: FontSystem.KR16M
+                                        .copyWith(color: ColorSystem.purple),
+                                    maxLines: 1, // 텍스트를 한 줄로 제한
+                                    overflow:
+                                        TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
+                                  ),
                                 ],
                               ),
                             ),
