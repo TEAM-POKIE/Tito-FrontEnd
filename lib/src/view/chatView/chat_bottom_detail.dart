@@ -90,7 +90,7 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
                     ),
                     onSubmitted: (value) {
                       handleSendMessage(context);
-                    },
+                    }, 
                   ),
                 ),
               ),

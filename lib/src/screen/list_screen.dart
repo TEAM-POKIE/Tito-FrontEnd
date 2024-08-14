@@ -194,17 +194,14 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: categorySelectedIndex == index
                                 ? ColorSystem.black
-                                : ColorSystem.ligthGrey,
-                            foregroundColor: categorySelectedIndex == index
-                                ? ColorSystem.white
-                                : ColorSystem.grey1,
+                                : ColorSystem.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16.r),
                               side: BorderSide(
                                 color: categorySelectedIndex == index
                                     ? ColorSystem.black // 선택된 경우 테두리 색상
-                                    : ColorSystem.grey3, // 선택되지 않은 경우 테두리 색상
-                                width: 1.5, // 테두리 두께
+                                    : ColorSystem.grey5, // 선택되지 않은 경우 테두리 색상
+                                width: 1, // 테두리 두께
                               ),
                             ),
                           ),
@@ -381,26 +378,29 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                               ),
                             ),
                             trailing: Container(
-                              width: 100.w,
-                              height: 100.h,
+                              // width: 200.w,
+                              // height: 200.h,
                               child: Padding(
                                 padding: EdgeInsets.only(bottom: 20.w),
-                                child: debate.debateImageUrl == ''
-                                    ? SvgPicture.asset(
-                                        'assets/icons/list_real_null.svg',
-                                        fit: BoxFit.contain,
-                                      )
-                                    : ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                            12.r), // 둥근 모서리 설정
-                                        child: Image.network(
-                                          debate.debateImageUrl ?? '',
-                                          width: 260.w, // 원하는 너비 설정
-                                          height: 250.h,
-                                          fit: BoxFit
-                                              .cover, // 이미지가 잘리지 않도록 맞춤 설정
+                                child: Expanded(
+                                  child: debate.debateImageUrl == ''
+                                      ? SvgPicture.asset(
+                                          'assets/icons/list_real_null.svg',
+                                          width: 70.w, // 원하는 너비 설정
+                                          fit: BoxFit.contain,
+                                        )
+                                      : ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                              12.r), // 둥근 모서리 설정
+                                          child: Image.network(
+                                            debate.debateImageUrl ?? '',
+                                            width: 70.w, // 원하는 너비 설정
+                                            // height: 20.h,
+                                            fit: BoxFit
+                                                .cover, // 이미지가 잘리지 않도록 맞춤 설정
+                                          ),
                                         ),
-                                      ),
+                                ),
                               ),
                             ),
                           ),

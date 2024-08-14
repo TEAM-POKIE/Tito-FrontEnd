@@ -5,6 +5,7 @@ class DebateUsermade {
   final String debateStatus;
   final String debateMakerOpinion;
   final String debateJoinerOpinion;
+  final String debateImageUrl;
   final int debatedTimeLimit;
   final int debateViewCount;
   final int debateCommentCount;
@@ -21,6 +22,7 @@ class DebateUsermade {
     required this.debateStatus,
     required this.debateMakerOpinion,
     required this.debateJoinerOpinion,
+    required this.debateImageUrl,
     required this.debatedTimeLimit,
     required this.debateViewCount,
     required this.debateCommentCount,
@@ -39,6 +41,7 @@ class DebateUsermade {
         debateStatus: json['debateStatus'] ?? '',
         debateMakerOpinion: json['debateMakerOpinion'] ?? '',
         debateJoinerOpinion: json['debateJoinerOpinion'] ?? '',
+        debateImageUrl: json['debateImageUrl']??'',
         debatedTimeLimit: json['debatedTimeLimit'] ?? 0,
         debateViewCount: json['debateViewCount'] ?? 0,
         debateCommentCount: json['debateCommentCount'] ?? 0,
@@ -56,6 +59,7 @@ class DebateUsermade {
       'debateStatus': debateStatus,
       'debateMakerOpinion': debateMakerOpinion,
       'debateJoinerOpinion': debateJoinerOpinion,
+      'debateImageUrl': debateImageUrl,
       'debatedTimeLimit': debatedTimeLimit,
       'debateViewCount': debateViewCount,
       'debateCommentCount': debateCommentCount,

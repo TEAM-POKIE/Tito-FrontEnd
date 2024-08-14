@@ -81,6 +81,7 @@ abstract class ApiService {
 
   @DELETE("debates/{id}")
   Future deleteDebate(@Path("id") int debateId);
+  
   @DELETE("user-block-list/unblock")
   Future<void> deleteUnblock(@Body() Map<String, dynamic> requestBody);
 

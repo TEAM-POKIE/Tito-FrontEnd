@@ -177,7 +177,7 @@ class StaticTextBubble extends StatefulWidget {
   _StaticTextBubbleState createState() => _StaticTextBubbleState();
 }
 
-class _StaticTextBubbleState extends State<StaticTextBubble>{
+class _StaticTextBubbleState extends State<StaticTextBubble> {
   @override
   Widget build(BuildContext context) {
     // if (!mounted || widget.chatState.isVisible == false) {
@@ -191,7 +191,7 @@ class _StaticTextBubbleState extends State<StaticTextBubble>{
       nipLocation: NipLocation.bottom,
       color: ColorSystem.purple,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 15.h),
+        padding: EdgeInsets.symmetric(vertical: 10.h),
         child: Text(
           widget.title,
           textAlign: TextAlign.center,
@@ -225,11 +225,11 @@ class TimingButton extends StatelessWidget {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: ColorSystem.black,
-            padding:  EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16.r),
             ),
-          ), 
+          ),
           onPressed: () {
             if (content == '타이밍 벨') {
               popupViewModel!.showTimingPopup(context, 'timing');

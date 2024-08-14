@@ -3,12 +3,12 @@ part of 'style.dart';
 class ColorSystem {
   const ColorSystem._();
 
-  static const Color purple = Color(0xFF8E48F8);
+  static const Color purple = Color(0xFF855DF7);
   static const Color loginPurple = Color(0xFFA56DF9);
   static const Color startPurple = Color.fromARGB(153, 255, 255, 255);
   static const Color lightPurple = Color.fromARGB(51, 142, 72, 248);
   static const Color white = Color(0xFFFFFFFF);
-  static const Color yellow = Color(0xFFDCF333);
+  static const Color yellow = Color(0xFFDEF008);
   static const Color lightYellow = Color.fromARGB(128, 220, 243, 51);
   static const Color ligthGrey = Color(0xFFF6F6F6);
   static const Color grey1 = Color(0xFF6B6B6B);
@@ -21,4 +21,6 @@ class ColorSystem {
   static const Color voteRed = Color(0xFFF75D5D);
   static const Color kakao = Color(0xFFFEE500);
   static const Color googleFont = Color(0xFF757575);
+  static const Color grey5 = Color(0xFFDFE0E2);
+  static const Color popupLight = Color(0xFFE7DFFD);
 }
