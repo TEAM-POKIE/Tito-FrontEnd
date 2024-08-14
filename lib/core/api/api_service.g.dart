@@ -13,7 +13,7 @@ class _ApiService implements ApiService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://dev-tito.owsla.mywire.org/';
+    baseUrl ??= 'https://dev.tito.lat/';
   }
 
   final Dio _dio;

@@ -43,13 +43,13 @@ class LogoutPopup extends StatelessWidget {
             SizedBox(height: 16.h),
             const Text(
               '정말로 로그아웃 하시겠습니까?',
-              style: FontSystem.KR18B,
+              style: FontSystem.KR18SB,
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 20.h),
             Container(
               width: 248.w,
-              height: 109.h,
+              height: 100.h,
               decoration: BoxDecoration(
                 color: ColorSystem.grey3,
                 borderRadius: BorderRadius.circular(12.r),
