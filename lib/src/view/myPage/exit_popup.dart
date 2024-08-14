@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/constants/style.dart';
-import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tito_app/core/provider/nav_provider.dart';
+import 'package:tito_app/src/screen/login/login_main.dart';
 
-class ExitPopup extends StatelessWidget {
+class ExitPopup extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     void putQuit() async {
       await ApiService(DioClient.dio).putQuit();
-      context.go('/');
+      await secureStorage.delete(key: 'API_ACCESS_TOKEN');
+      await secureStorage.delete(key: 'API_REFRESH_TOKEN');
+      final notifier = ref.read(selectedIndexProvider.notifier);
+      notifier.state = 0;
+      context.go('/login');
     }
 
     return Dialog(

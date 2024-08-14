@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 class DioClient {
   static final Dio _dio = Dio()
     ..options = BaseOptions(
-      baseUrl: 'https://dev-tito.owsla.mywire.org/',
+      baseUrl: 'https://dev.tito.lat/',
       connectTimeout: Duration(milliseconds: 2000), // 변경: int -> Duration
       receiveTimeout: Duration(milliseconds: 2000), // 변경: int -> Duration
     )
