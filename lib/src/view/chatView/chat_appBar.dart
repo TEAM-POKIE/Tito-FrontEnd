@@ -95,7 +95,7 @@ class DebateAppbar extends ConsumerWidget {
       actions: [
         if (notiIcon != null && notiIcon!.isNotEmpty)
           IconButton(
-            icon: Image.asset(notiIcon!),
+            icon: SvgPicture.asset('assets/icons/chat_appbar_bell.svg'),
             onPressed: () {
               chatViewModel.alarmButton(context);
             },

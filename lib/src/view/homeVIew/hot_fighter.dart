@@ -52,7 +52,7 @@ class _HotFighterState extends ConsumerState<HotFighter> {
         ),
         Container(
           padding: EdgeInsets.only(left: 10.w),
-          height: 150.h, // 컨테이너 높이를 더 키워서 아바타와 텍스트가 잘리지 않도록 합니다.
+          height: 110.h, // 컨테이너 높이를 더 키워서 아바타와 텍스트가 잘리지 않도록 합니다.
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: homeState.hotfighter.length, // API에서 가져온 데이터 길이
@@ -64,7 +64,9 @@ class _HotFighterState extends ConsumerState<HotFighter> {
                 child: Column(
                   children: [
                     CircleAvatar(
-                      radius: 40.w, // 아바타의 크기를 키움
+                      radius: 35.w, 
+                      // 아바타의 크기를 키움
+                      backgroundColor: ColorSystem.purple,
                       backgroundImage: fighter.profilePicture != null
                           ? NetworkImage(fighter.profilePicture!)
                           : AssetImage('assets/images/hot_fighter.png')

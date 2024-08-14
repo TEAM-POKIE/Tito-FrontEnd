@@ -19,6 +19,7 @@ import 'package:tito_app/src/view/myPage/exit_popup.dart';
 import 'package:tito_app/src/view/myPage/logout_popup.dart';
 import 'package:tito_app/src/widgets/reuse/bottombar.dart';
 import 'package:tito_app/src/widgets/reuse/profile_popup.dart';
+import 'package:tito_app/src/viewModel/popup_viewModel.dart';
 
 class MypageMain extends ConsumerStatefulWidget {
   const MypageMain({super.key});
@@ -380,7 +381,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return ProfilePopup();
+                        return LogoutPopup();
                       },
                     );
                   },
