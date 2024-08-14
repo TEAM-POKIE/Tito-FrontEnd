@@ -105,15 +105,14 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
         width: 350.w,
         height: 420.h,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            SizedBox(height: 19.h),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(width: 140.w),
-                Text(chatState!.debateTitle, style: FontSystem.KR14B),
-                SizedBox(width: 80.w),
+                Text(chatState!.debateTitle, style: FontSystem.KR18SB),
                 IconButton(
                   icon: Icon(Icons.close),
                   onPressed: () {
@@ -122,26 +121,32 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
                 ),
               ],
             ),
-            const Divider(
-              color: ColorSystem.grey3,
-              thickness: 2,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.w),
+              child: const Divider(
+                color: ColorSystem.grey3,
+                thickness: 2,
+              ),
             ),
             _buildProfileHeader(ref),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12.r), // 둥근 모서리 설정
-                    child: Image.network(
-                      loginInfo!.profilePicture ?? '',
-                      width: 260.w, // 원하는 너비 설정
-                      height: 250.h,
-                      fit: BoxFit.cover, // 이미지가 잘리지 않도록 맞춤 설정
-                    ),
-                  ),
-                ],
-              ),
+              // child: chatState.debateImageUrl == ''
+              //                       ? SvgPicture.asset(
+              //                           'assets/icons/list_real_null.svg',
+              //                           fit: BoxFit.contain,
+              //                         )
+              //                       : ClipRRect(
+              //                           borderRadius: BorderRadius.circular(
+              //                               12.r), // 둥근 모서리 설정
+              //                           child: Image.network(
+              //                             chatState.debateImageUrl ?? '',
+              //                             width: 260.w, // 원하는 너비 설정
+              //                             height: 250.h,
+              //                             fit: BoxFit
+              //                                 .cover, // 이미지가 잘리지 않도록 맞춤 설정
+              //                           ),
+              //                         ),
             ),
             SizedBox(height: 10.h),
           ],
@@ -159,16 +164,18 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 10.h),
+          padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 30.w),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SvgPicture.asset('assets/icons/popup_face.svg'),
-              SizedBox(width: 15.w),
-              Text('몇 세기동안 이어온 논제!\n 외계인은 있는가? 없는가? 오늘 담판을 보자!'),
+              SizedBox(width: 10),
+              Expanded(
+                child: Text('몇 세기동안 이어온 논제! 외계인은 있는가? 없는가? 오늘 담판을 보자!',
+                    style: FontSystem.KR14SB),
+              ),
             ],
           ),
+          // Row(
         ),
       ],
     );

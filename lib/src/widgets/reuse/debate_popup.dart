@@ -186,6 +186,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                     // 팝업 창 안 내용 부분
                     width: 248.w,
                     height: 100.h,
+                    alignment: Alignment.center, // 컨테이너 안에서 중앙 정렬
                     decoration: BoxDecoration(
                         color: ColorSystem.ligthGrey,
                         borderRadius: BorderRadius.circular(12.r),
@@ -340,33 +341,34 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: ColorSystem.purple,
+              foregroundColor: ColorSystem.white,
+              backgroundColor: ColorSystem.popupLight,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0),
+                borderRadius: BorderRadius.circular(12.r),
               ),
-              padding: const EdgeInsets.symmetric(vertical: 10),
+              padding: EdgeInsets.symmetric(vertical: 10.h),
             ),
             onPressed: () {
               if (popupState.title == '상대방이 타이밍 벨을 울렸어요!') {
                 chatViewModel.timingNOResponse();
               }
-              context.pop();
+              context.pop();  
             },
             child: Text(
               popupState.buttonContentLeft ?? '',
-              style: FontSystem.KR12B.copyWith(color: ColorSystem.white),
+              style: FontSystem.KR14SB.copyWith(color: ColorSystem.purple), //팝업 버튼 중 2개중 왼쪽버튼글씨
             ),
           ),
         ),
-        const SizedBox(width: 10),
+        SizedBox(width: 10.w),
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: ColorSystem.black,
+              backgroundColor: ColorSystem.purple,  //팝업 아래 2개 버튼 중 오른쪽 버튼 색깔
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0),
+                borderRadius: BorderRadius.circular(12.r),
               ),
-              padding: const EdgeInsets.symmetric(vertical: 10),
+              padding: EdgeInsets.symmetric(vertical: 10.h),
             ),
             onPressed: () {
               if (popupState.title == '토론장을 개설하시겠어요?') {
@@ -391,7 +393,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
             },
             child: Text(
               popupState.buttonContentRight ?? '',
-              style: FontSystem.KR12B.copyWith(color: ColorSystem.white),
+              style: FontSystem.KR14SB.copyWith(color: ColorSystem.white),  // 팝업 버튼 2개 중 오른쪽 버튼 글씨
             ),
           ),
         ),

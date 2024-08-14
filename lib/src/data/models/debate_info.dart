@@ -23,6 +23,8 @@ class DebateInfo {
   bool canTiming;
   double bluePercent;
   Duration remainingTime;
+  final String debateImageUrl;
+  final String debateContent;
 
   DebateInfo({
     required this.id,
@@ -49,6 +51,8 @@ class DebateInfo {
     required this.canTiming,
     required this.bluePercent,
     required this.remainingTime,
+    required this.debateImageUrl,
+    required this.debateContent,
   });
 
   factory DebateInfo.fromJson(Map<String, dynamic> json) {
@@ -78,6 +82,8 @@ class DebateInfo {
       remainingTime: Duration(minutes: 8),
       debateJoinerPicture: '',
       debateOwnerPicture: '',
+      debateImageUrl: json['data']['debateImageUrl'] ?? '',
+      debateContent: json['data']['debateContent'] ?? '',
     );
   }
 
@@ -103,11 +109,13 @@ class DebateInfo {
       "debateOwnerNick": debateOwnerNick,
       "debateJoinerTurnCount": debateOwnerTurnCount,
       "canTiming": true,
+      'debateImageUrl': debateImageUrl,
+      'debateContent': debateContent,
     };
   }
 
   @override
   String toString() {
-    return 'Debate{id: $id, debateTitle: $debateTitle, debateCategory: $debateCategory, debateStatus: $debateStatus, debateMakerOpinion: $debateMakerOpinion, debateJoinerOpinion: $debateJoinerOpinion, debatedTimeLimit: $debatedTimeLimit, debateViewCount: $debateViewCount, debateCommentCount: $debateCommentCount, debateRealtimeParticipants: $debateRealtimeParticipants, debateAlarmCount: $debateAlarmCount, createdAt: $createdAt, updatedAt: $updatedAt}';
+    return 'Debate{id: $id, debateTitle: $debateTitle, debateCategory: $debateCategory, debateStatus: $debateStatus, debateMakerOpinion: $debateMakerOpinion, debateJoinerOpinion: $debateJoinerOpinion, debatedTimeLimit: $debatedTimeLimit, debateViewCount: $debateViewCount, debateCommentCount: $debateCommentCount, debateRealtimeParticipants: $debateRealtimeParticipants, debateAlarmCount: $debateAlarmCount, createdAt: $createdAt, updatedAt: $updatedAt, debateImageUrl: $debateImageUrl, debateContent: $debateContent}';
   }
 }

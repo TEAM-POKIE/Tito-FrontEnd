@@ -22,4 +22,5 @@ class ColorSystem {
   static const Color kakao = Color(0xFFFEE500);
   static const Color googleFont = Color(0xFF757575);
   static const Color grey5 = Color(0xFFDFE0E2);
+  static const Color popupLight = Color(0xFFE7DFFD);
 }

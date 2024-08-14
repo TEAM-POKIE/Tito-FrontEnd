@@ -17,6 +17,7 @@ class ChatBody extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
+      
       children: [
         ChatViewDetails(id: id), // id 전달
         Expanded(
@@ -24,12 +25,11 @@ class ChatBody extends ConsumerWidget {
               decoration: BoxDecoration(color: ColorSystem.grey3),
               child: ChatListView(id: id)), // id 전달
         ),
-        Container(
+        Stack(
           // 여기가 그 입력바 클릭시 뜨는 윗 공간임
-          child: ChatSpeechBubble(),
-          
+          children: [ChatSpeechBubble()],
         ),
-        ChatBottomDetail(id: id), // id 전달
+        ChatBottomDetail(id: id), // id 전달 -> 밑에 입력바 바탕 공간임
       ],
     );
   }

@@ -94,27 +94,29 @@ class PopupViewmodel extends StateNotifier<PopupState> {
       },
     );
 
-  //   return result ?? false; // return false if result is null
-  // }
-
-  // Future<bool> showLogoutPopup(BuildContext context) async {
-  //   state = state.copyWith(
-  //     title: '정말로 로그아웃 하시겠어요?',
-  //     content: '로그아웃 하시면\n추후 앱을 이용하실 때\n다시 로그인을 해야해요',
-  //     buttonStyle: 1,
-  //     buttonContentLeft: '로그아웃 하기',
-  //     imgSrc: 'assets/icons/chatIconRight.svg',
-  //   );
-
-  //   final result = await showLogoutPopup<bool>(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return const DebatePopup();
-  //     },
-  //   );
-
-    return result ?? false;
+    return result ?? false; // return false if result is null
   }
+
+
+// Future<bool> showLogoutPopup(BuildContext context) async {
+//     state = state.copyWith(
+//       title: '정말로 로그아웃 하시겠어요?',
+//       content: '로그아웃 하시면\n추후 앱을 이용하실 때\n다시 로그인을 해야해요',
+//       buttonStyle: 1,
+//       buttonContentLeft: "로그아웃 하기",
+//       imgSrc: 'assets/icons/chatIconRight.svg',
+//     );
+
+//     final result = await showLogoutPopup<bool>(
+//       context: context,
+//       builder: (BuildContext context) {
+//         return const DebatePopup();
+//       },
+//     );
+
+//     return result ?? false; // return false if result is null
+//   }
+
 
   // 타이밍 팝업 띄우기
   Future<bool> showTimingReceive(BuildContext context) async {
@@ -235,15 +237,4 @@ class PopupViewmodel extends StateNotifier<PopupState> {
     return result ?? false; // return false if result is null
   }
 
-  //Future<bool> showLogoutPopup(BuildContext context) async {
-  // final result = await showDialog<bool>(
-  //   context: context,
-  //   builder: (BuildContext context) {
-  //     return const LogoutPopup();
-  //   },
-  // );
-
-  //   return result ?? false; // return false if result is null
-  // }
-  //}
 }
