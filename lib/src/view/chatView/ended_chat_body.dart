@@ -5,11 +5,12 @@ import 'package:tito_app/src/view/chatView/chat_bottom_detail.dart';
 import 'package:tito_app/src/view/chatView/chat_list_view.dart';
 import 'package:tito_app/src/view/chatView/chat_speech_bubble.dart';
 import 'package:tito_app/src/view/chatView/chat_view_details.dart';
+import 'package:tito_app/src/view/chatView/votingbar.dart';
 
-class ChatBody extends ConsumerWidget {
+class EndedChatBody extends ConsumerWidget {
   final int id;
 
-  const ChatBody({
+  const EndedChatBody({
     super.key,
     required this.id,
   });
@@ -18,17 +19,13 @@ class ChatBody extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
-        ChatViewDetails(id: id), // id 전달
+        ChatViewDetails(id: id),
+        VotingBar(),
         Expanded(
           child: Container(
               decoration: BoxDecoration(color: ColorSystem.grey3),
               child: ChatListView(id: id)), // id 전달
         ),
-        Stack(
-          // 여기가 그 입력바 클릭시 뜨는 윗 공간임
-          children: [ChatSpeechBubble()],
-        ),
-        ChatBottomDetail(id: id), // id 전달 -> 밑에 입력바 바탕 공간임
       ],
     );
   }
