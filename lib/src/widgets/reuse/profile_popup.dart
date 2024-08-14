@@ -193,7 +193,7 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
                             child: Padding(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 6.h, vertical: 6.h),
-                              child: Text('승률 80%',
+                              child: Text('승률 ${userState.winningRate}%',
                                   textAlign: TextAlign.center,
                                   style: FontSystem.KR14B
                                       .copyWith(color: ColorSystem.purple)),
@@ -218,7 +218,9 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
                       ),
                     ],
                   ),
-                  Text('12전 | 10승 | 2패', style: FontSystem.KR18R),
+                  Text(
+                      '${userState.debateTotalCount}전 | ${userState.debateVictoryCount}승 | ${userState.debateDefeatCount}패',
+                      style: FontSystem.KR18R),
                 ],
               ),
             ],

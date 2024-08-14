@@ -151,6 +151,30 @@ class _ApiService implements ApiService {
   }
 
   @override
+  Future<void> putTutorialCompleted() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'users/tutorial-completed',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+  }
+
+  @override
   Future<DebateUsermade> getUserMade() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -266,9 +290,20 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<List<Debate>> getDebateList(String state) async {
+  Future<List<Debate>> getDebateList({
+    int? page,
+    String? sortBy,
+    String? status,
+    String? category,
+  }) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'state': state};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'sortBy': sortBy,
+      r'status': status,
+      r'category': category,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result = await _dio
@@ -279,7 +314,7 @@ class _ApiService implements ApiService {
     )
             .compose(
               _dio.options,
-              'debates',
+              'debates/debate-list',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -405,6 +440,38 @@ class _ApiService implements ApiService {
     // 리스트의 각 항목을 DebateHotdebate 객체로 변환합니다.
     final List<DebateHotfighter> debateList = data
         .map((item) => DebateHotfighter.fromJson(item as Map<String, dynamic>))
+        .toList();
+
+    return debateList;
+  }
+
+  @override
+  Future<List<GetUserBlock>> getBlockedUser() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<List<GetUserBlock>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'user-block-list/blocked-users',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final data = _result.data!['data'] as List<dynamic>;
+
+    final List<GetUserBlock> debateList = data
+        .map((item) => GetUserBlock.fromJson(item as Map<String, dynamic>))
         .toList();
 
     return debateList;

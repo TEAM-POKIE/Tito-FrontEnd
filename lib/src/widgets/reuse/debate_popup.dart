@@ -381,6 +381,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                 context.pop();
               } else if (popupState.title == '차단 하시겠어요?') {
                 popupViewModel.postBlock(userState!.id);
+                context.pop();
               } else {
                 context.pop();
                 Future.delayed(

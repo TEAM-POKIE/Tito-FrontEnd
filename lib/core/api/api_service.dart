@@ -7,6 +7,7 @@ import 'package:tito_app/src/data/models/debate_crate.dart';
 import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:tito_app/src/data/models/debate_list.dart';
 import 'package:tito_app/src/data/models/debate_participants.dart';
+import 'package:tito_app/src/data/models/get_user_block.dart';
 import 'package:tito_app/src/data/models/login_info.dart';
 import 'package:tito_app/src/data/models/auth_response.dart';
 import 'package:tito_app/src/data/models/debate_usermade.dart';
@@ -34,6 +35,8 @@ abstract class ApiService {
 
   @PUT("users/password")
   Future<void> putPassword(@Body() Map<String, dynamic> passwordData);
+  @PUT("users/tutorial-completed")
+  Future<void> putTutorialCompleted();
 
   @GET("users/debates")
   Future<DebateUsermade> getUserMade();
@@ -47,16 +50,23 @@ abstract class ApiService {
   @GET('users/debates')
   Future<Map<String, dynamic>> getUserDebate();
 
-  @GET("debates")
-  Future<List<Debate>> getDebateList(@Query('state') String state);
-
+  @GET("debates/debate-list")
+  Future<List<Debate>> getDebateList({
+    @Query('page') int? page,
+    @Query('sortBy') String? sortBy,
+    @Query('status') String? status,
+    @Query('category') String? category,
+  });
   @GET("debates/on-fire-debate")
   Future<List<DebateBenner>> getDebateBenner();
+
   @GET("debates/hot-debate")
   Future<List<DebateHotdebate>> getDebateHotdebate();
 
   @GET("debates/hot-debate-participants")
   Future<List<DebateHotfighter>> getDebateHotfighter();
+  @GET("user-block-list/blocked-users")
+  Future<List<GetUserBlock>> getBlockedUser();
   @GET("debates/{id}/participants")
   Future<List<DebateParticipants>> getParicipants(@Path("id") int debateId);
 

@@ -46,19 +46,17 @@ class _MyDebateFirstbodyState extends ConsumerState<MyDebateFirstbody> {
             children: [
               Row(
                 children: [
-                  Text('${loginInfo?.nickname}',
-                        style: FontSystem.KR20B
-                      ),
-                  const Text(
-                    ' 님은 12번의 토론 중',
+                  Text('${loginInfo?.nickname}', style: FontSystem.KR20B),
+                  Text(
+                    ' 님은 ${loginInfo!.debateTotalCount}번의 토론 중',
                     style: FontSystem.KR20R,
                   ),
                 ],
               ),
               Row(
                 children: [
-                  const Text(
-                    '10번을 이기셨어요!',
+                  Text(
+                    '${loginInfo.debateVictoryCount}번을 이기셨어요!',
                     style: FontSystem.KR20R,
                   ),
                 ],

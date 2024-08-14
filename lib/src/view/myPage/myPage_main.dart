@@ -184,7 +184,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
               children: [
                 SizedBox(width: 175.w),
                 Text(
-                  '${loginInfo?.nickname}',
+                  '${loginInfo.nickname}',
                   style: FontSystem.KR24B,
                 ),
                 IconButton(
@@ -222,7 +222,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                         ),
                         SizedBox(width: 5.w),
                         Text(
-                          '80%',
+                          '${loginInfo.winningRate}',
                           style: FontSystem.KR18B
                               .copyWith(color: ColorSystem.purple),
                         ),
@@ -233,8 +233,8 @@ class _MypageMainState extends ConsumerState<MypageMain> {
               ],
             ),
             SizedBox(height: 8.h),
-            const Text(
-              '12전 | 10승 | 2패',
+            Text(
+              '${loginInfo.debateTotalCount}전 | ${loginInfo.debateVictoryCount}승 | ${loginInfo.debateDefeatCount}패',
               style: FontSystem.KR18SB,
             ),
             SizedBox(height: 40.h),
