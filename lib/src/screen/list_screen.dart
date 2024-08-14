@@ -189,17 +189,14 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: categorySelectedIndex == index
                                 ? ColorSystem.black
-                                : ColorSystem.ligthGrey,
-                            foregroundColor: categorySelectedIndex == index
-                                ? ColorSystem.white
-                                : ColorSystem.grey1,
+                                : ColorSystem.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16.r),
                               side: BorderSide(
                                 color: categorySelectedIndex == index
                                     ? ColorSystem.black // 선택된 경우 테두리 색상
-                                    : ColorSystem.red,// 선택되지 않은 경우 테두리 색상
-                                width: 1.5, // 테두리 두께
+                                    : ColorSystem.grey5, // 선택되지 않은 경우 테두리 색상
+                                width: 1, // 테두리 두께
                               ),
                             ),
                           ),

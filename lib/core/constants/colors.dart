@@ -21,4 +21,5 @@ class ColorSystem {
   static const Color voteRed = Color(0xFFF75D5D);
   static const Color kakao = Color(0xFFFEE500);
   static const Color googleFont = Color(0xFF757575);
+  static const Color grey5 = Color(0xFFDFE0E2);
 }
