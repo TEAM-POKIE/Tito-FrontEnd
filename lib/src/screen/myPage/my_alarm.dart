@@ -18,7 +18,7 @@ class MyAlarm extends ConsumerWidget {
           preferredSize: Size.fromHeight(80.h),
           child: MyAlarmAppbar(),
         ),
-        body: MyAlarmScrollbody(),
+        body: MyAlarmScrollBody(),
       ),
     );
   }

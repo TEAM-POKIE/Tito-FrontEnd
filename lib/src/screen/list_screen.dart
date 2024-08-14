@@ -378,26 +378,29 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                               ),
                             ),
                             trailing: Container(
-                              width: 100.w,
-                              height: 100.h,
+                              // width: 200.w,
+                              // height: 200.h,
                               child: Padding(
                                 padding: EdgeInsets.only(bottom: 20.w),
-                                child: debate.debateImageUrl == ''
-                                    ? SvgPicture.asset(
-                                        'assets/icons/list_real_null.svg',
-                                        fit: BoxFit.contain,
-                                      )
-                                    : ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                            12.r), // 둥근 모서리 설정
-                                        child: Image.network(
-                                          debate.debateImageUrl ?? '',
-                                          width: 260.w, // 원하는 너비 설정
-                                          height: 250.h,
-                                          fit: BoxFit
-                                              .cover, // 이미지가 잘리지 않도록 맞춤 설정
+                                child: Expanded(
+                                  child: debate.debateImageUrl == ''
+                                      ? SvgPicture.asset(
+                                          'assets/icons/list_real_null.svg',
+                                          width: 70.w, // 원하는 너비 설정
+                                          fit: BoxFit.contain,
+                                        )
+                                      : ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                              12.r), // 둥근 모서리 설정
+                                          child: Image.network(
+                                            debate.debateImageUrl ?? '',
+                                            width: 70.w, // 원하는 너비 설정
+                                            // height: 20.h,
+                                            fit: BoxFit
+                                                .cover, // 이미지가 잘리지 않도록 맞춤 설정
+                                          ),
                                         ),
-                                      ),
+                                ),
                               ),
                             ),
                           ),

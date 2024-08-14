@@ -103,59 +103,64 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
                     ),
                   ),
                   Divider(color: ColorSystem.grey),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
                     children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 0.w),
-                        child: Text(
-                          '${debate.debateTitle}',
-                          style: FontSystem.KR15B,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      SizedBox(height: 4.h),
-                      Padding(
-                        padding: EdgeInsets.only(left: 0.w),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${debate.debateMakerOpinion}',
-                              style: FontSystem.KR14R
-                                  .copyWith(color: ColorSystem.grey),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: 0.w),
+                            child: Text(
+                              '${debate.debateTitle}',
+                              style: FontSystem.KR15B,
                               overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 0.w),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  if (debate.isWinOrLoose == true)
-                                    Text(
-                                      '결과: 승',
-                                      style: FontSystem.KR14R
-                                          .copyWith(color: ColorSystem.purple),
-                                    )
-                                  else if (debate.isWinOrLoose == null)
-                                    Text(
-                                      '결과: 패',
-                                      style: FontSystem.KR14R
-                                          .copyWith(color: ColorSystem.purple),
-                                    )
-                                  else
-                                    Text(
-                                      '결과: 무',
-                                      style: FontSystem.KR14R
-                                          .copyWith(color: ColorSystem.purple),
-                                    )
-                                ],
-                              ),
+                          ),
+                          SizedBox(height: 4.h),
+                          Padding(
+                            padding: EdgeInsets.only(left: 0.w),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${debate.debateMakerOpinion}',
+                                  style: FontSystem.KR14R
+                                      .copyWith(color: ColorSystem.grey),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 0.w),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      if (debate.isWinOrLoose == true)
+                                        Text(
+                                          '결과: 승',
+                                          style: FontSystem.KR14R
+                                              .copyWith(color: ColorSystem.purple),
+                                        )
+                                      else if (debate.isWinOrLoose == null)
+                                        Text(
+                                          '결과: 패',
+                                          style: FontSystem.KR14R
+                                              .copyWith(color: ColorSystem.purple),
+                                        )
+                                      else
+                                        Text(
+                                          '결과: 무',
+                                          style: FontSystem.KR14R
+                                              .copyWith(color: ColorSystem.purple),
+                                        )
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
+                      // Image(image: debate.)
                     ],
                   ),
                 ],
