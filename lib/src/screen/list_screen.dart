@@ -336,47 +336,53 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                             title: Padding(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 0.h, vertical: 2.h),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              child: Row(
                                 children: [
-                                  SizedBox(height: 8.h),
-                                  // 여기에 토론 완료 가은 거 추가로 lightGrey 색깔 만들어서 넣어야 하는 코드 위치
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 6.w, vertical: 2.h),
-                                    decoration: BoxDecoration(
-                                      color: debate.debateStatus == '실시간'
-                                          ? ColorSystem.lightPurple
-                                          : ColorSystem.lightPurple,
-                                      borderRadius: BorderRadius.circular(10.r),
-                                    ),
-                                    child: Text(debate.debateStatus ?? '상태 없음',
-                                        style: FontSystem.KR14SB.copyWith(
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(height: 8.h),
+                                      // 여기에 토론 완료 가은 거 추가로 lightGrey 색깔 만들어서 넣어야 하는 코드 위치
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 6.w, vertical: 2.h),
+                                        decoration: BoxDecoration(
                                           color: debate.debateStatus == '실시간'
-                                              ? ColorSystem.purple
-                                              : ColorSystem.purple,
-                                        )),
+                                              ? ColorSystem.lightPurple
+                                              : ColorSystem.lightPurple,
+                                          borderRadius: BorderRadius.circular(10.r),
+                                        ),
+                                        child: Text(debate.debateStatus ?? '상태 없음',
+                                            style: FontSystem.KR14SB.copyWith(
+                                              color: debate.debateStatus == '실시간'
+                                                  ? ColorSystem.purple
+                                                  : ColorSystem.purple,
+                                            )),
+                                      ),
+                                      SizedBox(height: 10.h),
+                                      Text(
+                                        debate.debateTitle ?? 'No title',
+                                        style: FontSystem.KR18M.copyWith(height: 1),
+                                        maxLines: 1, // 텍스트를 한 줄로 제한
+                                        overflow:
+                                            TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
+                                      ),
+                                      SizedBox(height: 4.h),
+                                      Text(
+                                        '승률 ${debate.winnerRate}% 토론러 대기중',
+                                        style: FontSystem.KR16M
+                                            .copyWith(color: ColorSystem.purple),
+                                        maxLines: 1, // 텍스트를 한 줄로 제한
+                                        overflow:
+                                            TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
+                                      ),
+                                    ],
                                   ),
-                                  SizedBox(height: 10.h),
-                                  Text(
-                                    debate.debateTitle ?? 'No title',
-                                    style: FontSystem.KR18M.copyWith(height: 1),
-                                    maxLines: 1, // 텍스트를 한 줄로 제한
-                                    overflow:
-                                        TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
-                                  ),
-                                  SizedBox(height: 4.h),
-                                  Text(
-                                    '승률 ${debate.winnerRate}% 토론러 대기중',
-                                    style: FontSystem.KR16M
-                                        .copyWith(color: ColorSystem.purple),
-                                    maxLines: 1, // 텍스트를 한 줄로 제한
-                                    overflow:
-                                        TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
-                                  ),
+                                  Spacer(),
                                 ],
                               ),
                             ),
+                            
                             trailing: Container(
                               // width: 200.w,
                               // height: 200.h,
