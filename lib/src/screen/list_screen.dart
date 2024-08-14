@@ -57,8 +57,13 @@ class _ListScreenState extends ConsumerState<ListScreen> {
     _refreshController.loadComplete();
   }
 
-  void _enterChat(debateId) {
-    context.push('/chat/${debateId}');
+  void _enterChat(debateId, String debateStatus) {
+    if (debateStatus == 'ENDED') {
+      print('야기');
+      context.push('/endedChat/${debateId}');
+    } else {
+      context.push('/chat/${debateId}');
+    }
   }
 
 // 데이터 fetch 로직 : 새로고침 시 기존데이터를 대체하고 리스트 끝에서 다시 렌더링시키기
@@ -329,7 +334,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                           ),
                           child: ListTile(
                             onTap: () {
-                              _enterChat(debate.id);
+                              _enterChat(debate.id, debate.debateStatus);
                             },
                             title: Padding(
                               padding: EdgeInsets.symmetric(
