@@ -132,25 +132,26 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
                                 Padding(
                                   padding: EdgeInsets.only(left: 0.w),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       if (debate.isWinOrLoose == true)
                                         Text(
                                           '결과: 승',
-                                          style: FontSystem.KR14R
-                                              .copyWith(color: ColorSystem.purple),
+                                          style: FontSystem.KR14R.copyWith(
+                                              color: ColorSystem.purple),
                                         )
                                       else if (debate.isWinOrLoose == null)
                                         Text(
                                           '결과: 패',
-                                          style: FontSystem.KR14R
-                                              .copyWith(color: ColorSystem.purple),
+                                          style: FontSystem.KR14R.copyWith(
+                                              color: ColorSystem.purple),
                                         )
                                       else
                                         Text(
                                           '결과: 무',
-                                          style: FontSystem.KR14R
-                                              .copyWith(color: ColorSystem.purple),
+                                          style: FontSystem.KR14R.copyWith(
+                                              color: ColorSystem.purple),
                                         )
                                     ],
                                   ),
@@ -160,7 +161,24 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
                           ),
                         ],
                       ),
-                      // Image(image: debate.)
+                      Spacer(),
+                      debate.debateImageUrl == ''
+                          ? SvgPicture.asset(
+                              'assets/icons/list_real_null.svg',
+                              width: 70.w, // 원하는 너비 설정
+                              fit: BoxFit.contain,
+                            )
+                          : ClipRRect(
+                              borderRadius:
+                                  BorderRadius.circular(12.r), // 둥근 모서리 설정
+                              child: Image.network(
+                                debate.debateImageUrl ?? '',
+                                width: 60.w, // 원하는 너비 설정
+                                height: 60.h,
+                                // height: 20.h,
+                                fit: BoxFit.cover, // 이미지가 잘리지 않도록 맞춤 설정
+                              ),
+                            ),
                     ],
                   ),
                 ],
