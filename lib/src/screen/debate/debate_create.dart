@@ -100,7 +100,7 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
                   child: Container(
                     //카테고리 바가 들어가는 Container 부분
                     child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal, // 수평 스크롤 가능하게 설정
+                      scrollDirection: Axis .horizontal, // 수평 스크롤 가능하게 설정
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: List.generate(labels.length, (index) {
