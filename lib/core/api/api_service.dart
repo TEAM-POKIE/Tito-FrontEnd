@@ -67,6 +67,10 @@ abstract class ApiService {
   Future<List<DebateHotfighter>> getDebateHotfighter();
   @GET("user-block-list/blocked-users")
   Future<List<GetUserBlock>> getBlockedUser();
+
+  @GET('users/{id}/debates')
+  Future<Map<String, dynamic>> getOtherDebate(@Path("id") int debateId);
+
   @GET("debates/{id}/participants")
   Future<List<DebateParticipants>> getParicipants(@Path("id") int debateId);
 

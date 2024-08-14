@@ -46,8 +46,13 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
     }
 
     String remainingTime = formatDuration(chatState!.remainingTime);
-
-    if (chatState.debateJoinerId == loginInfo.id ||
+    if (chatState.debateStatus == 'ENDED') {
+      return ProfileVsWidget(
+          myNick: chatState.debateOwnerNick,
+          myImage: chatState.debateOwnerPicture,
+          opponentNick: chatState.debateJoinerNick,
+          opponentImage: chatState.debateJoinerPicture);
+    } else if (chatState.debateJoinerId == loginInfo.id ||
         chatState.debateOwnerId == loginInfo.id) {
       switch (chatState.debateJoinerTurnCount) {
         case 0:

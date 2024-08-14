@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:tito_app/src/screen/Ended_chat.dart';
 import 'package:tito_app/src/screen/debate/debate_create_chat.dart';
 import 'package:tito_app/src/screen/debate/debate_create_third.dart';
 import 'package:tito_app/src/screen/home_screen.dart';
@@ -125,6 +126,16 @@ final GoRouter router = GoRouter(
         );
       },
     ),
+    GoRoute(
+      path: '/endedChat/:id',
+      builder: (context, state) {
+        // 'id'를 String에서 int로 변환
+        final int id = int.parse(state.pathParameters['id']!);
+        return EndedChat(
+          id: id,
+        );
+      },
+    ),
     //초기화면 지정하는 부분
     GoRoute(
       path: '/',
@@ -138,10 +149,7 @@ final GoRouter router = GoRouter(
       path: '/ai_create',
       builder: (context, state) => AiCreate(),
     ),
-    GoRoute(
-      path: '/ai_select', 
-      builder: (context, state) => AiSelect()
-    ),
+    GoRoute(path: '/ai_select', builder: (context, state) => AiSelect()),
     GoRoute(
       path: '/signup',
       builder: (context, state) => const Signup(),

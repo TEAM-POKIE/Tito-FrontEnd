@@ -21,7 +21,6 @@ class MyDebateScrollbody extends ConsumerStatefulWidget {
 }
 
 class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
-  final List<int> _items = List<int>.generate(5, (int index) => index);
   List<DebateUsermade> debateList = [];
 
   @override
@@ -133,11 +132,24 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    '결과: 승',
-                                    style: FontSystem.KR14R
-                                        .copyWith(color: ColorSystem.purple),
-                                  ),
+                                  if (debate.isWinOrLoose == true)
+                                    Text(
+                                      '결과: 승',
+                                      style: FontSystem.KR14R
+                                          .copyWith(color: ColorSystem.purple),
+                                    )
+                                  else if (debate.isWinOrLoose == null)
+                                    Text(
+                                      '결과: 패',
+                                      style: FontSystem.KR14R
+                                          .copyWith(color: ColorSystem.purple),
+                                    )
+                                  else
+                                    Text(
+                                      '결과: 무',
+                                      style: FontSystem.KR14R
+                                          .copyWith(color: ColorSystem.purple),
+                                    )
                                 ],
                               ),
                             ),

@@ -11,6 +11,7 @@ class DebateUsermade {
   final int debateRealtimeParticipants;
   final int debateAlarmCount;
   final String createdAt;
+  final bool isWinOrLoose;
   final String updatedAt;
 
   DebateUsermade({
@@ -25,6 +26,7 @@ class DebateUsermade {
     required this.debateCommentCount,
     required this.debateRealtimeParticipants,
     required this.debateAlarmCount,
+    required this.isWinOrLoose,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -43,6 +45,7 @@ class DebateUsermade {
         debateRealtimeParticipants: json['debateRealtimeParticipants'] ?? 0,
         debateAlarmCount: json['debateAlarmCount'] ?? 0,
         createdAt: json['createdAt'] ?? '',
+        isWinOrLoose: json['isWinOrLoose'] ?? false,
         updatedAt: json['updatedAt'] ?? '');
   }
 
@@ -58,6 +61,7 @@ class DebateUsermade {
       'debateCommentCount': debateCommentCount,
       'debateRealtimeParticipants': debateRealtimeParticipants,
       'debateAlarmCount': debateAlarmCount,
+      'isWinOrLoose': isWinOrLoose,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
     };
