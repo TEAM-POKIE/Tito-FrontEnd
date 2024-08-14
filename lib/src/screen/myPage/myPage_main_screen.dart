@@ -19,7 +19,6 @@ class MypageMainScreen extends ConsumerWidget {
       body: SingleChildScrollView(
         child: MypageMain(),
       ),
-      bottomNavigationBar: BottomBar(),
     );
   }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:tito_app/core/api/api_service.dart';
+import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:go_router/go_router.dart';
@@ -12,17 +14,19 @@ import 'package:flutter_svg/flutter_svg.dart';
 class ExitPopup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    void putQuit() async {
+      await ApiService(DioClient.dio).putQuit();
+      context.go('/');
+    }
+
     return Dialog(
-      
       backgroundColor: ColorSystem.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.r),
       ),
-      
       child: Container(
         width: 280.w,
         height: 300.h,
-        
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center, // 중앙에 배치되도록 설정
           crossAxisAlignment: CrossAxisAlignment.center, // 가로축에서 중앙 정렬
@@ -73,8 +77,7 @@ class ExitPopup extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  // Add your membership cancellation logic here
-                  Navigator.of(context).pop();
+                  putQuit();
                 },
                 child: Container(
                   width: 241.w,
