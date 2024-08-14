@@ -380,7 +380,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return ProfilePopup();
+                        return LogoutPopup();
                       },
                     );
                   },

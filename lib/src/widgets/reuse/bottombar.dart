@@ -46,6 +46,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                     children: [
                       TextButton(
                         onPressed: () {
+                          context.pop();
                           context.push('/debate_create');
                         },
                         child: Row(
@@ -59,6 +60,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                       SizedBox(height: 10.h),
                       TextButton(
                         onPressed: () {
+                          context.pop();
                           context.push('/ai_create');
                         },
                         child: Row(
@@ -89,18 +91,20 @@ class _BottomBarState extends ConsumerState<BottomBar> {
         backgroundColor: Colors.transparent,
       );
     } else {
-      notifier.state = index;
       switch (index) {
         case 0:
+          notifier.state = index;
           context.go('/home');
           break;
         case 1:
+          notifier.state = index;
           context.go('/list');
           break;
         case 3:
-          context.go('/myalarm');
+          context.push('/myalarm');
           break;
         case 4:
+          notifier.state = index;
           context.go('/mypage');
           break;
       }
