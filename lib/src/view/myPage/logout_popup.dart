@@ -1,17 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
+import 'package:tito_app/core/api/api_service.dart';
+import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/constants/style.dart';
-import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tito_app/core/provider/nav_provider.dart';
+import 'package:tito_app/src/screen/login/login_main.dart';
 
-class LogoutPopup extends StatelessWidget {
+class LogoutPopup extends ConsumerWidget {
+  // ConsumerWidget으로 변경
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // ref 추가
+    void putLogOut() async {
+      await ApiService(DioClient.dio).postLogOut();
+      await secureStorage.delete(key: 'API_ACCESS_TOKEN');
+      await secureStorage.delete(key: 'API_REFRESH_TOKEN');
+      final notifier = ref.read(selectedIndexProvider.notifier);
+      notifier.state = 0;
+      context.go('/login');
+    }
+
     return Dialog(
       backgroundColor: ColorSystem.white,
       shape: RoundedRectangleBorder(
@@ -21,7 +32,6 @@ class LogoutPopup extends StatelessWidget {
         width: 280.w,
         height: 300.h,
         child: Column(
-          //mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             SizedBox(height: 10.h),
             Row(
@@ -32,12 +42,6 @@ class LogoutPopup extends StatelessWidget {
                   width: 40.w,
                   height: 40.h,
                 ),
-                // IconButton(
-                //   icon: Icon(Icons.close),
-                //   onPressed: () {
-                //     Navigator.of(context).pop();
-                //   },
-                // ),
               ],
             ),
             SizedBox(height: 16.h),
@@ -74,8 +78,7 @@ class LogoutPopup extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  // Add your membership cancellation logic here
-                  Navigator.of(context).pop();
+                  putLogOut();
                 },
                 child: Container(
                   width: 241.w,

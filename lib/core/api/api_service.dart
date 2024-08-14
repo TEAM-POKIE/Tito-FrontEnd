@@ -17,12 +17,14 @@ import 'package:tito_app/src/data/models/debate_hotfighter.dart';
 import 'package:tito_app/src/data/models/debate_benner.dart';
 part 'api_service.g.dart';
 
-@RestApi(baseUrl: "https://dev-tito.owsla.mywire.org/")
+@RestApi(baseUrl: "https://dev.tito.lat/")
 abstract class ApiService {
   factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
 
   @POST("auth/sign-up")
   Future<void> signUp(@Body() Map<String, dynamic> signUpData);
+  @POST("auth/logout")
+  Future<void> postLogOut();
 
   @POST("auth/sign-in")
   Future<AuthResponse> signIn(@Body() Map<String, dynamic> loginData);
@@ -81,7 +83,7 @@ abstract class ApiService {
 
   @DELETE("debates/{id}")
   Future deleteDebate(@Path("id") int debateId);
-  
+
   @DELETE("user-block-list/unblock")
   Future<void> deleteUnblock(@Body() Map<String, dynamic> requestBody);
 
