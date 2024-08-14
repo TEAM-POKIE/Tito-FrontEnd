@@ -643,12 +643,11 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<void> deleteUnblock(Map<String, dynamic> requestBody) async {
+  Future<void> deleteUnblock(Map<String, dynamic> unblockUserId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(requestBody);
+    final _data = unblockUserId; // 'unblockUserId' 키를 포함한 데이터
     await _dio.fetch<void>(_setStreamType<void>(Options(
       method: 'DELETE',
       headers: _headers,

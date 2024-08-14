@@ -85,7 +85,7 @@ abstract class ApiService {
   Future deleteDebate(@Path("id") int debateId);
 
   @DELETE("user-block-list/unblock")
-  Future<void> deleteUnblock(@Body() Map<String, dynamic> requestBody);
+  Future<void> deleteUnblock(@Body() Map<String, dynamic> unblockUserId);
 
   @POST("debates")
   @MultiPart()

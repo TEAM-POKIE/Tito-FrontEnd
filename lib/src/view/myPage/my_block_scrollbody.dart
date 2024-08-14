@@ -94,7 +94,7 @@ class _MyBlockScrollBodyState extends State<MyBlockScrollbody> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.r))),
               onPressed: () {
-                _removeItem(index);
+                _removeItem(index, user);
               },
               child: Text(
                 '차단 해제',
@@ -108,14 +108,18 @@ class _MyBlockScrollBodyState extends State<MyBlockScrollbody> {
   }
 
   // 차단 해제 버튼을 누를 때 호출되는 메서드
-  void _removeItem(int index) async {
-    // await ApiService(DioClient.dio).deleteUnblock(_bannedUsers.id);
+  void _removeItem(int index, GetUserBlock user) async {
+    await ApiService(DioClient.dio)
+        .deleteUnblock({'unblockUserId': user.blockedUserId});
     String removedUserNickname = _bannedUsers[index].nickname; // 닉네임 저장
     _bannedUsers.removeAt(index); // 리스트에서 유저를 제거
     _listKey.currentState?.removeItem(
       index,
-      (context, animation) => _buildItem(context,
-          GetUserBlock(id: 0, nickname: removedUserNickname), animation, index),
+      (context, animation) => _buildItem(
+          context,
+          GetUserBlock(blockedUserId: 0, nickname: removedUserNickname),
+          animation,
+          index),
       duration: Duration(milliseconds: 300),
     );
   }
