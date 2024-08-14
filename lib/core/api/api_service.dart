@@ -23,6 +23,8 @@ abstract class ApiService {
 
   @POST("auth/sign-up")
   Future<void> signUp(@Body() Map<String, dynamic> signUpData);
+  @POST("auth/logout")
+  Future<void> postLogOut();
 
   @POST("auth/sign-in")
   Future<AuthResponse> signIn(@Body() Map<String, dynamic> loginData);
@@ -33,6 +35,8 @@ abstract class ApiService {
   @PUT("users/nickname")
   Future<void> putNickName(@Body() Map<String, dynamic> nickNameData);
 
+  @PUT("auth/quit")
+  Future<void> putQuit();
   @PUT("users/password")
   Future<void> putPassword(@Body() Map<String, dynamic> passwordData);
   @PUT("users/tutorial-completed")
@@ -79,7 +83,7 @@ abstract class ApiService {
 
   @DELETE("debates/{id}")
   Future deleteDebate(@Path("id") int debateId);
-  
+
   @DELETE("user-block-list/unblock")
   Future<void> deleteUnblock(@Body() Map<String, dynamic> requestBody);
 

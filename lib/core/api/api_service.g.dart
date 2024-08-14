@@ -46,6 +46,30 @@ class _ApiService implements ApiService {
   }
 
   @override
+  Future<void> postLogOut() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'auth/logout',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+  }
+
+  @override
   Future<AuthResponse> signIn(Map<String, dynamic> loginData) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -115,6 +139,30 @@ class _ApiService implements ApiService {
         .compose(
           _dio.options,
           'users/nickname',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+  }
+
+  @override
+  Future<void> putQuit() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'auth/quit',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -491,7 +539,7 @@ class _ApiService implements ApiService {
     )
             .compose(
               _dio.options,
-              'users/${debateId}/debates',
+              'users/{user_id}/debates',
               queryParameters: queryParameters,
               data: _data,
             )

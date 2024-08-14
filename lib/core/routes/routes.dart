@@ -61,12 +61,18 @@ final GoRouter router = GoRouter(
             ),
           ],
         ),
+
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/mypage',
+              builder: (context, state) => const MypageMainScreen(),
+            ),
+          ],
+        ),
       ],
     ),
-    GoRoute(
-      path: '/mypage',
-      builder: (context, state) => const MypageMainScreen(),
-    ),
+
     GoRoute(
       path: '/mydebate',
       builder: (context, state) => const MyDebate(),
