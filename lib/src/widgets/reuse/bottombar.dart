@@ -53,7 +53,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                           children: [
                             SvgPicture.asset('assets/icons/bottom_plus_ai.svg'),
                             SizedBox(width: 10.w),
-                            const Text('토론장 개설', style: FontSystem.KR16SB),
+                            Text('토론장 개설', style: FontSystem.KR16SB),
                           ],
                         ),
                       ),
@@ -68,7 +68,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                             SvgPicture.asset(
                                 'assets/icons/bottom_plus_create.svg'),
                             SizedBox(width: 10.w),
-                            const Text('AI 랜덤 주제 생성기', style: FontSystem.KR16SB),
+                            Text('AI 랜덤 주제 생성기', style: FontSystem.KR16SB),
                           ],
                         ),
                       ),

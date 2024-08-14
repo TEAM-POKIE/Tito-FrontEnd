@@ -97,7 +97,7 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
                 SizedBox(
                   height: 110.h,
                 ),
-                const Text(
+                Text(
                   '이메일',
                   style: FontSystem.KR20SB,
                 ),
@@ -141,7 +141,7 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
                 SizedBox(
                   height: 50.h,
                 ),
-                const Text(
+                Text(
                   '비밀번호',
                   style: FontSystem.KR20SB,
                 ),

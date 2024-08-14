@@ -305,7 +305,7 @@ class LoginMain extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
+                Text(
                   '아직 회원이 아니신가요?',
                   style: FontSystem.KR14R,
                 ),

@@ -73,7 +73,7 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
             Row(
               children: [
                 SizedBox(width: 140.w),
-                const Text('프로필', style: FontSystem.KR14B),
+                Text('프로필', style: FontSystem.KR14B),
                 SizedBox(width: 80.w),
                 IconButton(
                   icon: Icon(Icons.close),
@@ -91,7 +91,7 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
             SizedBox(height: 20.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: const Text(
+              child: Text(
                 '참여한 토론',
                 style: FontSystem.KR14B,
               ),

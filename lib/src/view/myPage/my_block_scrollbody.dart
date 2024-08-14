@@ -42,7 +42,7 @@ class _MyBlockScrollBodyState extends State<MyBlockScrollbody> {
         SizedBox(height: 30.h),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: const Text(
+          child: Text(
             '차단한 유저',
             style: FontSystem.KR16B,
           ),

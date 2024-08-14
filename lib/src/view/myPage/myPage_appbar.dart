@@ -13,7 +13,7 @@ class MypageAppbar extends ConsumerWidget {
     return AppBar(
       backgroundColor: ColorSystem.white,
       automaticallyImplyLeading: false,
-      title: const Text('마이페이지', style: FontSystem.KR16SB),
+      title: Text('마이페이지', style: FontSystem.KR16SB),
       centerTitle: true, // 타이틀 중앙 정렬
     );
   }

@@ -66,7 +66,7 @@ class _SocialSignUpState extends State<SocialSignup> {
                 SizedBox(
                   height: 105.h,
                 ),
-                const Text(
+                Text(
                   '닉네임',
                   style: FontSystem.KR20B,
                 ),
