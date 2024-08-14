@@ -251,7 +251,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: EdgeInsets.only(left: 20.w),
-                child: const Text(
+                child: Text(
                   '내 활동',
                   style: FontSystem.KR14B,
                 ),
@@ -311,7 +311,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: EdgeInsets.only(left: 20.w),
-                child: const Text(
+                child: Text(
                   '설정',
                   style: FontSystem.KR14B,
                 ),

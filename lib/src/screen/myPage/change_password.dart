@@ -39,7 +39,7 @@ class ChangePassword extends ConsumerWidget {
           icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
         ),
         centerTitle: true,
-        title: const Text('비밀번호 변경', style: FontSystem.KR16SB),
+        title: Text('비밀번호 변경', style: FontSystem.KR16SB),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -47,7 +47,7 @@ class ChangePassword extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 51.h),
-            const Text('현재 비밀번호', style: FontSystem.KR16SB),
+            Text('현재 비밀번호', style: FontSystem.KR16SB),
             SizedBox(height: 10.h),
             TextField(
               controller: _currentController,
@@ -62,7 +62,7 @@ class ChangePassword extends ConsumerWidget {
               style: const TextStyle(color: ColorSystem.black),
             ),
             SizedBox(height: 20.h),
-            const Text('새 비밀번호', style: FontSystem.KR16SB),
+            Text('새 비밀번호', style: FontSystem.KR16SB),
             SizedBox(height: 10.h),
             TextField(
               decoration: InputDecoration(
@@ -78,7 +78,7 @@ class ChangePassword extends ConsumerWidget {
               style: const TextStyle(color: ColorSystem.black),
             ),
             SizedBox(height: 20.h),
-            const Text('새 비밀번호 재입력', style: FontSystem.KR16SB),
+            Text('새 비밀번호 재입력', style: FontSystem.KR16SB),
             SizedBox(height: 10.h),
             TextField(
               controller: _newPasswordController,

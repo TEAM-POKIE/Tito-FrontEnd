@@ -7,7 +7,7 @@ class PurpleButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Color color;
   final Color textColor;
-  final TextStyle textStyle;
+
   final OutlinedBorder shape;
   final EdgeInsetsGeometry padding;
 
@@ -15,7 +15,6 @@ class PurpleButton extends StatelessWidget {
     required this.text,
     required this.onPressed,
     this.color = ColorSystem.purple,
-    this.textStyle = FontSystem.KR18R,
     this.textColor = Colors.white,
     this.padding = const EdgeInsets.all(16.0),
     this.shape = const RoundedRectangleBorder(
@@ -36,7 +35,6 @@ class PurpleButton extends StatelessWidget {
         text,
         style: TextStyle(
           color: textColor,
-          
         ),
       ),
     );

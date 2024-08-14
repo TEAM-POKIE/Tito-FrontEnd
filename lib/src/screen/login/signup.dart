@@ -71,7 +71,7 @@ class _SignUpState extends State<Signup> {
                 SizedBox(
                   height: 105.h,
                 ),
-                const Text(
+                Text(
                   '닉네임',
                   style: FontSystem.KR20SB,
                 ),
@@ -97,7 +97,7 @@ class _SignUpState extends State<Signup> {
                 SizedBox(
                   height: 30.h,
                 ),
-                const Text(
+                Text(
                   '이메일', 
                   style: FontSystem.KR20SB,
                 ),
@@ -125,7 +125,7 @@ class _SignUpState extends State<Signup> {
                 SizedBox(
                   height: 30.h,
                 ),
-                const Text(
+                Text(
                   '비밀번호',
                   style: FontSystem.KR20SB,
                 ),

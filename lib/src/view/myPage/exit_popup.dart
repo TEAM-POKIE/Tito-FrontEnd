@@ -38,7 +38,7 @@ class ExitPopup extends StatelessWidget {
               ],
             ),
             SizedBox(height: 4.h),
-            const Text(
+            Text(
               '정말로 회원 탈퇴 하시겠습니까?',
               style: FontSystem.KR18B,
               textAlign: TextAlign.center,
@@ -54,7 +54,7 @@ class ExitPopup extends StatelessWidget {
                 ),
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 22.h),
-                  child: const Text(
+                  child: Text(
                     '회원 탈퇴 하시면\n토론 기록과 관련 정보들이\n영영 사라져요',
                     style: FontSystem.KR14R,
                     textAlign: TextAlign.center,

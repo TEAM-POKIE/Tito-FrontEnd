@@ -18,7 +18,7 @@ class MyBlockAppbar extends StatelessWidget {
         },
         icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
       ),
-      title: const Text('차단 리스트', style: FontSystem.KR16SB),
+      title: Text('차단 리스트', style: FontSystem.KR16SB),
       centerTitle: true,
     );
   }

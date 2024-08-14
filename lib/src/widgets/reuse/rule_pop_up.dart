@@ -35,7 +35,7 @@ class RulePopUp extends ConsumerWidget {
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 4.w),
-                      child: const Text(
+                      child: Text(
                         '토론 룰',
                         style: FontSystem.KR14B,
                       ),

@@ -68,7 +68,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   ),
                   child: Padding(
                     padding:
-                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 30.h),
+                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,

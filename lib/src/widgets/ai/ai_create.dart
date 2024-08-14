@@ -126,7 +126,7 @@ class AiCreate extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 10.h),
-                  const Text(
+                  Text(
                     'AI 자동 토론 주제 생성 하기',
                     style: FontSystem.KR22SB,
                   ),
@@ -141,7 +141,7 @@ class AiCreate extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(width: 3.w),
-                const Text('원하는 키워드를 선택해보세요 !', style: FontSystem.KR20SB),
+               Text('원하는 키워드를 선택해보세요 !', style: FontSystem.KR20SB),
               ],
             ),
           ),

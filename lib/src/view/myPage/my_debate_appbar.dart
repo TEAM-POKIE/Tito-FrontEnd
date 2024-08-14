@@ -21,7 +21,7 @@ class MyDebateAppbar extends StatelessWidget {
           icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
         ),
       
-      title: const Text(
+      title: Text(
         '내가 참여한 토론',
         style: FontSystem.KR16SB,
       ),

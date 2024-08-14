@@ -89,7 +89,7 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
                     style: FontSystem.KR18B.copyWith(fontSize: 30),
                   ),
                   SizedBox(height: 40.h),
-                  const Text(
+                  Text(
                     '토론 주제에 대한 본문',
                     style: FontSystem.KR18SB,
                   ),
@@ -122,7 +122,7 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
                     ),
                   ),
                   SizedBox(height: 40.h),
-                  const Text(
+                  Text(
                     '이미지 첨부하기',
                     style: FontSystem.KR18SB,
                   ),

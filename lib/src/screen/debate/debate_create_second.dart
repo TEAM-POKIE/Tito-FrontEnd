@@ -118,7 +118,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                     style: FontSystem.KR18B.copyWith(fontSize: 30),
                   ),
                   SizedBox(height: 40.h),
-                  const Text(
+                  Text(
                     '나의 주장',
                     style: FontSystem.KR18SB,
                   ),
@@ -145,7 +145,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                     },
                   ),
                   SizedBox(height: 40.h),
-                  const Text(
+                  Text(
                     '상대 주장',
                     style: FontSystem.KR18SB,
                   ),

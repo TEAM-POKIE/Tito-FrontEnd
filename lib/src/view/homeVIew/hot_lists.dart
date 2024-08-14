@@ -37,7 +37,7 @@ class _HotListState extends ConsumerState<HotLists> {
           ),
           child: Row(
             children: [
-              const Text(
+              Text(
                 'HOT한 토론',
                 style: FontSystem.KR18SB,
               ),

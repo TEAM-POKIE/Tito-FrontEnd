@@ -20,7 +20,7 @@ class MyAlarmAppbar extends StatelessWidget {
         },
         icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
       ),
-      title: const Text(
+      title: Text(
         '알림',
         style: FontSystem.KR16SB,
       ),

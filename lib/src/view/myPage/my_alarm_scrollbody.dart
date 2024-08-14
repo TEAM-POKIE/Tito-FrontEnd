@@ -146,7 +146,7 @@ class _MyAlarmScrollBodyState extends State<MyAlarmScrollBody> {
           // '새로운 알림' 제목
           return Padding(
             padding: EdgeInsets.only(bottom: 15.h, left: 10.w),
-            child: const Text(
+            child: Text(
               '새로운 알림',
               style: FontSystem.KR20B,
             ),
@@ -158,7 +158,7 @@ class _MyAlarmScrollBodyState extends State<MyAlarmScrollBody> {
           // '지난 알림' 제목
           return Padding(
             padding: EdgeInsets.symmetric(vertical: 40.h),
-            child: const Text(
+            child: Text(
               '지난 알림',
               style: FontSystem.KR20B,
             ),

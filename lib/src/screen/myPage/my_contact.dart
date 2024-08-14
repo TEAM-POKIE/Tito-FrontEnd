@@ -24,7 +24,7 @@ class MyContact extends StatelessWidget {
           },
           icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
         ),
-        title: const Text(
+        title: Text(
           '문의하기',
           style: FontSystem.KR16SB,
         ),
@@ -37,7 +37,7 @@ class MyContact extends StatelessWidget {
                 padding: EdgeInsets.only(top: 40.h, bottom: 20.h),
                 child: Text('portunecookiess@gmail.com', style: FontSystem.KR20SB),
               ),
-              const Text('로 연락주시기 바랍니다.', style: FontSystem.KR20SB)
+              Text('로 연락주시기 바랍니다.', style: FontSystem.KR20SB)
             ],
           ),
       ),

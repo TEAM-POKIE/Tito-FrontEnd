@@ -63,7 +63,7 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
                     child: Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
-                      child: const Text(
+                      child: Text(
                         '사용자 차단',
                         style: FontSystem.KR14SB,
                       ),

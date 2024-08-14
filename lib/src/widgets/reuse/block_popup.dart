@@ -39,7 +39,7 @@ class BlockPopup extends StatelessWidget {
               ],
             ),
             SizedBox(height: 16.h),
-            const Text(
+            Text(
               '차단 하시겠어요?',
               style: FontSystem.KR18B,
               textAlign: TextAlign.center,
@@ -54,7 +54,7 @@ class BlockPopup extends StatelessWidget {
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 25.h),
-                child: const Text(
+                child: Text(
                   '해당 유저와 토론할 수 없으며\n개설된 토론 및 게시글이\n더 이상 노출되지 않습니다.',
                   style: FontSystem.KR14R,
                   textAlign: TextAlign.center,

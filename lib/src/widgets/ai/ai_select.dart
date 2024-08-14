@@ -53,7 +53,7 @@ class _AiSelectState extends State<AiSelect> {
                 SizedBox(
                   width: 3.w,
                 ),
-                const Text(
+                Text(
                   'AI 자동 토론 주제 생성 하기',
                   style: FontSystem.KR22SB,
                 ),
@@ -67,7 +67,7 @@ class _AiSelectState extends State<AiSelect> {
 
           Padding(
             padding: EdgeInsets.only(left: 23.w),
-            child: const Text('이런 주제는 어때요?', style: FontSystem.KR20SB),
+            child: Text('이런 주제는 어때요?', style: FontSystem.KR20SB),
           ),
           SizedBox(
             height: 1.h,
@@ -75,7 +75,7 @@ class _AiSelectState extends State<AiSelect> {
           Padding(
             padding: EdgeInsets.only(left: 23.w),
             child:
-                const Text('바로 다른 사람들과 의견을 나눠보세요 !', style: FontSystem.KR20SB),
+                Text('바로 다른 사람들과 의견을 나눠보세요 !', style: FontSystem.KR20SB),
           ),
 
           SizedBox(height: 60.h), // 간격 추가

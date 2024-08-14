@@ -33,7 +33,7 @@ class _HotFighterState extends ConsumerState<HotFighter> {
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: Row(
             children: [
-              const Text(
+              Text(
                 'HOT한 토론러',
                 style: FontSystem.KR18SB,
               ),

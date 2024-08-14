@@ -33,7 +33,7 @@ class Searchpage extends ConsumerWidget {
                 onPressed: () {
                   context.pop();
                 },
-                child: const Text('취소', style: FontSystem.KR16M),
+                child: Text('취소', style: FontSystem.KR16M),
               ),
             ],
           )),

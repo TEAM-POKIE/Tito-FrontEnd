@@ -18,7 +18,7 @@ class MyPersonalrule extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios),
         ),
         centerTitle: true,
-        title: const Text('개인정보처리방침', style: FontSystem.KR16SB),
+        title: Text('개인정보처리방침', style: FontSystem.KR16SB),
       ),
     );
   }

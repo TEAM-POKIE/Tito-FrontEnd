@@ -41,7 +41,7 @@ class LogoutPopup extends StatelessWidget {
               ],
             ),
             SizedBox(height: 16.h),
-            const Text(
+            Text(
               '정말로 로그아웃 하시겠습니까?',
               style: FontSystem.KR18SB,
               textAlign: TextAlign.center,
@@ -56,7 +56,7 @@ class LogoutPopup extends StatelessWidget {
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 25.h),
-                child: const Text(
+                child: Text(
                   '로그아웃 하시면\n추후 앱을 이용하실 때\n다시 로그인을 해야해요',
                   style: FontSystem.KR14R,
                   textAlign: TextAlign.center,

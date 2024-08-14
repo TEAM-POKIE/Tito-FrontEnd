@@ -40,7 +40,7 @@ class ChangeName extends ConsumerWidget {
           icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
         ),
         centerTitle: true,
-        title: const Text('닉네임 수정', style: FontSystem.KR16SB),
+        title: Text('닉네임 수정', style: FontSystem.KR16SB),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -48,7 +48,7 @@ class ChangeName extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 51.h),
-            const Text('새로운 닉네임을 수정해주세요.', style: FontSystem.KR16SB),
+            Text('새로운 닉네임을 수정해주세요.', style: FontSystem.KR16SB),
             SizedBox(height: 20.h),
             TextField(
               controller: _titleController,

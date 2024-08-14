@@ -143,7 +143,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
             backgroundColor: ColorSystem.white,
             title: Padding(
               padding: EdgeInsets.only(left: 10.w),
-              child: const Text(
+              child: Text(
                 '토론 리스트',
                 style: FontSystem.KR22B,
               ),
