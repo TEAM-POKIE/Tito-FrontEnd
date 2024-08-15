@@ -52,6 +52,7 @@ class ChangeName extends ConsumerWidget {
             SizedBox(height: 20.h),
             TextField(
               controller: _titleController,
+              autocorrect: false,
               decoration: InputDecoration(
                 hintText: '${loginInfo?.nickname}',
                 hintStyle: TextStyle(color: ColorSystem.grey, fontSize: 16.sp),

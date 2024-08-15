@@ -184,7 +184,6 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                 : Container(
                     // 팝업 창 안 내용 부분
                     width: 248.w,
-                    height: 100.h,
                     alignment: Alignment.center, // 컨테이너 안에서 중앙 정렬
                     decoration: BoxDecoration(
                         color: ColorSystem.ligthGrey,
