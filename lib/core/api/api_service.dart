@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 import 'package:tito_app/core/api/multpart_file_with_to_json.dart';
+import 'package:tito_app/src/data/models/ai_word.dart';
 import 'package:tito_app/src/data/models/debate_crate.dart';
 import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:tito_app/src/data/models/debate_list.dart';
@@ -74,6 +75,8 @@ abstract class ApiService {
 
   @GET('users/{id}/debates')
   Future<Map<String, dynamic>> getOtherDebate(@Path("id") int debateId);
+  @POST('debates/generate-topic')
+  Future<AiWord> postGenerateTopic(@Body() Map<String, dynamic> requestBody);
 
   @GET("debates/{id}/participants")
   Future<List<DebateParticipants>> getParicipants(@Path("id") int debateId);

@@ -5,6 +5,7 @@ import 'package:tito_app/src/view/chatView/chat_bottom_detail.dart';
 import 'package:tito_app/src/view/chatView/chat_list_view.dart';
 import 'package:tito_app/src/view/chatView/chat_speech_bubble.dart';
 import 'package:tito_app/src/view/chatView/chat_view_details.dart';
+import 'package:tito_app/src/view/chatView/ended_chat_list.dart';
 import 'package:tito_app/src/view/chatView/votingbar.dart';
 
 class EndedChatBody extends ConsumerWidget {
@@ -24,7 +25,7 @@ class EndedChatBody extends ConsumerWidget {
         Expanded(
           child: Container(
               decoration: BoxDecoration(color: ColorSystem.grey3),
-              child: ChatListView(id: id)), // id 전달
+              child: EndedChatList()), // id 전달
         ),
       ],
     );
