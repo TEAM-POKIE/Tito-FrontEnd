@@ -4,7 +4,8 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/provider/home_state_provider.dart';
-import 'package:tito_app/src/viewModel/home_viewModel.dart';
+
+import 'package:go_router/go_router.dart'; // context.push를 사용하기 위해 추가
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
@@ -57,86 +58,93 @@ class _HomeViewState extends ConsumerState<HomeView> {
             itemCount: homeState.debateBanners.length,
             itemBuilder: (context, index) {
               final debate = homeState.debateBanners[index];
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-                child: Container(
-                  width: 352.w,
-                  height: 140.h,
-                  decoration: BoxDecoration(
-                    color: ColorSystem.black,
-                    borderRadius: BorderRadius.circular(20.r),
-                  ),
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '불 붙은 실시간 토론 🔥',
-                              style: FontSystem.KR16M.copyWith(
-                                color: ColorSystem.white,
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10.w, vertical: 5.h),
-                              decoration: BoxDecoration(
-                                color: ColorSystem.purple,
-                                borderRadius: BorderRadius.circular(20.r),
-                              ),
-                              child: Text(
-                                debate.debateStatus,
-                                style: FontSystem.KR14SB.copyWith(
+              return GestureDetector(
+                onTap: () {
+                  // 배너 클릭 시 해당 아이디로 페이지 이동
+                  context.push('/chat/${debate.id}');
+                },
+                child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                  child: Container(
+                    width: 352.w,
+                    height: 140.h,
+                    decoration: BoxDecoration(
+                      color: ColorSystem.black,
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20.w, vertical: 20.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '불 붙은 실시간 토론 🔥',
+                                style: FontSystem.KR16M.copyWith(
                                   color: ColorSystem.white,
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 12.h),
-                        Text(
-                          debate.debateTitle,
-                          style: FontSystem.KR18B
-                              .copyWith(color: ColorSystem.white),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        SizedBox(height: 4.h),
-                        Row(
-                          children: [
-                            Text(
-                              debate.debateMakerOpinion,
-                              style: FontSystem.KR18B
-                                  .copyWith(color: ColorSystem.white),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            SizedBox(
-                              width: 10.w,
-                            ),
-                            Text(
-                              'vs',
-                              style: FontSystem.KR18B
-                                  .copyWith(color: ColorSystem.white),
-                            ),
-                            SizedBox(
-                              width: 10.w,
-                            ),
-                            Text(
-                              debate.debateJoinerOpinion,
-                              style: FontSystem.KR18B
-                                  .copyWith(color: ColorSystem.white),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
-                      ],
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10.w, vertical: 5.h),
+                                decoration: BoxDecoration(
+                                  color: ColorSystem.purple,
+                                  borderRadius: BorderRadius.circular(20.r),
+                                ),
+                                child: Text(
+                                  debate.debateStatus,
+                                  style: FontSystem.KR14SB.copyWith(
+                                    color: ColorSystem.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 12.h),
+                          Text(
+                            debate.debateTitle,
+                            style: FontSystem.KR18B
+                                .copyWith(color: ColorSystem.white),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(height: 4.h),
+                          Row(
+                            children: [
+                              Text(
+                                debate.debateMakerOpinion,
+                                style: FontSystem.KR18B
+                                    .copyWith(color: ColorSystem.white),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              Text(
+                                'vs',
+                                style: FontSystem.KR18B
+                                    .copyWith(color: ColorSystem.white),
+                              ),
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              Text(
+                                debate.debateJoinerOpinion,
+                                style: FontSystem.KR18B
+                                    .copyWith(color: ColorSystem.white),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

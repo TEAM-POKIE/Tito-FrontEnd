@@ -89,7 +89,11 @@ class DebateAppbar extends ConsumerWidget {
       leading: IconButton(
         icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
         onPressed: () {
-          context.go('/list');
+          if (context.canPop()) {
+            context.pop();
+          } else {
+            context.go('/list');
+          }
         },
       ),
       actions: [

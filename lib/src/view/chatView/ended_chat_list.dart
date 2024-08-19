@@ -1,37 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/constants/style.dart';
+import 'package:tito_app/core/provider/ended_provider.dart';
+import 'package:tito_app/src/data/models/ended_chat.dart';
 
-class EndedChatList extends StatelessWidget {
-  final List<Map<String, dynamic>> messages = [
-    {
-      'userId': 1,
-      'content':
-          '저는 외계인이 있다고 생각해요 왜냐하면 블라 블라블라블라블라블라블라블라 블라 블라블라블라블라블라블라블라 블라 블라블라블라블라블라블라블라',
-      'createdAt': DateTime.now(),
-      'command': 'CHAT',
-    },
-    {
-      'userId': 2,
-      'content':
-          '저는 외계인이 없다고 생각해요 왜냐하면 블라 블라블라블라블라블라블라블라 블라 블라블라블라블라블라블라블라 블라 블라블라블라블라블라블라블라',
-      'createdAt': DateTime.now(),
-      'command': 'CHAT',
-    },
-    {
-      'userId': 1,
-      'content':
-          '저는 외계인이 있다고 생각해요 왜냐하면 블라 블라블라블라블라블라블라블라 블라 블라블라블라블라블라블라블라 블라 블라블라블라블라블라블라블라',
-      'createdAt': DateTime.now(),
-      'command': 'CHAT',
-    },
-    {
-      'userId': 2,
-      'content':
-          '저는 외계인이 없다고 생각해요 왜냐하면 블라 블라블라블라블라블라블라블라 블라 블라블라블라블라블라블라블라 블라 블라블라블라블라블라블라블라',
-      'createdAt': DateTime.now(),
-      'command': 'CHAT',
-    },
-  ];
+class EndedChatList extends ConsumerStatefulWidget {
+  final int id;
+
+  EndedChatList({
+    super.key,
+    required this.id,
+  });
+
+  @override
+  _EndedChatListState createState() => _EndedChatListState();
+}
+
+class _EndedChatListState extends ConsumerState<EndedChatList> {
+  List<EndedChatInfo> messages = [];
+  int? myUserId;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() async {
+      final endedViewModel = ref.read(endedProvider.notifier);
+      final response = await endedViewModel.getChat(widget.id);
+
+      if (response.isNotEmpty) {
+        setState(() {
+          messages = response; // response를 messages에 저장
+          myUserId = messages.first.userId; // 첫 번째 메시지의 userId를 기준으로 설정
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +59,7 @@ class EndedChatList extends StatelessWidget {
               }
 
               final message = messages[index];
-              final isMyMessage = message['userId'] == 1; // User ID 1이 나라고 가정
+              final isMyMessage = message.userId == myUserId;
 
               return Column(
                 children: [
@@ -98,13 +101,14 @@ class EndedChatList extends StatelessWidget {
                                       ),
                               ),
                               child: Text(
-                                message['content'],
+                                message.content,
                                 style: FontSystem.KR14R,
                               ),
                             ),
                             SizedBox(height: 5),
                             Text(
-                              TimeOfDay.fromDateTime(message['createdAt'])
+                              TimeOfDay.fromDateTime(
+                                      DateTime.parse(message.createdAt))
                                   .format(context),
                               style: FontSystem.KR12R
                                   .copyWith(color: ColorSystem.grey1),

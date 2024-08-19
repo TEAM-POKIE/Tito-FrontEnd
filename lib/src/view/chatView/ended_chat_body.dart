@@ -25,7 +25,7 @@ class EndedChatBody extends ConsumerWidget {
         Expanded(
           child: Container(
               decoration: BoxDecoration(color: ColorSystem.grey3),
-              child: EndedChatList()), // id 전달
+              child: EndedChatList(id: id)), // id 전달
         ),
       ],
     );

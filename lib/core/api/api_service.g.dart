@@ -632,19 +632,19 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<List<DebateParticipants>> getParicipants(int debateId) async {
+  Future<List<EndedChatInfo>> getDebateChat(int debateId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<DebateParticipants>>(Options(
+    final _options = _setStreamType<Map<String, dynamic>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          'debates/${debateId}/participants',
+          'debates/${debateId}/chat',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -653,18 +653,20 @@ class _ApiService implements ApiService {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<DebateParticipants> _value;
-    try {
-      _value = _result.data!
-          .map((dynamic i) =>
-              DebateParticipants.fromJson(i as Map<String, dynamic>))
-          .toList();
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
+
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+
+    // 서버로부터 받아온 데이터가 리스트일 경우에만 변환 작업 수행
+    final data = _result.data?['data'] as List<dynamic>?;
+
+    if (data == null || data.isEmpty) {
+      return []; // 빈 리스트 반환
     }
-    return _value;
+
+    // 리스트가 비어 있지 않을 경우 데이터를 변환하여 반환
+    return data
+        .map((dynamic i) => EndedChatInfo.fromJson(i as Map<String, dynamic>))
+        .toList();
   }
 
   @override
