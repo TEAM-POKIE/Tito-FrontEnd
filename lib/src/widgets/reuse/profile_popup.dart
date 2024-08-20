@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
+import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:tito_app/src/data/models/debate_usermade.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/userProfile_provider.dart';
@@ -21,6 +22,7 @@ class ProfilePopup extends ConsumerStatefulWidget {
 class _ProfilePopupState extends ConsumerState<ProfilePopup> {
   List<DebateUsermade> debateList = [];
 
+  OverlayEntry? _overlayEntry;
   @override
   void initState() {
     super.initState();
@@ -53,6 +55,63 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
     } catch (error) {
       print('Error fetching debate list: $error');
     }
+  }
+
+  void _showOverlay(BuildContext context) {
+    final RenderBox renderBox = context.findRenderObject() as RenderBox;
+    final popupViewModel = ref.read(popupProvider.notifier);
+    _overlayEntry = OverlayEntry(
+      builder: (context) => GestureDetector(
+        onTap: () {
+          _removeOverlay();
+        },
+        child: Material(
+          color: Colors.transparent,
+          child: Stack(
+            children: [
+              Positioned(
+                top: 235.h,
+                left: 220.w,
+                child: InkResponse(
+                  onTap: () {
+                    _removeOverlay();
+                    popupViewModel.showBlockPopup(context);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: ColorSystem.white,
+                      borderRadius: BorderRadius.circular(12.r),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x669795A3),
+                          spreadRadius: 0,
+                          blurRadius: 4,
+                        )
+                      ],
+                    ),
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
+                      child: Text(
+                        '사용자 차단',
+                        style: FontSystem.KR14SB,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context)!.insert(_overlayEntry!);
+  }
+
+  void _removeOverlay() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
   }
 
   @override
@@ -133,25 +192,45 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
+                  Stack(
                     children: [
-                      Text('${userState!.nickname}', style: FontSystem.KR24B),
-                      SizedBox(width: 5.w),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: ColorSystem.lightPurple,
-                            borderRadius: BorderRadius.circular(10.r),
-                            border: Border.all(
-                              color: ColorSystem.purple,
-                            )),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 6.h, vertical: 6.h),
-                          child: Text('승률 ${userState.winningRate}%',
-                              textAlign: TextAlign.center,
-                              style: FontSystem.KR14B
-                                  .copyWith(color: ColorSystem.purple)),
-                        ),
+                      Row(
+                        children: [
+                          Text('${userState!.nickname}',
+                              style: FontSystem.KR24B),
+                          SizedBox(width: 5.w),
+                          Container(
+                            decoration: BoxDecoration(
+                                color: ColorSystem.lightPurple,
+                                borderRadius: BorderRadius.circular(10.r),
+                                border: Border.all(
+                                  color: ColorSystem.purple,
+                                )),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 6.h, vertical: 6.h),
+                              child: Text('승률 ${userState.winningRate}%',
+                                  textAlign: TextAlign.center,
+                                  style: FontSystem.KR14B
+                                      .copyWith(color: ColorSystem.purple)),
+                            ),
+                          ),
+                          //SizedBox(width: 24.w),
+                          Stack(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  if (_overlayEntry == null) {
+                                    _showOverlay(context);
+                                  } else {
+                                    _removeOverlay();
+                                  }
+                                },
+                                icon: Icon(Icons.more_vert),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ],
                   ),

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/constants/style.dart';
@@ -10,10 +10,9 @@ import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
 import 'package:tito_app/core/provider/userProfile_provider.dart';
-import 'package:tito_app/core/provider/websocket_provider.dart';
-import 'package:tito_app/src/viewModel/popup_viewModel.dart';
+
 import 'package:tito_app/core/api/dio_client.dart';
-import 'package:tito_app/core/provider/login_provider.dart';
+
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -41,8 +40,8 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
       child: Container(
         width: 280.w,
         height: 300.h,
-        padding:
-            EdgeInsets.only(top: 12.h, left: 16.w, right: 16.w),    // 팝업 안의 전체 내용 패딩 부분
+        padding: EdgeInsets.only(
+            top: 12.h, left: 16.w, right: 16.w), // 팝업 안의 전체 내용 패딩 부분
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -185,7 +184,6 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                 : Container(
                     // 팝업 창 안 내용 부분
                     width: 248.w,
-                    height: 100.h,
                     alignment: Alignment.center, // 컨테이너 안에서 중앙 정렬
                     decoration: BoxDecoration(
                         color: ColorSystem.ligthGrey,
@@ -202,7 +200,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20.h),   // 팝업 내용과 팝업 버튼 간 간격
+            SizedBox(height: 20.h), // 팝업 내용과 팝업 버튼 간 간격
             if (popupState.buttonStyle == 2)
               _twoButtons(context, ref)
             else if (popupState.buttonStyle == 1)
@@ -240,11 +238,9 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
               content: '서로 존중하는 토론을 부탁드려요!',
             );
             context.pop();
-            await Future.delayed(
-                Duration(milliseconds: 100)); // ensure popup has closed
+            await Future.delayed(Duration(milliseconds: 100));
             // popupViewModel.showDebatePopup(context);
           } else if (popupState.title == '토론의 승자를 투표해주세요!') {
-            print(selectedDebate);
             chatViewModel.sendVote(selectedDebate);
           } else if (popupState.title == '토론 시작 시 알림을 보내드릴게요!') {
             context.pop();
@@ -264,7 +260,6 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
     final popupViewModel = ref.watch(popupProvider.notifier);
     final debateState = ref.watch(debateCreateProvider);
     final chatViewModel = ref.watch(chatInfoProvider.notifier);
-    final chatState = ref.watch(chatInfoProvider);
     final userState = ref.watch(userProfileProvider);
 
     void startDebate() async {
@@ -352,11 +347,12 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
               if (popupState.title == '상대방이 타이밍 벨을 울렸어요!') {
                 chatViewModel.timingNOResponse();
               }
-              context.pop();  
+              context.pop();
             },
             child: Text(
               popupState.buttonContentLeft ?? '',
-              style: FontSystem.KR14SB.copyWith(color: ColorSystem.purple), //팝업 버튼 중 2개중 왼쪽버튼글씨
+              style: FontSystem.KR14SB
+                  .copyWith(color: ColorSystem.purple), //팝업 버튼 중 2개중 왼쪽버튼글씨
             ),
           ),
         ),
@@ -364,7 +360,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: ColorSystem.purple,  //팝업 아래 2개 버튼 중 오른쪽 버튼 색깔
+              backgroundColor: ColorSystem.purple, //팝업 아래 2개 버튼 중 오른쪽 버튼 색깔
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.r),
               ),
@@ -393,7 +389,8 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
             },
             child: Text(
               popupState.buttonContentRight ?? '',
-              style: FontSystem.KR14SB.copyWith(color: ColorSystem.white),  // 팝업 버튼 2개 중 오른쪽 버튼 글씨
+              style: FontSystem.KR14SB
+                  .copyWith(color: ColorSystem.white), // 팝업 버튼 2개 중 오른쪽 버튼 글씨
             ),
           ),
         ),

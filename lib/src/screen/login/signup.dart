@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/api/api_service.dart';
@@ -22,6 +23,9 @@ class _SignUpState extends State<Signup> {
   final _formKey = GlobalKey<FormState>();
   bool _obscureText = true;
 
+  String? _emailError; // 이메일 에러 메시지
+  String? _nicknameError; // 닉네임 에러 메시지
+
   void _onSignUp() async {
     final isVaild = _formKey.currentState!.validate();
     _formKey.currentState!.save();
@@ -39,8 +43,19 @@ class _SignUpState extends State<Signup> {
         await apiService.signUp(signUpData);
         context.pop();
       } catch (e) {
-        print('Failed to sign up: $e');
-        // Handle error here, e.g., show a message to the user
+        if (e is DioError && e.response?.statusCode == 409) {
+          final message = e.response?.data['message'] ?? '';
+          setState(() {
+            if (message.contains('닉네임')) {
+              _nicknameError = message;
+            } else if (message.contains('이메일')) {
+              _emailError = message;
+            }
+          });
+        } else {
+          print('Failed to sign up: $e');
+          // Handle other errors here
+        }
       }
     }
   }
@@ -68,25 +83,26 @@ class _SignUpState extends State<Signup> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: 105.h,
-                ),
-                Text(
-                  '닉네임',
-                  style: FontSystem.KR20SB,
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
+                SizedBox(height: 105.h),
+                Text('닉네임', style: FontSystem.KR20SB),
+                SizedBox(height: 10.h),
                 TextFormField(
-                  //maxLength: 10,
+                  maxLength: 5,
                   decoration: InputDecoration(
                     hintText: '닉네임을 입력해 주세요. (5글자 이하)',
-                    hintStyle: FontSystem.KR16M.copyWith(color:ColorSystem.grey),
+                    hintStyle:
+                        FontSystem.KR16M.copyWith(color: ColorSystem.grey),
+                    errorText: _nicknameError, // 닉네임 에러 메시지 표시
                   ),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return '닉네임을 입력해 주세요.';
+                    }
+                    if (value.length > 5) {
+                      return '닉네임은 5글자 이하로 적어주세요';
+                    }
+                    if (!RegExp(r'^[a-zA-Z0-9가-힣]+$').hasMatch(value)) {
+                      return '닉네임은 영문, 숫자, 한글만 사용할 수 있습니다.';
                     }
                     return null;
                   },
@@ -94,27 +110,27 @@ class _SignUpState extends State<Signup> {
                     _nickname = value!;
                   },
                 ),
-                SizedBox(
-                  height: 30.h,
-                ),
-                Text(
-                  '이메일', 
-                  style: FontSystem.KR20SB,
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
+                SizedBox(height: 30.h),
+                Text('이메일', style: FontSystem.KR20SB),
+                SizedBox(height: 10.h),
                 TextFormField(
-                  //maxLength: 50,
+                  maxLength: 20,
                   keyboardType: TextInputType.emailAddress,
                   autocorrect: false,
                   decoration: InputDecoration(
                     hintText: '이메일을 입력해주세요',
-                    hintStyle: FontSystem.KR16M.copyWith(color:ColorSystem.grey),
+                    hintStyle:
+                        FontSystem.KR16M.copyWith(color: ColorSystem.grey),
+                    errorText: _emailError, // 이메일 에러 메시지 표시
                   ),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return '이메일을 입력해주세요';
+                    }
+                    // 이메일 형식 유효성 검사
+                    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                        .hasMatch(value)) {
+                      return '올바른 이메일 형식을 입력해주세요';
                     }
                     return null;
                   },
@@ -122,26 +138,22 @@ class _SignUpState extends State<Signup> {
                     _email = value!;
                   },
                 ),
-                SizedBox(
-                  height: 30.h,
-                ),
-                Text(
-                  '비밀번호',
-                  style: FontSystem.KR20SB,
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
+                SizedBox(height: 30.h),
+                Text('비밀번호', style: FontSystem.KR20SB),
+                SizedBox(height: 10.h),
                 TextFormField(
-                  //maxLength: 20,
+                  maxLength: 20,
                   obscureText: _obscureText,
                   decoration: InputDecoration(
                     hintText: '비밀번호 (영문, 숫자 조합 8자 이상)',
-                    hintStyle: FontSystem.KR16M.copyWith(color:ColorSystem.grey),
+                    hintStyle:
+                        FontSystem.KR16M.copyWith(color: ColorSystem.grey),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscureText ? Icons.visibility_off : Icons.visibility,
-                        color: _obscureText ? ColorSystem.grey : ColorSystem.purple, 
+                        color: _obscureText
+                            ? ColorSystem.grey
+                            : ColorSystem.purple,
                         size: 18.sp,
                       ),
                       onPressed: () {
@@ -155,15 +167,19 @@ class _SignUpState extends State<Signup> {
                     if (value == null || value.trim().isEmpty) {
                       return '비밀번호를 입력해주세요';
                     }
+                    // 비밀번호 최소 길이 및 문자 조합 유효성 검사 (영문, 숫자 포함, 특수문자는 선택)
+                    if (value.length < 8 ||
+                        !RegExp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$')
+                            .hasMatch(value)) {
+                      return '비밀번호는 영문, 숫자 조합 8자 이상이어야 합니다.';
+                    }
                     return null;
                   },
                   onSaved: (value) {
                     _password = value!;
                   },
                 ),
-                SizedBox(
-                  height: 60.h,
-                ),
+                SizedBox(height: 60.h),
                 Container(
                   width: 350.w,
                   height: 60.h,
@@ -177,13 +193,12 @@ class _SignUpState extends State<Signup> {
                     ),
                     child: Text(
                       '회원가입',
-                      style: FontSystem.KR20SB.copyWith(color: ColorSystem.white),
+                      style:
+                          FontSystem.KR20SB.copyWith(color: ColorSystem.white),
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 44.h,
-                ),
+                SizedBox(height: 44.h),
               ],
             ),
           ),

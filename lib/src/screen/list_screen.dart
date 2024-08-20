@@ -59,7 +59,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 
   void _enterChat(debateId, String debateStatus) {
     if (debateStatus == 'ENDED') {
-      print('야기');
       context.push('/endedChat/${debateId}');
     } else {
       context.push('/chat/${debateId}');
@@ -339,7 +338,8 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                               child: Row(
                                 children: [
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(height: 8.h),
                                       // 여기에 토론 완료 가은 거 추가로 lightGrey 색깔 만들어서 넣어야 하는 코드 위치
@@ -350,31 +350,35 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                           color: debate.debateStatus == '실시간'
                                               ? ColorSystem.lightPurple
                                               : ColorSystem.lightPurple,
-                                          borderRadius: BorderRadius.circular(10.r),
+                                          borderRadius:
+                                              BorderRadius.circular(10.r),
                                         ),
-                                        child: Text(debate.debateStatus ?? '상태 없음',
+                                        child: Text(
+                                            debate.debateStatus ?? '상태 없음',
                                             style: FontSystem.KR14SB.copyWith(
-                                              color: debate.debateStatus == '실시간'
-                                                  ? ColorSystem.purple
-                                                  : ColorSystem.purple,
+                                              color:
+                                                  debate.debateStatus == '실시간'
+                                                      ? ColorSystem.purple
+                                                      : ColorSystem.purple,
                                             )),
                                       ),
                                       SizedBox(height: 10.h),
                                       Text(
                                         debate.debateTitle ?? 'No title',
-                                        style: FontSystem.KR18M.copyWith(height: 1),
+                                        style: FontSystem.KR18M
+                                            .copyWith(height: 1),
                                         maxLines: 1, // 텍스트를 한 줄로 제한
-                                        overflow:
-                                            TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
+                                        overflow: TextOverflow
+                                            .ellipsis, // 넘칠 경우 "..." 처리
                                       ),
                                       SizedBox(height: 4.h),
                                       Text(
                                         '승률 ${debate.winnerRate}% 토론러 대기중',
-                                        style: FontSystem.KR16M
-                                            .copyWith(color: ColorSystem.purple),
+                                        style: FontSystem.KR16M.copyWith(
+                                            color: ColorSystem.purple),
                                         maxLines: 1, // 텍스트를 한 줄로 제한
-                                        overflow:
-                                            TextOverflow.ellipsis, // 넘칠 경우 "..." 처리
+                                        overflow: TextOverflow
+                                            .ellipsis, // 넘칠 경우 "..." 처리
                                       ),
                                     ],
                                   ),
@@ -382,7 +386,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                 ],
                               ),
                             ),
-                            
                             trailing: Container(
                               // width: 200.w,
                               // height: 200.h,

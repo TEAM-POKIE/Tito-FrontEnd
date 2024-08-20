@@ -1,4 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:tito_app/core/api/api_service.dart';
+import 'package:tito_app/core/api/dio_client.dart';
 
 class SelectionController extends GetxController {
   var selectedItems = <int>[].obs;
@@ -11,7 +14,11 @@ class SelectionController extends GetxController {
     }
   }
 
-  void resetSelection() {
+  void resetSelection() async {
+    final response = await ApiService(DioClient.dio).postGenerateTopic({
+      "words": ["친구"]
+    });
+    print(response);
     selectedItems.clear();
   }
 }

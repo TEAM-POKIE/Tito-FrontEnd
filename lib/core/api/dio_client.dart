@@ -22,7 +22,13 @@ class DioClient {
         return handler.next(response);
       },
       onError: (DioError e, handler) {
+        // 에러 메시지와 함께 응답 본문을 출력
         print("Error: ${e.message}");
+        if (e.response != null) {
+          print("Response Body: ${e.response?.data}");
+        } else {
+          print("No response body available");
+        }
         return handler.next(e);
       },
     ));

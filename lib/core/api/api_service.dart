@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 import 'package:tito_app/core/api/multpart_file_with_to_json.dart';
+import 'package:tito_app/src/data/models/ai_word.dart';
 import 'package:tito_app/src/data/models/debate_crate.dart';
 import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:tito_app/src/data/models/debate_list.dart';
 import 'package:tito_app/src/data/models/debate_participants.dart';
+import 'package:tito_app/src/data/models/ended_chat.dart';
 import 'package:tito_app/src/data/models/get_user_block.dart';
 import 'package:tito_app/src/data/models/login_info.dart';
 import 'package:tito_app/src/data/models/auth_response.dart';
@@ -74,9 +76,11 @@ abstract class ApiService {
 
   @GET('users/{id}/debates')
   Future<Map<String, dynamic>> getOtherDebate(@Path("id") int debateId);
+  @POST('debates/generate-topic')
+  Future<AiWord> postGenerateTopic(@Body() Map<String, dynamic> requestBody);
 
-  @GET("debates/{id}/participants")
-  Future<List<DebateParticipants>> getParicipants(@Path("id") int debateId);
+  @GET("debates/{debate_id}/chat")
+  Future<List<EndedChatInfo>> getDebateChat(@Path("debate_id") int debateId);
 
   @GET("debates/{id}")
   Future<DebateInfo> getDebateInfo(@Path("id") int debateId);
@@ -85,7 +89,7 @@ abstract class ApiService {
   Future deleteDebate(@Path("id") int debateId);
 
   @DELETE("user-block-list/unblock")
-  Future<void> deleteUnblock(@Body() Map<String, dynamic> requestBody);
+  Future<void> deleteUnblock(@Body() Map<String, dynamic> unblockUserId);
 
   @POST("debates")
   @MultiPart()
