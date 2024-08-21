@@ -39,7 +39,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
       ),
       child: Container(
         width: 280.w,
-        //height: 300.h,
+        //height: 300.h
         padding: EdgeInsets.only(left: 16.w, right: 16.w), // 팝업 안의 전체 내용 패딩 부분
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -230,7 +230,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
           ),
         ),
         onPressed: () async {
-          if (popupState.title == '토론에 참여 하시겠어요?') {
+          if (popupState.title == '토론에 신지은 확인중?') {
             ref.read(popupProvider.notifier).state = popupState.copyWith(
               buttonStyle: 0,
               title: '토론이 시작 됐어요! 🎵',
