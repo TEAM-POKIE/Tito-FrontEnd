@@ -12,7 +12,7 @@ class _ApiService implements ApiService {
   _ApiService(
     this._dio, {
     this.baseUrl,
-    this.errorLogger,
+    //this.errorLogger,
   }) {
     baseUrl ??= 'https://dev.tito.lat/';
   }
@@ -21,7 +21,7 @@ class _ApiService implements ApiService {
 
   String? baseUrl;
 
-  final ParseErrorLogger? errorLogger;
+  //final ParseErrorLogger? errorLogger;
 
   @override
   Future<void> signUp(Map<String, dynamic> signUpData) async {
@@ -102,7 +102,7 @@ class _ApiService implements ApiService {
     try {
       _value = AuthResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      //errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -135,7 +135,7 @@ class _ApiService implements ApiService {
     try {
       _value = LoginInfo.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      //errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -270,7 +270,7 @@ class _ApiService implements ApiService {
     try {
       _value = DebateUsermade.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      //errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -329,7 +329,7 @@ class _ApiService implements ApiService {
     try {
       _value = UserProfile.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      //errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -624,7 +624,7 @@ class _ApiService implements ApiService {
     try {
       _value = AiWord.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      //errorLogger?.logError(e, s, _options);
       rethrow;
     }
 
@@ -696,7 +696,7 @@ class _ApiService implements ApiService {
     try {
       _value = DebateInfo.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      //errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -783,7 +783,7 @@ class _ApiService implements ApiService {
     try {
       _value = DebateCreateInfo.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      //errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
