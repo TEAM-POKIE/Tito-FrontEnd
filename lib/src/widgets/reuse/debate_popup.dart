@@ -39,9 +39,8 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
       ),
       child: Container(
         width: 280.w,
-        height: 300.h,
-        padding: EdgeInsets.only(
-            left: 16.w, right: 16.w), // 팝업 안의 전체 내용 패딩 부분
+        //height: 300.h,
+        padding: EdgeInsets.only(left: 16.w, right: 16.w), // 팝업 안의 전체 내용 패딩 부분
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
