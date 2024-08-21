@@ -230,7 +230,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
           ),
         ),
         onPressed: () async {
-          if (popupState.title == '토론에 신지은 확인중?') {
+          if (popupState.title == '토론에 신지은 제발?') {
             ref.read(popupProvider.notifier).state = popupState.copyWith(
               buttonStyle: 0,
               title: '토론이 시작 됐어요! 🎵',
