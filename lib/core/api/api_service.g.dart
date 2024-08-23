@@ -12,7 +12,7 @@ class _ApiService implements ApiService {
   _ApiService(
     this._dio, {
     this.baseUrl,
-    //this.errorLogger,
+    this.errorLogger,
   }) {
     baseUrl ??= 'https://dev.tito.lat/';
   }
@@ -21,7 +21,7 @@ class _ApiService implements ApiService {
 
   String? baseUrl;
 
-  //final ParseErrorLogger? errorLogger;
+  final ParseErrorLogger? errorLogger;
 
   @override
   Future<void> signUp(Map<String, dynamic> signUpData) async {
@@ -102,7 +102,7 @@ class _ApiService implements ApiService {
     try {
       _value = AuthResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      //errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -135,7 +135,7 @@ class _ApiService implements ApiService {
     try {
       _value = LoginInfo.fromJson(_result.data!);
     } on Object catch (e, s) {
-      //errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -270,7 +270,7 @@ class _ApiService implements ApiService {
     try {
       _value = DebateUsermade.fromJson(_result.data!);
     } on Object catch (e, s) {
-      //errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -329,7 +329,7 @@ class _ApiService implements ApiService {
     try {
       _value = UserProfile.fromJson(_result.data!);
     } on Object catch (e, s) {
-      //errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -624,7 +624,7 @@ class _ApiService implements ApiService {
     try {
       _value = AiWord.fromJson(_result.data!);
     } on Object catch (e, s) {
-      //errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
 
@@ -667,39 +667,6 @@ class _ApiService implements ApiService {
     return data
         .map((dynamic i) => EndedChatInfo.fromJson(i as Map<String, dynamic>))
         .toList();
-  }
-
-  @override
-  Future<DebateInfo> getDebateInfo(int debateId) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<DebateInfo>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          'debates/${debateId}',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late DebateInfo _value;
-    try {
-      _value = DebateInfo.fromJson(_result.data!);
-    } on Object catch (e, s) {
-      //errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
   }
 
   @override
@@ -783,7 +750,7 @@ class _ApiService implements ApiService {
     try {
       _value = DebateCreateInfo.fromJson(_result.data!);
     } on Object catch (e, s) {
-      //errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;

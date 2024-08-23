@@ -61,14 +61,14 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                               height: 40.h,
                             ),
                           Text(popupState.titleLabel ?? '',
-                              style: FontSystem.KR18SB),
+                              style: FontSystem.KR16SB),
                         ],
                       )
                     : popupState.imgSrc != null
                         ? SvgPicture.asset(
                             popupState.imgSrc!,
-                            width: 40.w,
-                            height: 40.h,
+                            width: 20.w,
+                            height: 20.h,
                           )
                         : Container(),
                 IconButton(
@@ -79,7 +79,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
               ],
             ),
             SizedBox(height: 16.h), // 팝업 아이콘과 팝업 제목 간 간격
-            Text(popupState.title ?? '', style: FontSystem.KR18SB),
+            Text(popupState.title ?? '', style: FontSystem.KR16SB),
             SizedBox(height: 20.h), // 팝업 제목 과 팝업 내용컨테이너 간 간격
             popupState.title == '토론의 승자를 투표해주세요!'
                 ? Container(
