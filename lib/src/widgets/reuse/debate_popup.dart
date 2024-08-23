@@ -238,7 +238,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
             );
             context.pop();
             await Future.delayed(Duration(milliseconds: 100));
-            // popupViewModel.showDebatePopup(context);
+            popupViewModel.showDebatePopup(context);
           } else if (popupState.title == '토론의 승자를 투표해주세요!') {
             chatViewModel.sendVote(selectedDebate);
           } else if (popupState.title == '토론 시작 시 알림을 보내드릴게요!') {
