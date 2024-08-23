@@ -108,7 +108,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/debate_create',
-      builder: (context, state) => const DebateCreateScreen(),
+      builder: (context, state) => DebateCreate(),
     ),
     GoRoute(
       path: "/debate_create_second",
