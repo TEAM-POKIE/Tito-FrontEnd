@@ -102,7 +102,7 @@ class _ApiService implements ApiService {
     try {
       _value = AuthResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      //errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -135,7 +135,7 @@ class _ApiService implements ApiService {
     try {
       _value = LoginInfo.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options); // 이 줄을 제거합니다.
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -270,7 +270,7 @@ class _ApiService implements ApiService {
     try {
       _value = DebateUsermade.fromJson(_result.data!);
     } on Object catch (e, s) {
-      //errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -329,7 +329,7 @@ class _ApiService implements ApiService {
     try {
       _value = UserProfile.fromJson(_result.data!);
     } on Object catch (e, s) {
-      //errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -670,6 +670,44 @@ class _ApiService implements ApiService {
   }
 
   @override
+  Future<List<SearchData>> postSearchData(
+      Map<String, dynamic> requestBody) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(requestBody);
+    final _options = _setStreamType<Map<String, dynamic>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'search',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+
+    // Ensure the result is a List of Maps
+    final List<Map<String, dynamic>> resultList =
+        (_result.data as List<dynamic>)
+            .map((item) => item as Map<String, dynamic>)
+            .toList();
+
+    // Convert the List of Maps to List<SearchData>
+    final _value = resultList.map((json) => SearchData.fromJson(json)).toList();
+
+    return _value;
+  }
+
+  @override
   Future<DebateInfo> getDebateInfo(int debateId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -696,7 +734,7 @@ class _ApiService implements ApiService {
     try {
       _value = DebateInfo.fromJson(_result.data!);
     } on Object catch (e, s) {
-      //errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;
@@ -783,7 +821,7 @@ class _ApiService implements ApiService {
     try {
       _value = DebateCreateInfo.fromJson(_result.data!);
     } on Object catch (e, s) {
-      //errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options);
       rethrow;
     }
     return _value;

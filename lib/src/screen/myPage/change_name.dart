@@ -5,11 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
-import 'package:tito_app/src/widgets/reuse/purple_button.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:dio/dio.dart';
 import 'package:tito_app/core/api/api_service.dart';
-import 'package:tito_app/core/api/multpart_file_with_to_json.dart';
 import 'package:flutter_svg/svg.dart';
 
 class ChangeName extends ConsumerWidget {
@@ -20,7 +17,7 @@ class ChangeName extends ConsumerWidget {
     InputTextFieldController _titleController = InputTextFieldController();
     final loginInfo = ref.watch(loginInfoProvider);
     void changeNickName() async {
-      final respons = await ApiService(DioClient.dio).putNickName({
+      await ApiService(DioClient.dio).putNickName({
         'nickname': _titleController.text,
       });
       final userInfoResponse = await ApiService(DioClient.dio).getUserInfo();
