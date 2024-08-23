@@ -373,7 +373,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                       ),
                                       SizedBox(height: 4.h),
                                       Text(
-                                        '승률 ${debate.winnerRate}% 토론러 대기중',
+                                        '승률 ${debate.debateOwnerWinningRate}% 토론러 대기중',
                                         style: FontSystem.KR16M.copyWith(
                                             color: ColorSystem.purple),
                                         maxLines: 1, // 텍스트를 한 줄로 제한
