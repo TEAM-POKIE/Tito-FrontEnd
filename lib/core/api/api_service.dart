@@ -54,7 +54,7 @@ abstract class ApiService {
   @GET("users/{id}")
   Future<UserProfile> getUserProfile(@Path("id") int debateId);
   @GET('users/debates')
-  Future<Map<String, dynamic>> getUserDebate();
+  Future<Map<String, String>> getUserDebate();
 
   @GET("debates/debate-list")
   Future<List<Debate>> getDebateList({
@@ -75,7 +75,7 @@ abstract class ApiService {
   Future<List<GetUserBlock>> getBlockedUser();
 
   @GET('users/{id}/debates')
-  Future<Map<String, dynamic>> getOtherDebate(@Path("id") int debateId);
+  Future<Map<String, String>> getOtherDebate(@Path("id") int debateId);
   @POST('debates/generate-topic')
   Future<AiWord> postGenerateTopic(@Body() Map<String, dynamic> requestBody);
 
@@ -84,6 +84,9 @@ abstract class ApiService {
 
   @GET("debates/{id}")
   Future<DebateInfo> getDebateInfo(@Path("id") int debateId);
+
+  @POST("oauth/google")
+  Future<AuthResponse> oAuthGoogle(@Body() Map<String, dynamic> loginData);
 
   @DELETE("debates/{id}")
   Future deleteDebate(@Path("id") int debateId);

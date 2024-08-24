@@ -6,12 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tito_app/core/api/api_service.dart';
+import 'package:tito_app/core/api/dio_client.dart';
 import 'package:http/http.dart' as http;
 //import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -22,18 +25,6 @@ class LoginMain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final List<Map<String, String>> loginOptions = [
-    //   {
-    //     'icon': 'assets/icons/kakao_size.svg',
-    //   },
-    //   {
-    //     'icon': 'assets/icons/apple_size.svg',
-    //   },
-    //   {
-    //     'icon': 'assets/icons/google_size.svg',
-    //   },
-    // ];
-
     void goBasicLogin() {
       context.push('/basicLogin');
     }
@@ -46,20 +37,24 @@ class LoginMain extends StatelessWidget {
       // ! Google OAUTH 설정 로드
       const FlutterAppAuth appAuth = FlutterAppAuth();
       // const FlutterSecureStorage secureStorage = FlutterSecureStorage();
-      final String clientId = dotenv.env['OAUTH_GOOGLE_CLIENT_ID']!;
-      final String redirectUri = dotenv.env['OAUTH_GOOGLE_REDIRECT_URI']!;
+      final String clientId =
+          "964139724412-0ne5ikmk6o3s32jejsuhedohs128nek0.apps.googleusercontent.com";
+      // final String clientId = dotenv.env['OAUTH_GOOGLE_CLIENT_ID']!;
+      final String redirectUri =
+          "com.googleusercontent.apps.964139724412-0ne5ikmk6o3s32jejsuhedohs128nek0:/oauthredirect";
+      // final String redirectUri = dotenv.env['OAUTH_GOOGLE_REDIRECT_URI']!;
 
       final AuthorizationServiceConfiguration serviceConfiguration =
           AuthorizationServiceConfiguration(
-        authorizationEndpoint:
-            dotenv.env['OAUTH_GOOGLE_AUTHORIZATION_ENDPOINT']!,
-        tokenEndpoint: dotenv.env['OAUTH_GOOGLE_TOKEN_ENDPOINT']!,
+        authorizationEndpoint: "https://accounts.google.com/o/oauth2/auth",
+        tokenEndpoint: "https://oauth2.googleapis.com/token",
+        // tokenEndpoint: dotenv.env['OAUTH_GOOGLE_TOKEN_ENDPOINT']!,
       );
       const List<String> scopes = ['openid', 'email', 'profile'];
       debugPrint("pushpush");
 
       try {
-        log("pushed");
+        // & Phase 1. 구글에서 Token 받아옴
         final AuthorizationTokenResponse? result =
             await appAuth.authorizeAndExchangeCode(
           AuthorizationTokenRequest(
@@ -73,28 +68,30 @@ class LoginMain extends StatelessWidget {
         if (result != null) {
           final String accessToken = result.accessToken!;
           final String idToken = result.idToken!;
-          debugPrint(accessToken);
-          debugPrint("pushpush");
-          debugPrint(idToken);
-          debugPrint("pushpush");
 
-          // Phase 1. SecureStorage에 token 저장
+          // & Phase 2. SecureStorage에 token 저장
           await secureStorage.write(key: 'access_token', value: accessToken);
           await secureStorage.write(key: 'id_token', value: idToken);
 
-          debugPrint("시큐어 씀");
-          debugPrint(await secureStorage.read(key: 'access_token'));
-          debugPrint(await secureStorage.read(key: 'id_token'));
+          debugPrint("토큰 도착 $accessToken");
 
-          // Phase 2. Backend에 토큰 보내서 확인받음
-          // TODO: Code here
+          // & Phase 3. Backend에 토큰 보내서 확인받음
+          final authResponse = await ApiService(DioClient.dio)
+              .oAuthGoogle({accessToken: accessToken});
+          debugPrint("오어스를 토대로한 엑세스 토큰 도착");
 
-          // Phase 3. 성공한 경우
-          // Case 3.1. 최초 회원인 경우 부족한 정보 작성 페이지로 이동
-          // TODO: Code here
+          // & Phase 3. 성공한 경우 마이데이터 조회, nickname 유무 확인
+          await DioClient.setToken(authResponse.accessToken.token);
+          // Case 3.1. 마이데이터 조회 결과 nickname이 null인 경우 해당 페이지로 이동
+          final userInfo = await ApiService(DioClient.dio).getUserInfo();
+          if (userInfo.nickname == "") {
+            debugPrint('NEW : empty user nickname');
+          }
 
           // Case 3.2. 기존 회원인 경우 메인 페이지로 리다이렉트
-          // TODO: Code here
+          else {
+            debugPrint("OLD : go to main");
+          }
         }
       } catch (e) {
         // 에러 처리
@@ -125,6 +122,50 @@ class LoginMain extends StatelessWidget {
       }
     }
 
+    Future<void> _signInWithApple() async {
+      try {
+        final credential = await SignInWithApple.getAppleIDCredential(
+          scopes: [
+            AppleIDAuthorizationScopes.email,
+            AppleIDAuthorizationScopes.fullName,
+          ],
+          webAuthenticationOptions: WebAuthenticationOptions(
+              clientId: 'titoApp.example.com', // 서비스 ID에 해당하는 clientId
+              redirectUri: Uri.parse('https://dev.tito.lat/oauth/apple')),
+          nonce: 'example-nonce',
+          state: 'example-state',
+        );
+
+        if (credential != null) {
+          // 인증 성공 시 처리
+          debugPrint("MMMMMMM");
+          debugPrint(credential.identityToken);
+          debugPrint("MMMMMMM");
+
+          final signInWithAppleEndpoint = Uri(
+            scheme: 'https',
+            host: 'dev.tito.lat',
+            path: '/oauth/apple',
+          );
+
+          final session = await http.Client().post(
+            signInWithAppleEndpoint,
+          );
+
+          print(session);
+        } else {
+          // credential이 null인 경우에 대한 처리
+          debugPrint('Error: credential is null');
+        }
+      } on SignInWithAppleAuthorizationException catch (e) {
+        // Apple 인증 중 발생한 예외 처리
+        debugPrint('SignInWithAppleAuthorizationException: $e');
+      } catch (e) {
+        // 기타 예외 처리
+        debugPrint('Error during Apple sign in: $e');
+      }
+    }
+
     return Scaffold(
       backgroundColor: ColorSystem.purple, // 배경색을 보라색으로 설정
       body: Center(
@@ -140,6 +181,7 @@ class LoginMain extends StatelessWidget {
             SizedBox(height: 102.h),
             Column(
               children: [
+                // ! 카카오 버튼
                 Container(
                   width: 327.w,
                   height: 54.h,
@@ -147,7 +189,7 @@ class LoginMain extends StatelessWidget {
                       color: ColorSystem.kakao,
                       borderRadius: BorderRadius.circular(6.r)),
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: _signInWithKaKao,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -160,6 +202,7 @@ class LoginMain extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 10.h),
+                // ! 애플 버튼
                 Container(
                   width: 327.w,
                   height: 54.h,
@@ -167,7 +210,7 @@ class LoginMain extends StatelessWidget {
                       color: ColorSystem.black,
                       borderRadius: BorderRadius.circular(6.r)),
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: _signInWithApple,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -189,19 +232,22 @@ class LoginMain extends StatelessWidget {
                       color: ColorSystem.white,
                       borderRadius: BorderRadius.circular(6.r)),
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: _signInWithGoogle,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SvgPicture.asset('assets/icons/google_new.svg'),
                         SizedBox(width: 5.w),
-                        Text('Google 계정으로 로그인', style: FontSystem.Login16M.copyWith(color: ColorSystem.googleFont))
+                        Text('Google 계정으로 로그인',
+                            style: FontSystem.Login16M.copyWith(
+                                color: ColorSystem.googleFont))
                       ],
                     ),
                   ),
                 ),
                 SizedBox(height: 10.h),
+                // ! 이메일 버튼
                 Container(
                   width: 327.w,
                   height: 54.h,
@@ -223,84 +269,6 @@ class LoginMain extends StatelessWidget {
                 ),
               ],
             ),
-
-            // ...loginOptions.map((option) {
-            //   return Padding(
-            //     padding: EdgeInsets.only(bottom: 10.h, left: 32.w, right: 32.w),
-            //     child: Container(
-            //       width: 327.w,
-            //       height: 54.h,
-            //       child: GestureDetector(
-            //         onTap: () {},
-            //         child: SvgPicture.asset(
-            //           option['icon']!,
-            //         ),
-            //       ),
-            //     ),
-            //   );
-            // }),
-
-            // SignInWithAppleButton(
-            //   onPressed: () async {
-            //     try {
-            //       final credential = await SignInWithApple.getAppleIDCredential(
-            //         scopes: [
-            //           AppleIDAuthorizationScopes.email,
-            //           AppleIDAuthorizationScopes.fullName,
-            //         ],
-            //         webAuthenticationOptions: WebAuthenticationOptions(
-            //           clientId: 'titoApp.example.com', // 서비스 ID에 해당하는 clientId
-            //           redirectUri: kIsWeb
-            //               ? Uri.parse('https://titoApp.example.com')
-            //               : Uri.parse(
-            //                   'https://dev-tito.owsla.duckdns.org/callbacks/sign_in_with_apple'),
-            //         ),
-            //         nonce: 'example-nonce',
-            //         state: 'example-state',
-            //       );
-
-            //       if (credential != null) {
-            //         // 인증 성공 시 처리
-            //         print(credential);
-
-            //         final signInWithAppleEndpoint = Uri(
-            //           scheme: 'https',
-            //           host: 'dev-tito.owsla.duckdns.org',
-            //           path: '/sign_in_with_apple',
-            //           queryParameters: <String, String>{
-            //             'code': credential.authorizationCode,
-            //             if (credential.givenName != null)
-            //               'firstName': credential.givenName!,
-            //             if (credential.familyName != null)
-            //               'lastName': credential.familyName!,
-            //             'useBundleId':
-            //                 !kIsWeb && (Platform.isIOS || Platform.isMacOS)
-            //                     ? 'true'
-            //                     : 'false',
-            //             if (credential.state != null)
-            //               'state': credential.state!,
-            //           },
-            //         );
-
-            //         final session = await http.Client().post(
-            //           signInWithAppleEndpoint,
-            //         );
-
-            //         print(session);
-            //       } else {
-            //         // credential이 null인 경우에 대한 처리
-            //         debugPrint('Error: credential is null');
-            //       }
-            //     } on SignInWithAppleAuthorizationException catch (e) {
-            //       // Apple 인증 중 발생한 예외 처리
-            //       debugPrint('SignInWithAppleAuthorizationException: $e');
-            //     } catch (e) {
-            //       // 기타 예외 처리
-            //       debugPrint('Error during Apple sign in: $e');
-            //     }
-            //   },
-            // ),
-
             SizedBox(height: 64.h), // 버튼들 간의 간격 추가
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
