@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/constants/style.dart';
@@ -48,10 +49,10 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
         children: [
           SizedBox(
             width: 310.w,
-            height: 50.h,
             child: TextField(
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.search,
+              autocorrect: false,
               decoration: InputDecoration(
                 prefixIcon: Padding(
                   padding: EdgeInsets.only(left: 10.w),
@@ -85,93 +86,144 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
 
 class SearchResultList extends StatelessWidget {
   final List<SearchData> searchResults;
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
-  const SearchResultList({
+  SearchResultList({
     Key? key,
     required this.searchResults,
   }) : super(key: key);
+
+  void _onRefresh() {
+    // Implement refresh logic here
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() {
+    // Implement load more logic here
+    _refreshController.loadComplete();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: searchResults.isEmpty
           ? Center(child: Text("검색 결과가 없습니다."))
-          : ListView.builder(
-              itemCount: searchResults.length,
-              itemBuilder: (context, index) {
-                final result = searchResults[index];
-                return Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
-                  child: Container(
-                    padding: EdgeInsets.all(10.w),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12.r),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8.r),
-                          child: Image.network(
-                            result.searchedDebateImageUrl,
-                            width: 80.w,
-                            height: 80.h,
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                        SizedBox(width: 12.w),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                result.searchedDebateTitle,
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              SizedBox(height: 8.h),
-                              Text(
-                                '상태: ${result.searchedDebateStatus ?? 'N/A'}',
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              SizedBox(height: 8.h),
-                              Text(
-                                '참여자 수: ${result.searchedDebateRealtimeParticipants}명',
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              Text(
-                                '승률: ${result.searchedDebateOwnerWinningRate}%',
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: Colors.grey,
-                                ),
-                              ),
+          : SmartRefresher(
+              controller: _refreshController,
+              enablePullDown: true,
+              enablePullUp: true,
+              onRefresh: _onRefresh,
+              onLoading: _onLoading,
+              child: Padding(
+                padding: EdgeInsets.only(right: 0.0.w),
+                child: Scrollbar(
+                  thumbVisibility: true,
+                  thickness: 8.0,
+                  radius: Radius.circular(20.r),
+                  child: ListView.builder(
+                    itemCount: searchResults.length,
+                    itemBuilder: (context, index) {
+                      final result = searchResults[index];
+                      return Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 20.h, vertical: 5.w),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0x669795A3),
+                                spreadRadius: 0,
+                                blurRadius: 4,
+                              )
                             ],
+                            color: ColorSystem.white,
+                            borderRadius: BorderRadius.circular(20.r),
+                          ),
+                          child: ListTile(
+                            onTap: () {
+                              // _enterChat(result.id, result.debateStatus);
+                              // Implement onTap logic here
+                            },
+                            title: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 0.h, vertical: 2.h),
+                              child: Row(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(height: 8.h),
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 6.w, vertical: 2.h),
+                                        decoration: BoxDecoration(
+                                          color: result.searchedDebateStatus ==
+                                                  '실시간'
+                                              ? ColorSystem.lightPurple
+                                              : ColorSystem.lightPurple,
+                                          borderRadius:
+                                              BorderRadius.circular(10.r),
+                                        ),
+                                        child: Text(
+                                            result.searchedDebateStatus ??
+                                                '상태 없음',
+                                            style: FontSystem.KR14SB.copyWith(
+                                              color:
+                                                  result.searchedDebateStatus ==
+                                                          '실시간'
+                                                      ? ColorSystem.purple
+                                                      : ColorSystem.purple,
+                                            )),
+                                      ),
+                                      SizedBox(height: 10.h),
+                                      Text(
+                                        result.searchedDebateTitle ??
+                                            'No title',
+                                        style: FontSystem.KR18M
+                                            .copyWith(height: 1),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      SizedBox(height: 4.h),
+                                      Text(
+                                        '승률 ${result.searchedDebateOwnerWinningRate}% 토론러 대기중',
+                                        style: FontSystem.KR16M.copyWith(
+                                            color: ColorSystem.purple),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
+                                  ),
+                                  Spacer(),
+                                ],
+                              ),
+                            ),
+                            trailing: Padding(
+                              padding: EdgeInsets.only(bottom: 20.w),
+                              child: result.searchedDebateImageUrl == ''
+                                  ? SvgPicture.asset(
+                                      'assets/icons/list_real_null.svg',
+                                      width: 70.w,
+                                      fit: BoxFit.contain,
+                                    )
+                                  : ClipRRect(
+                                      borderRadius: BorderRadius.circular(12.r),
+                                      child: Image.network(
+                                        result.searchedDebateImageUrl ?? '',
+                                        width: 70.w,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                            ),
                           ),
                         ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+              ),
             ),
     );
   }
