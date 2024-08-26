@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
@@ -78,14 +79,14 @@ abstract class ApiService {
   @GET('users/{id}/debates')
   Future<Map<String, String>> getOtherDebate(@Path("id") int debateId);
   @POST('debates/generate-topic')
-  Future<AiWord> postGenerateTopic(@Body() Map<String, String> requestBody);
+  Future<AiWord> postGenerateTopic(@Body() Map<String, Object> requestBody);
 
   @GET("debates/{debate_id}/chat")
   Future<List<EndedChatInfo>> getDebateChat(@Path("debate_id") int debateId);
 
   @POST('search')
   Future<List<SearchData>> postSearchData(
-      @Body() Map<String, String> requestBody);
+      @Body() Map<String, Object> requestBody);
 
   @GET("debates/{id}")
   Future<DebateInfo> getDebateInfo(@Path("id") int debateId);
@@ -97,7 +98,7 @@ abstract class ApiService {
   Future deleteDebate(@Path("id") int debateId);
 
   @DELETE("user-block-list/unblock")
-  Future<void> deleteUnblock(@Body() Map<String, String> unblockUserId);
+  Future<void> deleteUnblock(@Body() Map<String, Object> unblockUserId);
 
   @POST("debates")
   @MultiPart()

@@ -24,7 +24,7 @@ class _ApiService implements ApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<void> signUp(Map<String, dynamic> signUpData) async {
+  Future<void> signUp(Map<String, String> signUpData) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -75,7 +75,7 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<AuthResponse> signIn(Map<String, dynamic> loginData) async {
+  Future<AuthResponse> signIn(Map<String, String> loginData) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -142,7 +142,7 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<void> putNickName(Map<String, dynamic> nickNameData) async {
+  Future<void> putNickName(Map<String, String> nickNameData) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -193,7 +193,7 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<void> putPassword(Map<String, dynamic> passwordData) async {
+  Future<void> putPassword(Map<String, String> passwordData) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -590,7 +590,7 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<AiWord> postGenerateTopic(Map<String, dynamic> requestBody) async {
+  Future<AiWord> postGenerateTopic(Map<String, Object> requestBody) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -660,7 +660,7 @@ class _ApiService implements ApiService {
 
   @override
   Future<List<SearchData>> postSearchData(
-      Map<String, dynamic> requestBody) async {
+      Map<String, Object> requestBody) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -790,7 +790,7 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<void> deleteUnblock(Map<String, String> unblockUserId) async {
+  Future<void> deleteUnblock(Map<String, Object> unblockUserId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
