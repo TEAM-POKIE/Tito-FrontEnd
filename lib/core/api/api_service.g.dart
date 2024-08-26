@@ -22,6 +22,7 @@ class _ApiService implements ApiService {
   String? baseUrl;
 
   final ParseErrorLogger? errorLogger;
+  //final ParseErrorLogger? errorLogger;
 
   @override
   Future<void> signUp(Map<String, dynamic> signUpData) async {
