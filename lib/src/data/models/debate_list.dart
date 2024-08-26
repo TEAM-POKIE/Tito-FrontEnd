@@ -1,17 +1,16 @@
 class Debate {
   final int id;
   final String debateTitle;
-
   final String debateStatus;
   String? debateImageUrl;
-  final double winnerRate;
+  final int debateOwnerWinningRate;
 
   Debate({
     required this.id,
     required this.debateTitle,
     required this.debateStatus,
     this.debateImageUrl,
-    required this.winnerRate,
+    required this.debateOwnerWinningRate,
   });
 
   factory Debate.fromJson(Map<String, dynamic> json) {
@@ -20,7 +19,7 @@ class Debate {
       debateTitle: json['debateTitle'],
       debateStatus: json['debateStatus'],
       debateImageUrl: json['debateImageUrl'] ?? "",
-      winnerRate: json['winnerRate'],
+      debateOwnerWinningRate: json['debateOwnerWinningRate'],
     );
   }
 
@@ -30,7 +29,7 @@ class Debate {
       'debateTitle': debateTitle,
       'debateStatus': debateStatus,
       'debateImageUrl': debateImageUrl,
-      'winnerRate': winnerRate,
+      'debateOwnerWinningRate': debateOwnerWinningRate,
     };
   }
 }

@@ -17,7 +17,7 @@ class Debateinfopopup extends ConsumerStatefulWidget {
 class _DebateinfoState extends ConsumerState<Debateinfopopup> {
   @override
   Widget build(BuildContext context) {
-    final chatState = ref.read(chatInfoProvider);
+    final chatState = ref.read(chatInfoProvider); 
 
     return Dialog(
       backgroundColor: ColorSystem.white,

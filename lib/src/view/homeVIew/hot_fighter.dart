@@ -64,7 +64,7 @@ class _HotFighterState extends ConsumerState<HotFighter> {
                 child: Column(
                   children: [
                     CircleAvatar(
-                      radius: 35.w, 
+                      radius: 35.w,
                       // 아바타의 크기를 키움
                       backgroundColor: ColorSystem.purple,
                       backgroundImage: fighter.profilePicture != null

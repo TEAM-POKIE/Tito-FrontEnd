@@ -16,7 +16,7 @@ class SelectionController extends GetxController {
 
   void resetSelection() async {
     final response = await ApiService(DioClient.dio).postGenerateTopic({
-      "words": ["친구"]
+      "words": ["바나나", "사랑", "안은소"]
     });
     print(response);
     selectedItems.clear();

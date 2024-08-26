@@ -30,7 +30,6 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
     debateViewModel.updateCategory(categorySelectedIndex);
     if (!context.mounted) return;
 
-    //현재 위젯의 context가 여전히 트리에서 유효한 상태인지 확인하는 것이다. 트리에 없는 상태라면 더 이상 진행하지 않고 함수 실행을 종료한다.
     context.push('/debate_create_second');
   }
 
@@ -100,7 +99,7 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
                   child: Container(
                     //카테고리 바가 들어가는 Container 부분
                     child: SingleChildScrollView(
-                      scrollDirection: Axis .horizontal, // 수평 스크롤 가능하게 설정
+                      scrollDirection: Axis.horizontal, // 수평 스크롤 가능하게 설정
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: List.generate(labels.length, (index) {

@@ -271,7 +271,7 @@ class JoinerChatList extends StatelessWidget {
                     : SizedBox(
                         width: 0,
                       ),
-            index == messages.length - 1 && message['userId'] == loginInfo.id
+            messages.length == 3 && index == messages.length - 1
                 ? Row(
                     children: [
                       Padding(
@@ -282,7 +282,7 @@ class JoinerChatList extends StatelessWidget {
                       ),
                       SizedBox(width: 20.w),
                       Text(
-                        '답변 작성중',
+                        '참여자 대기 중',
                         style: FontSystem.KR16B
                             .copyWith(color: ColorSystem.purple),
                       ),
@@ -293,9 +293,32 @@ class JoinerChatList extends StatelessWidget {
                       ),
                     ],
                   )
-                : SizedBox(
-                    width: 0.w,
-                  ),
+                : index == messages.length - 1 &&
+                        message['userId'] == loginInfo.id
+                    ? Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: 20.w),
+                            child: SvgPicture.asset(
+                              'assets/icons/chat_avatar.svg',
+                            ),
+                          ),
+                          SizedBox(width: 20.w),
+                          Text(
+                            '답변 작성중',
+                            style: FontSystem.KR16B
+                                .copyWith(color: ColorSystem.purple),
+                          ),
+                          SizedBox(width: 6.w),
+                          LoadingAnimationWidget.waveDots(
+                            color: ColorSystem.purple,
+                            size: 15.sp,
+                          ),
+                        ],
+                      )
+                    : SizedBox(
+                        width: 0.w,
+                      ),
           ],
         );
       },

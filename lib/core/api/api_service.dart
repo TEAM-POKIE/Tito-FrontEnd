@@ -13,6 +13,7 @@ import 'package:tito_app/src/data/models/get_user_block.dart';
 import 'package:tito_app/src/data/models/login_info.dart';
 import 'package:tito_app/src/data/models/auth_response.dart';
 import 'package:tito_app/src/data/models/debate_usermade.dart';
+import 'package:tito_app/src/data/models/search_data.dart';
 import 'package:tito_app/src/data/models/user_profile.dart';
 import 'package:tito_app/src/data/models/debate_hotdebate.dart';
 import 'package:tito_app/src/data/models/debate_hotfighter.dart';
@@ -54,7 +55,7 @@ abstract class ApiService {
   @GET("users/{id}")
   Future<UserProfile> getUserProfile(@Path("id") int debateId);
   @GET('users/debates')
-  Future<Map<String, dynamic>> getUserDebate();
+  Future<Map<String, String>> getUserDebate();
 
   @GET("debates/debate-list")
   Future<List<Debate>> getDebateList({
@@ -75,15 +76,22 @@ abstract class ApiService {
   Future<List<GetUserBlock>> getBlockedUser();
 
   @GET('users/{id}/debates')
-  Future<Map<String, dynamic>> getOtherDebate(@Path("id") int debateId);
+  Future<Map<String, String>> getOtherDebate(@Path("id") int debateId);
   @POST('debates/generate-topic')
   Future<AiWord> postGenerateTopic(@Body() Map<String, dynamic> requestBody);
 
   @GET("debates/{debate_id}/chat")
   Future<List<EndedChatInfo>> getDebateChat(@Path("debate_id") int debateId);
 
+  @POST('search')
+  Future<List<SearchData>> postSearchData(
+      @Body() Map<String, dynamic> requestBody);
+
   @GET("debates/{id}")
   Future<DebateInfo> getDebateInfo(@Path("id") int debateId);
+
+  @POST("oauth/google")
+  Future<AuthResponse> oAuthGoogle(@Body() Map<String, dynamic> loginData);
 
   @DELETE("debates/{id}")
   Future deleteDebate(@Path("id") int debateId);

@@ -87,7 +87,7 @@ class HomeViewModel extends StateNotifier<HomeState> {
       // API에서 DebateHotdebate 객체의 리스트를 가져옴
       final List<DebateHotfighter> response =
           await apiService.getDebateHotfighter();
-      print(response);
+
       // 상태를 업데이트
       state = state.copyWith(
         hotfighter: response,
