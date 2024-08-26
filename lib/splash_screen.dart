@@ -8,6 +8,7 @@ import 'package:tito_app/core/routes/routes.dart';
 import 'package:tito_app/main.dart';
 import 'package:tito_app/src/screen/login/login_main.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter/services.dart'; // 가로방향 막히기
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -21,6 +22,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     requestPermissions(); // 카메라 및 사진 권한 요청
+
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 
     // 3초 후에 API_ACCESS_TOKEN을 확인하고, 페이지를 이동
     Timer(Duration(seconds: 3), () async {
