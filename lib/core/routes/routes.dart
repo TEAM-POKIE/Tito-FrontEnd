@@ -62,7 +62,14 @@ final GoRouter router = GoRouter(
             ),
           ],
         ),
-
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/myalarm',
+              builder: (context, state) => const MyAlarm(),
+            ),
+          ],
+        ),
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -78,10 +85,7 @@ final GoRouter router = GoRouter(
       path: '/mydebate',
       builder: (context, state) => const MyDebate(),
     ),
-    GoRoute(
-      path: '/myalarm',
-      builder: (context, state) => const MyAlarm(),
-    ),
+
     GoRoute(
       path: '/myblock',
       builder: (context, state) => const MyBlock(),

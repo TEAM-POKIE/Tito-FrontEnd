@@ -14,12 +14,6 @@ class MyAlarmAppbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: ColorSystem.white,
-      leading: IconButton(
-        onPressed: () {
-          context.pop();
-        },
-        icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
-      ),
       title: Text(
         '알림',
         style: FontSystem.KR16SB,
