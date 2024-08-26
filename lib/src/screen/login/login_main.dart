@@ -181,6 +181,29 @@ class LoginMain extends StatelessWidget {
             SizedBox(height: 102.h),
             Column(
               children: [
+                // ! 구글 버튼
+                Container(
+                  width: 327.w,
+                  height: 54.h,
+                  decoration: BoxDecoration(
+                      color: ColorSystem.white,
+                      borderRadius: BorderRadius.circular(6.r)),
+                  child: GestureDetector(
+                    onTap: _signInWithGoogle,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset('assets/icons/google_new.svg'),
+                        SizedBox(width: 5.w),
+                        Text('Google 계정으로 로그인',
+                            style: FontSystem.Login16M.copyWith(
+                                color: ColorSystem.googleFont))
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10.h),
                 // ! 카카오 버튼
                 Container(
                   width: 327.w,
@@ -225,34 +248,12 @@ class LoginMain extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 10.h),
-                Container(
-                  width: 327.w,
-                  height: 54.h,
-                  decoration: BoxDecoration(
-                      color: ColorSystem.white,
-                      borderRadius: BorderRadius.circular(6.r)),
-                  child: GestureDetector(
-                    onTap: _signInWithGoogle,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset('assets/icons/google_new.svg'),
-                        SizedBox(width: 5.w),
-                        Text('Google 계정으로 로그인',
-                            style: FontSystem.Login16M.copyWith(
-                                color: ColorSystem.googleFont))
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10.h),
                 // ! 이메일 버튼
                 Container(
                   width: 327.w,
                   height: 54.h,
                   decoration: BoxDecoration(
-                      color: ColorSystem.black,
+                      color: ColorSystem.white,
                       borderRadius: BorderRadius.circular(6.r)),
                   child: GestureDetector(
                     onTap: goBasicLogin,
