@@ -181,6 +181,7 @@ class LoginMain extends StatelessWidget {
             SizedBox(height: 102.h),
             Column(
               children: [
+                // ! 구글 버튼
                 Container(
                   width: 327.w,
                   height: 54.h,
@@ -247,7 +248,6 @@ class LoginMain extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 10.h),
-
                 // ! 이메일 버튼
                 Container(
                   width: 327.w,
