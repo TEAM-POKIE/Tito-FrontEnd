@@ -25,23 +25,23 @@ abstract class ApiService {
   factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
 
   @POST("auth/sign-up")
-  Future<void> signUp(@Body() Map<String, dynamic> signUpData);
+  Future<void> signUp(@Body() Map<String, String> signUpData);
   @POST("auth/logout")
   Future<void> postLogOut();
 
   @POST("auth/sign-in")
-  Future<AuthResponse> signIn(@Body() Map<String, dynamic> loginData);
+  Future<AuthResponse> signIn(@Body() Map<String, String> loginData);
 
   @GET("users")
   Future<LoginInfo> getUserInfo();
 
   @PUT("users/nickname")
-  Future<void> putNickName(@Body() Map<String, dynamic> nickNameData);
+  Future<void> putNickName(@Body() Map<String, String> nickNameData);
 
   @PUT("auth/quit")
   Future<void> putQuit();
   @PUT("users/password")
-  Future<void> putPassword(@Body() Map<String, dynamic> passwordData);
+  Future<void> putPassword(@Body() Map<String, String> passwordData);
   @PUT("users/tutorial-completed")
   Future<void> putTutorialCompleted();
 
@@ -78,14 +78,14 @@ abstract class ApiService {
   @GET('users/{id}/debates')
   Future<Map<String, String>> getOtherDebate(@Path("id") int debateId);
   @POST('debates/generate-topic')
-  Future<AiWord> postGenerateTopic(@Body() Map<String, dynamic> requestBody);
+  Future<AiWord> postGenerateTopic(@Body() Map<String, String> requestBody);
 
   @GET("debates/{debate_id}/chat")
   Future<List<EndedChatInfo>> getDebateChat(@Path("debate_id") int debateId);
 
   @POST('search')
   Future<List<SearchData>> postSearchData(
-      @Body() Map<String, dynamic> requestBody);
+      @Body() Map<String, String> requestBody);
 
   @GET("debates/{id}")
   Future<DebateInfo> getDebateInfo(@Path("id") int debateId);
