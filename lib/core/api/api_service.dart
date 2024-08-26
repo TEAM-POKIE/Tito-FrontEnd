@@ -66,13 +66,13 @@ abstract class ApiService {
     @Query('category') String? category,
   });
   @GET("debates/on-fire-debate")
-  Future<List<DebateBenner>> getDebateBenner();
+  Future<String> getDebateBenner();
 
   @GET("debates/hot-debate")
-  Future<List<DebateHotdebate>> getDebateHotdebate();
+  Future<String> getDebateHotdebate();
 
   @GET("debates/hot-debate-participants")
-  Future<List<DebateHotfighter>> getDebateHotfighter();
+  Future<String> getDebateHotfighter();
   @GET("user-block-list/blocked-users")
   Future<List<GetUserBlock>> getBlockedUser();
 

@@ -19,13 +19,13 @@ class DebateHotdebate {
 
   factory DebateHotdebate.fromJson(Map<String, dynamic> json) {
     return DebateHotdebate(
-      id: json['id'] ?? 0, // null인 경우 0으로 기본값 설정
-      debateTitle: json['debateTitle'] ?? '', // 문자열도 기본값 설정
+      id: json['id'] ?? 0,
+      debateTitle: json['debateTitle'] ?? '',
       debateStatus: json['debateStatus'] ?? '',
       debateMakerOpinion: json['debateMakerOpinion'] ?? '',
       debateJoinerOpinion: json['debateJoinerOpinion'] ?? '',
-      debateImageUrl: json['debateImageUrl'] ?? '',
-      debateFireCount: json['debateFireCount'] ?? 1,
+      debateImageUrl: json['debateImageUrl'],
+      debateFireCount: json['debateFireCount'] ?? 0,
     );
   }
 
@@ -39,5 +39,10 @@ class DebateHotdebate {
       'debateImageUrl': debateImageUrl,
       'debateFireCount': debateFireCount
     };
+  }
+
+  @override
+  String toString() {
+    return 'DebateHotdebate{id: $id, title: $debateTitle, status: $debateStatus, makerOpinion: $debateMakerOpinion, joinerOpinion: $debateJoinerOpinion, fireCount: $debateFireCount}';
   }
 }
