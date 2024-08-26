@@ -336,39 +336,36 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<Map<String, dynamic>> getUserDebate() async {
+  Future<Map<String, String>> getUserDebate() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<Map<String, dynamic>>(Options(
+    final _options = _setStreamType<Map<String, String>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              'users/debates',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-
-    // _result.data는 이미 Map<String, dynamic>이므로 이를 사용하여 처리합니다.
-    final data = _result.data!['data'] as List<dynamic>;
-
-    // 각 데이터를 DebateUsermade 객체로 변환
-    final List<DebateUsermade> debateList = data
-        .map((item) => DebateUsermade.fromJson(item as Map<String, dynamic>))
-        .toList();
-
-    return {'data': debateList};
+        .compose(
+          _dio.options,
+          'users/debates',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late Map<String, String> _value;
+    try {
+      _value = _result.data!.cast<String, String>();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
   }
 
   @override
@@ -388,27 +385,32 @@ class _ApiService implements ApiService {
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<List<Debate>>(Options(
+    final _options = _setStreamType<List<Debate>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              'debates/debate-list',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final List<dynamic> data = _result.data!['data'];
-    var _value = data
-        .map((dynamic i) => Debate.fromJson(i as Map<String, dynamic>))
-        .toList();
+        .compose(
+          _dio.options,
+          'debates/debate-list',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<Debate> _value;
+    try {
+      _value = _result.data!
+          .map((dynamic i) => Debate.fromJson(i as Map<String, dynamic>))
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
     return _value;
   }
 
@@ -418,33 +420,33 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-
-    // API 요청을 통해 데이터를 가져옵니다.
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<List<DebateBenner>>(Options(
+    final _options = _setStreamType<List<DebateBenner>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              'debates/on-fire-debate',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-              baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
-            )));
-
-    // API 응답의 'data' 필드가 리스트 형태로 오는지 확인합니다.
-    final data = _result.data!['data'] as List<dynamic>;
-
-    // 리스트의 각 항목을 DebateBenner 객체로 변환합니다.
-    final List<DebateBenner> debateList = data
-        .map((item) => DebateBenner.fromJson(item as Map<String, dynamic>))
-        .toList();
-
-    return debateList;
+        .compose(
+          _dio.options,
+          'debates/on-fire-debate',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<DebateBenner> _value;
+    try {
+      _value = _result.data!
+          .map((dynamic i) => DebateBenner.fromJson(i as Map<String, dynamic>))
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
   }
 
   @override
@@ -453,45 +455,34 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-
+    final _options = _setStreamType<List<DebateHotdebate>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'debates/hot-debate',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<DebateHotdebate> _value;
     try {
-      final _result = await _dio.fetch<Map<String, dynamic>>(
-          _setStreamType<List<DebateHotdebate>>(Options(
-        method: 'GET',
-        headers: _headers,
-        extra: _extra,
-      )
-              .compose(
-                _dio.options,
-                'debates/hot-debate',
-                queryParameters: queryParameters,
-                data: _data,
-              )
-              .copyWith(
-                  baseUrl: _combineBaseUrls(
-                _dio.options.baseUrl,
-                baseUrl,
-              ))));
-
-      // 응답 데이터 디버깅
-      print('API Response Data: ${_result.data}');
-
-      if (_result.data == null || _result.data!['data'] == null) {
-        throw Exception('Response data is null');
-      }
-
-      final data = _result.data!['data'] as List<dynamic>;
-
-      // 리스트의 각 항목을 DebateHotdebate 객체로 변환합니다.
-      final List<DebateHotdebate> debateList = data
-          .map((item) => DebateHotdebate.fromJson(item as Map<String, dynamic>))
+      _value = _result.data!
+          .map((dynamic i) =>
+              DebateHotdebate.fromJson(i as Map<String, dynamic>))
           .toList();
-
-      return debateList;
-    } catch (e) {
-      print('Error fetching debates: $e');
-      throw Exception('Failed to load debates');
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
     }
+    return _value;
   }
 
   @override
@@ -500,31 +491,34 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<List<DebateHotfighter>>(Options(
+    final _options = _setStreamType<List<DebateHotfighter>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              'debates/hot-debate-participants',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final data = _result.data!['data'] as List<dynamic>;
-
-    // 리스트의 각 항목을 DebateHotdebate 객체로 변환합니다.
-    final List<DebateHotfighter> debateList = data
-        .map((item) => DebateHotfighter.fromJson(item as Map<String, dynamic>))
-        .toList();
-
-    return debateList;
+        .compose(
+          _dio.options,
+          'debates/hot-debate-participants',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<DebateHotfighter> _value;
+    try {
+      _value = _result.data!
+          .map((dynamic i) =>
+              DebateHotfighter.fromJson(i as Map<String, dynamic>))
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
   }
 
   @override
@@ -533,64 +527,66 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<List<GetUserBlock>>(Options(
+    final _options = _setStreamType<List<GetUserBlock>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              'user-block-list/blocked-users',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final data = _result.data!['data'] as List<dynamic>;
-
-    final List<GetUserBlock> debateList = data
-        .map((item) => GetUserBlock.fromJson(item as Map<String, dynamic>))
-        .toList();
-
-    return debateList;
+        .compose(
+          _dio.options,
+          'user-block-list/blocked-users',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<GetUserBlock> _value;
+    try {
+      _value = _result.data!
+          .map((dynamic i) => GetUserBlock.fromJson(i as Map<String, dynamic>))
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
   }
 
   @override
-  Future<Map<String, dynamic>> getOtherDebate(int debateId) async {
+  Future<Map<String, String>> getOtherDebate(int debateId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<Map<String, dynamic>>(Options(
+    final _options = _setStreamType<Map<String, String>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              'users/{user_id}/debates',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    // _result.data는 이미 Map<String, dynamic>이므로 이를 사용하여 처리합니다.
-    final data = _result.data!['data'] as List<dynamic>;
-
-    // 각 데이터를 DebateUsermade 객체로 변환
-    final List<DebateUsermade> debateList = data
-        .map((item) => DebateUsermade.fromJson(item as Map<String, dynamic>))
-        .toList();
-
-    return {'data': debateList};
+        .compose(
+          _dio.options,
+          'users/${debateId}/debates',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late Map<String, String> _value;
+    try {
+      _value = _result.data!.cast<String, String>();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
   }
 
   @override
@@ -600,7 +596,6 @@ class _ApiService implements ApiService {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(requestBody);
-
     final _options = _setStreamType<AiWord>(Options(
       method: 'POST',
       headers: _headers,
@@ -617,9 +612,7 @@ class _ApiService implements ApiService {
           _dio.options.baseUrl,
           baseUrl,
         )));
-
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-
     late AiWord _value;
     try {
       _value = AiWord.fromJson(_result.data!);
@@ -627,7 +620,6 @@ class _ApiService implements ApiService {
       errorLogger?.logError(e, s, _options);
       rethrow;
     }
-
     return _value;
   }
 
@@ -637,7 +629,7 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<Map<String, dynamic>>(Options(
+    final _options = _setStreamType<List<EndedChatInfo>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -653,20 +645,17 @@ class _ApiService implements ApiService {
           _dio.options.baseUrl,
           baseUrl,
         )));
-
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-
-    // 서버로부터 받아온 데이터가 리스트일 경우에만 변환 작업 수행
-    final data = _result.data?['data'] as List<dynamic>?;
-
-    if (data == null || data.isEmpty) {
-      return []; // 빈 리스트 반환
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<EndedChatInfo> _value;
+    try {
+      _value = _result.data!
+          .map((dynamic i) => EndedChatInfo.fromJson(i as Map<String, dynamic>))
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
     }
-
-    // 리스트가 비어 있지 않을 경우 데이터를 변환하여 반환
-    return data
-        .map((dynamic i) => EndedChatInfo.fromJson(i as Map<String, dynamic>))
-        .toList();
+    return _value;
   }
 
   @override
