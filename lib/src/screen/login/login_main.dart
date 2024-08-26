@@ -263,7 +263,7 @@ class LoginMain extends StatelessWidget {
                       children: [
                         Text('이메일로 로그인',
                             style: FontSystem.Login16M.copyWith(
-                                color: ColorSystem.white))
+                                color: ColorSystem.black))
                       ],
                     ),
                   ),

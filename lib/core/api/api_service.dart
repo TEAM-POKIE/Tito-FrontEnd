@@ -91,17 +91,17 @@ abstract class ApiService {
   Future<DebateInfo> getDebateInfo(@Path("id") int debateId);
 
   @POST("oauth/google")
-  Future<AuthResponse> oAuthGoogle(@Body() Map<String, dynamic> loginData);
+  Future<AuthResponse> oAuthGoogle(@Body() Map<String, String> loginData);
 
   @DELETE("debates/{id}")
   Future deleteDebate(@Path("id") int debateId);
 
   @DELETE("user-block-list/unblock")
-  Future<void> deleteUnblock(@Body() Map<String, dynamic> unblockUserId);
+  Future<void> deleteUnblock(@Body() Map<String, String> unblockUserId);
 
   @POST("debates")
   @MultiPart()
   Future<DebateCreateInfo> postDebate(@Body() FormData formData);
   @POST("user-block-list/block")
-  Future<void> postUserBlock(@Body() Map<String, dynamic> userId);
+  Future<void> postUserBlock(@Body() Map<String, String> userId);
 }
