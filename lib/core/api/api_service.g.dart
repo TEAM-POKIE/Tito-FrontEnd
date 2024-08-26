@@ -12,6 +12,7 @@ class _ApiService implements ApiService {
   _ApiService(
     this._dio, {
     this.baseUrl,
+    this.errorLogger,
   }) {
     baseUrl ??= 'https://dev.tito.lat/';
   }
@@ -20,6 +21,8 @@ class _ApiService implements ApiService {
 
   String? baseUrl;
 
+  final ParseErrorLogger? errorLogger;
+
   @override
   Future<void> signUp(Map<String, dynamic> signUpData) async {
     final _extra = <String, dynamic>{};
@@ -27,7 +30,7 @@ class _ApiService implements ApiService {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(signUpData);
-    await _dio.fetch<void>(_setStreamType<void>(Options(
+    final _options = _setStreamType<void>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -42,7 +45,8 @@ class _ApiService implements ApiService {
             baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
-        ))));
+        )));
+    await _dio.fetch<void>(_options);
   }
 
   @override
@@ -51,7 +55,7 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    await _dio.fetch<void>(_setStreamType<void>(Options(
+    final _options = _setStreamType<void>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -66,7 +70,8 @@ class _ApiService implements ApiService {
             baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
-        ))));
+        )));
+    await _dio.fetch<void>(_options);
   }
 
   @override
@@ -76,24 +81,30 @@ class _ApiService implements ApiService {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(loginData);
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<AuthResponse>(Options(
+    final _options = _setStreamType<AuthResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              'auth/sign-in',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final _value = AuthResponse.fromJson(_result.data!);
+        .compose(
+          _dio.options,
+          'auth/sign-in',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late AuthResponse _value;
+    try {
+      _value = AuthResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
     return _value;
   }
 
@@ -103,24 +114,30 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<LoginInfo>(Options(
+    final _options = _setStreamType<LoginInfo>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              'users',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final _value = LoginInfo.fromJson(_result.data!);
+        .compose(
+          _dio.options,
+          'users',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late LoginInfo _value;
+    try {
+      _value = LoginInfo.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
     return _value;
   }
 
@@ -131,7 +148,7 @@ class _ApiService implements ApiService {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(nickNameData);
-    await _dio.fetch<void>(_setStreamType<void>(Options(
+    final _options = _setStreamType<void>(Options(
       method: 'PUT',
       headers: _headers,
       extra: _extra,
@@ -146,7 +163,8 @@ class _ApiService implements ApiService {
             baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
-        ))));
+        )));
+    await _dio.fetch<void>(_options);
   }
 
   @override
@@ -155,7 +173,7 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    await _dio.fetch<void>(_setStreamType<void>(Options(
+    final _options = _setStreamType<void>(Options(
       method: 'PUT',
       headers: _headers,
       extra: _extra,
@@ -170,7 +188,8 @@ class _ApiService implements ApiService {
             baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
-        ))));
+        )));
+    await _dio.fetch<void>(_options);
   }
 
   @override
@@ -180,7 +199,7 @@ class _ApiService implements ApiService {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(passwordData);
-    await _dio.fetch<void>(_setStreamType<void>(Options(
+    final _options = _setStreamType<void>(Options(
       method: 'PUT',
       headers: _headers,
       extra: _extra,
@@ -195,7 +214,8 @@ class _ApiService implements ApiService {
             baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
-        ))));
+        )));
+    await _dio.fetch<void>(_options);
   }
 
   @override
@@ -204,7 +224,7 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    await _dio.fetch<void>(_setStreamType<void>(Options(
+    final _options = _setStreamType<void>(Options(
       method: 'PUT',
       headers: _headers,
       extra: _extra,
@@ -219,7 +239,8 @@ class _ApiService implements ApiService {
             baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
-        ))));
+        )));
+    await _dio.fetch<void>(_options);
   }
 
   @override
@@ -228,24 +249,30 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<DebateUsermade>(Options(
+    final _options = _setStreamType<DebateUsermade>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              'users/debates',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final _value = DebateUsermade.fromJson(_result.data!);
+        .compose(
+          _dio.options,
+          'users/debates',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late DebateUsermade _value;
+    try {
+      _value = DebateUsermade.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
     return _value;
   }
 
@@ -255,7 +282,7 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = profileFile;
-    await _dio.fetch<void>(_setStreamType<void>(Options(
+    final _options = _setStreamType<void>(Options(
       method: 'PUT',
       headers: _headers,
       extra: _extra,
@@ -271,7 +298,8 @@ class _ApiService implements ApiService {
             baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
-        ))));
+        )));
+    await _dio.fetch<void>(_options);
   }
 
   @override
@@ -280,24 +308,30 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<UserProfile>(Options(
+    final _options = _setStreamType<UserProfile>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              'users/${debateId}',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final _value = UserProfile.fromJson(_result.data!);
+        .compose(
+          _dio.options,
+          'users/${debateId}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late UserProfile _value;
+    try {
+      _value = UserProfile.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
     return _value;
   }
 
@@ -307,24 +341,30 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<Map<String, String>>(Options(
+    final _options = _setStreamType<Map<String, String>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              'users/debates',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final _value = _result.data!.cast<String, String>();
+        .compose(
+          _dio.options,
+          'users/debates',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late Map<String, String> _value;
+    try {
+      _value = _result.data!.cast<String, String>();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
     return _value;
   }
 
@@ -345,26 +385,32 @@ class _ApiService implements ApiService {
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result =
-        await _dio.fetch<List<dynamic>>(_setStreamType<List<Debate>>(Options(
+    final _options = _setStreamType<List<Debate>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              'debates/debate-list',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    var _value = _result.data!
-        .map((dynamic i) => Debate.fromJson(i as Map<String, dynamic>))
-        .toList();
+        .compose(
+          _dio.options,
+          'debates/debate-list',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<Debate> _value;
+    try {
+      _value = _result.data!
+          .map((dynamic i) => Debate.fromJson(i as Map<String, dynamic>))
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
     return _value;
   }
 
@@ -374,26 +420,32 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<List<dynamic>>(_setStreamType<List<DebateBenner>>(Options(
+    final _options = _setStreamType<List<DebateBenner>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              'debates/on-fire-debate',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    var _value = _result.data!
-        .map((dynamic i) => DebateBenner.fromJson(i as Map<String, dynamic>))
-        .toList();
+        .compose(
+          _dio.options,
+          'debates/on-fire-debate',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<DebateBenner> _value;
+    try {
+      _value = _result.data!
+          .map((dynamic i) => DebateBenner.fromJson(i as Map<String, dynamic>))
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
     return _value;
   }
 
@@ -403,26 +455,33 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<List<dynamic>>(_setStreamType<List<DebateHotdebate>>(Options(
+    final _options = _setStreamType<List<DebateHotdebate>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              'debates/hot-debate',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    var _value = _result.data!
-        .map((dynamic i) => DebateHotdebate.fromJson(i as Map<String, dynamic>))
-        .toList();
+        .compose(
+          _dio.options,
+          'debates/hot-debate',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<DebateHotdebate> _value;
+    try {
+      _value = _result.data!
+          .map((dynamic i) =>
+              DebateHotdebate.fromJson(i as Map<String, dynamic>))
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
     return _value;
   }
 
@@ -432,27 +491,33 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<List<dynamic>>(_setStreamType<List<DebateHotfighter>>(Options(
+    final _options = _setStreamType<List<DebateHotfighter>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              'debates/hot-debate-participants',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    var _value = _result.data!
-        .map(
-            (dynamic i) => DebateHotfighter.fromJson(i as Map<String, dynamic>))
-        .toList();
+        .compose(
+          _dio.options,
+          'debates/hot-debate-participants',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<DebateHotfighter> _value;
+    try {
+      _value = _result.data!
+          .map((dynamic i) =>
+              DebateHotfighter.fromJson(i as Map<String, dynamic>))
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
     return _value;
   }
 
@@ -462,26 +527,32 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<List<dynamic>>(_setStreamType<List<GetUserBlock>>(Options(
+    final _options = _setStreamType<List<GetUserBlock>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              'user-block-list/blocked-users',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    var _value = _result.data!
-        .map((dynamic i) => GetUserBlock.fromJson(i as Map<String, dynamic>))
-        .toList();
+        .compose(
+          _dio.options,
+          'user-block-list/blocked-users',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<GetUserBlock> _value;
+    try {
+      _value = _result.data!
+          .map((dynamic i) => GetUserBlock.fromJson(i as Map<String, dynamic>))
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
     return _value;
   }
 
@@ -491,24 +562,30 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<Map<String, String>>(Options(
+    final _options = _setStreamType<Map<String, String>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              'users/${debateId}/debates',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final _value = _result.data!.cast<String, String>();
+        .compose(
+          _dio.options,
+          'users/${debateId}/debates',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late Map<String, String> _value;
+    try {
+      _value = _result.data!.cast<String, String>();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
     return _value;
   }
 
@@ -519,24 +596,30 @@ class _ApiService implements ApiService {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(requestBody);
-    final _result =
-        await _dio.fetch<Map<String, dynamic>>(_setStreamType<AiWord>(Options(
+    final _options = _setStreamType<AiWord>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              'debates/generate-topic',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final _value = AiWord.fromJson(_result.data!);
+        .compose(
+          _dio.options,
+          'debates/generate-topic',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late AiWord _value;
+    try {
+      _value = AiWord.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
     return _value;
   }
 
@@ -546,26 +629,32 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<List<dynamic>>(_setStreamType<List<EndedChatInfo>>(Options(
+    final _options = _setStreamType<List<EndedChatInfo>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              'debates/${debateId}/chat',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    var _value = _result.data!
-        .map((dynamic i) => EndedChatInfo.fromJson(i as Map<String, dynamic>))
-        .toList();
+        .compose(
+          _dio.options,
+          'debates/${debateId}/chat',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<EndedChatInfo> _value;
+    try {
+      _value = _result.data!
+          .map((dynamic i) => EndedChatInfo.fromJson(i as Map<String, dynamic>))
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
     return _value;
   }
 
@@ -577,26 +666,33 @@ class _ApiService implements ApiService {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(requestBody);
-    final _result = await _dio
-        .fetch<List<dynamic>>(_setStreamType<List<SearchData>>(Options(
+    final _options = _setStreamType<Map<String, dynamic>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              'search',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    var _value = _result.data!
-        .map((dynamic i) => SearchData.fromJson(i as Map<String, dynamic>))
-        .toList();
+        .compose(
+          _dio.options,
+          'search',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+
+    // Ensure the result is a List of Maps
+    final List<Map<String, dynamic>> resultList =
+        (_result.data as List<dynamic>)
+            .map((item) => item as Map<String, dynamic>)
+            .toList();
+
+    // Convert the List of Maps to List<SearchData>
+    final _value = resultList.map((json) => SearchData.fromJson(json)).toList();
+
     return _value;
   }
 
@@ -606,52 +702,30 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<DebateInfo>(Options(
+    final _options = _setStreamType<DebateInfo>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              'debates/${debateId}',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final _value = DebateInfo.fromJson(_result.data!);
-    return _value;
-  }
-
-  @override
-  Future<AuthResponse> oAuthGoogle(Map<String, dynamic> loginData) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(loginData);
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<AuthResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              'oauth/google',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final _value = AuthResponse.fromJson(_result.data!);
+        .compose(
+          _dio.options,
+          'debates/${debateId}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late DebateInfo _value;
+    try {
+      _value = DebateInfo.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
     return _value;
   }
 
@@ -661,7 +735,7 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+    final _options = _setStreamType<dynamic>(Options(
       method: 'DELETE',
       headers: _headers,
       extra: _extra,
@@ -676,7 +750,8 @@ class _ApiService implements ApiService {
             baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
-        ))));
+        )));
+    final _result = await _dio.fetch(_options);
     final _value = _result.data;
     return _value;
   }
@@ -688,7 +763,7 @@ class _ApiService implements ApiService {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(unblockUserId);
-    await _dio.fetch<void>(_setStreamType<void>(Options(
+    final _options = _setStreamType<void>(Options(
       method: 'DELETE',
       headers: _headers,
       extra: _extra,
@@ -703,7 +778,8 @@ class _ApiService implements ApiService {
             baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
-        ))));
+        )));
+    await _dio.fetch<void>(_options);
   }
 
   @override
@@ -712,25 +788,31 @@ class _ApiService implements ApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = formData;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<DebateCreateInfo>(Options(
+    final _options = _setStreamType<DebateCreateInfo>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
       contentType: 'multipart/form-data',
     )
-            .compose(
-              _dio.options,
-              'debates',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final _value = DebateCreateInfo.fromJson(_result.data!);
+        .compose(
+          _dio.options,
+          'debates',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late DebateCreateInfo _value;
+    try {
+      _value = DebateCreateInfo.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
     return _value;
   }
 
@@ -741,7 +823,7 @@ class _ApiService implements ApiService {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(userId);
-    await _dio.fetch<void>(_setStreamType<void>(Options(
+    final _options = _setStreamType<void>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -756,7 +838,8 @@ class _ApiService implements ApiService {
             baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
-        ))));
+        )));
+    await _dio.fetch<void>(_options);
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
