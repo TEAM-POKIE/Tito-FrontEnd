@@ -182,44 +182,76 @@ class LoginMain extends StatelessWidget {
             Column(
               children: [
                 // ! 구글 버튼
+                // Container(
+                //   width: 327.w,
+                //   height: 54.h,
+                //   decoration: BoxDecoration(
+                //       color: ColorSystem.white,
+                //       borderRadius: BorderRadius.circular(6.r)),
+                //   child: GestureDetector(
+                //     onTap: _signInWithGoogle,
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.center,
+                //       crossAxisAlignment: CrossAxisAlignment.center,
+                //       children: [
+                //         SvgPicture.asset('assets/icons/google_new.svg'),
+                //         SizedBox(width: 5.w),
+                //         Text('Google 계정으로 로그인',
+                //             style: FontSystem.Login16M.copyWith(
+                //                 color: ColorSystem.googleFont))
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                // SizedBox(height: 10.h),
+
+                //버튼 클릭 효과 새로 지정
                 Container(
                   width: 327.w,
                   height: 54.h,
-                  decoration: BoxDecoration(
-                      color: ColorSystem.white,
-                      borderRadius: BorderRadius.circular(6.r)),
-                  child: GestureDetector(
-                    onTap: _signInWithGoogle,
+                  child: ElevatedButton(
+                    onPressed: _signInWithGoogle,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white, // 배경 색상
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6.r), // 모서리 둥글기
+                      ),
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SvgPicture.asset('assets/icons/google_new.svg'),
                         SizedBox(width: 5.w),
-                        Text('Google 계정으로 로그인',
-                            style: FontSystem.Login16M.copyWith(
-                                color: ColorSystem.googleFont))
+                        Text(
+                          'Google 계정으로 로그인',
+                          style: FontSystem.Login16M.copyWith(
+                              color: ColorSystem.googleFont),
+                        ),
                       ],
                     ),
                   ),
                 ),
                 SizedBox(height: 10.h),
-                // ! 카카오 버튼
+                // // ! 카카오 버튼
                 Container(
                   width: 327.w,
                   height: 54.h,
-                  decoration: BoxDecoration(
-                      color: ColorSystem.kakao,
-                      borderRadius: BorderRadius.circular(6.r)),
-                  child: GestureDetector(
-                    onTap: _signInWithKaKao,
+                  child: ElevatedButton(
+                    onPressed: _signInWithKaKao,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ColorSystem.kakao, // 배경 색상
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6.r), // 모서리 둥글기
+                      ),
+                    ),
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SvgPicture.asset('assets/icons/kakao_new.svg'),
                         SizedBox(width: 5.w),
-                        Text('카카오계정으로 로그인', style: FontSystem.Login16M)
+                        Text('카카오계정으로 로그인', style: FontSystem.Login16M),
                       ],
                     ),
                   ),
@@ -229,11 +261,14 @@ class LoginMain extends StatelessWidget {
                 Container(
                   width: 327.w,
                   height: 54.h,
-                  decoration: BoxDecoration(
-                      color: ColorSystem.black,
-                      borderRadius: BorderRadius.circular(6.r)),
-                  child: GestureDetector(
-                    onTap: _signInWithApple,
+                  child: ElevatedButton(
+                    onPressed: _signInWithApple,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ColorSystem.black, // 배경 색상
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6.r), // 모서리 둥글기
+                      ),
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -242,7 +277,7 @@ class LoginMain extends StatelessWidget {
                         SizedBox(width: 5.w),
                         Text('Apple로 로그인',
                             style: FontSystem.Login16M.copyWith(
-                                color: ColorSystem.white))
+                                color: ColorSystem.white)),
                       ],
                     ),
                   ),
@@ -252,18 +287,20 @@ class LoginMain extends StatelessWidget {
                 Container(
                   width: 327.w,
                   height: 54.h,
-                  decoration: BoxDecoration(
-                      color: ColorSystem.white,
-                      borderRadius: BorderRadius.circular(6.r)),
-                  child: GestureDetector(
-                    onTap: goBasicLogin,
+                  child: ElevatedButton(
+                    onPressed: goBasicLogin,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ColorSystem.white, // 배경 색상
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6.r), // 모서리 둥글기
+                      ),
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text('이메일로 로그인',
-                            style: FontSystem.Login16M.copyWith(
-                                color: ColorSystem.black))
+                        SvgPicture.asset('assets/icons/apple_new.svg'),
+                        Text('이메일로 로그인', style: FontSystem.Login16M),
                       ],
                     ),
                   ),
