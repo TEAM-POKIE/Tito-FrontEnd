@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
@@ -44,14 +45,19 @@ class HomeViewModel extends StateNotifier<HomeState> {
 
   Future<void> hotList() async {
     try {
-      // API에서 DebateBenner 객체의 리스트를 가져옴
-      final List<DebateBenner> debateBanners =
-          await apiService.getDebateBenner();
+      final String response = await apiService.getDebateBenner();
+      final Map<String, dynamic> decodedResponse =
+          json.decode(response) as Map<String, dynamic>;
+      final List<dynamic> dataList = decodedResponse['data'] as List<dynamic>;
 
-      // 상태를 업데이트
+      final List<DebateBenner> debateBanners = dataList
+          .map((item) => DebateBenner.fromJson(item as Map<String, dynamic>))
+          .toList();
+
       state = state.copyWith(
         debateBanners: debateBanners,
         isLoading: false,
+        hasError: false,
       );
     } catch (error) {
       print('Error fetching debate banners: $error');
@@ -64,14 +70,19 @@ class HomeViewModel extends StateNotifier<HomeState> {
 
   Future<void> fetchHotDebates() async {
     try {
-      // API에서 DebateHotdebate 객체의 리스트를 가져옴
-      final List<DebateHotdebate> response =
-          await apiService.getDebateHotdebate();
+      final String response = await apiService.getDebateHotdebate();
+      final Map<String, dynamic> decodedResponse =
+          json.decode(response) as Map<String, dynamic>;
+      final List<dynamic> dataList = decodedResponse['data'] as List<dynamic>;
 
-      // 상태를 업데이트
+      final List<DebateHotdebate> hotDebates = dataList
+          .map((item) => DebateHotdebate.fromJson(item as Map<String, dynamic>))
+          .toList();
+
       state = state.copyWith(
-        hotlist: response,
+        hotlist: hotDebates,
         isLoading: false,
+        hasError: false,
       );
     } catch (e) {
       print('Error fetching debates: $e');
@@ -84,14 +95,20 @@ class HomeViewModel extends StateNotifier<HomeState> {
 
   Future<void> fetchHotfighter() async {
     try {
-      // API에서 DebateHotdebate 객체의 리스트를 가져옴
-      final List<DebateHotfighter> response =
-          await apiService.getDebateHotfighter();
+      final String response = await apiService.getDebateHotfighter();
+      final Map<String, dynamic> decodedResponse =
+          json.decode(response) as Map<String, dynamic>;
+      final List<dynamic> dataList = decodedResponse['data'] as List<dynamic>;
 
-      // 상태를 업데이트
+      final List<DebateHotfighter> hotFighters = dataList
+          .map(
+              (item) => DebateHotfighter.fromJson(item as Map<String, dynamic>))
+          .toList();
+
       state = state.copyWith(
-        hotfighter: response,
+        hotfighter: hotFighters,
         isLoading: false,
+        hasError: false,
       );
     } catch (e) {
       print('Error fetching debates: $e');
