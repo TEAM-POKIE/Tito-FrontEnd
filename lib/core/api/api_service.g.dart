@@ -666,7 +666,7 @@ class _ApiService implements ApiService {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(requestBody);
-    final _options = _setStreamType<Map<String, dynamic>>(Options(
+    final _options = _setStreamType<List<SearchData>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -683,16 +683,15 @@ class _ApiService implements ApiService {
           baseUrl,
         )));
     final _result = await _dio.fetch<List<dynamic>>(_options);
-
-    // Ensure the result is a List of Maps
-    final List<Map<String, dynamic>> resultList =
-        (_result.data as List<dynamic>)
-            .map((item) => item as Map<String, dynamic>)
-            .toList();
-
-    // Convert the List of Maps to List<SearchData>
-    final _value = resultList.map((json) => SearchData.fromJson(json)).toList();
-
+    late List<SearchData> _value;
+    try {
+      _value = _result.data!
+          .map((dynamic i) => SearchData.fromJson(i as Map<String, dynamic>))
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
     return _value;
   }
 
@@ -730,6 +729,40 @@ class _ApiService implements ApiService {
   }
 
   @override
+  Future<AuthResponse> oAuthGoogle(Map<String, String> loginData) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(loginData);
+    final _options = _setStreamType<AuthResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'oauth/google',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late AuthResponse _value;
+    try {
+      _value = AuthResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<dynamic> deleteDebate(int debateId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -757,7 +790,7 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<void> deleteUnblock(Map<String, dynamic> unblockUserId) async {
+  Future<void> deleteUnblock(Map<String, String> unblockUserId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -817,7 +850,7 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<void> postUserBlock(Map<String, dynamic> userId) async {
+  Future<void> postUserBlock(Map<String, String> userId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};

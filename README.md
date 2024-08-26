@@ -1,5 +1,11 @@
 # tito_app
 
+## Retrofit build
+* 아래 명령어 실행 후 `flutter run` 실행할 것
+```
+dart run build_runner build
+```
+
 ## Resolving Errors
 ```RenderBox was not laid out ```
 * Flutter 레이아웃 시스템에서 위젯이 예상대로 배치되지 않았을 때 나타난다.
