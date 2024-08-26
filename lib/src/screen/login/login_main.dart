@@ -88,6 +88,9 @@ class LoginMain extends StatelessWidget {
           else {
             debugPrint("TODO: OLD : go to main");
           }
+          // & Phase 4. HomeScreen으로 이동
+          if (!context.mounted) return;
+          context.go('/home');
         }
       } catch (e) {
         debugPrint('Error during authentication: $e');
@@ -119,6 +122,9 @@ class LoginMain extends StatelessWidget {
         else {
           debugPrint("TODO: OLD : 기존 go to main");
         }
+        // & Phase 4. HomeScreen으로 이동
+        if (!context.mounted) return;
+        context.go('/home');
       } catch (error) {
         debugPrint('카카오톡으로 로그인 실패 $error');
       }
@@ -154,6 +160,9 @@ class LoginMain extends StatelessWidget {
           else {
             debugPrint("TODO: OLD : APPLE 기존 go to main");
           }
+          // & Phase 4. HomeScreen으로 이동
+          if (!context.mounted) return;
+          context.go('/home');
         } else {
           // credential이 null인 경우에 대한 처리
           debugPrint('Error: credential is null');
