@@ -5,10 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:percent_indicator/percent_indicator.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 
 class DebateCreateThird extends ConsumerStatefulWidget {
   const DebateCreateThird({super.key});
@@ -45,36 +41,6 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
         FocusScope.of(context).unfocus(); // 키보드 닫기
       },
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: ColorSystem.white,
-          leading: IconButton(  
-            onPressed: () {
-              context.pop();
-            },
-            icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
-          ),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(left: 24.w),
-                  child: LinearPercentIndicator(
-                    width: 210.w,
-                    animation: true,
-                    animationDuration: 1000,
-                    lineHeight: 5.0,
-                    percent: 1,
-                    linearStrokeCap: LinearStrokeCap.butt,
-                    progressColor: ColorSystem.purple,
-                    backgroundColor: ColorSystem.grey,
-                    barRadius: Radius.circular(10.r),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
