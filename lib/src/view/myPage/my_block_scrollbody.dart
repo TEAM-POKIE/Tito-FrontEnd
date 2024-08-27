@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,10 +26,23 @@ class _MyBlockScrollBodyState extends State<MyBlockScrollbody> {
   // 차단된 유저 목록을 API에서 가져오는 메서드
   void _fetchBlockedList() async {
     try {
-      final List<GetUserBlock> response =
-          await ApiService(DioClient.dio).getBlockedUser();
+      // API에서 원시 JSON 문자열을 받아옴
+      final String response = await ApiService(DioClient.dio).getBlockedUser();
+
+      // JSON 문자열을 Map<String, dynamic>으로 디코딩
+      final Map<String, dynamic> decodedResponse =
+          json.decode(response) as Map<String, dynamic>;
+
+      // 응답에서 'data' 키의 값을 추출하여 List<dynamic>으로 변환
+      final List<dynamic> dataList = decodedResponse['data'] as List<dynamic>;
+
+      // List<Map<String, dynamic>>를 List<GetUserBlock>로 변환
+      final List<GetUserBlock> bannedUsers = dataList
+          .map((item) => GetUserBlock.fromJson(item as Map<String, dynamic>))
+          .toList();
+
       setState(() {
-        _bannedUsers = response; // 가져온 데이터를 리스트에 반영
+        _bannedUsers = bannedUsers; // 가져온 데이터를 리스트에 반영
       });
     } catch (e) {
       print('차단된 유저 목록을 가져오는 중 오류 발생: $e');
