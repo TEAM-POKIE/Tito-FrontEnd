@@ -7,7 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-
 class DebateCreateSecond extends ConsumerStatefulWidget {
   const DebateCreateSecond({super.key});
 
@@ -17,11 +16,29 @@ class DebateCreateSecond extends ConsumerStatefulWidget {
 
 class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
   final _formKey = GlobalKey<FormState>();
+  late TextEditingController _aController;
+  late TextEditingController _bController;
   String aArgument = '';
   String bArgument = '';
   int _currentPage = 1;
   final int _totalPages = 3;
   double _progress = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    final debateState = ref.read(debateCreateProvider);
+    // debateState.debateTitle 값을 초기값으로 설정
+    _aController = TextEditingController(text: debateState.debateMakerOpinion);
+    _bController = TextEditingController(text: debateState.debateJoinerOpinion);
+  }
+
+  @override
+  void dispose() {
+    _aController.dispose(); // 컨트롤러는 더 이상 필요하지 않으면 해제
+    _bController.dispose(); // 컨트롤러는 더 이상 필요하지 않으면 해제
+    super.dispose();
+  }
 
   void updateProgress(int _currentPage) {
     // 각 페이지에 대한 진행률 범위 설정
@@ -60,8 +77,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
         return;
       }
       _formKey.currentState?.save(); // 폼의 모든 필드 저장
-      print('aArgument: $aArgument');
-      print('bArgument: $bArgument');
+
       debateViewModel.updateOpinion(aArgument, bArgument);
 
       if (!context.mounted) return;
@@ -124,6 +140,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                   ),
                   SizedBox(height: 20.h),
                   TextFormField(
+                    controller: _aController,
                     autocorrect: false,
                     decoration: InputDecoration(
                       hintText: '입력하세요',
@@ -151,6 +168,7 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
                   ),
                   SizedBox(height: 20.h),
                   TextFormField(
+                    controller: _bController,
                     autocorrect: false,
                     decoration: InputDecoration(
                       hintText: '입력하세요',

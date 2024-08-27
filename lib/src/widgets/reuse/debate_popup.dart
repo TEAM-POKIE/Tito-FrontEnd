@@ -274,8 +274,11 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
           });
           final response = await ApiService(DioClient.dio).postDebate(formData);
           debateState.debateContent = '';
+          debateState.debateTitle = '';
+          debateState.debateMakerOpinion = '';
+          debateState.debateJoinerOpinion = '';
 
-          context.push('/chat/${response.id}');
+          context.go('/chat/${response.id}');
         } else {
           final debateData = debateState.toJson();
 

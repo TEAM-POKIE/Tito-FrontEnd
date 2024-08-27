@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
-import 'package:tito_app/core/provider/timer_provider.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:confetti/confetti.dart';
 import 'dart:math';
@@ -38,8 +38,7 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
     if (loginInfo == null) {
       return const SizedBox.shrink();
     }
-    final timerState = ref.watch(timerProvider);
-    final chatViewModel = ref.watch(chatInfoProvider.notifier);
+
     String formatDuration(Duration duration) {
       String twoDigits(int n) => n.toString().padLeft(2, '0');
       String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
@@ -58,7 +57,7 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
         chatState.debateOwnerId == loginInfo.id) {
       switch (chatState.debateJoinerTurnCount) {
         case 0:
-          return DetailState(
+          return const DetailState(
               upImage: 'assets/images/detailChatIcon.svg',
               upTitle: '상대 반론자를 찾는 중이예요 !',
               downTitle: '⏳ 00:00 토론 시작 전');
