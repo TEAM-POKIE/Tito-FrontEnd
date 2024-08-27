@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/src/screen/Ended_chat.dart';
+import 'package:tito_app/src/screen/debate/debate_body.dart';
 import 'package:tito_app/src/screen/debate/debate_create_chat.dart';
 import 'package:tito_app/src/screen/debate/debate_create_screen.dart';
 import 'package:tito_app/src/screen/debate/debate_create_third.dart';
@@ -112,17 +113,9 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/debate_create',
-      builder: (context, state) => DebateCreate(),
+      builder: (context, state) => DebateBody(),
     ),
-    GoRoute(
-      path: "/debate_create_second",
-      pageBuilder: (BuildContext context, GoRouterState state) =>
-          const NoTransitionPage(child: DebateCreateSecond()),
-    ),
-    GoRoute(
-      path: '/debate_create_third',
-      builder: (context, state) => const DebateCreateThird(),
-    ),
+
     GoRoute(
       path: '/debate_create_chat',
       builder: (context, state) => const DebateCreateChat(),
