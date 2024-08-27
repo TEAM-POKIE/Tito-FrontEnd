@@ -10,6 +10,8 @@
 	<string>Tito App</string>
 	<key>CFBundleExecutable</key>
 	<string>Runner</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -29,7 +31,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>kakao01fe6631fc7787a553528a1b214e2bc5</string>
+				<string>kakaoc870921283580d2570a3181455092d77</string>
 				<string>com.googleusercontent.apps.964139724412-0ne5ikmk6o3s32jejsuhedohs128nek0</string>
 			</array>
 		</dict>
@@ -49,6 +51,11 @@
 	<string>We need access to the photo library to select pictures.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

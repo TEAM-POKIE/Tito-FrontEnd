@@ -73,28 +73,26 @@ class LoginMain extends StatelessWidget {
           await secureStorage.write(key: 'access_token', value: accessToken);
           await secureStorage.write(key: 'id_token', value: idToken);
 
-          debugPrint("토큰 도착 $accessToken");
-
           // & Phase 3. Backend에 토큰 보내서 확인받음
           final authResponse = await ApiService(DioClient.dio)
-              .oAuthGoogle({accessToken: accessToken});
-          debugPrint("오어스를 토대로한 엑세스 토큰 도착");
+              .oAuthGoogle({"accessToken": accessToken});
 
-          // & Phase 3. 성공한 경우 마이데이터 조회, nickname 유무 확인
+          // & Phase 4. 성공한 경우 마이데이터 조회, nickname 유무 확인
           await DioClient.setToken(authResponse.accessToken.token);
-          // Case 3.1. 마이데이터 조회 결과 nickname이 null인 경우 해당 페이지로 이동
+          // Case 4.1. 마이데이터 조회 결과 nickname이 null인 경우 해당 페이지로 이동
           final userInfo = await ApiService(DioClient.dio).getUserInfo();
           if (userInfo.nickname == "") {
-            debugPrint('NEW : empty user nickname');
+            debugPrint('TODO: NEW : empty user nickname');
           }
-
           // Case 3.2. 기존 회원인 경우 메인 페이지로 리다이렉트
           else {
-            debugPrint("OLD : go to main");
+            debugPrint("TODO: OLD : go to main");
           }
+          // & Phase 4. HomeScreen으로 이동
+          if (!context.mounted) return;
+          context.go('/home');
         }
       } catch (e) {
-        // 에러 처리
         debugPrint('Error during authentication: $e');
       }
     }
@@ -107,16 +105,26 @@ class LoginMain extends StatelessWidget {
         await secureStorage.write(
             key: 'access_token', value: token.accessToken);
         await secureStorage.write(key: 'id_token', value: token.idToken);
+        debugPrint(token.accessToken);
 
-        // Phase 2. Backend에 토큰 보내서 확인받음
-        // TODO: Code here
+        // & Phase 3. Backend에 토큰 보내서 확인받음
+        final authResponse = await ApiService(DioClient.dio)
+            .oAuthKakao({"accessToken": token.accessToken});
 
-        // Phase 3. 성공한 경우
-        // Case 3.1. 최초 회원인 경우
-        // TODO: Code here
-
+        // & Phase 4. 성공한 경우 마이데이터 조회, nickname 유무 확인
+        await DioClient.setToken(authResponse.accessToken.token);
+        // Case 4.1. 마이데이터 조회 결과 nickname이 null인 경우 해당 페이지로 이동
+        final userInfo = await ApiService(DioClient.dio).getUserInfo();
+        if (userInfo.nickname == "") {
+          debugPrint('TODO: NEW : 카카오 empty user nickname');
+        }
         // Case 3.2. 기존 회원인 경우 메인 페이지로 리다이렉트
-        // TODO: Code here
+        else {
+          debugPrint("TODO: OLD : 기존 go to main");
+        }
+        // & Phase 4. HomeScreen으로 이동
+        if (!context.mounted) return;
+        context.go('/home');
       } catch (error) {
         debugPrint('카카오톡으로 로그인 실패 $error');
       }
@@ -137,22 +145,24 @@ class LoginMain extends StatelessWidget {
         );
 
         if (credential != null) {
-          // 인증 성공 시 처리
-          debugPrint("MMMMMMM");
-          debugPrint(credential.identityToken);
-          debugPrint("MMMMMMM");
+          // & Phase 3. Backend에 토큰 보내서 확인받음
+          final authResponse = await ApiService(DioClient.dio)
+              .oAuthApple({"accessToken": credential.identityToken!});
 
-          final signInWithAppleEndpoint = Uri(
-            scheme: 'https',
-            host: 'dev.tito.lat',
-            path: '/oauth/apple',
-          );
-
-          final session = await http.Client().post(
-            signInWithAppleEndpoint,
-          );
-
-          print(session);
+          // & Phase 4. 성공한 경우 마이데이터 조회, nickname 유무 확인
+          await DioClient.setToken(authResponse.accessToken.token);
+          // Case 4.1. 마이데이터 조회 결과 nickname이 null인 경우 해당 페이지로 이동
+          final userInfo = await ApiService(DioClient.dio).getUserInfo();
+          if (userInfo.nickname == "") {
+            debugPrint('TODO: NEW : APPLE empty user nickname');
+          }
+          // Case 3.2. 기존 회원인 경우 메인 페이지로 리다이렉트
+          else {
+            debugPrint("TODO: OLD : APPLE 기존 go to main");
+          }
+          // & Phase 4. HomeScreen으로 이동
+          if (!context.mounted) return;
+          context.go('/home');
         } else {
           // credential이 null인 경우에 대한 처리
           debugPrint('Error: credential is null');
