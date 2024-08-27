@@ -1,16 +1,16 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:tito_app/core/constants/style.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/src/data/models/debate_list.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
-import 'package:tito_app/core/provider/login_provider.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tito_app/src/data/models/debate_list.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tito_app/core/constants/style.dart';
 
 class ListScreen extends ConsumerStatefulWidget {
   const ListScreen({super.key});
@@ -47,7 +47,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   void _onRefresh() async {
     page = 0;
     await _fetchDebateList();
-    // await _fetchDebateList(isRefresh: true); // 새로고침 시 기존 데이터를 대체
     _refreshController.refreshCompleted();
   }
 
@@ -55,7 +54,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   void _onLoading() async {
     page += 1;
     await _fetchDebateList();
-    // await _fetchDebateList(isRefresh: false); // 로딩 시 데이터를 추가
     _refreshController.loadComplete();
   }
 
@@ -166,8 +164,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                   context.push('/search');
                 },
                 icon: SizedBox(
-                  // width: 30.w,
-                  // height: 30.h,
                   child: Padding(
                     padding: EdgeInsets.only(right: 24.w),
                     child: SvgPicture.asset(
@@ -186,9 +182,8 @@ class _ListScreenState extends ConsumerState<ListScreen> {
           Padding(
             padding: EdgeInsets.only(left: 20.w),
             child: Container(
-              //카테고리 바가 들어가는 Container 부분
               child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal, // 수평 스크롤 가능하게 설정
+                scrollDirection: Axis.horizontal,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: List.generate(labels.length, (index) {
@@ -210,9 +205,9 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                               borderRadius: BorderRadius.circular(16.r),
                               side: BorderSide(
                                 color: categorySelectedIndex == index
-                                    ? ColorSystem.black // 선택된 경우 테두리 색상
-                                    : ColorSystem.grey5, // 선택되지 않은 경우 테두리 색상
-                                width: 1, // 테두리 두께
+                                    ? ColorSystem.black
+                                    : ColorSystem.grey5,
+                                width: 1,
                               ),
                             ),
                           ),
@@ -251,7 +246,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              textSelectedIndex = index; // selectedIndex를 업데이트
+                              textSelectedIndex = index;
                               selectedStatus = statuses[index];
                               _fetchDebateList();
                             });
@@ -282,7 +277,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                   onChanged: (String? newValue) {
                     setState(() {
                       selectedSortOption = newValue!;
-                      _fetchDebateList(); // 정렬 옵션을 적용하여 리스트를 다시 가져옵니다.
+                      _fetchDebateList();
                     });
                   },
                   items:
@@ -301,7 +296,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                     color: ColorSystem.grey,
                     size: 20.sp,
                   ),
-                  underline: SizedBox.shrink(), // 밑줄을 없애기 위해 사용
+                  underline: SizedBox.shrink(),
                   style: FontSystem.KR14M.copyWith(color: ColorSystem.grey),
                 ),
               ],
@@ -330,9 +325,9 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                             horizontal: 20.h, vertical: 5.w),
                         child: Container(
                           decoration: BoxDecoration(
-                            boxShadow: [
+                            boxShadow: const [
                               BoxShadow(
-                                color: const Color(0x669795A3),
+                                color: Color(0x669795A3),
                                 spreadRadius: 0,
                                 blurRadius: 4,
                               )
@@ -354,7 +349,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(height: 8.h),
-                                      // 여기에 토론 완료 가은 거 추가로 lightGrey 색깔 만들어서 넣어야 하는 코드 위치
                                       Container(
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 6.w, vertical: 2.h),
@@ -379,18 +373,16 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                         debate.debateTitle ?? 'No title',
                                         style: FontSystem.KR18M
                                             .copyWith(height: 1),
-                                        maxLines: 1, // 텍스트를 한 줄로 제한
-                                        overflow: TextOverflow
-                                            .ellipsis, // 넘칠 경우 "..." 처리
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                       SizedBox(height: 4.h),
                                       Text(
                                         '승률 ${debate.debateOwnerWinningRate}% 토론러 대기중',
                                         style: FontSystem.KR16M.copyWith(
                                             color: ColorSystem.purple),
-                                        maxLines: 1, // 텍스트를 한 줄로 제한
-                                        overflow: TextOverflow
-                                            .ellipsis, // 넘칠 경우 "..." 처리
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ],
                                   ),
@@ -399,29 +391,23 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                               ),
                             ),
                             trailing: Container(
-                              // width: 200.w,
-                              // height: 200.h,
                               child: Padding(
                                 padding: EdgeInsets.only(bottom: 20.w),
-                                child: Expanded(
-                                  child: debate.debateImageUrl == ''
-                                      ? SvgPicture.asset(
-                                          'assets/icons/list_real_null.svg',
-                                          width: 70.w, // 원하는 너비 설정
-                                          fit: BoxFit.contain,
-                                        )
-                                      : ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                              12.r), // 둥근 모서리 설정
-                                          child: Image.network(
-                                            debate.debateImageUrl ?? '',
-                                            width: 70.w, // 원하는 너비 설정
-                                            // height: 20.h,
-                                            fit: BoxFit
-                                                .cover, // 이미지가 잘리지 않도록 맞춤 설정
-                                          ),
+                                child: debate.debateImageUrl == ''
+                                    ? SvgPicture.asset(
+                                        'assets/icons/list_real_null.svg',
+                                        width: 70.w,
+                                        fit: BoxFit.contain,
+                                      )
+                                    : ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(12.r),
+                                        child: Image.network(
+                                          debate.debateImageUrl ?? '',
+                                          width: 70.w,
+                                          fit: BoxFit.cover,
                                         ),
-                                ),
+                                      ),
                               ),
                             ),
                           ),

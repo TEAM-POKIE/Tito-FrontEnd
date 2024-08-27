@@ -1,24 +1,15 @@
-import 'dart:convert';
-import 'dart:ffi';
-import 'dart:io';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
-import 'package:tito_app/core/api/multpart_file_with_to_json.dart';
 import 'package:tito_app/src/data/models/ai_word.dart';
 import 'package:tito_app/src/data/models/debate_crate.dart';
 import 'package:tito_app/src/data/models/debate_info.dart';
-import 'package:tito_app/src/data/models/debate_list.dart';
-import 'package:tito_app/src/data/models/debate_participants.dart';
 import 'package:tito_app/src/data/models/ended_chat.dart';
-import 'package:tito_app/src/data/models/get_user_block.dart';
 import 'package:tito_app/src/data/models/login_info.dart';
 import 'package:tito_app/src/data/models/auth_response.dart';
 import 'package:tito_app/src/data/models/debate_usermade.dart';
 import 'package:tito_app/src/data/models/search_data.dart';
 import 'package:tito_app/src/data/models/user_profile.dart';
-import 'package:tito_app/src/data/models/debate_hotdebate.dart';
-import 'package:tito_app/src/data/models/debate_hotfighter.dart';
-import 'package:tito_app/src/data/models/debate_benner.dart';
+
 part 'api_service.g.dart';
 
 @RestApi(baseUrl: "https://dev.tito.lat/")
@@ -79,7 +70,7 @@ abstract class ApiService {
   @GET('users/{id}/debates')
   Future<Map<String, String>> getOtherDebate(@Path("id") int debateId);
   @POST('debates/generate-topic')
-  Future<AiWord> postGenerateTopic(@Body() Map<String, Object> requestBody);
+  Future<String> postGenerateTopic(@Body() Map<String, Object> requestBody);
 
   @GET("debates/{debate_id}/chat")
   Future<List<EndedChatInfo>> getDebateChat(@Path("debate_id") int debateId);

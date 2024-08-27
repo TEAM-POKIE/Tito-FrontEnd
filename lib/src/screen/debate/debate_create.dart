@@ -19,7 +19,7 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
   int categorySelectedIndex = 0;
   int _currentPage = 0;
   final int _totalPages = 3;
-
+  late TextEditingController _controller;
   void _goNextCreate() async {
     final debateViewModel = ref.watch(debateCreateProvider.notifier);
     final viewModel = ref.read(debateCreateProvider.notifier);
@@ -34,8 +34,23 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    final debateState = ref.read(debateCreateProvider);
+    // debateState.debateTitle 값을 초기값으로 설정
+    _controller = TextEditingController(text: debateState.debateTitle);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose(); // 컨트롤러는 더 이상 필요하지 않으면 해제
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final viewModel = ref.read(debateCreateProvider.notifier);
+
     double _progress = (_currentPage + 1) / _totalPages;
     // 현재 페이지를 기준으로 진행 상황을 계산하는 코드
 
@@ -168,6 +183,7 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: TextFormField(
+                    controller: _controller,
                     autocorrect: false,
                     decoration: InputDecoration(
                       hintText: '입력하세요',

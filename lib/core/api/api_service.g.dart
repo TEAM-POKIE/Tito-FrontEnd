@@ -578,13 +578,13 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<AiWord> postGenerateTopic(Map<String, Object> requestBody) async {
+  Future<String> postGenerateTopic(Map<String, Object> requestBody) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(requestBody);
-    final _options = _setStreamType<AiWord>(Options(
+    final _options = _setStreamType<String>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -600,10 +600,10 @@ class _ApiService implements ApiService {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late AiWord _value;
+    final _result = await _dio.fetch<String>(_options);
+    late String _value;
     try {
-      _value = AiWord.fromJson(_result.data!);
+      _value = _result.data!;
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
