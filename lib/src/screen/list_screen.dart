@@ -369,12 +369,33 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                             )),
                                       ),
                                       SizedBox(height: 10.h),
-                                      Text(
-                                        debate.debateTitle ?? 'No title',
-                                        style: FontSystem.KR18M
-                                            .copyWith(height: 1),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
+                                      LayoutBuilder(
+                                        builder: (context, constraints) {
+                                          // 원하는 최대 width를 지정합니다.
+                                          double maxTextWidth =
+                                              210.w; // 예: 200.0으로 설정
+
+                                          // 실제 constraints.width와 maxTextWidth 중 더 작은 값을 사용합니다.
+                                          double effectiveWidth =
+                                              constraints.maxWidth <
+                                                      maxTextWidth
+                                                  ? constraints.maxWidth
+                                                  : maxTextWidth;
+
+                                          return ConstrainedBox(
+                                            constraints: BoxConstraints(
+                                              maxWidth: effectiveWidth,
+                                            ),
+                                            child: Text(
+                                              debate.debateTitle ?? 'No title',
+                                              style: FontSystem.KR16M.copyWith(
+                                                height: 1,
+                                              ),
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          );
+                                        },
                                       ),
                                       SizedBox(height: 4.h),
                                       Text(
