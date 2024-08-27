@@ -3,14 +3,21 @@ class Debate {
   final String debateTitle;
   final String debateStatus;
   String? debateImageUrl;
+  String? debateOwnerNickname;
+  String? debateJoinerNickname;
+
   final int debateOwnerWinningRate;
+  final int debateRealtimeParticipants;
 
   Debate({
     required this.id,
     required this.debateTitle,
     required this.debateStatus,
     this.debateImageUrl,
+    this.debateOwnerNickname,
+    this.debateJoinerNickname,
     required this.debateOwnerWinningRate,
+    required this.debateRealtimeParticipants,
   });
 
   factory Debate.fromJson(Map<String, dynamic> json) {
@@ -18,8 +25,11 @@ class Debate {
       id: json['id'],
       debateTitle: json['debateTitle'],
       debateStatus: json['debateStatus'],
+      debateOwnerNickname: json['debateOwnerNickname'] ?? '',
+      debateJoinerNickname: json['debateJoinerNickname'] ?? '',
       debateImageUrl: json['debateImageUrl'] ?? "",
       debateOwnerWinningRate: json['debateOwnerWinningRate'],
+      debateRealtimeParticipants: json['debateRealtimeParticipants'],
     );
   }
 
@@ -29,6 +39,9 @@ class Debate {
       'debateTitle': debateTitle,
       'debateStatus': debateStatus,
       'debateImageUrl': debateImageUrl,
+      "debateOwnerNickname": debateOwnerNickname,
+      "debateJoinerNickname": debateJoinerNickname,
+      "debateRealtimeParticipants": debateRealtimeParticipants,
       'debateOwnerWinningRate': debateOwnerWinningRate,
     };
   }
