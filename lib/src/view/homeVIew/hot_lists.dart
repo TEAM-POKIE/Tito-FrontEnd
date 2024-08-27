@@ -99,7 +99,7 @@ class _HotListState extends ConsumerState<HotLists> {
                                 ),
                                 title: Text(
                                   debate.debateTitle,
-                                  style: FontSystem.KR18SB,
+                                  style: FontSystem.KR16SB,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
