@@ -127,6 +127,7 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
                   ),
                   SizedBox(height: 20.h),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                         width: 115.w,
@@ -152,45 +153,46 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
                           ),
                         ),
                       ),
+                      SizedBox(width: 20.w), // 간격을 일정하게 유지
                       if (debateState.debateImageUrl != null &&
                           File(debateState.debateImageUrl).existsSync())
-                        Padding(
-                          padding: EdgeInsets.only(left: 20.w),
-                          child: Stack(
-                            children: [
-                              Image.file(
+                        Stack(
+                          children: [
+                            Container(
+                              // width: 100.w, // 이미지 크기 고정
+                              height: 100.h, // 이미지 크기 고정
+                              child: Image.file(
                                 File(debateState.debateImageUrl),
-                                //width: 100.w, // 필요에 따라 너비 설정
-                                height: 100.h,
                                 fit: BoxFit.cover,
                               ),
-                              Positioned(
-                                right: 0, // 이미지의 오른쪽 상단에 고정
-                                top: 0, // 이미지의 상단에 고정
-                                child: GestureDetector(
-                                  onTap: () {
+                            ),
+                            Positioned(
+                              right: 0,
+                              top: 0,
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
                                     debateState.debateImageUrl = 'null';
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.all(8.0),
-                                    decoration: BoxDecoration(
-                                      color: ColorSystem.black
-                                          .withOpacity(0.5), // 배경색 및 투명도 설정
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Icon(
-                                      Icons.close,
-                                      color: ColorSystem.white,
-                                      size: 15.w, // 아이콘 크기 조정
-                                    ),
+                                  });
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                    color: ColorSystem.black.withOpacity(0.5),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    Icons.close,
+                                    color: ColorSystem.white,
+                                    size: 15.w,
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                     ],
-                  ),
+                  )
                 ],
               ),
             ),
