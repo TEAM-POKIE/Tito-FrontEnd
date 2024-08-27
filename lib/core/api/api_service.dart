@@ -21,7 +21,7 @@ import 'package:tito_app/src/data/models/debate_hotfighter.dart';
 import 'package:tito_app/src/data/models/debate_benner.dart';
 part 'api_service.g.dart';
 
-@RestApi(baseUrl: "https://dev.tito.lat/")
+@RestApi(baseUrl: "http://192.168.0.2:8080/")
 abstract class ApiService {
   factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
 
@@ -91,8 +91,14 @@ abstract class ApiService {
   @GET("debates/{id}")
   Future<DebateInfo> getDebateInfo(@Path("id") int debateId);
 
-  @POST("oauth/google")
+  @POST("oauth2/google")
   Future<AuthResponse> oAuthGoogle(@Body() Map<String, String> loginData);
+
+  @POST("oauth2/kakao")
+  Future<AuthResponse> oAuthKakao(@Body() Map<String, String> loginData);
+
+  @POST("oauth2/apple")
+  Future<AuthResponse> oAuthApple(@Body() Map<String, String> loginData);
 
   @DELETE("debates/{id}")
   Future deleteDebate(@Path("id") int debateId);
