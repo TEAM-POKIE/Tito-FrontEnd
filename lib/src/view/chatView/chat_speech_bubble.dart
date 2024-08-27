@@ -53,11 +53,6 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
         chatState.debateOwnerId == loginInfo.id) {
       switch (chatState.debateJoinerTurnCount) {
         case 0:
-          return StaticTextBubble(
-            title: '첫 입론을 입력해주세요!',
-            width: 180.w,
-            height: 45.h,
-          );
         default:
           if (chatState.debateJoinerTurnCount > 2) {
             return Column(
@@ -69,14 +64,14 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
                         imgSrc: 'assets/icons/timingBell.svg',
                         content: '타이밍 벨')
                     : SizedBox(
-                        width: 0,
+                        width: 0.w,
                       ),
-                VotingBar(),
+                const VotingBar(),
               ],
             );
           } else {
             SizedBox(
-              width: 0,
+              width: 0.w,
             );
           }
       }
@@ -98,13 +93,13 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
                   imgSrc: 'assets/icons/voting.svg',
                   content: '투표하기',
                 ),
-                VotingBar(),
+                const VotingBar(),
                 LiveComment(),
               ],
             );
           }
           return SizedBox(
-            width: 0,
+            width: 0.w,
           );
       }
     }
