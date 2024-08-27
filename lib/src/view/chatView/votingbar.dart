@@ -8,8 +8,6 @@ import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/voting_provider.dart';
 import 'dart:convert';
 
-import 'package:tito_app/core/provider/websocket_provider.dart';
-
 class VotingBar extends ConsumerStatefulWidget {
   const VotingBar({super.key});
 

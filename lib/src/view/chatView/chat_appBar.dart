@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -8,8 +8,7 @@ import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tito_app/core/constants/style.dart';
-import 'package:tito_app/core/provider/login_provider.dart';
+
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ChatAppbar extends ConsumerWidget {

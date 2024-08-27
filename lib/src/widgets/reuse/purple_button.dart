@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tito_app/core/constants/style.dart';
-import 'package:tito_app/core/constants/style.dart';
 
 class PurpleButton extends StatelessWidget {
   final String text;
