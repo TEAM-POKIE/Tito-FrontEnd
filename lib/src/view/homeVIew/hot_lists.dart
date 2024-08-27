@@ -32,32 +32,29 @@ class _HotListState extends ConsumerState<HotLists> {
       children: [
         SizedBox(height: 30.h),
         Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 10.h,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: 10.h),
           child: Row(
             children: [
               Text(
                 'HOT한 토론',
                 style: FontSystem.KR18SB,
               ),
-              SizedBox(
-                width: 6.w,
-              ),
+              SizedBox(width: 6.w),
               Container(
-                  width: 39.5.w,
-                  height: 29.06.h,
-                  child: Image.asset('assets/images/hotlist.png')),
+                width: 39.5.w,
+                height: 29.06.h,
+                child: Image.asset('assets/images/hotlist.png'),
+              ),
             ],
           ),
         ),
         SizedBox(height: 10.h),
         Container(
-          height: 400.h, // 리스트 높이를 충분히 키움
+          height: 300.h,
           child: homeState.isLoading
-              ? Center(child: CircularProgressIndicator()) // 로딩 중일 때
+              ? Center(child: CircularProgressIndicator())
               : homeState.hotlist.isEmpty
-                  ? Center(child: Text('No debates available')) // 데이터가 없을 때
+                  ? Center(child: Text('No debates available'))
                   : ListView.builder(
                       itemCount: homeState.hotlist.length,
                       itemBuilder: (context, index) {
@@ -80,7 +77,8 @@ class _HotListState extends ConsumerState<HotLists> {
                               ],
                             ),
                             child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 5.h, horizontal: 5.w),
                               child: ListTile(
                                 trailing: ClipRRect(
                                   borderRadius: BorderRadius.circular(20.r),
@@ -117,15 +115,18 @@ class _HotListState extends ConsumerState<HotLists> {
                                     SizedBox(height: 5.h),
                                     Row(
                                       children: [
-                                        SvgPicture.asset('assets/icons/fire.svg'),
+                                        SvgPicture.asset(
+                                            'assets/icons/fire.svg'),
                                         SizedBox(width: 4.w),
                                         Text(
                                           '${debate.debateFireCount}',
-                                          style: FontSystem.KR16M
-                                              .copyWith(color: ColorSystem.grey),
+                                          style: FontSystem.KR16M.copyWith(
+                                              color: ColorSystem.grey),
                                         ),
                                       ],
                                     ),
+                                    SizedBox(height: 5.h),
+                                    // 추가: DebateHotdebate의 toString 결과를 표시
                                   ],
                                 ),
                               ),
