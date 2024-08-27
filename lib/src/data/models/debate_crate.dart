@@ -1,5 +1,5 @@
 class DebateCreateState {
-  final String debateTitle;
+  String debateTitle;
   final String debateCategory;
   String debateStatus;
 

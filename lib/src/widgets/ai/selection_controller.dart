@@ -55,7 +55,7 @@ class SelectionNotifier extends StateNotifier<SelectionState> {
 
     try {
       final response = await ApiService(DioClient.dio).postGenerateTopic({
-        "words": ["바나나", "사랑", "안은소"]
+        "words": ["프론트엔드", "백엔드"]
       });
 
       final Map<String, dynamic> decodedResponse = json.decode(response);

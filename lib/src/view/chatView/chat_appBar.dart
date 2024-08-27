@@ -6,6 +6,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/core/provider/nav_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -51,6 +52,7 @@ class DebateAppbar extends ConsumerWidget {
     final chatViewModel = ref.read(chatInfoProvider.notifier);
     final debateState = ref.read(chatInfoProvider);
     final loginInfo = ref.read(loginInfoProvider);
+    final bottomState = ref.read(selectedIndexProvider.notifier);
 
     final List<String> menuItems =
         debateState!.debateOwnerId == loginInfo!.id &&
@@ -91,7 +93,8 @@ class DebateAppbar extends ConsumerWidget {
           if (context.canPop()) {
             context.pop();
           } else {
-            context.go('/list');
+            bottomState.state = 0;
+            context.go('/home');
           }
         },
       ),

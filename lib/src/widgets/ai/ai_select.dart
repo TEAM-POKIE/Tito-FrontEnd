@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:tito_app/core/provider/ai_provider.dart';
 
 import 'package:go_router/go_router.dart';
+import 'package:tito_app/core/provider/debate_create_provider.dart';
 
 class AiSelect extends ConsumerWidget {
   AiSelect({super.key});
@@ -15,7 +16,10 @@ class AiSelect extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectionState = ref.watch(selectionProvider);
     final hasSelection = selectionState.topics.isNotEmpty;
-
+    final debaState = ref.watch(debateCreateProvider);
+    String title = '';
+    String a = '';
+    String b = '';
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorSystem.white,
@@ -58,7 +62,7 @@ class AiSelect extends ConsumerWidget {
             padding: EdgeInsets.only(left: 23.w),
             child: Text('바로 다른 사람들과 의견을 나눠보세요!', style: FontSystem.KR20SB),
           ),
-          SizedBox(height: 60.h), // 간격 추가
+          SizedBox(height: 50.h), // 간격 추가
           Expanded(
             child: Padding(
               padding: EdgeInsets.only(right: 8.w),
@@ -74,6 +78,10 @@ class AiSelect extends ConsumerWidget {
 
                     return GestureDetector(
                       onTap: () {
+                        debaState.debateTitle = topic.topic;
+                        debaState.debateMakerOpinion = topic.a;
+
+                        debaState.debateJoinerOpinion = topic.b;
                         ref
                             .read(selectionProvider.notifier)
                             .toggleExpandedIndex(index);
@@ -91,18 +99,17 @@ class AiSelect extends ConsumerWidget {
                                   : ColorSystem.grey,
                               width: isExpanded ? 2.0 : 1.0,
                             ),
-                            borderRadius: BorderRadius.circular(10.r),
+                            borderRadius: BorderRadius.circular(20.r),
                           ),
-                          height: isExpanded ? 250 : null,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 20.h, horizontal: 10.w),
-                                child: Text(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10.h, horizontal: 34.w),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
                                   topic.topic,
                                   style: isExpanded
                                       ? FontSystem.KR20SB
@@ -110,18 +117,16 @@ class AiSelect extends ConsumerWidget {
                                   softWrap: true, // 자동 줄바꿈 설정
                                   overflow: TextOverflow.visible,
                                 ),
-                              ),
-                              if (isExpanded)
-                                Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 20.w),
-                                  child: Column(
+                                if (isExpanded)
+                                  Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(height: 10),
                                       Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           SvgPicture.asset(
                                               'assets/icons/ai_opinion.svg'),
@@ -131,6 +136,7 @@ class AiSelect extends ConsumerWidget {
                                               topic.a,
                                               style: FontSystem.KR16SB,
                                               softWrap: true, // 자동 줄바꿈 설정
+
                                               overflow: TextOverflow.visible,
                                             ),
                                           ),
@@ -155,8 +161,8 @@ class AiSelect extends ConsumerWidget {
                                       ),
                                     ],
                                   ),
-                                ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -175,6 +181,7 @@ class AiSelect extends ConsumerWidget {
               child: ElevatedButton(
                 onPressed: hasSelection
                     ? () {
+                        print(debaState.debateTitle);
                         context.push('/debate_create');
                       }
                     : null,
