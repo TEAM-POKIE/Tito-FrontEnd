@@ -336,12 +336,12 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<Map<String, String>> getUserDebate() async {
+  Future<String> getUserDebate() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<Map<String, String>>(Options(
+    final _options = _setStreamType<String>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -357,10 +357,10 @@ class _ApiService implements ApiService {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late Map<String, String> _value;
+    final _result = await _dio.fetch<String>(_options);
+    late String _value;
     try {
-      _value = _result.data!.cast<String, String>();
+      _value = _result.data!;
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -369,7 +369,7 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<List<Debate>> getDebateList({
+  Future<String> getDebateList({
     int? page,
     String? sortBy,
     String? status,
@@ -385,7 +385,7 @@ class _ApiService implements ApiService {
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<Debate>>(Options(
+    final _options = _setStreamType<String>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -401,12 +401,10 @@ class _ApiService implements ApiService {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<Debate> _value;
+    final _result = await _dio.fetch<String>(_options);
+    late String _value;
     try {
-      _value = _result.data!
-          .map((dynamic i) => Debate.fromJson(i as Map<String, dynamic>))
-          .toList();
+      _value = _result.data!;
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -514,12 +512,12 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<List<GetUserBlock>> getBlockedUser() async {
+  Future<String> getBlockedUser() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<GetUserBlock>>(Options(
+    final _options = _setStreamType<String>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -535,12 +533,10 @@ class _ApiService implements ApiService {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<GetUserBlock> _value;
+    final _result = await _dio.fetch<String>(_options);
+    late String _value;
     try {
-      _value = _result.data!
-          .map((dynamic i) => GetUserBlock.fromJson(i as Map<String, dynamic>))
-          .toList();
+      _value = _result.data!;
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

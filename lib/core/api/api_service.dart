@@ -56,10 +56,10 @@ abstract class ApiService {
   @GET("users/{id}")
   Future<UserProfile> getUserProfile(@Path("id") int debateId);
   @GET('users/debates')
-  Future<Map<String, String>> getUserDebate();
+  Future<String> getUserDebate();
 
   @GET("debates/debate-list")
-  Future<List<Debate>> getDebateList({
+  Future<String> getDebateList({
     @Query('page') int? page,
     @Query('sortBy') String? sortBy,
     @Query('status') String? status,
@@ -74,7 +74,7 @@ abstract class ApiService {
   @GET("debates/hot-debate-participants")
   Future<String> getDebateHotfighter();
   @GET("user-block-list/blocked-users")
-  Future<List<GetUserBlock>> getBlockedUser();
+  Future<String> getBlockedUser();
 
   @GET('users/{id}/debates')
   Future<Map<String, String>> getOtherDebate(@Path("id") int debateId);

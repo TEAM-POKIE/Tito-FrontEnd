@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -71,16 +73,26 @@ class _ListScreenState extends ConsumerState<ListScreen> {
       String sortBy = _convertSortOption(selectedSortOption);
       String status = _convertStatus(selectedStatus);
       String category = _convertCategory(labels[categorySelectedIndex]);
-      print(sortBy);
-      print(status);
-      print(category);
-      final List<Debate> debateResponse =
-          await ApiService(DioClient.dio).getDebateList(
+
+      // API에서 원시 JSON 문자열을 받아옴
+      final String response = await ApiService(DioClient.dio).getDebateList(
         page: page,
         sortBy: sortBy,
         status: status,
         category: category,
       );
+
+      // JSON 문자열을 Map<String, dynamic>으로 디코딩
+      final Map<String, dynamic> decodedResponse =
+          json.decode(response) as Map<String, dynamic>;
+
+      // 응답에서 'data' 키의 값을 추출하여 List<dynamic>으로 변환
+      final List<dynamic> dataList = decodedResponse['data'] as List<dynamic>;
+
+      // List<Map<String, dynamic>>를 List<Debate>로 변환
+      final List<Debate> debateResponse = dataList
+          .map((item) => Debate.fromJson(item as Map<String, dynamic>))
+          .toList();
 
       setState(() {
         debateList = debateResponse;
