@@ -364,19 +364,15 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 6.w, vertical: 2.h),
                                           decoration: BoxDecoration(
-                                            color: debate.debateStatus == '실시간'
-                                                ? ColorSystem.lightPurple
-                                                : ColorSystem.lightPurple,
+                                            color: _getStatusColor(
+                                                debate.debateStatus),
                                             borderRadius:
                                                 BorderRadius.circular(10.r),
                                           ),
                                           child: Text(
                                             _getStatusText(debate.debateStatus),
                                             style: FontSystem.KR14SB.copyWith(
-                                              color:
-                                                  debate.debateStatus == '실시간'
-                                                      ? ColorSystem.purple
-                                                      : ColorSystem.purple,
+                                              color: _getSubTextColor(debate),
                                             ),
                                           ),
                                         ),
@@ -441,7 +437,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
       case 'IN_PROGRESS':
         return '토론 진행중';
       case 'VOTING':
-        return '투표중';
+        return '투표 중';
       case 'ENDED':
         return '투표 종료';
       default:
@@ -462,5 +458,35 @@ class _ListScreenState extends ConsumerState<ListScreen> {
       default:
         return '';
     }
+  }
+
+  Color _getSubTextColor(Debate debate) {
+    switch (debate.debateStatus) {
+      case 'CREATED':
+        return ColorSystem.purple;
+      case 'IN_PROGRESS':
+        return ColorSystem.purple;
+      case 'VOTING':
+        return ColorSystem.grey1;
+      case 'ENDED':
+        return ColorSystem.grey1;
+      default:
+        return ColorSystem.purple;
+    }
+  }
+}
+
+Color _getStatusColor(String? status) {
+  switch (status) {
+    case 'CREATED':
+      return ColorSystem.lightPurple; // CREATED 상태의 배경색
+    case 'IN_PROGRESS':
+      return ColorSystem.lightPurple; // IN_PROGRESS 상태의 배경색
+    case 'VOTING':
+      return ColorSystem.lightYellow; // VOTING 상태의 배경색
+    case 'ENDED':
+      return ColorSystem.turquoise; // ENDED 상태의 배경색
+    default:
+      return ColorSystem.lightPurple; // 기본 배경색
   }
 }
