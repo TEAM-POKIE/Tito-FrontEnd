@@ -194,7 +194,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                           onPressed: () {
                             setState(() {
                               categorySelectedIndex = index;
-                              _fetchDebateList();
+                              _fetchDebateList(isRefresh: true);
                             });
                           },
                           style: ElevatedButton.styleFrom(
@@ -248,7 +248,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                             setState(() {
                               textSelectedIndex = index;
                               selectedStatus = statuses[index];
-                              _fetchDebateList();
+                              _fetchDebateList(isRefresh: true);
                             });
                           },
                           child: Text(
@@ -277,7 +277,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                   onChanged: (String? newValue) {
                     setState(() {
                       selectedSortOption = newValue!;
-                      _fetchDebateList();
+                      _fetchDebateList(isRefresh: true);
                     });
                   },
                   items:
@@ -335,100 +335,85 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                             color: ColorSystem.white,
                             borderRadius: BorderRadius.circular(20.r),
                           ),
-                          child: ListTile(
+                          child: GestureDetector(
                             onTap: () {
                               _enterChat(debate.id, debate.debateStatus);
                             },
-                            title: Padding(
+                            child: Container(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: 0.h, vertical: 2.h),
+                                  vertical: 10.h, horizontal: 10.w),
+                              decoration: BoxDecoration(
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Color(0x669795A3),
+                                    spreadRadius: 0,
+                                    blurRadius: 4,
+                                  )
+                                ],
+                                color: ColorSystem.white,
+                                borderRadius: BorderRadius.circular(20.r),
+                              ),
                               child: Row(
                                 children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 8.h),
-                                      Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 6.w, vertical: 2.h),
-                                        decoration: BoxDecoration(
-                                          color: debate.debateStatus == '실시간'
-                                              ? ColorSystem.lightPurple
-                                              : ColorSystem.lightPurple,
-                                          borderRadius:
-                                              BorderRadius.circular(10.r),
-                                        ),
-                                        child: Text(
-                                            debate.debateStatus ?? '상태 없음',
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 6.w, vertical: 2.h),
+                                          decoration: BoxDecoration(
+                                            color: _getStatusColor(
+                                                debate.debateStatus),
+                                            borderRadius:
+                                                BorderRadius.circular(10.r),
+                                          ),
+                                          child: Text(
+                                            _getStatusText(debate.debateStatus),
                                             style: FontSystem.KR14SB.copyWith(
-                                              color:
-                                                  debate.debateStatus == '실시간'
-                                                      ? ColorSystem.purple
-                                                      : ColorSystem.purple,
-                                            )),
-                                      ),
-                                      SizedBox(height: 10.h),
-                                      LayoutBuilder(
-                                        builder: (context, constraints) {
-                                          // 원하는 최대 width를 지정합니다.
-                                          double maxTextWidth =
-                                              210.w; // 예: 200.0으로 설정
-
-                                          // 실제 constraints.width와 maxTextWidth 중 더 작은 값을 사용합니다.
-                                          double effectiveWidth =
-                                              constraints.maxWidth <
-                                                      maxTextWidth
-                                                  ? constraints.maxWidth
-                                                  : maxTextWidth;
-
-                                          return ConstrainedBox(
-                                            constraints: BoxConstraints(
-                                              maxWidth: effectiveWidth,
+                                              color: _getSubTextColor(debate),
                                             ),
-                                            child: Text(
-                                              debate.debateTitle ?? 'No title',
-                                              style: FontSystem.KR16M.copyWith(
-                                                height: 1,
-                                              ),
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                      SizedBox(height: 4.h),
-                                      Text(
-                                        '승률 ${debate.debateOwnerWinningRate}% 토론러 대기중',
-                                        style: FontSystem.KR16M.copyWith(
-                                            color: ColorSystem.purple),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ],
-                                  ),
-                                  Spacer(),
-                                ],
-                              ),
-                            ),
-                            trailing: Container(
-                              child: Padding(
-                                padding: EdgeInsets.only(bottom: 20.w),
-                                child: debate.debateImageUrl == ''
-                                    ? SvgPicture.asset(
-                                        'assets/icons/list_real_null.svg',
-                                        width: 70.w,
-                                        fit: BoxFit.contain,
-                                      )
-                                    : ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(12.r),
-                                        child: Image.network(
-                                          debate.debateImageUrl ?? '',
-                                          width: 70.w,
-                                          fit: BoxFit.cover,
+                                          ),
                                         ),
-                                      ),
+                                        SizedBox(height: 10.h),
+                                        Text(
+                                          debate.debateTitle ?? 'No title',
+                                          style: FontSystem.KR16M.copyWith(
+                                            height: 1,
+                                          ),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        SizedBox(height: 4.h),
+                                        Text(
+                                          _getSubText(debate),
+                                          style: FontSystem.KR16M.copyWith(
+                                              color: ColorSystem.purple),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(width: 10.w),
+                                  debate.debateImageUrl == ''
+                                      ? SvgPicture.asset(
+                                          'assets/icons/list_real_null.svg',
+                                          width: 70.w,
+                                          fit: BoxFit.contain,
+                                        )
+                                      : ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(12.r),
+                                          child: Image.network(
+                                            debate.debateImageUrl ?? '',
+                                            width: 70.w,
+                                            height: 70.h,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                ],
                               ),
                             ),
                           ),
@@ -443,5 +428,65 @@ class _ListScreenState extends ConsumerState<ListScreen> {
         ],
       ),
     );
+  }
+
+  String _getStatusText(String debateStatus) {
+    switch (debateStatus) {
+      case 'CREATED':
+        return '상대 찾는 중';
+      case 'IN_PROGRESS':
+        return '토론 진행중';
+      case 'VOTING':
+        return '투표 중';
+      case 'ENDED':
+        return '투표 종료';
+      default:
+        return '상태 없음';
+    }
+  }
+
+  String _getSubText(Debate debate) {
+    switch (debate.debateStatus) {
+      case 'CREATED':
+        return '승률 ${debate.debateOwnerWinningRate}% 토론러 대기중';
+      case 'IN_PROGRESS':
+        return '${debate.debateOwnerNickname} VS ${debate.debateJoinerNickname}';
+      case 'VOTING':
+        return '나도 투표 참여하러 가기';
+      case 'ENDED':
+        return '토론 결과 확인하러가기';
+      default:
+        return '';
+    }
+  }
+
+  Color _getSubTextColor(Debate debate) {
+    switch (debate.debateStatus) {
+      case 'CREATED':
+        return ColorSystem.purple;
+      case 'IN_PROGRESS':
+        return ColorSystem.purple;
+      case 'VOTING':
+        return ColorSystem.grey1;
+      case 'ENDED':
+        return ColorSystem.grey1;
+      default:
+        return ColorSystem.purple;
+    }
+  }
+}
+
+Color _getStatusColor(String? status) {
+  switch (status) {
+    case 'CREATED':
+      return ColorSystem.lightPurple; // CREATED 상태의 배경색
+    case 'IN_PROGRESS':
+      return ColorSystem.lightPurple; // IN_PROGRESS 상태의 배경색
+    case 'VOTING':
+      return ColorSystem.lightYellow; // VOTING 상태의 배경색
+    case 'ENDED':
+      return ColorSystem.turquoise; // ENDED 상태의 배경색
+    default:
+      return ColorSystem.lightPurple; // 기본 배경색
   }
 }

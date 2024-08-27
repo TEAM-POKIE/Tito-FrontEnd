@@ -277,6 +277,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
           debateState.debateTitle = '';
           debateState.debateMakerOpinion = '';
           debateState.debateJoinerOpinion = '';
+          debateState.debateImageUrl = '';
 
           context.go('/chat/${response.id}');
         } else {
