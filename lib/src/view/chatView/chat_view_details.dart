@@ -61,7 +61,7 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
           return DetailState(
               upImage: 'assets/images/detailChatIcon.svg',
               upTitle: '상대 반론자를 찾는 중이예요 !',
-              downTitle: '⏳ 8:00 시작 전');
+              downTitle: '⏳ 00:00 토론 시작 전');
         default:
           return DetailState(
               upImage: 'assets/images/detailChatIcon.svg',
@@ -119,7 +119,6 @@ class DetailState extends StatelessWidget {
         children: [
           Center(
             child: Container(
-              width: MediaQuery.of(context).size.width - 50,
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -130,7 +129,7 @@ class DetailState extends StatelessWidget {
                   SvgPicture.asset(
                     upImage,
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: 8.w),
                   Text(
                     upTitle,
                     style: FontSystem.KR16SB,
@@ -139,39 +138,32 @@ class DetailState extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 3),
+          SizedBox(height: 3.h),
           Center(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 6.0),
-              child: Container(
-                padding: const EdgeInsets.all(8.0),
-                width: MediaQuery.of(context).size.width - 50,
-                decoration: BoxDecoration(
-                  color: downImage == 'assets/images/chatCuteIconPurple.svg'
-                      ? ColorSystem.lightPurple
-                      : ColorSystem.white,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment:
-                      (upImage == 'assets/images/chatCuteIcon.svg')
-                          ? MainAxisAlignment.start
-                          : MainAxisAlignment.center,
-                  children: [
-                    downImage != null && downImage!.isNotEmpty
-                        ? SvgPicture.asset(downImage!)
-                        : const SizedBox(width: 0),
-                    const SizedBox(width: 11),
-                    Text(
-                      downTitle ?? '',
-                      style: downImage != null && downImage!.isNotEmpty
-                          ? FontSystem.KR16SB
-                          : FontSystem.KR16SB
-                              .copyWith(color: ColorSystem.purple),
-                    ),
-                  ],
-                ),
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                color: downImage == 'assets/images/chatCuteIconPurple.svg'
+                    ? ColorSystem.lightPurple
+                    : ColorSystem.white,
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: (upImage == 'assets/images/chatCuteIcon.svg')
+                    ? MainAxisAlignment.start
+                    : MainAxisAlignment.center,
+                children: [
+                  downImage != null && downImage!.isNotEmpty
+                      ? SvgPicture.asset(downImage!)
+                      : SizedBox(width: 0.w),
+                  Text(
+                    downTitle ?? '',
+                    style: downImage != null && downImage!.isNotEmpty
+                        ? FontSystem.KR16SB
+                        : FontSystem.KR16SB.copyWith(color: ColorSystem.purple),
+                  ),
+                ],
               ),
             ),
           ),

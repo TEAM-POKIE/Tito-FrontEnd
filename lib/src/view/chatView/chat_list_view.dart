@@ -282,7 +282,7 @@ class JoinerChatList extends StatelessWidget {
                       ),
                       SizedBox(width: 20.w),
                       Text(
-                        '참여자 대기 중',
+                        '상대 찾는중',
                         style: FontSystem.KR16B
                             .copyWith(color: ColorSystem.purple),
                       ),
