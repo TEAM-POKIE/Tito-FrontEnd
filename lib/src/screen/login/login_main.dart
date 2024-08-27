@@ -87,7 +87,6 @@ class LoginMain extends StatelessWidget {
           if (userInfo.nickname == "") {
             debugPrint('NEW : empty user nickname');
           }
-
           // Case 3.2. 기존 회원인 경우 메인 페이지로 리다이렉트
           else {
             debugPrint("OLD : go to main");
