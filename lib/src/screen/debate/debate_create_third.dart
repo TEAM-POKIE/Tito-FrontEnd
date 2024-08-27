@@ -9,7 +9,6 @@ import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-
 class DebateCreateThird extends ConsumerStatefulWidget {
   const DebateCreateThird({super.key});
 
@@ -47,7 +46,7 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: ColorSystem.white,
-          leading: IconButton(  
+          leading: IconButton(
             onPressed: () {
               context.pop();
             },
@@ -153,14 +152,41 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
                           ),
                         ),
                       ),
-                      if (debateState.debateImageUrl != null)
+                      if (debateState.debateImageUrl != null &&
+                          File(debateState.debateImageUrl).existsSync())
                         Padding(
                           padding: EdgeInsets.only(left: 20.w),
-                          child: Image.file(
-                            File(debateState.debateImageUrl),
-                            width: 100.w,
-                            height: 100.h,
-                            fit: BoxFit.cover,
+                          child: Stack(
+                            children: [
+                              Image.file(
+                                File(debateState.debateImageUrl),
+                                //width: 100.w, // 필요에 따라 너비 설정
+                                height: 100.h,
+                                fit: BoxFit.cover,
+                              ),
+                              Positioned(
+                                right: 0, // 이미지의 오른쪽 상단에 고정
+                                top: 0, // 이미지의 상단에 고정
+                                child: GestureDetector(
+                                  onTap: () {
+                                    debateState.debateImageUrl = 'null';
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(8.0),
+                                    decoration: BoxDecoration(
+                                      color: ColorSystem.black
+                                          .withOpacity(0.5), // 배경색 및 투명도 설정
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Icon(
+                                      Icons.close,
+                                      color: ColorSystem.white,
+                                      size: 15.w, // 아이콘 크기 조정
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                     ],
