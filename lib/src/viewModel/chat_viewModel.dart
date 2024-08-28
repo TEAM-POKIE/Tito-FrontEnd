@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
+import 'package:tito_app/core/provider/ai_Response_Provider.dart';
+import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:tito_app/core/provider/userProfile_provider.dart';
@@ -80,27 +83,38 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     });
   }
 
-  void sendMessage() async {
-    AiResponse? aiResponse;
-    final message = controller.text;
-
-    // API 호출
-    final responseString = await ApiService(DioClient.dio)
-        .postRefineArgument({"argument": message});
-
-    // 응답을 Map으로 디코딩
-    final Map<String, dynamic> response = jsonDecode(responseString);
-
-    // response['data']가 이미 Map<String, dynamic>일 경우, 바로 사용
-    if (response['data'] is Map<String, dynamic>) {
-      aiResponse = AiResponse.fromJson(response['data']);
-    } else {
-      throw Exception("Unexpected data format");
+  void updateExplanation(List<String>? explanation) {
+    if (state != null) {
+      state = state!.copyWith(explanation: explanation);
     }
+  }
 
-    if (aiResponse != null) {
-      print('Edited Content: ${aiResponse.contentEdited}');
-      print('Explanation: ${aiResponse.explanation}');
+  Future<void> sendMessage() async {
+    final chatNotifier = ref.read(chatInfoProvider.notifier);
+    final chatState = chatNotifier.state;
+
+    try {
+      final message = controller.text;
+      if (message.isEmpty) {
+        throw Exception("Message is empty");
+      }
+
+      final responseString = await ApiService(DioClient.dio)
+          .postRefineArgument({"argument": message});
+
+      final Map<String, dynamic> response = jsonDecode(responseString);
+
+      if (response.containsKey('data') &&
+          response['data'] is Map<String, dynamic>) {
+        final aiResponse = AiResponse.fromJson(response['data']);
+        ref.read(aiResponseProvider.notifier).setAiResponse(aiResponse);
+
+        chatNotifier.updateExplanation(aiResponse.explanation);
+      } else {
+        throw Exception("Unexpected data format or missing 'data' key");
+      }
+    } catch (e) {
+      print("Error in sendMessage: $e");
     }
   }
   // void sendMessage() {
