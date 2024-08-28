@@ -72,18 +72,26 @@ class _ChatState extends ConsumerState<Chat> {
     final chatViewModel = ref.read(chatInfoProvider.notifier);
 
     if (_messages.isNotEmpty) {
+      // _messages의 길이가 최소 3 이상인지 확인 후 처리
       if (_messages.length > 2) {
         chatState!.debateOwnerId = _messages[2]['userId'];
 
         chatViewModel.getInfo(chatState.debateOwnerId, context);
 
+        // _messages의 길이가 최소 4 이상인지 확인 후 처리
         if (_messages.length > 3) {
           chatState.debateJoinerId = _messages[3]['userId'];
           chatViewModel.getInfo(_messages[3]['userId'], context);
         }
       }
-      chatState!.debateOwnerTurnCount = _messages.last['ownerTurnCount'];
-      chatState.debateJoinerTurnCount = _messages.last['joinerTurnCount'];
+
+      // _messages 리스트가 비어 있지 않음을 확인 후 마지막 요소 접근
+      if (_messages.isNotEmpty &&
+          _messages.last.containsKey('ownerTurnCount') &&
+          _messages.last.containsKey('joinerTurnCount')) {
+        chatState!.debateOwnerTurnCount = _messages.last['ownerTurnCount'];
+        chatState.debateJoinerTurnCount = _messages.last['joinerTurnCount'];
+      }
     }
     if (debateInfo == null) {
       return Scaffold(

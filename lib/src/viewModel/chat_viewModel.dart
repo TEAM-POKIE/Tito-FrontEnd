@@ -1,21 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
-import 'package:tito_app/core/provider/chat_view_provider.dart';
-
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
-import 'package:tito_app/core/provider/timer_provider.dart';
 import 'package:tito_app/core/provider/userProfile_provider.dart';
-
+import 'package:tito_app/src/data/models/api_response.dart';
 import 'package:tito_app/src/data/models/debate_info.dart';
-
 import 'package:tito_app/src/viewModel/timer_viewModel.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
@@ -86,26 +80,49 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     });
   }
 
-  void sendMessage() {
-    final loginInfo = ref.read(loginInfoProvider);
-
+  void sendMessage() async {
+    AiResponse? aiResponse;
     final message = controller.text;
 
-    if (message.isEmpty) return;
+    // API 호출
+    final responseString = await ApiService(DioClient.dio)
+        .postRefineArgument({"argument": message});
 
-    final jsonMessage = json.encode({
-      "command": "CHAT",
-      "userId": loginInfo?.id ?? '',
-      "debateId": state?.id ?? 0,
-      "content": message
-    });
-    print(jsonMessage);
+    // 응답을 Map으로 디코딩
+    final Map<String, dynamic> response = jsonDecode(responseString);
 
-    _channel.sink.add(jsonMessage);
-    controller.clear();
-    focusNode.requestFocus();
-    // Reset the timer to 8 minutes
+    // response['data']가 이미 Map<String, dynamic>일 경우, 바로 사용
+    if (response['data'] is Map<String, dynamic>) {
+      aiResponse = AiResponse.fromJson(response['data']);
+    } else {
+      throw Exception("Unexpected data format");
+    }
+
+    if (aiResponse != null) {
+      print('Edited Content: ${aiResponse.contentEdited}');
+      print('Explanation: ${aiResponse.explanation}');
+    }
   }
+  // void sendMessage() {
+  //   final loginInfo = ref.read(loginInfoProvider);
+
+  //   final message = controller.text;
+
+  //   if (message.isEmpty) return;
+
+  //   final jsonMessage = json.encode({
+  //     "command": "CHAT",
+  //     "userId": loginInfo?.id ?? '',
+  //     "debateId": state?.id ?? 0,
+  //     "content": message
+  //   });
+  //   print(jsonMessage);
+
+  //   _channel.sink.add(jsonMessage);
+  //   controller.clear();
+  //   focusNode.requestFocus();
+  //   // Reset the timer to 8 minutes
+  // }
 
   void sendVote(String selectedDebate) {
     final loginInfo = ref.read(loginInfoProvider);

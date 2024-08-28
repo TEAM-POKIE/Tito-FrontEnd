@@ -232,7 +232,5 @@ class AiCreate extends ConsumerWidget {
     );
   }
 
-  void _scrollToItem(int index) {
-// Add scroll-to-item logic if needed
-  }
+  void _scrollToItem(int index) {}
 }
