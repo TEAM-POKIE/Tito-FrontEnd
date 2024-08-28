@@ -148,10 +148,10 @@ Future main() async {
   final fcmToken = await FirebaseMessaging.instance.getToken();
   debugPrint('fcmToken $fcmToken');
 
-  // ? 앱 실행
-  runApp(const SafeArea(
-    child: MyApp(),
-  ));
+  // safeArea 적용했었어서 노치부분이랑 하단바 부분이 안 먹혔던 것
+  runApp(
+    const MyApp(),
+  );
 }
 
 class MyApp extends StatelessWidget {
