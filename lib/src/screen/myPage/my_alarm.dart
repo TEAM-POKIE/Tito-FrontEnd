@@ -6,6 +6,7 @@ import 'package:tito_app/src/view/myPage/my_alarm_appbar.dart';
 import 'package:tito_app/src/view/myPage/my_alarm_scrollbody.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
+import 'package:tito_app/src/widgets/reuse/bottombar.dart';
 
 class MyAlarm extends ConsumerWidget {
   const MyAlarm({super.key});

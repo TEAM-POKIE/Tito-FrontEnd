@@ -94,6 +94,7 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
                   ),
                   SizedBox(height: 20.h),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                         width: 115.w,
@@ -119,18 +120,46 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
                           ),
                         ),
                       ),
-                      if (debateState.debateImageUrl != null)
-                        Padding(
-                          padding: EdgeInsets.only(left: 20.w),
-                          child: Image.file(
-                            File(debateState.debateImageUrl),
-                            width: 100.w,
-                            height: 100.h,
-                            fit: BoxFit.cover,
-                          ),
+                      SizedBox(width: 20.w), // 간격을 일정하게 유지
+                      if (debateState.debateImageUrl != null &&
+                          File(debateState.debateImageUrl).existsSync())
+                        Stack(
+                          children: [
+                            Container(
+                              // width: 100.w, // 이미지 크기 고정
+                              height: 100.h, // 이미지 크기 고정
+                              child: Image.file(
+                                File(debateState.debateImageUrl),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Positioned(
+                              right: 0,
+                              top: 0,
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    debateState.debateImageUrl = 'null';
+                                  });
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                    color: ColorSystem.black.withOpacity(0.5),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    Icons.close,
+                                    color: ColorSystem.white,
+                                    size: 15.w,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                     ],
-                  ),
+                  )
                 ],
               ),
             ),

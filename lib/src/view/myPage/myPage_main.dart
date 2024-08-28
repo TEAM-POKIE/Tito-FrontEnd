@@ -273,19 +273,6 @@ class _MypageMainState extends ConsumerState<MypageMain> {
             ),
             _buildListTile(
               context,
-              title: '알림',
-              leading: Padding(
-                padding: EdgeInsets.only(top: 6.h),
-                child: SvgPicture.asset(
-                  'assets/icons/mypage_alarm.svg',
-                  width: 24.w,
-                  height: 24.h,
-                ),
-              ),
-              onTap: () => context.push('/myalarm'),
-            ),
-            _buildListTile(
-              context,
               title: '차단 리스트',
               leading: Padding(
                 padding: EdgeInsets.only(top: 6.h),

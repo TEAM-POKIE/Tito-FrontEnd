@@ -94,7 +94,6 @@ class _HotListState extends ConsumerState<HotLists> {
                                           'assets/icons/list_real_null.svg',
                                           width: 100.w,
                                           height: 100.h,
-                                          fit: BoxFit.cover,
                                         ),
                                 ),
                                 title: Text(
@@ -106,13 +105,13 @@ class _HotListState extends ConsumerState<HotLists> {
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(height: 5.h),
+                                    SizedBox(height: 3.h),
                                     Text(
                                         '${debate.debateMakerOpinion} VS ${debate.debateJoinerOpinion}',
                                         style: FontSystem.KR16M,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis),
-                                    SizedBox(height: 5.h),
+                                    SizedBox(height: 3.h),
                                     Row(
                                       children: [
                                         SvgPicture.asset(
