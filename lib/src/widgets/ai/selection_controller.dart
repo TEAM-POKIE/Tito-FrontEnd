@@ -8,13 +8,13 @@ class SelectionState {
   final List<int> selectedItems;
   final bool isLoading;
   final List<AiWord> topics;
-  final int expandedIndex; // 확장된 인덱스를 추적하기 위한 변수
+  final int expandedIndex;
 
   SelectionState({
     this.selectedItems = const [],
     this.isLoading = false,
     this.topics = const [],
-    this.expandedIndex = -1, // 기본값은 -1로 설정하여 아무것도 확장되지 않도록 함
+    this.expandedIndex = -1,
   });
 
   SelectionState copyWith({
@@ -35,6 +35,7 @@ class SelectionState {
 class SelectionNotifier extends StateNotifier<SelectionState> {
   SelectionNotifier() : super(SelectionState());
 
+  // 토글 기능을 통해 선택 상태를 관리
   void toggleSelection(int index) {
     final selectedItems = List<int>.from(state.selectedItems);
     if (selectedItems.contains(index)) {
@@ -45,12 +46,14 @@ class SelectionNotifier extends StateNotifier<SelectionState> {
     state = state.copyWith(selectedItems: selectedItems);
   }
 
+  // 확장된 인덱스를 관리하는 메서드
   void toggleExpandedIndex(int index) {
     final newExpandedIndex = state.expandedIndex == index ? -1 : index;
     state = state.copyWith(expandedIndex: newExpandedIndex);
   }
 
-  Future<void> resetSelection() async {
+  // AI 주제를 생성하는 메서드
+  Future<void> createSelection() async {
     state = state.copyWith(isLoading: true);
 
     try {
@@ -68,9 +71,16 @@ class SelectionNotifier extends StateNotifier<SelectionState> {
       state = state.copyWith(topics: aiWords);
     } catch (e) {
       print('Error fetching topics: $e');
-      // Error handling
     } finally {
       state = state.copyWith(isLoading: false);
     }
+  }
+
+  // 선택 상태를 초기화하는 메서드
+  void resetSelection() {
+    state = state.copyWith(
+      selectedItems: [],
+      expandedIndex: -1,
+    );
   }
 }

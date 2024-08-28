@@ -150,7 +150,7 @@ class AiCreate extends ConsumerWidget {
                   child: ElevatedButton(
                     onPressed: selectionState.selectedItems.isNotEmpty
                         ? () async {
-                            await selectionNotifier.resetSelection();
+                            await selectionNotifier.createSelection();
                             if (!selectionState.isLoading) {
                               context.push('/ai_select');
                             }
