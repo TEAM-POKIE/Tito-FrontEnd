@@ -69,6 +69,7 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
   Widget build(BuildContext context) {
     final chatState = ref.watch(chatInfoProvider);
     return Container(
+      color: ColorSystem.white,
       padding:
           EdgeInsets.only(top: 10.h, bottom: 20.h, right: 10.w, left: 10.w),
       child: Column(

@@ -28,8 +28,6 @@ class ChatBody extends ConsumerWidget {
           // 여기가 그 입력바 클릭시 뜨는 윗 공간임
           children: [ChatSpeechBubble()],
         ),
-        ChatBottomDetail(id: id)
-        // id 전달 -> 밑에 입력바 바탕 공간임
       ],
     );
   }

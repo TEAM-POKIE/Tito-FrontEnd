@@ -90,6 +90,10 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     }
   }
 
+  void updateText() {
+    controller.text = state!.contentEdited;
+  }
+
   Future<void> sendMessage() async {
     final chatNotifier = ref.read(chatInfoProvider.notifier);
 

@@ -137,12 +137,13 @@ class _BasicDebate extends ConsumerWidget {
                   chatState.explanation!.any((e) => e.isNotEmpty)
               ? SlidingUpPanel(
                   header: Container(
+                    padding: EdgeInsets.only(top: 8.h),
                     width: MediaQuery.sizeOf(context).width,
                     alignment: Alignment.center, // 컨테이너 내부에서 중앙 정렬
                     child: SvgPicture.asset('assets/icons/panel_line.svg'),
                   ),
-                  maxHeight: MediaQuery.sizeOf(context).height * 0.80,
-                  margin: EdgeInsets.only(bottom: 110.h),
+                  maxHeight: 762.h,
+                  minHeight: 300.h,
                   panel: ChatLlm(),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(16.r),
@@ -153,6 +154,12 @@ class _BasicDebate extends ConsumerWidget {
               : SizedBox(
                   width: 0,
                 ),
+          Positioned(
+            bottom: 0, // 패널의 위에 ChatBottomDetail이 보이도록 위치 조정
+            left: 0,
+            right: 0,
+            child: ChatBottomDetail(id: id),
+          ),
         ],
       ),
     );
