@@ -316,6 +316,9 @@ class JoinerChatList extends StatelessWidget {
               SizedBox(
                 width: 0.w,
               ),
+            SizedBox(
+              height: 20.h,
+            ),
           ],
         );
       },

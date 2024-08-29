@@ -66,7 +66,6 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
                     : SizedBox(
                         width: 0.w,
                       ),
-                const VotingBar(),
               ],
             );
           } else {

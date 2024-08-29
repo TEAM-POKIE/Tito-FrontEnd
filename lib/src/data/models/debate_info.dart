@@ -27,6 +27,8 @@ class DebateInfo {
   final String debateContent;
   String contentEdited;
   List<String>? explanation;
+  bool isLoading;
+  bool isFirstClick;
 
   DebateInfo({
     required this.id,
@@ -57,6 +59,8 @@ class DebateInfo {
     required this.debateContent,
     required this.contentEdited,
     required this.explanation,
+    required this.isLoading,
+    required this.isFirstClick,
   });
 
   DebateInfo copyWith({
@@ -88,6 +92,8 @@ class DebateInfo {
     String? debateContent,
     String? contentEdited,
     List<String>? explanation,
+    bool? isLoading,
+    bool? isFirstClick,
   }) {
     return DebateInfo(
       id: id ?? this.id,
@@ -120,6 +126,8 @@ class DebateInfo {
       debateContent: debateContent ?? this.debateContent,
       contentEdited: contentEdited ?? this.contentEdited,
       explanation: explanation ?? this.explanation,
+      isLoading: isLoading ?? this.isLoading,
+      isFirstClick: isFirstClick ?? this.isFirstClick,
     );
   }
 
@@ -154,6 +162,8 @@ class DebateInfo {
       debateContent: json['data']['debateContent'] ?? '',
       contentEdited: '',
       explanation: [''],
+      isLoading: false,
+      isFirstClick: true,
     );
   }
 

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
@@ -85,16 +86,31 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
 
   void updateExplanation(List<String>? explanation, String? contentEdited) {
     if (state != null) {
-      state = state!
-          .copyWith(explanation: explanation, contentEdited: contentEdited);
+      state = state!.copyWith(
+          explanation: explanation,
+          contentEdited: contentEdited,
+          isFirstClick: false,
+          isLoading: false);
     }
+  }
+
+  void resetExplanation() {
+    if (state != null) {
+      state = state!.copyWith(
+        explanation: [''],
+        contentEdited: '',
+        isLoading: false,
+        isFirstClick: true,
+      );
+    }
+    print(state!.isFirstClick);
   }
 
   void updateText() {
     controller.text = state!.contentEdited;
   }
 
-  Future<void> sendMessage() async {
+  Future<void> createLLM() async {
     final chatNotifier = ref.read(chatInfoProvider.notifier);
 
     try {
@@ -122,26 +138,28 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
       print("Error in sendMessage: $e");
     }
   }
-  // void sendMessage() {
-  //   final loginInfo = ref.read(loginInfoProvider);
 
-  //   final message = controller.text;
+  void sendMessage() {
+    final loginInfo = ref.read(loginInfoProvider);
 
-  //   if (message.isEmpty) return;
+    final message = controller.text;
+    resetExplanation();
+    if (message.isEmpty) return;
 
-  //   final jsonMessage = json.encode({
-  //     "command": "CHAT",
-  //     "userId": loginInfo?.id ?? '',
-  //     "debateId": state?.id ?? 0,
-  //     "content": message
-  //   });
-  //   print(jsonMessage);
+    final jsonMessage = json.encode({
+      "command": "CHAT",
+      "userId": loginInfo?.id ?? '',
+      "debateId": state?.id ?? 0,
+      "content": message
+    });
+    print(jsonMessage);
 
-  //   _channel.sink.add(jsonMessage);
-  //   controller.clear();
-  //   focusNode.requestFocus();
-  //   // Reset the timer to 8 minutes
-  // }
+    _channel.sink.add(jsonMessage);
+    controller.clear();
+    focusNode.requestFocus();
+
+    // Reset the timer to 8 minutes
+  }
 
   void sendVote(String selectedDebate) {
     final loginInfo = ref.read(loginInfoProvider);
@@ -173,7 +191,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
       "userId": loginInfo?.id ?? '',
       "debateId": state?.id ?? 0,
       "userNickName": loginInfo!.nickname,
-      "userImgUrl": loginInfo.profilePicture,
+      "userImgUrl": loginInfo.profilePicture ?? "",
       "content": message,
     });
     print(jsonMessage);

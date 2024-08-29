@@ -16,6 +16,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:tito_app/src/view/chatView/chat_bottom_detail.dart';
 import 'package:tito_app/src/view/chatView/chat_llm.dart';
+import 'package:tito_app/src/view/chatView/chat_speech_bubble.dart';
 
 class Chat extends ConsumerStatefulWidget {
   final int id;
@@ -154,12 +155,17 @@ class _BasicDebate extends ConsumerWidget {
               : SizedBox(
                   width: 0,
                 ),
-          Positioned(
-            bottom: 0, // 패널의 위에 ChatBottomDetail이 보이도록 위치 조정
-            left: 0,
-            right: 0,
-            child: ChatBottomDetail(id: id),
-          ),
+          chatState.explanation != null &&
+                  chatState.explanation!.any((e) => e.isNotEmpty)
+              ? Positioned(
+                  bottom: 0, // 패널의 위에 ChatBottomDetail이 보이도록 위치 조정
+                  left: 0,
+                  right: 0,
+                  child: ChatBottomDetail(id: id),
+                )
+              : SizedBox(
+                  width: 0,
+                ),
         ],
       ),
     );
