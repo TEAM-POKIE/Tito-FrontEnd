@@ -1,7 +1,3 @@
-import 'dart:developer';
-import 'dart:io';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -10,13 +6,9 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
-import 'package:tito_app/core/constants/style.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
-import 'package:http/http.dart' as http;
-//import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
@@ -36,6 +28,7 @@ class LoginMain extends StatelessWidget {
     Future<void> _signInWithGoogle() async {
       // ! Google OAUTH 설정 로드
       const FlutterAppAuth appAuth = FlutterAppAuth();
+      // TODO: 추후 하드코딩 제거
       // const FlutterSecureStorage secureStorage = FlutterSecureStorage();
       final String clientId =
           "964139724412-0ne5ikmk6o3s32jejsuhedohs128nek0.apps.googleusercontent.com";
@@ -139,6 +132,7 @@ class LoginMain extends StatelessWidget {
           ],
           webAuthenticationOptions: WebAuthenticationOptions(
               clientId: 'titoApp.example.com', // 서비스 ID에 해당하는 clientId
+              // TODO: 이거 수정 안했는데 잘 작동 됨. 추후 확인 필요.
               redirectUri: Uri.parse('https://dev.tito.lat/oauth/apple')),
           nonce: 'example-nonce',
           state: 'example-state',
