@@ -2,9 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
@@ -12,9 +11,11 @@ import 'package:tito_app/core/provider/websocket_provider.dart';
 import 'package:tito_app/src/view/chatView/chat_appBar.dart';
 import 'package:tito_app/src/view/chatView/chat_body.dart';
 import 'package:tito_app/src/data/models/debate_info.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:tito_app/src/view/chatView/chat_bottom_detail.dart';
+import 'package:tito_app/src/view/chatView/chat_llm.dart';
 
 class Chat extends ConsumerStatefulWidget {
   final int id;
@@ -72,20 +73,16 @@ class _ChatState extends ConsumerState<Chat> {
     final chatViewModel = ref.read(chatInfoProvider.notifier);
 
     if (_messages.isNotEmpty) {
-      // _messages의 길이가 최소 3 이상인지 확인 후 처리
       if (_messages.length > 2) {
         chatState!.debateOwnerId = _messages[2]['userId'];
-
         chatViewModel.getInfo(chatState.debateOwnerId, context);
 
-        // _messages의 길이가 최소 4 이상인지 확인 후 처리
         if (_messages.length > 3) {
           chatState.debateJoinerId = _messages[3]['userId'];
           chatViewModel.getInfo(_messages[3]['userId'], context);
         }
       }
 
-      // _messages 리스트가 비어 있지 않음을 확인 후 마지막 요소 접근
       if (_messages.isNotEmpty &&
           _messages.last.containsKey('ownerTurnCount') &&
           _messages.last.containsKey('joinerTurnCount')) {
@@ -115,7 +112,7 @@ class _ChatState extends ConsumerState<Chat> {
   }
 }
 
-class _BasicDebate extends StatelessWidget {
+class _BasicDebate extends ConsumerWidget {
   final int id;
   final DebateInfo? debateInfo;
 
@@ -125,14 +122,39 @@ class _BasicDebate extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final chatState = ref.read(chatInfoProvider);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60.h),
         child: ChatAppbar(id: id), // id 전달
       ),
-      body: ChatBody(id: id),
+      body: Stack(
+        children: [
+          ChatBody(id: id),
+          chatState!.explanation != null &&
+                  chatState.explanation!.any((e) => e.isNotEmpty)
+              ? SlidingUpPanel(
+                  header: Container(
+                    width: MediaQuery.sizeOf(context).width,
+                    alignment: Alignment.center, // 컨테이너 내부에서 중앙 정렬
+                    child: SvgPicture.asset('assets/icons/panel_line.svg'),
+                  ),
+                  maxHeight: MediaQuery.sizeOf(context).height * 0.80,
+                  margin: EdgeInsets.only(bottom: 110.h),
+                  panel: ChatLlm(),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(16.r),
+                    topRight: Radius.circular(16.r),
+                  ),
+                  boxShadow: [],
+                )
+              : SizedBox(
+                  width: 0,
+                ),
+        ],
+      ),
     );
   }
 }

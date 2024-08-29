@@ -118,7 +118,9 @@ flutter:
     - assets/icons/bottom_my.svg
     - assets/icons/purple_cute.svg
     - assets/icons/mypage_edit.svg
+    - assets/icons/panelChatCopyIcon.svg
     - assets/icons/final_edit.svg
+    - assets/icons/panel_line.svg
     - assets/icons/list_real_null.svg
     - assets/icons/first_chat_find.svg
     - assets/icons/alarm.svg

@@ -40,6 +40,7 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
       final authResponse = await ApiService(DioClient.dio).signIn({
         'email': _enteredEmail,
         'password': _enteredPassword,
+        'fcmToken': 'sd',
       });
 
       // & Phase 2. 수신한 Access, Refresh Token 시큐어 스토리지에 저장

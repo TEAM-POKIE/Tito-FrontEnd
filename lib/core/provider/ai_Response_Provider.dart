@@ -7,7 +7,6 @@ class AiResponseNotifier extends StateNotifier<AiResponse?> {
   // AiResponse 상태를 업데이트하는 메서드
   void setAiResponse(AiResponse aiResponse) {
     state = aiResponse;
-    print(state!.contentEdited);
   }
 
   // AiResponse 상태를 초기화하는 메서드

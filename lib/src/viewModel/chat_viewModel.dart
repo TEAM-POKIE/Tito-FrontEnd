@@ -83,15 +83,15 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     });
   }
 
-  void updateExplanation(List<String>? explanation) {
+  void updateExplanation(List<String>? explanation, String? contentEdited) {
     if (state != null) {
-      state = state!.copyWith(explanation: explanation);
+      state = state!
+          .copyWith(explanation: explanation, contentEdited: contentEdited);
     }
   }
 
   Future<void> sendMessage() async {
     final chatNotifier = ref.read(chatInfoProvider.notifier);
-    final chatState = chatNotifier.state;
 
     try {
       final message = controller.text;
@@ -109,7 +109,8 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
         final aiResponse = AiResponse.fromJson(response['data']);
         ref.read(aiResponseProvider.notifier).setAiResponse(aiResponse);
 
-        chatNotifier.updateExplanation(aiResponse.explanation);
+        chatNotifier.updateExplanation(
+            aiResponse.explanation, aiResponse.contentEdited);
       } else {
         throw Exception("Unexpected data format or missing 'data' key");
       }

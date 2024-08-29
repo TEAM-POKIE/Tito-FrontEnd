@@ -152,8 +152,8 @@ class DebateInfo {
       debateOwnerPicture: '',
       debateImageUrl: json['data']['debateImageUrl'] ?? '',
       debateContent: json['data']['debateContent'] ?? '',
-      contentEdited: 'dd',
-      explanation: ['기본 설명'],
+      contentEdited: '',
+      explanation: [''],
     );
   }
 

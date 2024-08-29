@@ -67,11 +67,12 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
 
   @override
   Widget build(BuildContext context) {
+    final chatState = ref.watch(chatInfoProvider);
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 10.w),
+      padding:
+          EdgeInsets.only(top: 10.h, bottom: 20.h, right: 10.w, left: 10.w),
       child: Column(
         children: [
-          const ApiResponseBubble(),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -82,8 +83,9 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
               Expanded(
                 child: Container(
                   width: 320.w,
-                  height: 40.h,
                   child: TextField(
+                    minLines: 1,
+                    maxLines: 3,
                     controller: ref.read(chatInfoProvider.notifier).controller,
                     autocorrect: false,
                     focusNode: ref.read(chatInfoProvider.notifier).focusNode,
@@ -114,33 +116,6 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
               ),
             ],
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class ApiResponseBubble extends ConsumerWidget {
-  const ApiResponseBubble({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final aiResponse = ref.watch(aiResponseProvider);
-    final chatState = ref.watch(chatInfoProvider);
-
-    print(chatState!.explanation);
-
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (chatState.explanation != null)
-            ...chatState.explanation!
-                .map((explanation) => Text(explanation))
-                .toList()
-          else
-            Text('No explanation available'),
         ],
       ),
     );
