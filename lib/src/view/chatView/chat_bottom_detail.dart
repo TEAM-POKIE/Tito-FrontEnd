@@ -45,22 +45,14 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
       if (chatState.debateJoinerId == loginInfo.id) {
         if (chatState.debateJoinerTurnCount < chatState.debateOwnerTurnCount) {
           if (chatState.isFirstClick == true) {
-            setState(() {
-              chatState.isLoading = true;
-            });
-
             chatViewModel.createLLM();
           } else {
-            print('여기');
             chatViewModel.sendMessage();
           }
         }
       } else {
         if (chatState.debateJoinerTurnCount == chatState.debateOwnerTurnCount) {
           if (chatState.isFirstClick) {
-            setState(() {
-              chatState.isLoading = true;
-            });
             chatViewModel.createLLM();
           } else {
             print('여기2');

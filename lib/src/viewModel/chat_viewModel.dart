@@ -112,7 +112,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
 
   Future<void> createLLM() async {
     final chatNotifier = ref.read(chatInfoProvider.notifier);
-
+    state = state!.copyWith(isLoading: true);
     try {
       final message = controller.text;
       if (message.isEmpty) {

@@ -57,29 +57,82 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
           opponentImage: chatState.debateJoinerPicture);
     } else if (chatState.debateJoinerId == loginInfo.id ||
         chatState.debateOwnerId == loginInfo.id) {
-      switch (chatState.debateJoinerTurnCount) {
-        case 0:
-          return const DetailState(
-              upImage: 'assets/images/detailChatIcon.svg',
-              upTitle: '상대 반론자를 찾는 중이예요 !',
-              downTitle: '⏳ 00:00 토론 시작 전');
-        default:
-          if (chatState.debateJoinerTurnCount > 2) {
-            return Column(
-              children: [
-                DetailState(
-                    upImage: 'assets/images/detailChatIcon.svg',
-                    upTitle: '상대 반론 타임이에요!',
-                    downTitle: '⏳ ${remainingTime} 남았어요!'),
-                VotingBar(),
-              ],
-            );
-          } else {
-            return DetailState(
+      if (chatState.debateJoinerId == loginInfo.id) {
+        switch (chatState.debateJoinerTurnCount) {
+          case 0:
+            return const DetailState(
                 upImage: 'assets/images/detailChatIcon.svg',
-                upTitle: '상대 반론 타임이에요!',
-                downTitle: '⏳ ${remainingTime} 남았어요!');
-          }
+                upTitle: '상대 반론자를 찾는 중이예요 !',
+                downTitle: '⏳ 00:00 토론 시작 전');
+          default:
+            if (chatState.debateJoinerTurnCount > 2) {
+              if (chatState.debateJoinerTurnCount ==
+                  chatState.debateOwnerTurnCount) {
+                return Column(
+                  children: [
+                    DetailState(
+                        upImage: 'assets/images/detailChatIcon.svg',
+                        upTitle: '상대 반론 타임이에요!',
+                        downTitle: '⏳ ${remainingTime} 남았어요!'),
+                    VotingBar(),
+                  ],
+                );
+              } else {
+                return Column(
+                  children: [
+                    DetailState(
+                        upImage: 'assets/images/detailChatIcon.svg',
+                        upTitle: '${loginInfo.nickname}님의 반론 타임이에요!',
+                        downTitle: '⏳ ${remainingTime} 남았어요!'),
+                    VotingBar(),
+                  ],
+                );
+              }
+            } else {
+              return DetailState(
+                  upImage: 'assets/images/detailChatIcon.svg',
+                  upTitle: '상대 반론 타임이에요!',
+                  downTitle: '⏳ ${remainingTime} 남았어요!');
+            }
+        }
+      } else {
+        switch (chatState.debateJoinerTurnCount) {
+          case 0:
+            return const DetailState(
+                upImage: 'assets/images/detailChatIcon.svg',
+                upTitle: '상대 반론자를 찾는 중이예요 !',
+                downTitle: '⏳ 00:00 토론 시작 전');
+          default:
+            if (chatState.debateJoinerTurnCount > 2) {
+              if (chatState.debateJoinerTurnCount <
+                  chatState.debateOwnerTurnCount) {
+                return Column(
+                  children: [
+                    DetailState(
+                        upImage: 'assets/images/detailChatIcon.svg',
+                        upTitle: '상대 반론 타임이에요!',
+                        downTitle: '⏳ ${remainingTime} 남았어요!'),
+                    VotingBar(),
+                  ],
+                );
+              } else {
+                return Column(
+                  children: [
+                    DetailState(
+                        upImage: 'assets/images/detailChatIcon.svg',
+                        upTitle: '${loginInfo.nickname}님의 반론 타임이에요!',
+                        downTitle: '⏳ ${remainingTime} 남았어요!'),
+                    VotingBar(),
+                  ],
+                );
+              }
+            } else {
+              return DetailState(
+                  upImage: 'assets/images/detailChatIcon.svg',
+                  upTitle: '상대 반론 타임이에요!',
+                  downTitle: '⏳ ${remainingTime} 남았어요!');
+            }
+        }
       }
     } else {
       switch (chatState.debateJoinerTurnCount) {
