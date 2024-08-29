@@ -212,39 +212,42 @@ class TimingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: ColorSystem.black,
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16.r),
+    return Container(
+      color: ColorSystem.grey3,
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: ColorSystem.black,
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.r),
+              ),
             ),
-          ),
-          onPressed: () {
-            if (content == '타이밍 벨') {
-              popupViewModel!.showTimingPopup(context, 'timing');
-            } else {
-              popupViewModel!.showTimingPopup(context, 'vote');
-            }
-          },
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SvgPicture.asset(
-                imgSrc,
-                width: 20.w, // 아이콘 크기 조정
-                height: 20.h,
-              ),
-              const SizedBox(width: 4),
-              Text(
-                content,
-                style: FontSystem.KR16B.copyWith(color: ColorSystem.yellow),
-              ),
-            ],
+            onPressed: () {
+              if (content == '타이밍 벨') {
+                popupViewModel!.showTimingPopup(context, 'timing');
+              } else {
+                popupViewModel!.showTimingPopup(context, 'vote');
+              }
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SvgPicture.asset(
+                  imgSrc,
+                  width: 20.w, // 아이콘 크기 조정
+                  height: 20.h,
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  content,
+                  style: FontSystem.KR16B.copyWith(color: ColorSystem.yellow),
+                ),
+              ],
+            ),
           ),
         ),
       ),

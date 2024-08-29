@@ -88,16 +88,6 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
 
     return Column(
       children: [
-        chatState!.explanation != null &&
-                chatState.explanation!.any((e) => e.isNotEmpty)
-            ? chatState.isFirstClick == true
-                ? SizedBox(
-                    width: 0,
-                  )
-                : SizedBox(
-                    width: 0,
-                  )
-            : ChatSpeechBubble(),
         Container(
           color: ColorSystem.white,
           padding:
@@ -141,7 +131,7 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
                       ),
                     ),
                   ),
-                  chatState.isLoading
+                  chatState!.isLoading
                       ? SpinKitRing(
                           color: ColorSystem.purple,
                           size: 30.sp,

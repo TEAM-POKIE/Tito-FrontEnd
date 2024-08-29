@@ -161,7 +161,11 @@ class _BasicDebate extends ConsumerWidget {
                   bottom: 0, // 패널의 위에 ChatBottomDetail이 보이도록 위치 조정
                   left: 0,
                   right: 0,
-                  child: ChatBottomDetail(id: id),
+                  child: Column(
+                    children: [
+                      ChatBottomDetail(id: id),
+                    ],
+                  ),
                 )
               : SizedBox(
                   width: 0,

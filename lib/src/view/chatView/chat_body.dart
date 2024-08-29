@@ -27,10 +27,16 @@ class ChatBody extends ConsumerWidget {
               decoration: BoxDecoration(color: ColorSystem.grey3),
               child: ChatListView(id: id)), // id 전달
         ),
-        chatState!.explanation != null &&
-                chatState.explanation!.any((e) => e.isNotEmpty)
+        chatState!.isFirstClick
+            ? ChatSpeechBubble()
+            : SizedBox(
+                width: 0,
+              ),
+        chatState.isFirstClick
             ? ChatBottomDetail(id: id)
-            : ChatBottomDetail(id: id)
+            : SizedBox(
+                width: 0,
+              )
       ],
     );
   }
