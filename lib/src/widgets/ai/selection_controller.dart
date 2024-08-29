@@ -2,18 +2,21 @@ import 'dart:convert'; // JSON 디코딩을 위해 필요
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
+import 'package:tito_app/src/data/models/ai_random_word.dart';
 import 'package:tito_app/src/data/models/ai_word.dart';
 
 class SelectionState {
   final List<int> selectedItems;
   final bool isLoading;
   final List<AiWord> topics;
+  final List<AiRandomWord> randomWord;
   final int expandedIndex;
 
   SelectionState({
     this.selectedItems = const [],
     this.isLoading = false,
     this.topics = const [],
+    this.randomWord = const [],
     this.expandedIndex = -1,
   });
 
@@ -21,6 +24,7 @@ class SelectionState {
     List<int>? selectedItems,
     bool? isLoading,
     List<AiWord>? topics,
+    List<AiRandomWord>? randomWord,
     int? expandedIndex,
   }) {
     return SelectionState(
@@ -28,6 +32,7 @@ class SelectionState {
       isLoading: isLoading ?? this.isLoading,
       topics: topics ?? this.topics,
       expandedIndex: expandedIndex ?? this.expandedIndex,
+      randomWord: randomWord ?? this.randomWord,
     );
   }
 }
@@ -57,9 +62,12 @@ class SelectionNotifier extends StateNotifier<SelectionState> {
     state = state.copyWith(isLoading: true);
 
     try {
-      final response = await ApiService(DioClient.dio).postGenerateTopic({
-        "words": ["프론트엔드", "백엔드"]
-      });
+      final List<String> selectedWords = state.selectedItems
+          .map((index) => state.randomWord[index].word)
+          .toList();
+      print(selectedWords);
+      final response = await ApiService(DioClient.dio)
+          .postGenerateTopic({"words": selectedWords});
 
       final Map<String, dynamic> decodedResponse = json.decode(response);
       final List<dynamic> responseData =
@@ -69,6 +77,26 @@ class SelectionNotifier extends StateNotifier<SelectionState> {
           .toList();
 
       state = state.copyWith(topics: aiWords);
+    } catch (e) {
+      print('Error fetching topics: $e');
+    } finally {
+      state = state.copyWith(isLoading: false);
+    }
+  }
+
+  // AI 주제를 생성하는 메서드
+  Future<void> getWord() async {
+    try {
+      final response = await ApiService(DioClient.dio).getRandomWord();
+
+      final Map<String, dynamic> decodedResponse = json.decode(response);
+      final List<dynamic> responseData =
+          decodedResponse['data'] as List<dynamic>;
+      final List<AiRandomWord> randomword = responseData
+          .map((item) => AiRandomWord.fromJson(item as Map<String, dynamic>))
+          .toList();
+
+      state = state.copyWith(randomWord: randomword);
     } catch (e) {
       print('Error fetching topics: $e');
     } finally {

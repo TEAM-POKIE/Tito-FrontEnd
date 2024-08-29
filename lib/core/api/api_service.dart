@@ -48,6 +48,8 @@ abstract class ApiService {
   Future<UserProfile> getUserProfile(@Path("id") int debateId);
   @GET('users/debates')
   Future<String> getUserDebate();
+  @GET('word-candidate')
+  Future<String> getRandomWord();
 
   @GET("debates/debate-list")
   Future<String> getDebateList({
