@@ -1,19 +1,12 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-
-import 'package:speech_balloon/speech_balloon.dart';
-
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tito_app/core/constants/style.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
 
 class DebateCreateChat extends ConsumerStatefulWidget {
   const DebateCreateChat({super.key});
@@ -37,7 +30,6 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
   Widget build(BuildContext context) {
     final debateState = ref.watch(debateCreateProvider);
     final debateViewModel = ref.read(debateCreateProvider.notifier);
-    final chatViewModel = ref.read(chatInfoProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(

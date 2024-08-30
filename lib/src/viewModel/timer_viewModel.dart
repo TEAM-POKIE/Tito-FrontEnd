@@ -18,9 +18,9 @@ class TimerState {
 class TimerNotifier extends StateNotifier<TimerState> {
   Timer? _timer;
   final int debatedTimeLimit;
-  static const String _prefsKeyRemainingTime = "remainingTime"; // 남은 시간 저장 키
-  static const String _prefsKeyStartTime = "startTime"; // 시작 시간 저장 키
-  final StateNotifierProviderRef ref; // Provider Ref 추가
+  static const String _prefsKeyRemainingTime = "remainingTime";
+  static const String _prefsKeyStartTime = "startTime";
+  final StateNotifierProviderRef ref;
 
   TimerNotifier({required this.ref, this.debatedTimeLimit = 8})
       : super(TimerState(remainingTime: Duration(minutes: debatedTimeLimit))) {
@@ -40,10 +40,10 @@ class TimerNotifier extends StateNotifier<TimerState> {
 
       if (newRemainingTime > Duration.zero) {
         state = state.copyWith(remainingTime: newRemainingTime);
-        _updateChatState(newRemainingTime); // ChatState 업데이트
+        _updateChatState(newRemainingTime);
         startTimer(); // 타이머 시작
       } else {
-        _clearSavedTimerState(); // 시간이 다 지난 경우 저장된 상태 삭제
+        _clearSavedTimerState();
       }
     }
   }
@@ -73,17 +73,20 @@ class TimerNotifier extends StateNotifier<TimerState> {
       }
     }
 
-    _saveTimerState(); // 타이머 시작 시 시작 시간 저장
+    _saveTimerState();
 
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (state.remainingTime.inSeconds > 0) {
         final newRemainingTime = state.remainingTime - Duration(seconds: 1);
         state = state.copyWith(remainingTime: newRemainingTime);
-        _updateChatState(newRemainingTime); // ChatState 업데이트
-        _saveTimerState(); // 타이머 상태 저장
+        _updateChatState(newRemainingTime);
+        // 타이머 상태가 저장될 때마다 SharedPreferences를 업데이트하지 않도록 수정
+        if (newRemainingTime.inSeconds % 10 == 0) {
+          _saveTimerState(); // 주기적으로만 저장
+        }
       } else {
         _timer?.cancel();
-        _clearSavedTimerState(); // 타이머가 끝나면 저장된 상태 삭제
+        _clearSavedTimerState();
       }
     });
   }
@@ -112,7 +115,7 @@ class TimerNotifier extends StateNotifier<TimerState> {
       state = TimerState(remainingTime: Duration(minutes: debatedTimeLimit));
     }
 
-    _updateChatState(state.remainingTime); // ChatState 업데이트
+    _updateChatState(state.remainingTime);
     startTimer();
   }
 

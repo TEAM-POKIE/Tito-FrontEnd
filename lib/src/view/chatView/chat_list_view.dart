@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
@@ -9,6 +10,7 @@ import 'package:tito_app/core/provider/timer_provider.dart';
 import 'package:tito_app/core/provider/websocket_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:tito_app/src/data/models/login_info.dart';
 import 'package:tito_app/src/viewModel/chat_viewModel.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -143,6 +145,7 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
                   loginInfo: loginInfo,
                   isTyping: _isTyping,
                   chatViewModel: chatViewModel,
+                  chatState: chatState,
                 )
               : ParticipantsList(
                   messages: _messages,
@@ -161,6 +164,7 @@ class JoinerChatList extends StatelessWidget {
   final List<Map<String, dynamic>> messages;
   final LoginInfo loginInfo;
   final ChatViewModel chatViewModel;
+  final DebateInfo chatState;
   final bool isTyping;
 
   const JoinerChatList({
@@ -168,6 +172,7 @@ class JoinerChatList extends StatelessWidget {
     required this.loginInfo,
     required this.chatViewModel,
     required this.isTyping,
+    required this.chatState,
   });
 
   @override
@@ -188,7 +193,9 @@ class JoinerChatList extends StatelessWidget {
           children: [
             chatMessage
                 ? Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.w),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10.w,
+                    ),
                     child: Row(
                       mainAxisAlignment: isMyMessage
                           ? MainAxisAlignment.end
@@ -319,6 +326,11 @@ class JoinerChatList extends StatelessWidget {
             SizedBox(
               height: 20.h,
             ),
+            if (index == messages.length - 1)
+              chatState.explanation != null &&
+                      chatState.explanation!.any((e) => e.isNotEmpty)
+                  ? SizedBox(height: 300.h)
+                  : SizedBox(height: 0.h)
           ],
         );
       },
