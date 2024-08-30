@@ -51,26 +51,24 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                 SizedBox(
                   width: 45.w,
                 ),
-                popupState.buttonStyle == 2
-                    ? Row(
-                        children: [
-                          if (popupState.imgSrc != null)
-                            SvgPicture.asset(
-                              popupState.imgSrc!,
-                              width: 40.w,
-                              height: 40.h,
-                            ),
-                          Text(popupState.titleLabel ?? '',
-                              style: FontSystem.KR16SB),
-                        ],
-                      )
-                    : popupState.imgSrc != null
-                        ? SvgPicture.asset(
-                            popupState.imgSrc!,
-                            width: 20.w,
-                            height: 20.h,
-                          )
-                        : Container(),
+                Row(
+                  children: [
+                    if (popupState.imgSrc != null)
+                      SvgPicture.asset(
+                        popupState.imgSrc!,
+                        width: 40.w,
+                        height: 40.h,
+                      ),
+                    if (popupState.buttonStyle == 2 &&
+                        popupState.titleLabel != null)
+                      SizedBox(width: 8.w), // 이미지와 텍스트 사이의 간격 추가 (필요에 따라)
+                    if (popupState.buttonStyle == 2)
+                      Text(
+                        popupState.titleLabel ?? '',
+                        style: FontSystem.KR16SB,
+                      ),
+                  ],
+                ),
                 IconButton(
                   iconSize: 25,
                   icon: const Icon(Icons.close),
@@ -260,6 +258,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
     final debateState = ref.watch(debateCreateProvider);
     final chatViewModel = ref.watch(chatInfoProvider.notifier);
     final userState = ref.watch(userProfileProvider);
+    final progressNoti = ref.watch(progressProvider.notifier);
 
     void startDebate() async {
       try {
@@ -278,7 +277,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
           debateState.debateMakerOpinion = '';
           debateState.debateJoinerOpinion = '';
           debateState.debateImageUrl = '';
-
+          progressNoti.resetProgress();
           context.go('/chat/${response.id}');
         } else {
           final debateData = debateState.toJson();

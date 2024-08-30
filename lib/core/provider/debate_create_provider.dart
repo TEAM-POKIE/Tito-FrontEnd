@@ -30,6 +30,10 @@ class ProgressNotifier extends StateNotifier<double> {
       // 만약 state가 1.0이면 더 이상 증가하지 않음.
     }
   }
+
+  void resetProgress() {
+    state = 0.33;
+  }
 }
 
 final progressProvider = StateNotifierProvider<ProgressNotifier, double>((ref) {

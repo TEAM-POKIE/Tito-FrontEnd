@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -5,9 +6,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:confetti/confetti.dart';
+import 'package:tito_app/core/provider/timer_provider.dart';
 import 'dart:math';
 
 import 'package:tito_app/src/view/chatView/votingbar.dart';
@@ -24,18 +25,22 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
   @override
   void initState() {
     super.initState();
+    final timerViewModel = ref.read(timerProvider.notifier);
+    timerViewModel.startTimer();
   }
 
   @override
   void dispose() {
+    final timerViewModel = ref.read(timerProvider.notifier);
+    timerViewModel.stopTimer();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final loginInfo = ref.watch(loginInfoProvider);
-
     final chatState = ref.watch(chatInfoProvider);
+    final timerState = ref.watch(timerProvider);
 
     if (loginInfo == null) {
       return const SizedBox.shrink();
@@ -48,8 +53,8 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
       return "$twoDigitMinutes:$twoDigitSeconds";
     }
 
-    String remainingTime = formatDuration(chatState!.remainingTime);
-    if (chatState.debateStatus == 'ENDED') {
+    String remainingTime = formatDuration(timerState.remainingTime);
+    if (chatState!.debateStatus == 'ENDED') {
       return EndedProfileVsWidget(
           myNick: chatState.debateOwnerNick,
           myImage: chatState.debateOwnerPicture,

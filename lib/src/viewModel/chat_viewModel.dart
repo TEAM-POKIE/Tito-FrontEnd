@@ -110,6 +110,10 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     controller.text = state!.contentEdited;
   }
 
+  void resetText() {
+    controller.text = '';
+  }
+
   Future<void> createLLM() async {
     final chatNotifier = ref.read(chatInfoProvider.notifier);
     state = state!.copyWith(isLoading: true);
@@ -150,7 +154,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
       "command": "CHAT",
       "userId": loginInfo?.id ?? '',
       "debateId": state?.id ?? 0,
-      "content": message
+      "content": message,
     });
     print(jsonMessage);
 
@@ -312,7 +316,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
       "command": "JOIN",
       "userId": loginInfo?.id ?? '',
       "debateId": state?.id ?? 0,
-      "content": message
+      "content": message,
     });
     print(jsonMessage);
     if (loginInfo!.tutorialCompleted == false) {

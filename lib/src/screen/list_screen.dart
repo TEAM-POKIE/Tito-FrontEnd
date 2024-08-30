@@ -7,6 +7,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/src/data/models/debate_list.dart';
 import 'package:tito_app/core/api/api_service.dart';
@@ -61,6 +62,8 @@ class _ListScreenState extends ConsumerState<ListScreen> {
     if (debateStatus == 'ENDED') {
       context.push('/endedChat/${debateId}');
     } else {
+      final chatViewModel = ref.read(chatInfoProvider.notifier);
+      chatViewModel.resetText();
       context.push('/chat/${debateId}');
     }
   }

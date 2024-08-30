@@ -16,55 +16,6 @@ class VotingBar extends ConsumerStatefulWidget {
 }
 
 class _VotingBarState extends ConsumerState<VotingBar> {
-  List<Map<String, dynamic>> _messages = [];
-  @override
-  void initState() {
-    super.initState();
-    Future.microtask(() {
-      _fetchDebateInfo();
-      _subscribeToMessages();
-    });
-  }
-
-  Future<void> _fetchDebateInfo() async {
-    final liveWebSocketService = ref.read(liveWebSocketProvider);
-    final loginInfo = ref.read(loginInfoProvider);
-    final debateInfo = ref.read(chatInfoProvider);
-
-    if (loginInfo != null && debateInfo != null) {
-      final message = jsonEncode({
-        "command": "ENTER",
-        "userId": loginInfo.id,
-        "debateId": debateInfo.id,
-      });
-      liveWebSocketService.sendMessage(message);
-    } else {
-      print("Error: Login info or Debate info is null.");
-    }
-  }
-
-  void _subscribeToMessages() {
-    final webSocketService = ref.read(liveWebSocketProvider);
-    final voteViewModel = ref.watch(voteProvider.notifier);
-
-    webSocketService.stream.listen((message) {
-      if (message.containsKey('content')) {
-        if (mounted) {
-          setState(() {
-            _messages.add(message);
-          });
-        }
-      }
-      if (message['command'] == "VOTE_RATE_RES") {
-        final newBlueVotes = message["ownerVoteRate"];
-        final newRedVotes = message["joinerVoteRate"];
-
-        // StateNotifier를 사용하여 상태를 업데이트합니다.
-        voteViewModel.updateVotes(newBlueVotes, newRedVotes);
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final chatState = ref.watch(chatInfoProvider);

@@ -29,6 +29,7 @@ class DebateInfo {
   List<String>? explanation;
   bool isLoading;
   bool isFirstClick;
+  String lastUrl;
 
   DebateInfo({
     required this.id,
@@ -61,6 +62,7 @@ class DebateInfo {
     required this.explanation,
     required this.isLoading,
     required this.isFirstClick,
+    required this.lastUrl,
   });
 
   DebateInfo copyWith({
@@ -94,6 +96,7 @@ class DebateInfo {
     List<String>? explanation,
     bool? isLoading,
     bool? isFirstClick,
+    String? lastUrl,
   }) {
     return DebateInfo(
       id: id ?? this.id,
@@ -128,6 +131,7 @@ class DebateInfo {
       explanation: explanation ?? this.explanation,
       isLoading: isLoading ?? this.isLoading,
       isFirstClick: isFirstClick ?? this.isFirstClick,
+      lastUrl: lastUrl ?? this.lastUrl,
     );
   }
 
@@ -164,6 +168,7 @@ class DebateInfo {
       explanation: [''],
       isLoading: false,
       isFirstClick: true,
+      lastUrl: '',
     );
   }
 

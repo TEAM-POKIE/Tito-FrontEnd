@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/constants/style.dart';
+import 'package:tito_app/core/provider/home_state_provider.dart';
 import 'package:tito_app/core/provider/nav_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,6 +20,12 @@ class BottomBar extends ConsumerStatefulWidget {
 class _BottomBarState extends ConsumerState<BottomBar> {
   void _onItemTapped(int index) {
     final notifier = ref.read(selectedIndexProvider.notifier);
+    if (index == 0) {
+      final homeViewModel = ref.read(homeViewModelProvider.notifier);
+      homeViewModel.fetchHotDebates(); // 초기화 시 호출될 메소드
+      homeViewModel.fetchHotfighter();
+      homeViewModel.hotList();
+    }
     if (index == 2) {
       showModalBottomSheet(
         context: context,
