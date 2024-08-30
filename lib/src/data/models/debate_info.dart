@@ -25,6 +25,10 @@ class DebateInfo {
   Duration remainingTime;
   final String debateImageUrl;
   final String debateContent;
+  String contentEdited;
+  List<String>? explanation;
+  bool isLoading;
+  bool isFirstClick;
 
   DebateInfo({
     required this.id,
@@ -53,7 +57,79 @@ class DebateInfo {
     required this.remainingTime,
     required this.debateImageUrl,
     required this.debateContent,
+    required this.contentEdited,
+    required this.explanation,
+    required this.isLoading,
+    required this.isFirstClick,
   });
+
+  DebateInfo copyWith({
+    int? id,
+    String? debateTitle,
+    String? debateCategory,
+    String? debateStatus,
+    String? debateOwnerNick,
+    String? debateOwnerPicture,
+    String? debateJoinerNick,
+    String? debateJoinerPicture,
+    String? debateMakerOpinion,
+    String? debateJoinerOpinion,
+    int? debatedTimeLimit,
+    int? debateViewCount,
+    int? debateCommentCount,
+    int? debateRealtimeParticipants,
+    int? debateAlarmCount,
+    String? createdAt,
+    String? updatedAt,
+    int? debateOwnerId,
+    int? debateOwnerTurnCount,
+    int? debateJoinerId,
+    int? debateJoinerTurnCount,
+    bool? canTiming,
+    double? bluePercent,
+    Duration? remainingTime,
+    String? debateImageUrl,
+    String? debateContent,
+    String? contentEdited,
+    List<String>? explanation,
+    bool? isLoading,
+    bool? isFirstClick,
+  }) {
+    return DebateInfo(
+      id: id ?? this.id,
+      debateTitle: debateTitle ?? this.debateTitle,
+      debateCategory: debateCategory ?? this.debateCategory,
+      debateStatus: debateStatus ?? this.debateStatus,
+      debateOwnerNick: debateOwnerNick ?? this.debateOwnerNick,
+      debateOwnerPicture: debateOwnerPicture ?? this.debateOwnerPicture,
+      debateJoinerNick: debateJoinerNick ?? this.debateJoinerNick,
+      debateJoinerPicture: debateJoinerPicture ?? this.debateJoinerPicture,
+      debateMakerOpinion: debateMakerOpinion ?? this.debateMakerOpinion,
+      debateJoinerOpinion: debateJoinerOpinion ?? this.debateJoinerOpinion,
+      debatedTimeLimit: debatedTimeLimit ?? this.debatedTimeLimit,
+      debateViewCount: debateViewCount ?? this.debateViewCount,
+      debateCommentCount: debateCommentCount ?? this.debateCommentCount,
+      debateRealtimeParticipants:
+          debateRealtimeParticipants ?? this.debateRealtimeParticipants,
+      debateAlarmCount: debateAlarmCount ?? this.debateAlarmCount,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      debateOwnerId: debateOwnerId ?? this.debateOwnerId,
+      debateOwnerTurnCount: debateOwnerTurnCount ?? this.debateOwnerTurnCount,
+      debateJoinerId: debateJoinerId ?? this.debateJoinerId,
+      debateJoinerTurnCount:
+          debateJoinerTurnCount ?? this.debateJoinerTurnCount,
+      canTiming: canTiming ?? this.canTiming,
+      bluePercent: bluePercent ?? this.bluePercent,
+      remainingTime: remainingTime ?? this.remainingTime,
+      debateImageUrl: debateImageUrl ?? this.debateImageUrl,
+      debateContent: debateContent ?? this.debateContent,
+      contentEdited: contentEdited ?? this.contentEdited,
+      explanation: explanation ?? this.explanation,
+      isLoading: isLoading ?? this.isLoading,
+      isFirstClick: isFirstClick ?? this.isFirstClick,
+    );
+  }
 
   factory DebateInfo.fromJson(Map<String, dynamic> json) {
     return DebateInfo(
@@ -84,6 +160,10 @@ class DebateInfo {
       debateOwnerPicture: '',
       debateImageUrl: json['data']['debateImageUrl'] ?? '',
       debateContent: json['data']['debateContent'] ?? '',
+      contentEdited: '',
+      explanation: [''],
+      isLoading: false,
+      isFirstClick: true,
     );
   }
 
@@ -111,6 +191,7 @@ class DebateInfo {
       "canTiming": true,
       'debateImageUrl': debateImageUrl,
       'debateContent': debateContent,
+      'contentEdited': contentEdited,
     };
   }
 

@@ -138,15 +138,17 @@ class _LiveCommentState extends ConsumerState<LiveComment>
                 ),
               ),
               AnimatedContainer(
-                duration: Duration(milliseconds: 300),
-                height:
-                    _isExpanded ? MediaQuery.of(context).size.height * 0.2 : 0,
+                duration: Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+                height: _isExpanded
+                    ? MediaQuery.of(context).size.height * 0.2
+                    : 0.0,
                 color: Colors.white,
                 child: _isExpanded
                     ? ListView.builder(
                         shrinkWrap: true,
                         controller: ScrollController(),
-                        itemCount: _messages.length, // 예시를 위해 고정된 수의 항목을 표시합니다.
+                        itemCount: _messages.length,
                         itemBuilder: (context, index) {
                           final message = _messages[index];
                           return Container(

@@ -88,6 +88,7 @@ dependencies:
   sign_in_with_apple: ^6.1.1
   cached_network_image: ^3.4.0
   confetti: ^0.7.0
+  flutter_easyloading: ^3.0.5
 
 dev_dependencies:
   flutter_test:
@@ -118,7 +119,9 @@ flutter:
     - assets/icons/bottom_my.svg
     - assets/icons/purple_cute.svg
     - assets/icons/mypage_edit.svg
+    - assets/icons/panelChatCopyIcon.svg
     - assets/icons/final_edit.svg
+    - assets/icons/panel_line.svg
     - assets/icons/list_real_null.svg
     - assets/icons/first_chat_find.svg
     - assets/icons/alarm.svg

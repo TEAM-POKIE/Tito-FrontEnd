@@ -1,8 +1,6 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
@@ -58,35 +56,37 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
     final chatState = ref.read(chatInfoProvider);
     final popupViewModel = ref.read(popupProvider.notifier);
     final timerViewModel = ref.read(timerProvider.notifier);
+
     if (message['command'] == 'CHAT') {
       final createdAt = DateTime.parse(message['createdAt']);
-      timerViewModel.resetTimer(
-          startTime: createdAt); // 타이머를 메시지의 createdAt 시간을 기준으로 시작
+      timerViewModel.resetTimer(startTime: createdAt);
     }
+
     if (message['command'] == 'TIMING_BELL_REQ' &&
         loginInfo.id != message['userId'] &&
         message['content'] == 'timing bell request') {
-      if (chatState!.debateJoinerId == loginInfo.id ||
-          chatState.debateOwnerId == loginInfo.id) {
+      if (chatState != null &&
+          (chatState.debateJoinerId == loginInfo.id ||
+              chatState.debateOwnerId == loginInfo.id)) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
             if (chatState.canTiming) {
               popupViewModel.showTimingReceive(context);
             }
-
             chatState.canTiming = false;
           }
         });
       }
-    } else if (message['command'] == 'TIMING_BELL_REQ') {
-      chatState!.canTiming = false;
-    } else if (message['command'] == 'TIMING_BELL_RES') {
-      chatState!.canTiming = false;
+    } else if (message['command'] == 'TIMING_BELL_REQ' ||
+        message['command'] == 'TIMING_BELL_RES') {
+      if (chatState != null) {
+        chatState.canTiming = false;
+      }
     } else if (message['content'] == "토론이 종료 되었습니다.") {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
+        if (mounted && chatState != null) {
           popupViewModel.showEndPopup(context);
-          chatState!.debateStatus = 'VOTING';
+          chatState.debateStatus = 'VOTING';
         }
       });
     }
@@ -97,15 +97,13 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
     final loginInfo = ref.watch(loginInfoProvider);
 
     _subscription = webSocketService.stream.listen((message) {
-      if (message.containsKey('content')) {
-        if (mounted) {
-          setState(() {
-            _messages.add(message);
-            if (loginInfo != null) {
-              _handlePopupIfNeeded(message, loginInfo);
-            }
-          });
-        }
+      if (message.containsKey('content') && mounted) {
+        setState(() {
+          _messages.add(message);
+          if (loginInfo != null) {
+            _handlePopupIfNeeded(message, loginInfo);
+          }
+        });
       }
       if (message['command'] == 'TYPING') {
         if (mounted) {
@@ -113,7 +111,7 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
             _isTyping = true;
           });
         }
-        _typingTimer?.cancel(); // 기존 타이머를 취소
+        _typingTimer?.cancel();
         _typingTimer = Timer(Duration(seconds: 2), () {
           if (mounted) {
             setState(() {
@@ -271,54 +269,56 @@ class JoinerChatList extends StatelessWidget {
                     : SizedBox(
                         width: 0,
                       ),
-            messages.length == 3 && index == messages.length - 1
-                ? Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 20.w),
-                        child: SvgPicture.asset(
-                          'assets/icons/chat_avatar.svg',
-                        ),
-                      ),
-                      SizedBox(width: 20.w),
-                      Text(
-                        '상대 찾는중',
-                        style: FontSystem.KR16B
-                            .copyWith(color: ColorSystem.purple),
-                      ),
-                      SizedBox(width: 6.w),
-                      LoadingAnimationWidget.waveDots(
-                        color: ColorSystem.purple,
-                        size: 15.sp,
-                      ),
-                    ],
-                  )
-                : index == messages.length - 1 &&
-                        message['userId'] == loginInfo.id
-                    ? Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 20.w),
-                            child: SvgPicture.asset(
-                              'assets/icons/chat_avatar.svg',
-                            ),
-                          ),
-                          SizedBox(width: 20.w),
-                          Text(
-                            '답변 작성중',
-                            style: FontSystem.KR16B
-                                .copyWith(color: ColorSystem.purple),
-                          ),
-                          SizedBox(width: 6.w),
-                          LoadingAnimationWidget.waveDots(
-                            color: ColorSystem.purple,
-                            size: 15.sp,
-                          ),
-                        ],
-                      )
-                    : SizedBox(
-                        width: 0.w,
-                      ),
+            if (messages.length == 3 && index == messages.length - 1)
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.w),
+                    child: SvgPicture.asset(
+                      'assets/icons/chat_avatar.svg',
+                    ),
+                  ),
+                  SizedBox(width: 20.w),
+                  Text(
+                    '상대 찾는중',
+                    style: FontSystem.KR16B.copyWith(color: ColorSystem.purple),
+                  ),
+                  SizedBox(width: 6.w),
+                  LoadingAnimationWidget.waveDots(
+                    color: ColorSystem.purple,
+                    size: 15.sp,
+                  ),
+                ],
+              )
+            else if (index == messages.length - 1 &&
+                message['userId'] == loginInfo.id)
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.w),
+                    child: SvgPicture.asset(
+                      'assets/icons/chat_avatar.svg',
+                    ),
+                  ),
+                  SizedBox(width: 20.w),
+                  Text(
+                    '답변 작성중',
+                    style: FontSystem.KR16B.copyWith(color: ColorSystem.purple),
+                  ),
+                  SizedBox(width: 6.w),
+                  LoadingAnimationWidget.waveDots(
+                    color: ColorSystem.purple,
+                    size: 15.sp,
+                  ),
+                ],
+              )
+            else
+              SizedBox(
+                width: 0.w,
+              ),
+            SizedBox(
+              height: 20.h,
+            ),
           ],
         );
       },
@@ -346,7 +346,8 @@ class ParticipantsList extends StatelessWidget {
       itemCount: messages.length,
       itemBuilder: (context, index) {
         final message = messages[index];
-        final isMyMessage = message['userId'] == messages[2]['userId'];
+        final isMyMessage = messages.length > 2 &&
+            message['userId'] == messages[2]['userId']; // 메시지 길이 확인 추가
         final chatMessage = message['command'] == 'CHAT';
         final formattedTime = TimeOfDay.now().format(context);
 

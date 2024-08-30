@@ -1,6 +1,5 @@
 part of 'style.dart';
 
-
 abstract class FontSystem {
   /* Korean */
   static TextStyle KR8B = TextStyle(
@@ -40,6 +39,13 @@ abstract class FontSystem {
     color: Colors.black,
     letterSpacing: -0.4,
   );
+  static TextStyle KR10SB = TextStyle(
+    fontSize: 10.sp,
+    fontFamily: 'Pretendard',
+    color: Colors.black,
+    fontWeight: FontWeight.w600,
+    letterSpacing: -0.4,
+  );
 
   static TextStyle KR12M = TextStyle(
     fontSize: 12.sp,
@@ -61,6 +67,13 @@ abstract class FontSystem {
     fontSize: 12.sp,
     fontFamily: 'Pretendard',
     color: Colors.black,
+    letterSpacing: -0.4,
+  );
+  static TextStyle KR13SB = TextStyle(
+    fontSize: 13.sp,
+    fontFamily: 'Pretendard',
+    color: Colors.black,
+    fontWeight: FontWeight.w600,
     letterSpacing: -0.4,
   );
 

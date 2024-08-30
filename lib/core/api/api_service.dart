@@ -48,6 +48,8 @@ abstract class ApiService {
   Future<UserProfile> getUserProfile(@Path("id") int debateId);
   @GET('users/debates')
   Future<String> getUserDebate();
+  @GET('word-candidate')
+  Future<String> getRandomWord();
 
   @GET("debates/debate-list")
   Future<String> getDebateList({
@@ -71,6 +73,9 @@ abstract class ApiService {
   Future<Map<String, String>> getOtherDebate(@Path("id") int debateId);
   @POST('debates/generate-topic')
   Future<String> postGenerateTopic(@Body() Map<String, Object> requestBody);
+
+  @POST('debates/refine-argument')
+  Future<String> postRefineArgument(@Body() Map<String, Object> requestBody);
 
   @GET("debates/{debate_id}/chat")
   Future<List<EndedChatInfo>> getDebateChat(@Path("debate_id") int debateId);

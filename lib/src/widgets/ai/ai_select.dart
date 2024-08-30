@@ -3,9 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tito_app/core/constants/style.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:tito_app/core/provider/ai_provider.dart';
-
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
 
@@ -15,11 +13,9 @@ class AiSelect extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectionState = ref.watch(selectionProvider);
-    final hasSelection = selectionState.topics.isNotEmpty;
+    final hasSelection = selectionState.expandedIndex != -1; // 선택된 항목이 있는지 확인
     final debaState = ref.watch(debateCreateProvider);
-    String title = '';
-    String a = '';
-    String b = '';
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorSystem.white,
@@ -80,7 +76,6 @@ class AiSelect extends ConsumerWidget {
                       onTap: () {
                         debaState.debateTitle = topic.topic;
                         debaState.debateMakerOpinion = topic.a;
-
                         debaState.debateJoinerOpinion = topic.b;
                         ref
                             .read(selectionProvider.notifier)
@@ -114,8 +109,6 @@ class AiSelect extends ConsumerWidget {
                                   style: isExpanded
                                       ? FontSystem.KR20SB
                                       : FontSystem.KR20M,
-                                  softWrap: true, // 자동 줄바꿈 설정
-                                  overflow: TextOverflow.visible,
                                 ),
                                 if (isExpanded)
                                   Column(
@@ -136,7 +129,6 @@ class AiSelect extends ConsumerWidget {
                                               topic.a,
                                               style: FontSystem.KR16SB,
                                               softWrap: true, // 자동 줄바꿈 설정
-
                                               overflow: TextOverflow.visible,
                                             ),
                                           ),
@@ -181,13 +173,13 @@ class AiSelect extends ConsumerWidget {
               child: ElevatedButton(
                 onPressed: hasSelection
                     ? () {
-                        print(debaState.debateTitle);
-                        context.push('/debate_create');
+                        context.push('/debate_create').then((_) {
+                          ref.read(selectionProvider.notifier).resetSelection();
+                        });
                       }
-                    : null,
+                    : null, // 선택된 항목이 없으면 null로 처리하여 버튼 비활성화
                 style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      hasSelection ? ColorSystem.purple : ColorSystem.grey,
+                  backgroundColor: ColorSystem.purple,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.r),
                   ),

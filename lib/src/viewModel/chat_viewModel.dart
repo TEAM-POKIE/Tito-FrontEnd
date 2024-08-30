@@ -1,21 +1,19 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
+import 'package:tito_app/core/provider/ai_Response_Provider.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
-
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
-import 'package:tito_app/core/provider/timer_provider.dart';
 import 'package:tito_app/core/provider/userProfile_provider.dart';
-
+import 'package:tito_app/src/data/models/api_response.dart';
 import 'package:tito_app/src/data/models/debate_info.dart';
-
 import 'package:tito_app/src/viewModel/timer_viewModel.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
@@ -86,11 +84,66 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     });
   }
 
+  void updateExplanation(List<String>? explanation, String? contentEdited) {
+    if (state != null) {
+      state = state!.copyWith(
+          explanation: explanation,
+          contentEdited: contentEdited,
+          isFirstClick: false,
+          isLoading: false);
+    }
+  }
+
+  void resetExplanation() {
+    if (state != null) {
+      state = state!.copyWith(
+        explanation: [''],
+        contentEdited: '',
+        isLoading: false,
+        isFirstClick: true,
+      );
+    }
+    print(state!.isFirstClick);
+  }
+
+  void updateText() {
+    controller.text = state!.contentEdited;
+  }
+
+  Future<void> createLLM() async {
+    final chatNotifier = ref.read(chatInfoProvider.notifier);
+    state = state!.copyWith(isLoading: true);
+    try {
+      final message = controller.text;
+      if (message.isEmpty) {
+        throw Exception("Message is empty");
+      }
+
+      final responseString = await ApiService(DioClient.dio)
+          .postRefineArgument({"argument": message});
+
+      final Map<String, dynamic> response = jsonDecode(responseString);
+
+      if (response.containsKey('data') &&
+          response['data'] is Map<String, dynamic>) {
+        final aiResponse = AiResponse.fromJson(response['data']);
+        ref.read(aiResponseProvider.notifier).setAiResponse(aiResponse);
+
+        chatNotifier.updateExplanation(
+            aiResponse.explanation, aiResponse.contentEdited);
+      } else {
+        throw Exception("Unexpected data format or missing 'data' key");
+      }
+    } catch (e) {
+      print("Error in sendMessage: $e");
+    }
+  }
+
   void sendMessage() {
     final loginInfo = ref.read(loginInfoProvider);
 
     final message = controller.text;
-
+    resetExplanation();
     if (message.isEmpty) return;
 
     final jsonMessage = json.encode({
@@ -104,6 +157,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     _channel.sink.add(jsonMessage);
     controller.clear();
     focusNode.requestFocus();
+
     // Reset the timer to 8 minutes
   }
 
@@ -137,7 +191,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
       "userId": loginInfo?.id ?? '',
       "debateId": state?.id ?? 0,
       "userNickName": loginInfo!.nickname,
-      "userImgUrl": loginInfo.profilePicture,
+      "userImgUrl": loginInfo.profilePicture ?? "",
       "content": message,
     });
     print(jsonMessage);

@@ -4,13 +4,26 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/ai_provider.dart';
-
 import 'package:go_router/go_router.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:tito_app/core/provider/ai_response_provider.dart';
+import 'package:tito_app/core/provider/chat_view_provider.dart';
 
-class AiCreate extends ConsumerWidget {
+class AiCreate extends ConsumerStatefulWidget {
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _AiCreateState createState() => _AiCreateState();
+}
+
+class _AiCreateState extends ConsumerState<AiCreate> {
+  @override
+  void initState() {
+    super.initState();
+    final selectionNotifier = ref.read(selectionProvider.notifier);
+    selectionNotifier.getWord();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final selectionState = ref.watch(selectionProvider);
     final selectionNotifier = ref.read(selectionProvider.notifier);
 
@@ -99,7 +112,8 @@ class AiCreate extends ConsumerWidget {
                             controller: ScrollController(),
                             scrollDirection: Axis.horizontal,
                             children: selectionState.selectedItems
-                                .map((index) => _buildSelectedItem(index))
+                                .map((index) => _buildSelectedItem(index,
+                                    selectionState.randomWord[index].word))
                                 .toList(),
                           ),
                         ),
@@ -114,7 +128,7 @@ class AiCreate extends ConsumerWidget {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20.w),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () => selectionNotifier.getWord(),
                         child: Text(
                           '새로고침',
                           style: FontSystem.KR16SB
@@ -136,7 +150,11 @@ class AiCreate extends ConsumerWidget {
                       crossAxisCount: 3,
                       childAspectRatio: 1.3 / 1,
                       children: List.generate(9, (index) {
-                        return _buildGridItem(context, '원숭이다리', index);
+                        String word = selectionState.randomWord != null &&
+                                selectionState.randomWord.length > index
+                            ? selectionState.randomWord[index].word
+                            : '로딩 중...'; // 단어가 없는 경우 로딩 메시지 표시
+                        return _buildGridItem(context, word, index);
                       }),
                     ),
                   ),
@@ -150,7 +168,7 @@ class AiCreate extends ConsumerWidget {
                   child: ElevatedButton(
                     onPressed: selectionState.selectedItems.isNotEmpty
                         ? () async {
-                            await selectionNotifier.resetSelection();
+                            await selectionNotifier.createSelection();
                             if (!selectionState.isLoading) {
                               context.push('/ai_select');
                             }
@@ -201,18 +219,17 @@ class AiCreate extends ConsumerWidget {
     );
   }
 
-  Widget _buildSelectedItem(int index) {
+  Widget _buildSelectedItem(int index, String word) {
+    final selectionNotifier = ref.read(selectionProvider.notifier);
     return GestureDetector(
-      onTap: () {
-        _scrollToItem(index);
-      },
+      onTap: () {},
       child: Container(
         key: GlobalKey(),
         height: 30.h,
         margin: EdgeInsets.symmetric(horizontal: 3.w),
         child: Chip(
           label: Text(
-            '$index 원숭이다리',
+            word,
             style: FontSystem.KR14M.copyWith(color: ColorSystem.white),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -223,16 +240,14 @@ class AiCreate extends ConsumerWidget {
             color: ColorSystem.white,
             size: 20,
           ),
-          onDeleted: () {},
+          onDeleted: () {
+            selectionNotifier.toggleSelection(index); // 항목 삭제
+          },
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.r),
           ),
         ),
       ),
     );
-  }
-
-  void _scrollToItem(int index) {
-// Add scroll-to-item logic if needed
   }
 }
