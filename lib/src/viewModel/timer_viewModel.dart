@@ -78,8 +78,12 @@ class TimerNotifier extends StateNotifier<TimerState> {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (state.remainingTime.inSeconds > 0) {
         final newRemainingTime = state.remainingTime - Duration(seconds: 1);
-        state = state.copyWith(remainingTime: newRemainingTime);
-        _updateChatState(newRemainingTime);
+        if (mounted) {
+          // mounted 확인 추가
+          state = state.copyWith(remainingTime: newRemainingTime);
+          _updateChatState(newRemainingTime);
+        }
+
         // 타이머 상태가 저장될 때마다 SharedPreferences를 업데이트하지 않도록 수정
         if (newRemainingTime.inSeconds % 10 == 0) {
           _saveTimerState(); // 주기적으로만 저장
