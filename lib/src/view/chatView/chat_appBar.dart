@@ -68,7 +68,7 @@ class DebateAppbar extends ConsumerWidget {
         children: [
           ConstrainedBox(
             constraints: BoxConstraints(
-              maxWidth: 200.0,
+              maxWidth: 150.0.w,
             ),
             child: Text(
               title,
