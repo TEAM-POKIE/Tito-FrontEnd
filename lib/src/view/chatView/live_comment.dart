@@ -183,6 +183,7 @@ class _LiveCommentState extends ConsumerState<LiveComment>
                             padding: EdgeInsets.symmetric(
                                 horizontal: 16.0, vertical: 8.0),
                             child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CircleAvatar(
                                   backgroundImage: NetworkImage(
@@ -201,9 +202,13 @@ class _LiveCommentState extends ConsumerState<LiveComment>
                                 SizedBox(
                                   width: 10,
                                 ),
-                                Text(
-                                  message['content'] ?? '',
-                                  style: FontSystem.KR14M,
+                                Expanded(
+                                  child: Text(
+                                    message['content'] ?? '',
+                                    style: FontSystem.KR14M,
+                                    maxLines: null,
+                                    overflow: TextOverflow.visible,
+                                  ),
                                 ),
                               ],
                             ),

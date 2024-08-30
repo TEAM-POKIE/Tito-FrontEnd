@@ -212,6 +212,7 @@ class JoinerChatList extends StatelessWidget {
                       horizontal: 10.w,
                     ),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: isMyMessage
                           ? MainAxisAlignment.end
                           : MainAxisAlignment.start,
@@ -235,6 +236,9 @@ class JoinerChatList extends StatelessWidget {
                           ),
                         SizedBox(width: 8.w),
                         Column(
+                          crossAxisAlignment: isMyMessage
+                              ? CrossAxisAlignment.end
+                              : CrossAxisAlignment.start,
                           children: [
                             if (!isMyMessage)
                               Container(
@@ -401,6 +405,7 @@ class ParticipantsList extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                           vertical: 20.h, horizontal: 20.w),
                       child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         mainAxisAlignment: isMyMessage
                             ? MainAxisAlignment.end
                             : MainAxisAlignment.start,
@@ -424,6 +429,9 @@ class ParticipantsList extends StatelessWidget {
                             ),
                           const SizedBox(width: 8),
                           Column(
+                            crossAxisAlignment: isMyMessage
+                                ? CrossAxisAlignment.end
+                                : CrossAxisAlignment.start,
                             children: [
                               Container(
                                 constraints:
