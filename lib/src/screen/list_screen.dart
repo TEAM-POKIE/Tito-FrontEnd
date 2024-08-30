@@ -452,9 +452,9 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   String _getSubText(Debate debate) {
     switch (debate.debateStatus) {
       case 'CREATED':
-        return '승률 ${debate.debateOwnerWinningRate}% 토론러 대기중';
+        return '${debate.debateOwnerNickname}님이 대기 중';
       case 'IN_PROGRESS':
-        return '${debate.debateOwnerNickname} VS ${debate.debateJoinerNickname}';
+        return '${debate.debateOwnerNickname}님과 ${debate.debateJoinerNickname}님이 토론 중';
       case 'VOTING':
         return '나도 투표 참여하러 가기';
       case 'ENDED':

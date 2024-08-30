@@ -246,11 +246,13 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottom> {
             Expanded(
               child: Container(
                 width: 320.w,
-                height: 40.h,
                 child: TextField(
                   controller: _controller,
                   autocorrect: false,
                   focusNode: _focusNode,
+                  keyboardType: TextInputType.multiline,
+                  minLines: 1,
+                  maxLines: 3,
                   decoration: InputDecoration(
                     hintText: '첫 입론을 입력해주세요 !',
                     hintStyle:

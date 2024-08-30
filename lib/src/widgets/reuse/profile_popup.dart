@@ -183,7 +183,14 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
             children: [
               CircleAvatar(
                 radius: 35.r, // 아이콘 크기
-                backgroundImage: NetworkImage(userState!.profilePicture),
+                backgroundImage: userState?.profilePicture != null &&
+                        userState!.profilePicture!.isNotEmpty
+                    ? NetworkImage(userState!.profilePicture!)
+                    : null,
+                child: userState?.profilePicture == null ||
+                        userState!.profilePicture?.isEmpty == true
+                    ? Icon(Icons.person, size: 35.r) // 기본 아이콘 또는 대체 아이콘
+                    : null,
                 onBackgroundImageError: (_, __) {
                   // 이미지 로드 오류 처리
                 },

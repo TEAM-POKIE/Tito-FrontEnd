@@ -203,11 +203,11 @@ class JoinerChatList extends StatelessWidget {
 
         if (loginInfo.id == chatState.debateOwnerId) {
           if (index == 3) {
-            chatState.lastUrl = message['userImageUrl'];
+            chatState.lastUrl = message['userImageUrl'] ?? '';
           }
         } else {
           if (index == 2) {
-            chatState.lastUrl = message['userImageUrl'];
+            chatState.lastUrl = message['userImageUrl'] ?? '';
           }
         }
 
@@ -234,13 +234,15 @@ class JoinerChatList extends StatelessWidget {
                                   message['userId'], context);
                             },
                             icon: CircleAvatar(
-                              backgroundImage: message['userImageUrl'] != null
-                                  ? NetworkImage(message['userImageUrl'])
-                                  : null, // null일 경우
+                              backgroundImage:
+                                  message['userImageUrl'] != null &&
+                                          message['userImageUrl']!.isNotEmpty
+                                      ? NetworkImage(message['userImageUrl']!)
+                                      : null,
                               radius: 20.r,
-                              child: message['userImageUrl'] == null
-                                  ? Icon(Icons.person,
-                                      size: 20.r) // 기본 아이콘 또는 다른 대체 UI 요소
+                              child: message['userImageUrl'] == null ||
+                                      message['userImageUrl']!.isEmpty
+                                  ? Icon(Icons.person, size: 20.r)
                                   : null,
                             ),
                           ),
@@ -298,13 +300,15 @@ class JoinerChatList extends StatelessWidget {
                                   message['userId'], context);
                             },
                             icon: CircleAvatar(
-                              backgroundImage: message['userImageUrl'] != null
-                                  ? NetworkImage(message['userImageUrl'])
-                                  : null, // null일 경우
+                              backgroundImage:
+                                  message['userImageUrl'] != null &&
+                                          message['userImageUrl']!.isNotEmpty
+                                      ? NetworkImage(message['userImageUrl']!)
+                                      : null,
                               radius: 20.r,
-                              child: message['userImageUrl'] == null
-                                  ? Icon(Icons.person,
-                                      size: 20.r) // 기본 아이콘 또는 다른 대체 UI 요소
+                              child: message['userImageUrl'] == null ||
+                                      message['userImageUrl']!.isEmpty
+                                  ? Icon(Icons.person, size: 20.r)
                                   : null,
                             ),
                           ),
@@ -316,9 +320,7 @@ class JoinerChatList extends StatelessWidget {
                         padding: EdgeInsets.only(top: 5.h, bottom: 5.h),
                         child: Center(child: Text(message['content'] ?? '')),
                       )
-                    : SizedBox(
-                        width: 0,
-                      ),
+                    : SizedBox(width: 0),
             if (messages.length == 3 && index == messages.length - 1)
               Row(
                 children: [
@@ -357,13 +359,14 @@ class JoinerChatList extends StatelessWidget {
                         }
                       },
                       icon: CircleAvatar(
-                        backgroundImage: chatState.lastUrl != null
+                        backgroundImage: chatState.lastUrl != null &&
+                                chatState.lastUrl.isNotEmpty
                             ? NetworkImage(chatState.lastUrl)
-                            : null, // null일 경우
+                            : null,
                         radius: 20.r,
-                        child: chatState.lastUrl == null
-                            ? Icon(Icons.person,
-                                size: 20.r) // 기본 아이콘 또는 다른 대체 UI 요소
+                        child: chatState.lastUrl == null ||
+                                chatState.lastUrl.isEmpty
+                            ? Icon(Icons.person, size: 20.r)
                             : null,
                       ),
                     ),
@@ -398,13 +401,14 @@ class JoinerChatList extends StatelessWidget {
                         }
                       },
                       icon: CircleAvatar(
-                        backgroundImage: chatState.lastUrl != null
-                            ? NetworkImage(chatState.lastUrl)
-                            : null, // null일 경우
+                        backgroundImage: chatState.lastUrl != null &&
+                                chatState.lastUrl!.isNotEmpty
+                            ? NetworkImage(chatState.lastUrl!)
+                            : null,
                         radius: 20.r,
-                        child: chatState.lastUrl == null
-                            ? Icon(Icons.person,
-                                size: 20.r) // 기본 아이콘 또는 다른 대체 UI 요소
+                        child: chatState.lastUrl == null ||
+                                chatState.lastUrl!.isEmpty
+                            ? Icon(Icons.person, size: 20.r)
                             : null,
                       ),
                     ),
@@ -425,9 +429,7 @@ class JoinerChatList extends StatelessWidget {
               SizedBox(
                 width: 0.w,
               ),
-            SizedBox(
-              height: 20.h,
-            ),
+            SizedBox(height: 20.h),
             if (index == messages.length - 1)
               chatState.explanation != null &&
                       chatState.explanation!.any((e) => e.isNotEmpty)
@@ -486,11 +488,14 @@ class ParticipantsList extends StatelessWidget {
                                     message['userId'], context);
                               },
                               icon: CircleAvatar(
-                                backgroundImage: message['userImageUrl'] != null
-                                    ? NetworkImage(message['userImageUrl'])
-                                    : null, // null일 경우
+                                backgroundImage:
+                                    message['userImageUrl'] != null &&
+                                            message['userImageUrl'].isNotEmpty
+                                        ? NetworkImage(message['userImageUrl']!)
+                                        : null, // null일 경우
                                 radius: 20.r,
-                                child: message['userImageUrl'] == null
+                                child: message['userImageUrl'] == null ||
+                                        message['userImageUrl']!.isEmpty
                                     ? Icon(Icons.person,
                                         size: 20.r) // 기본 아이콘 또는 다른 대체 UI 요소
                                     : null,
@@ -529,16 +534,19 @@ class ParticipantsList extends StatelessWidget {
                                     message['userId'], context);
                               },
                               icon: CircleAvatar(
-                                backgroundImage: message['userImageUrl'] != null
-                                    ? NetworkImage(message['userImageUrl'])
-                                    : null, // null일 경우
+                                backgroundImage:
+                                    message['userImageUrl'] != null &&
+                                            message['userImageUrl'].isNotEmpty
+                                        ? NetworkImage(message['userImageUrl']!)
+                                        : null, // null일 경우
                                 radius: 20.r,
-                                child: message['userImageUrl'] == null
+                                child: message['userImageUrl'] == null ||
+                                        message['userImageUrl']!.isEmpty
                                     ? Icon(Icons.person,
                                         size: 20.r) // 기본 아이콘 또는 다른 대체 UI 요소
                                     : null,
                               ),
-                            )
+                            ),
                         ],
                       ),
                     )
