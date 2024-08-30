@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/constants/style.dart';
@@ -6,10 +7,8 @@ import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-//import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
@@ -40,7 +39,7 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
       final authResponse = await ApiService(DioClient.dio).signIn({
         'email': _enteredEmail,
         'password': _enteredPassword,
-        'fcmToken': 'sd',
+        'fcmToken': await FirebaseMessaging.instance.getToken() ?? '',
       });
 
       // & Phase 2. 수신한 Access, Refresh Token 시큐어 스토리지에 저장

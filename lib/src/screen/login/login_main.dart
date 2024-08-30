@@ -1,7 +1,4 @@
-import 'dart:developer';
-import 'dart:io';
-
-import 'package:flutter/foundation.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -10,13 +7,9 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
-import 'package:tito_app/core/constants/style.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
-import 'package:http/http.dart' as http;
-//import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
@@ -36,6 +29,7 @@ class LoginMain extends StatelessWidget {
     Future<void> _signInWithGoogle() async {
       // ! Google OAUTH 설정 로드
       const FlutterAppAuth appAuth = FlutterAppAuth();
+      // TODO: 추후 하드코딩 제거
       // const FlutterSecureStorage secureStorage = FlutterSecureStorage();
       final String clientId =
           "964139724412-0ne5ikmk6o3s32jejsuhedohs128nek0.apps.googleusercontent.com";
@@ -74,8 +68,10 @@ class LoginMain extends StatelessWidget {
           await secureStorage.write(key: 'id_token', value: idToken);
 
           // & Phase 3. Backend에 토큰 보내서 확인받음
-          final authResponse = await ApiService(DioClient.dio)
-              .oAuthGoogle({"accessToken": accessToken});
+          final authResponse = await ApiService(DioClient.dio).oAuthGoogle({
+            "accessToken": accessToken,
+            'fcmToken': await FirebaseMessaging.instance.getToken() ?? ''
+          });
 
           // & Phase 4. 성공한 경우 마이데이터 조회, nickname 유무 확인
           await DioClient.setToken(authResponse.accessToken.token);
@@ -108,8 +104,10 @@ class LoginMain extends StatelessWidget {
         debugPrint(token.accessToken);
 
         // & Phase 3. Backend에 토큰 보내서 확인받음
-        final authResponse = await ApiService(DioClient.dio)
-            .oAuthKakao({"accessToken": token.accessToken});
+        final authResponse = await ApiService(DioClient.dio).oAuthKakao({
+          "accessToken": token.accessToken,
+          'fcmToken': await FirebaseMessaging.instance.getToken() ?? ''
+        });
 
         // & Phase 4. 성공한 경우 마이데이터 조회, nickname 유무 확인
         await DioClient.setToken(authResponse.accessToken.token);
@@ -139,6 +137,7 @@ class LoginMain extends StatelessWidget {
           ],
           webAuthenticationOptions: WebAuthenticationOptions(
               clientId: 'titoApp.example.com', // 서비스 ID에 해당하는 clientId
+              // TODO: 이거 수정 안했는데 잘 작동 됨. 추후 확인 필요.
               redirectUri: Uri.parse('https://dev.tito.lat/oauth/apple')),
           nonce: 'example-nonce',
           state: 'example-state',
@@ -146,8 +145,10 @@ class LoginMain extends StatelessWidget {
 
         if (credential != null) {
           // & Phase 3. Backend에 토큰 보내서 확인받음
-          final authResponse = await ApiService(DioClient.dio)
-              .oAuthApple({"accessToken": credential.identityToken!});
+          final authResponse = await ApiService(DioClient.dio).oAuthApple({
+            "accessToken": credential.identityToken!,
+            'fcmToken': await FirebaseMessaging.instance.getToken() ?? ''
+          });
 
           // & Phase 4. 성공한 경우 마이데이터 조회, nickname 유무 확인
           await DioClient.setToken(authResponse.accessToken.token);
@@ -192,29 +193,6 @@ class LoginMain extends StatelessWidget {
             Column(
               children: [
                 // ! 구글 버튼
-                // Container(
-                //   width: 327.w,
-                //   height: 54.h,
-                //   decoration: BoxDecoration(
-                //       color: ColorSystem.white,
-                //       borderRadius: BorderRadius.circular(6.r)),
-                //   child: GestureDetector(
-                //     onTap: _signInWithGoogle,
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       crossAxisAlignment: CrossAxisAlignment.center,
-                //       children: [
-                //         SvgPicture.asset('assets/icons/google_new.svg'),
-                //         SizedBox(width: 5.w),
-                //         Text('Google 계정으로 로그인',
-                //             style: FontSystem.Login16M.copyWith(
-                //                 color: ColorSystem.googleFont))
-                //       ],
-                //     ),
-                //   ),
-                // ),
-                // SizedBox(height: 10.h),
-
                 //버튼 클릭 효과 새로 지정
                 Container(
                   width: 327.w,
