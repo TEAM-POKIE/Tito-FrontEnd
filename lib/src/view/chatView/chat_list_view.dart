@@ -475,7 +475,8 @@ class ParticipantsList extends StatelessWidget {
                             ? MainAxisAlignment.end
                             : MainAxisAlignment.start,
                         children: [
-                          if (!isMyMessage || index == 2)
+                          if (!isMyMessage ||
+                              index == 2 && messages.length == 3)
                             IconButton(
                               onPressed: () {
                                 chatViewModel.getProfile(
@@ -497,7 +498,7 @@ class ParticipantsList extends StatelessWidget {
                             ),
                           const SizedBox(width: 8),
                           Column(
-                            crossAxisAlignment: isMyMessage && index != 2
+                            crossAxisAlignment: isMyMessage
                                 ? CrossAxisAlignment.end
                                 : CrossAxisAlignment.start,
                             children: [
@@ -520,9 +521,8 @@ class ParticipantsList extends StatelessWidget {
                               ),
                             ],
                           ),
-                          if (isMyMessage && index != 2)
-                            const SizedBox(width: 8),
-                          if (isMyMessage && index != 2)
+                          if (isMyMessage) const SizedBox(width: 8),
+                          if (isMyMessage && messages.length != 3)
                             IconButton(
                               onPressed: () {
                                 chatViewModel.getProfile(

@@ -189,7 +189,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     final message = controller.text;
 
     if (message.isEmpty) return;
-
+    state = state?.copyWith(isVoteEnded: false);
     final jsonMessage = json.encode({
       "command": "CHAT",
       "userId": loginInfo?.id ?? '',

@@ -23,6 +23,8 @@ class _LiveCommentState extends ConsumerState<LiveComment>
   late StreamSubscription<Map<String, dynamic>> _subscription;
   List<AnimationController> _animationControllers = [];
   List<Animation<double>> _animations = [];
+  Map<String, dynamic>? _firstMessage; // 첫 번째 메시지를 저장할 변수
+
   List<double> _positions = [];
 
   @override
@@ -54,15 +56,27 @@ class _LiveCommentState extends ConsumerState<LiveComment>
   void _subscribeToMessages() {
     final webSocketService = ref.read(liveWebSocketProvider);
     final voteViewModel = ref.watch(voteProvider.notifier);
+    final chatState = ref.watch(chatInfoProvider);
 
-    webSocketService.stream.listen((message) {
+    _subscription = webSocketService.stream.listen((message) {
+      if (chatState!.isVoteEnded) {
+        return;
+      }
+
       if (message.containsKey('content')) {
-        if (mounted) {
-          setState(() {
-            _messages.add(message);
-          });
+        if (_firstMessage == null) {
+          // 첫 번째 메시지 설정
+          _firstMessage = message;
+          _addMessage(message);
+        } else if (_isSameMessage(_firstMessage!, message)) {
+          // 첫 번째 메시지와 동일한 메시지가 들어오면 메시지 추가 중단
+          chatState.isVoteEnded = true;
+        } else {
+          // 첫 번째 메시지와 다른 메시지인 경우에만 추가
+          _addMessage(message);
         }
       }
+
       if (message['command'] == "VOTE_RATE_RES") {
         final newBlueVotes = message["ownerVoteRate"];
         final newRedVotes = message["joinerVoteRate"];
@@ -71,6 +85,21 @@ class _LiveCommentState extends ConsumerState<LiveComment>
         voteViewModel.updateVotes(newBlueVotes, newRedVotes);
       }
     });
+  }
+
+  bool _isSameMessage(Map<String, dynamic> first, Map<String, dynamic> second) {
+    // 두 메시지의 'content', 'userId', 'createdAt'가 동일한지 확인하여 동일한 메시지인지 판단
+    return first['content'] == second['content'] &&
+        first['userId'] == second['userId'] &&
+        first['createdAt'] == second['createdAt'];
+  }
+
+  void _addMessage(Map<String, dynamic> message) {
+    if (mounted) {
+      setState(() {
+        _messages.add(message);
+      });
+    }
   }
 
   void _toggleExpand() {

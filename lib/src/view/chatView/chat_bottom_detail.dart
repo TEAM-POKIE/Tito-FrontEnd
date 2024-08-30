@@ -20,6 +20,10 @@ class ChatBottomDetail extends ConsumerStatefulWidget {
 }
 
 class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
+  late final chatViewModel = ref.read(chatInfoProvider.notifier);
+  late final loginInfo = ref.read(loginInfoProvider);
+  late final popupViewModel = ref.read(popupProvider.notifier);
+
   @override
   void initState() {
     super.initState();
@@ -31,16 +35,12 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
   }
 
   void handleSendMessage(BuildContext context) async {
-    final loginInfo = ref.read(loginInfoProvider);
-    final chatViewModel = ref.read(chatInfoProvider.notifier);
     final chatState = ref.read(chatInfoProvider);
     final popupState = ref.read(popupProvider);
 
     if (chatState!.debateJoinerId == 0 &&
         chatState.debateJoinerTurnCount == 0 &&
         chatState.debateOwnerId != loginInfo!.id) {
-      final popupViewModel = ref.read(popupProvider.notifier);
-
       popupState
         ..buttonStyle = 1
         ..title = '토론에 참여하시겠습니까?'
@@ -51,8 +51,8 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
       await popupViewModel.showDebatePopup(context);
       chatViewModel.sendJoinMessage(context);
     } else if (chatState.debateJoinerId == loginInfo!.id ||
-        chatState.debateOwnerId == loginInfo.id) {
-      if (chatState.debateJoinerId == loginInfo.id) {
+        chatState.debateOwnerId == loginInfo!.id) {
+      if (chatState.debateJoinerId == loginInfo!.id) {
         if (chatState.debateJoinerTurnCount < chatState.debateOwnerTurnCount) {
           if (chatState.isFirstClick == true) {
             chatViewModel.createLLM();
@@ -65,7 +65,6 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
           if (chatState.isFirstClick) {
             chatViewModel.createLLM();
           } else {
-            print('여기2');
             chatViewModel.sendMessage();
           }
         }
@@ -109,11 +108,9 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
                       child: TextField(
                         minLines: 1,
                         maxLines: 3,
-                        controller:
-                            ref.read(chatInfoProvider.notifier).controller,
+                        controller: chatViewModel.controller,
                         autocorrect: false,
-                        focusNode:
-                            ref.read(chatInfoProvider.notifier).focusNode,
+                        focusNode: chatViewModel.focusNode,
                         decoration: InputDecoration(
                           hintText: '상대 의견 작성 타임이에요!',
                           hintStyle: FontSystem.KR16M
