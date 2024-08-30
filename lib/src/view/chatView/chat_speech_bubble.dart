@@ -80,8 +80,9 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
           return StaticTextBubble(
             title: '토론 참여자를 기다리고 있어요!\n의견을 작성해보세요',
             width: 210.w,
-            height: 70.h,
+            height: 64.h,
           );
+
         default:
           if (chatState.debateJoinerTurnCount > 2) {
             return Column(
@@ -101,54 +102,6 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
       }
     }
 
-    // if (isMyNick) {
-    //   switch (myTurn) {
-    //     case 0:
-    //       return StaticTextBubble(
-    //         chatState: chatState,
-    //         title: '첫 입론을 입력하세요',
-    //         width: (MediaQuery.of(context).size.width - 100) * 0.7,
-    //         height: (MediaQuery.of(context).size.height - 450) * 0.2,
-    //       );
-
-    //     default:
-    //       if (opponentTurn == 0) {
-    //         SizedBox(
-    //           width: 0,
-    //         );
-    //       }
-    //       if (opponentTurn >= 3) {
-    //         return TimingButton(
-    //           sendNick: sendNick,
-    //           popupViewModel: popupViewModel,
-    //           popupState: popupState,
-    //         );
-    //       }
-    //       break; // Added break to handle cases where opponentTurn < 1
-    //   }
-    // } else {
-    //   switch (opponentTurn) {
-    //     case 0:
-    //       return StaticTextBubble(
-    //         chatState: chatState,
-    //         title: '토론 참여자를 기다리고 있어요!\n의견을 작성해보세요',
-    //         width: (MediaQuery.of(context).size.width - 100) * 0.8,
-    //         height: (MediaQuery.of(context).size.height - 450) * 0.3,
-    //       );
-
-    //     default:
-    //       if (opponentTurn >= 3) {
-    //         return TimingButton(
-    //           sendNick: sendNick,
-    //           popupViewModel: popupViewModel,
-    //           popupState: popupState,
-    //         );
-    //       }
-    //       break; // Added break to handle cases where opponentTurn < 3
-    //   }
-    // }
-
-    // Return a default widget if no conditions are met
     return const SizedBox.shrink();
   }
 }
@@ -169,25 +122,59 @@ class StaticTextBubble extends StatefulWidget {
   _StaticTextBubbleState createState() => _StaticTextBubbleState();
 }
 
-class _StaticTextBubbleState extends State<StaticTextBubble> {
+class _StaticTextBubbleState extends State<StaticTextBubble>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<Offset> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _animation = Tween<Offset>(
+      begin: Offset(0, 0),
+      end: Offset(0, 0.1), // 위아래로 움직이는 범위 설정
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // if (!mounted || widget.chatState.isVisible == false) {
-    //   return const SizedBox.shrink(); // 빈 공간 반환
-    // }
-
-    return SpeechBalloon(
-      width: widget.width,
-      height: widget.height,
-      borderRadius: 15.r,
-      nipLocation: NipLocation.bottom,
-      color: ColorSystem.purple,
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 10.h),
-        child: Text(
-          widget.title,
-          textAlign: TextAlign.center,
-          style: FontSystem.KR16R.copyWith(color: Colors.white),
+    return Container(
+      color: ColorSystem.grey3,
+      width: 390.w,
+      padding: EdgeInsets.symmetric(
+        vertical: 20.h,
+      ),
+      child: SlideTransition(
+        position: _animation,
+        child: SpeechBalloon(
+          width: widget.width,
+          height: widget.height,
+          borderRadius: 15.r,
+          nipLocation: NipLocation.bottom,
+          color: ColorSystem.purple,
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Text(
+              widget.title,
+              textAlign: TextAlign.center,
+              style: FontSystem.KR16R.copyWith(color: Colors.white),
+            ),
+          ),
         ),
       ),
     );

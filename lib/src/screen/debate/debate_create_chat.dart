@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:speech_balloon/speech_balloon.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
@@ -30,6 +31,7 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
   Widget build(BuildContext context) {
     final debateState = ref.watch(debateCreateProvider);
     final debateViewModel = ref.read(debateCreateProvider.notifier);
+    final chatViewModel = ref.read(chatInfoProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -110,6 +112,7 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
                 child: AnimatedTextBubble(
                   title: '첫 입론을 입력해주세요!',
                   width: 180.w,
+                  height: 42.h,
                 ),
               ),
             ),
@@ -126,7 +129,9 @@ class AnimatedTextBubble extends StatefulWidget {
   final String title;
   final double width;
 
-  const AnimatedTextBubble({required this.title, required this.width});
+  final double height;
+  const AnimatedTextBubble(
+      {required this.title, required this.width, required this.height});
 
   @override
   _AnimatedTextBubbleState createState() => _AnimatedTextBubbleState();
@@ -163,19 +168,25 @@ class _AnimatedTextBubbleState extends State<AnimatedTextBubble>
 
   @override
   Widget build(BuildContext context) {
-    return SlideTransition(
-      position: _animation,
-      child: Container(
-        width: widget.width,
-        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
-        decoration: BoxDecoration(
-          color: ColorSystem.purple, // 버블 배경색
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-        child: Text(
-          widget.title,
-          textAlign: TextAlign.center,
-          style: FontSystem.KR16SB.copyWith(color: Colors.white),
+    return Container(
+      color: ColorSystem.grey3,
+      width: 390.w,
+      child: SlideTransition(
+        position: _animation,
+        child: SpeechBalloon(
+          width: widget.width,
+          height: widget.height,
+          borderRadius: 15.r,
+          nipLocation: NipLocation.bottom,
+          color: ColorSystem.purple,
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Text(
+              widget.title,
+              textAlign: TextAlign.center,
+              style: FontSystem.KR16R.copyWith(color: Colors.white),
+            ),
+          ),
         ),
       ),
     );

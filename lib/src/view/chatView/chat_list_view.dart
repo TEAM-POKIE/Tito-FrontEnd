@@ -348,7 +348,13 @@ class JoinerChatList extends StatelessWidget {
                     padding: EdgeInsets.only(left: 10.w),
                     child: IconButton(
                       onPressed: () {
-                        chatViewModel.getProfile(message['userId'], context);
+                        if (loginInfo.id == chatState.debateJoinerId) {
+                          chatViewModel.getProfile(
+                              chatState.debateOwnerId, context);
+                        } else {
+                          chatViewModel.getProfile(
+                              chatState.debateJoinerId, context);
+                        }
                       },
                       icon: CircleAvatar(
                         backgroundImage: chatState.lastUrl != null
@@ -383,7 +389,13 @@ class JoinerChatList extends StatelessWidget {
                     padding: EdgeInsets.only(left: 10.w),
                     child: IconButton(
                       onPressed: () {
-                        chatViewModel.getProfile(message['userId'], context);
+                        if (loginInfo.id == chatState.debateJoinerId) {
+                          chatViewModel.getProfile(
+                              chatState.debateOwnerId, context);
+                        } else {
+                          chatViewModel.getProfile(
+                              chatState.debateJoinerId, context);
+                        }
                       },
                       icon: CircleAvatar(
                         backgroundImage: chatState.lastUrl != null
