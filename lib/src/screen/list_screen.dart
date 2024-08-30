@@ -329,13 +329,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                             horizontal: 20.h, vertical: 5.w),
                         child: Container(
                           decoration: BoxDecoration(
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Color(0x669795A3),
-                                spreadRadius: 0,
-                                blurRadius: 4,
-                              )
-                            ],
                             color: ColorSystem.white,
                             borderRadius: BorderRadius.circular(20.r),
                           ),
