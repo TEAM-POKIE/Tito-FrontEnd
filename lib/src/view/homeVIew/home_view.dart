@@ -97,7 +97,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                   borderRadius: BorderRadius.circular(20.r),
                                 ),
                                 child: Text(
-                                  debate.debateStatus,
+                                  '실시간 토론 중',
                                   style: FontSystem.KR14SB.copyWith(
                                     color: ColorSystem.white,
                                   ),

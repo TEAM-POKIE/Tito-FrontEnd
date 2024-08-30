@@ -456,8 +456,8 @@ class ParticipantsList extends StatelessWidget {
       itemCount: messages.length,
       itemBuilder: (context, index) {
         final message = messages[index];
-        final isMyMessage = messages.length > 2 &&
-            message['userId'] == messages[2]['userId']; // 메시지 길이 확인 추가
+        final isMyMessage =
+            messages.length > 2 && message['userId'] == messages[2]['userId'];
         final chatMessage = message['command'] == 'CHAT';
         final formattedTime = TimeOfDay.now().format(context);
 
@@ -471,11 +471,11 @@ class ParticipantsList extends StatelessWidget {
                           vertical: 20.h, horizontal: 20.w),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: isMyMessage
+                        mainAxisAlignment: isMyMessage && messages.length != 3
                             ? MainAxisAlignment.end
                             : MainAxisAlignment.start,
                         children: [
-                          if (!isMyMessage)
+                          if (!isMyMessage || index == 2)
                             IconButton(
                               onPressed: () {
                                 chatViewModel.getProfile(
@@ -497,7 +497,7 @@ class ParticipantsList extends StatelessWidget {
                             ),
                           const SizedBox(width: 8),
                           Column(
-                            crossAxisAlignment: isMyMessage
+                            crossAxisAlignment: isMyMessage && index != 2
                                 ? CrossAxisAlignment.end
                                 : CrossAxisAlignment.start,
                             children: [
@@ -520,8 +520,9 @@ class ParticipantsList extends StatelessWidget {
                               ),
                             ],
                           ),
-                          if (isMyMessage) const SizedBox(width: 8),
-                          if (isMyMessage)
+                          if (isMyMessage && index != 2)
+                            const SizedBox(width: 8),
+                          if (isMyMessage && index != 2)
                             IconButton(
                               onPressed: () {
                                 chatViewModel.getProfile(

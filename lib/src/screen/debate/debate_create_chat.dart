@@ -232,7 +232,6 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottom> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80.h,
       color: Colors.white, // 입력바 배경색 설정
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 10.w),

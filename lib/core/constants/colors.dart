@@ -9,6 +9,7 @@ class ColorSystem {
   static const Color turquoise = Color.fromARGB(153, 97, 213, 238);
   static const Color lightPurple = Color.fromARGB(51, 142, 72, 248);
   static const Color white = Color(0xFFFFFFFF);
+  static const Color lightPurple2 = Color(0xFF9B8EFA);
   static const Color yellow = Color(0xFFDEF008);
   static const Color lightYellow = Color.fromARGB(128, 220, 243, 51);
   static const Color ligthGrey = Color(0xFFF6F6F6);

@@ -458,7 +458,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   Color _getSubTextColor(Debate debate) {
     switch (debate.debateStatus) {
       case 'CREATED':
-        return ColorSystem.purple;
+        return ColorSystem.white;
       case 'IN_PROGRESS':
         return ColorSystem.purple;
       case 'VOTING':
@@ -474,7 +474,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 Color _getStatusColor(String? status) {
   switch (status) {
     case 'CREATED':
-      return ColorSystem.lightPurple; // CREATED 상태의 배경색
+      return ColorSystem.lightPurple2; // CREATED 상태의 배경색
     case 'IN_PROGRESS':
       return ColorSystem.lightPurple; // IN_PROGRESS 상태의 배경색
     case 'VOTING':
