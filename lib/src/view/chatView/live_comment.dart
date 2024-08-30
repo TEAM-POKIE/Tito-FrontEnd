@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'dart:math';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/live_webSocket_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/core/provider/voting_provider.dart';
 
 class LiveComment extends ConsumerStatefulWidget {
   @override
@@ -23,17 +25,57 @@ class _LiveCommentState extends ConsumerState<LiveComment>
   List<Animation<double>> _animations = [];
   List<double> _positions = [];
 
-  void _toggleExpand() {
-    setState(() {
-      _isExpanded = !_isExpanded;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
     Future.microtask(() {
+      _fetchDebateInfo();
       _subscribeToMessages();
+    });
+  }
+
+  Future<void> _fetchDebateInfo() async {
+    final liveWebSocketService = ref.read(liveWebSocketProvider);
+    final loginInfo = ref.read(loginInfoProvider);
+    final debateInfo = ref.read(chatInfoProvider);
+
+    if (loginInfo != null && debateInfo != null) {
+      final message = jsonEncode({
+        "command": "ENTER",
+        "userId": loginInfo.id,
+        "debateId": debateInfo.id,
+      });
+      liveWebSocketService.sendMessage(message);
+    } else {
+      print("Error: Login info or Debate info is null.");
+    }
+  }
+
+  void _subscribeToMessages() {
+    final webSocketService = ref.read(liveWebSocketProvider);
+    final voteViewModel = ref.watch(voteProvider.notifier);
+
+    webSocketService.stream.listen((message) {
+      if (message.containsKey('content')) {
+        if (mounted) {
+          setState(() {
+            _messages.add(message);
+          });
+        }
+      }
+      if (message['command'] == "VOTE_RATE_RES") {
+        final newBlueVotes = message["ownerVoteRate"];
+        final newRedVotes = message["joinerVoteRate"];
+
+        // StateNotifier를 사용하여 상태를 업데이트합니다.
+        voteViewModel.updateVotes(newBlueVotes, newRedVotes);
+      }
+    });
+  }
+
+  void _toggleExpand() {
+    setState(() {
+      _isExpanded = !_isExpanded;
     });
   }
 
@@ -43,20 +85,6 @@ class _LiveCommentState extends ConsumerState<LiveComment>
       controller.dispose();
     }
     super.dispose();
-  }
-
-  void _subscribeToMessages() {
-    final webSocketService = ref.read(liveWebSocketProvider);
-
-    _subscription = webSocketService.stream.listen((message) {
-      if (message.containsKey('content')) {
-        if (mounted) {
-          setState(() {
-            _messages.add(message);
-          });
-        }
-      }
-    });
   }
 
   void _startAnimation() {
@@ -160,22 +188,22 @@ class _LiveCommentState extends ConsumerState<LiveComment>
                                   backgroundImage: NetworkImage(
                                     message['userImgUrl'],
                                   ),
-                                  radius: 35.r,
+                                  radius: 12.r,
                                 ),
                                 SizedBox(
                                   width: 10,
                                 ),
                                 Text(
                                   message['userNickName'] ?? '',
-                                  style: FontSystem.KR16B
-                                      .copyWith(color: ColorSystem.grey),
+                                  style: FontSystem.KR14R
+                                      .copyWith(color: ColorSystem.grey1),
                                 ),
                                 SizedBox(
                                   width: 10,
                                 ),
                                 Text(
                                   message['content'] ?? '',
-                                  style: FontSystem.KR16B,
+                                  style: FontSystem.KR14M,
                                 ),
                               ],
                             ),

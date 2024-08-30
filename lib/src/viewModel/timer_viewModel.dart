@@ -50,6 +50,7 @@ class TimerNotifier extends StateNotifier<TimerState> {
 
   void _saveTimerState() async {
     final prefs = await SharedPreferences.getInstance();
+    if (!mounted) return;
     await prefs.setInt(_prefsKeyRemainingTime, state.remainingTime.inSeconds);
     await prefs.setInt(
         _prefsKeyStartTime, DateTime.now().millisecondsSinceEpoch);

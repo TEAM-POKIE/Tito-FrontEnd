@@ -20,6 +20,16 @@ class ChatBottomDetail extends ConsumerStatefulWidget {
 }
 
 class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void handleSendMessage(BuildContext context) async {
     final loginInfo = ref.read(loginInfoProvider);
     final chatViewModel = ref.read(chatInfoProvider.notifier);

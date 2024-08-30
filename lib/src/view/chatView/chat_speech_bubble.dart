@@ -97,9 +97,7 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
               ],
             );
           }
-          return SizedBox(
-            width: 0.w,
-          );
+          return LiveComment();
       }
     }
 

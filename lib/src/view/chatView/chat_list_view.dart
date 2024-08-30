@@ -50,8 +50,14 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
   }
 
   void _fetchDebateInfo() async {
-    final chatViewModel = ref.read(chatInfoProvider.notifier);
-    await chatViewModel.fetchDebateInfo(widget.id);
+    try {
+      final chatViewModel = ref.read(chatInfoProvider.notifier);
+      await chatViewModel.fetchDebateInfo(widget.id);
+    } catch (e) {
+      // 예외 처리
+      print("Error fetching debate info: $e");
+      // 사용자에게 에러 알림 또는 UI 처리
+    }
   }
 
   void _handlePopupIfNeeded(Map<String, dynamic> message, LoginInfo loginInfo) {
@@ -59,38 +65,47 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
     final popupViewModel = ref.read(popupProvider.notifier);
     final timerViewModel = ref.read(timerProvider.notifier);
 
-    if (message['command'] == 'CHAT') {
-      final createdAt = DateTime.parse(message['createdAt']);
-      timerViewModel.resetTimer(startTime: createdAt);
-    }
+    switch (message['command']) {
+      case 'CHAT':
+        final createdAt = DateTime.parse(message['createdAt']);
+        timerViewModel.resetTimer(startTime: createdAt);
+        break;
 
-    if (message['command'] == 'TIMING_BELL_REQ' &&
-        loginInfo.id != message['userId'] &&
-        message['content'] == 'timing bell request') {
-      if (chatState != null &&
-          (chatState.debateJoinerId == loginInfo.id ||
-              chatState.debateOwnerId == loginInfo.id)) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (mounted) {
-            if (chatState.canTiming) {
-              popupViewModel.showTimingReceive(context);
-            }
-            chatState.canTiming = false;
+      case 'TIMING_BELL_REQ':
+        if (loginInfo.id != message['userId'] &&
+            message['content'] == 'timing bell request') {
+          if (chatState != null &&
+              (chatState.debateJoinerId == loginInfo.id ||
+                  chatState.debateOwnerId == loginInfo.id)) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted && chatState.canTiming) {
+                popupViewModel.showTimingReceive(context);
+                chatState.canTiming = false;
+              }
+            });
           }
-        });
-      }
-    } else if (message['command'] == 'TIMING_BELL_REQ' ||
-        message['command'] == 'TIMING_BELL_RES') {
-      if (chatState != null) {
-        chatState.canTiming = false;
-      }
-    } else if (message['content'] == "토론이 종료 되었습니다.") {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted && chatState != null) {
-          popupViewModel.showEndPopup(context);
-          chatState.debateStatus = 'VOTING';
         }
-      });
+        chatState?.canTiming = false;
+        break;
+
+      case 'TIMING_BELL_RES':
+        chatState?.canTiming = false;
+        break;
+
+      case 'NOTIFY':
+        if (message['content'] == "토론이 종료 되었습니다.") {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted && chatState != null) {
+              popupViewModel.showEndPopup(context);
+              chatState.debateStatus = 'VOTING';
+            }
+          });
+        }
+        break;
+
+      default:
+        // 처리되지 않은 명령어에 대한 로깅 또는 기본 처리
+        break;
     }
   }
 
@@ -203,13 +218,20 @@ class JoinerChatList extends StatelessWidget {
                       children: [
                         if (!isMyMessage)
                           IconButton(
-                            icon: SvgPicture.asset(
-                              'assets/icons/chat_avatar.svg',
-                            ),
                             onPressed: () {
                               chatViewModel.getProfile(
                                   message['userId'], context);
                             },
+                            icon: CircleAvatar(
+                              backgroundImage: message['userImageUrl'] != null
+                                  ? NetworkImage(message['userImageUrl'])
+                                  : null, // null일 경우
+                              radius: 20.r,
+                              child: message['userImageUrl'] == null
+                                  ? Icon(Icons.person,
+                                      size: 20.r) // 기본 아이콘 또는 다른 대체 UI 요소
+                                  : null,
+                            ),
                           ),
                         SizedBox(width: 8.w),
                         Column(
@@ -257,13 +279,20 @@ class JoinerChatList extends StatelessWidget {
                         if (isMyMessage) SizedBox(width: 8.w),
                         if (isMyMessage)
                           IconButton(
-                            icon: SvgPicture.asset(
-                              'assets/icons/chat_avatar.svg',
-                            ),
                             onPressed: () {
                               chatViewModel.getProfile(
                                   message['userId'], context);
                             },
+                            icon: CircleAvatar(
+                              backgroundImage: message['userImageUrl'] != null
+                                  ? NetworkImage(message['userImageUrl'])
+                                  : null, // null일 경우
+                              radius: 20.r,
+                              child: message['userImageUrl'] == null
+                                  ? Icon(Icons.person,
+                                      size: 20.r) // 기본 아이콘 또는 다른 대체 UI 요소
+                                  : null,
+                            ),
                           ),
                       ],
                     ),
@@ -377,13 +406,20 @@ class ParticipantsList extends StatelessWidget {
                             : MainAxisAlignment.start,
                         children: [
                           if (!isMyMessage)
-                            CircleAvatar(
-                              child: IconButton(
-                                icon: Icon(Icons.person),
-                                onPressed: () {
-                                  chatViewModel.getProfile(
-                                      message['userId'], context);
-                                },
+                            IconButton(
+                              onPressed: () {
+                                chatViewModel.getProfile(
+                                    message['userId'], context);
+                              },
+                              icon: CircleAvatar(
+                                backgroundImage: message['userImageUrl'] != null
+                                    ? NetworkImage(message['userImageUrl'])
+                                    : null, // null일 경우
+                                radius: 20.r,
+                                child: message['userImageUrl'] == null
+                                    ? Icon(Icons.person,
+                                        size: 20.r) // 기본 아이콘 또는 다른 대체 UI 요소
+                                    : null,
                               ),
                             ),
                           const SizedBox(width: 8),
@@ -410,15 +446,22 @@ class ParticipantsList extends StatelessWidget {
                           ),
                           if (isMyMessage) const SizedBox(width: 8),
                           if (isMyMessage)
-                            CircleAvatar(
-                              child: IconButton(
-                                icon: Icon(Icons.person),
-                                onPressed: () {
-                                  chatViewModel.getProfile(
-                                      message['userId'], context);
-                                },
+                            IconButton(
+                              onPressed: () {
+                                chatViewModel.getProfile(
+                                    message['userId'], context);
+                              },
+                              icon: CircleAvatar(
+                                backgroundImage: message['userImageUrl'] != null
+                                    ? NetworkImage(message['userImageUrl'])
+                                    : null, // null일 경우
+                                radius: 20.r,
+                                child: message['userImageUrl'] == null
+                                    ? Icon(Icons.person,
+                                        size: 20.r) // 기본 아이콘 또는 다른 대체 UI 요소
+                                    : null,
                               ),
-                            ),
+                            )
                         ],
                       ),
                     )

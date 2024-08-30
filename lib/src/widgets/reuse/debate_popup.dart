@@ -260,6 +260,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
     final debateState = ref.watch(debateCreateProvider);
     final chatViewModel = ref.watch(chatInfoProvider.notifier);
     final userState = ref.watch(userProfileProvider);
+    final progressNoti = ref.watch(progressProvider.notifier);
 
     void startDebate() async {
       try {
@@ -278,7 +279,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
           debateState.debateMakerOpinion = '';
           debateState.debateJoinerOpinion = '';
           debateState.debateImageUrl = '';
-
+          progressNoti.resetProgress();
           context.go('/chat/${response.id}');
         } else {
           final debateData = debateState.toJson();

@@ -1,7 +1,9 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:tito_app/core/constants/style.dart';
@@ -18,6 +20,20 @@ class LoginMain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateTime? lastBackPressedTime;
+
+    Future<bool> _onWillPop(BuildContext context) async {
+      if (lastBackPressedTime == null ||
+          DateTime.now().difference(lastBackPressedTime!) >
+              Duration(seconds: 2)) {
+        lastBackPressedTime = DateTime.now();
+        Fluttertoast.showToast(msg: '뒤로 가기를 한번 더 누르면 종료됩니다.');
+        return false;
+      } else {
+        return true;
+      }
+    }
+
     void goBasicLogin() {
       context.push('/basicLogin');
     }
@@ -177,145 +193,155 @@ class LoginMain extends StatelessWidget {
       }
     }
 
-    return Scaffold(
-      backgroundColor: ColorSystem.purple, // 배경색을 보라색으로 설정
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(height: 146.h),
-            Image.asset(
-              'assets/images/splashs.png',
-              width: 162.w,
-              height: 127.29.h,
-            ),
-            SizedBox(height: 102.h),
-            Column(
-              children: [
-                // ! 구글 버튼
-                //버튼 클릭 효과 새로 지정
-                Container(
-                  width: 327.w,
-                  height: 54.h,
-                  child: ElevatedButton(
-                    onPressed: _signInWithGoogle,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white, // 배경 색상
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.r), // 모서리 둥글기
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset('assets/icons/google_new.svg'),
-                        SizedBox(width: 5.w),
-                        Text(
-                          'Google 계정으로 로그인',
-                          style: FontSystem.Login16M.copyWith(
-                              color: ColorSystem.googleFont),
+    return WillPopScope(
+      onWillPop: (() async {
+        final shouldExit = await _onWillPop(context);
+
+        if (shouldExit) {
+          SystemNavigator.pop(); // 앱을 종료합니다.
+        }
+        return false; // 두 번 눌러야 앱이 종료되도록 false 반환
+      }),
+      child: Scaffold(
+        backgroundColor: ColorSystem.purple, // 배경색을 보라색으로 설정
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 146.h),
+              Image.asset(
+                'assets/images/splashs.png',
+                width: 162.w,
+                height: 127.29.h,
+              ),
+              SizedBox(height: 102.h),
+              Column(
+                children: [
+                  // ! 구글 버튼
+                  //버튼 클릭 효과 새로 지정
+                  Container(
+                    width: 327.w,
+                    height: 54.h,
+                    child: ElevatedButton(
+                      onPressed: _signInWithGoogle,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white, // 배경 색상
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.r), // 모서리 둥글기
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10.h),
-                // // ! 카카오 버튼
-                Container(
-                  width: 327.w,
-                  height: 54.h,
-                  child: ElevatedButton(
-                    onPressed: _signInWithKaKao,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorSystem.kakao, // 배경 색상
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.r), // 모서리 둥글기
                       ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset('assets/icons/kakao_new.svg'),
-                        SizedBox(width: 5.w),
-                        Text('카카오계정으로 로그인', style: FontSystem.Login16M),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10.h),
-                // ! 애플 버튼
-                Container(
-                  width: 327.w,
-                  height: 54.h,
-                  child: ElevatedButton(
-                    onPressed: _signInWithApple,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorSystem.black, // 배경 색상
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.r), // 모서리 둥글기
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset('assets/icons/apple_new.svg'),
-                        SizedBox(width: 5.w),
-                        Text('Apple로 로그인',
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset('assets/icons/google_new.svg'),
+                          SizedBox(width: 5.w),
+                          Text(
+                            'Google 계정으로 로그인',
                             style: FontSystem.Login16M.copyWith(
-                                color: ColorSystem.white)),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10.h),
-                // ! 이메일 버튼
-                Container(
-                  width: 327.w,
-                  height: 54.h,
-                  child: ElevatedButton(
-                    onPressed: goBasicLogin,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorSystem.white, // 배경 색상
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.r), // 모서리 둥글기
+                                color: ColorSystem.googleFont),
+                          ),
+                        ],
                       ),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset('assets/icons/apple_new.svg'),
-                        Text('이메일로 로그인', style: FontSystem.Login16M),
-                      ],
+                  ),
+                  SizedBox(height: 10.h),
+                  // // ! 카카오 버튼
+                  Container(
+                    width: 327.w,
+                    height: 54.h,
+                    child: ElevatedButton(
+                      onPressed: _signInWithKaKao,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ColorSystem.kakao, // 배경 색상
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.r), // 모서리 둥글기
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset('assets/icons/kakao_new.svg'),
+                          SizedBox(width: 5.w),
+                          Text('카카오계정으로 로그인', style: FontSystem.Login16M),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 64.h), // 버튼들 간의 간격 추가
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '아직 회원이 아니신가요?',
-                  style: FontSystem.KR14R,
-                ),
-                TextButton(
-                  onPressed: goSignUp,
-                  child: Text(
-                    '회원가입',
-                    style: FontSystem.KR14B.copyWith(
-                      decoration: TextDecoration.underline,
+                  SizedBox(height: 10.h),
+                  // ! 애플 버튼
+                  Container(
+                    width: 327.w,
+                    height: 54.h,
+                    child: ElevatedButton(
+                      onPressed: _signInWithApple,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ColorSystem.black, // 배경 색상
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.r), // 모서리 둥글기
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset('assets/icons/apple_new.svg'),
+                          SizedBox(width: 5.w),
+                          Text('Apple로 로그인',
+                              style: FontSystem.Login16M.copyWith(
+                                  color: ColorSystem.white)),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 16.h)
-          ],
+                  SizedBox(height: 10.h),
+                  // ! 이메일 버튼
+                  Container(
+                    width: 327.w,
+                    height: 54.h,
+                    child: ElevatedButton(
+                      onPressed: goBasicLogin,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ColorSystem.white, // 배경 색상
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.r), // 모서리 둥글기
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset('assets/icons/apple_new.svg'),
+                          Text('이메일로 로그인', style: FontSystem.Login16M),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 64.h), // 버튼들 간의 간격 추가
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '아직 회원이 아니신가요?',
+                    style: FontSystem.KR14R,
+                  ),
+                  TextButton(
+                    onPressed: goSignUp,
+                    child: Text(
+                      '회원가입',
+                      style: FontSystem.KR14B.copyWith(
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16.h)
+            ],
+          ),
         ),
       ),
     );
