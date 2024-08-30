@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
@@ -75,15 +75,10 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
       case 'TIMING_BELL_REQ':
         if (loginInfo.id != message['userId'] &&
             message['content'] == 'timing bell request') {
-          if (chatState != null &&
-              (chatState.debateJoinerId == loginInfo.id ||
-                  chatState.debateOwnerId == loginInfo.id)) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              if (mounted && chatState.canTiming) {
-                popupViewModel.showTimingReceive(context);
-                chatState.canTiming = false;
-              }
-            });
+          print("Timing Bell Request Received: ${message['content']}");
+          if (mounted && chatState!.canTiming) {
+            popupViewModel.showTimingReceive(context);
+            chatState.canTiming = false;
           }
         }
         chatState?.canTiming = false;
@@ -95,12 +90,10 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
 
       case 'NOTIFY':
         if (message['content'] == "토론이 종료 되었습니다.") {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (mounted && chatState != null) {
-              popupViewModel.showEndPopup(context);
-              chatState.debateStatus = 'VOTING';
-            }
-          });
+          if (mounted && chatState != null) {
+            popupViewModel.showEndPopup(context);
+            chatState.debateStatus = 'VOTING';
+          }
         }
         break;
 
@@ -343,7 +336,8 @@ class JoinerChatList extends StatelessWidget {
                 ],
               )
             else if (index == messages.length - 1 &&
-                message['userId'] == loginInfo.id)
+                message['userId'] == loginInfo.id &&
+                message['command'] != 'TIMING_BELL_REQ')
               Row(
                 children: [
                   Padding(
@@ -402,12 +396,12 @@ class JoinerChatList extends StatelessWidget {
                       },
                       icon: CircleAvatar(
                         backgroundImage: chatState.lastUrl != null &&
-                                chatState.lastUrl!.isNotEmpty
-                            ? NetworkImage(chatState.lastUrl!)
+                                chatState.lastUrl.isNotEmpty
+                            ? NetworkImage(chatState.lastUrl)
                             : null,
                         radius: 20.r,
                         child: chatState.lastUrl == null ||
-                                chatState.lastUrl!.isEmpty
+                                chatState.lastUrl.isEmpty
                             ? Icon(Icons.person, size: 20.r)
                             : null,
                       ),
