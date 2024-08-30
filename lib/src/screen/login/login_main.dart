@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -67,8 +68,10 @@ class LoginMain extends StatelessWidget {
           await secureStorage.write(key: 'id_token', value: idToken);
 
           // & Phase 3. Backend에 토큰 보내서 확인받음
-          final authResponse = await ApiService(DioClient.dio)
-              .oAuthGoogle({"accessToken": accessToken});
+          final authResponse = await ApiService(DioClient.dio).oAuthGoogle({
+            "accessToken": accessToken,
+            'fcmToken': await FirebaseMessaging.instance.getToken() ?? ''
+          });
 
           // & Phase 4. 성공한 경우 마이데이터 조회, nickname 유무 확인
           await DioClient.setToken(authResponse.accessToken.token);
@@ -101,8 +104,10 @@ class LoginMain extends StatelessWidget {
         debugPrint(token.accessToken);
 
         // & Phase 3. Backend에 토큰 보내서 확인받음
-        final authResponse = await ApiService(DioClient.dio)
-            .oAuthKakao({"accessToken": token.accessToken});
+        final authResponse = await ApiService(DioClient.dio).oAuthKakao({
+          "accessToken": token.accessToken,
+          'fcmToken': await FirebaseMessaging.instance.getToken() ?? ''
+        });
 
         // & Phase 4. 성공한 경우 마이데이터 조회, nickname 유무 확인
         await DioClient.setToken(authResponse.accessToken.token);
@@ -140,8 +145,10 @@ class LoginMain extends StatelessWidget {
 
         if (credential != null) {
           // & Phase 3. Backend에 토큰 보내서 확인받음
-          final authResponse = await ApiService(DioClient.dio)
-              .oAuthApple({"accessToken": credential.identityToken!});
+          final authResponse = await ApiService(DioClient.dio).oAuthApple({
+            "accessToken": credential.identityToken!,
+            'fcmToken': await FirebaseMessaging.instance.getToken() ?? ''
+          });
 
           // & Phase 4. 성공한 경우 마이데이터 조회, nickname 유무 확인
           await DioClient.setToken(authResponse.accessToken.token);
@@ -186,29 +193,6 @@ class LoginMain extends StatelessWidget {
             Column(
               children: [
                 // ! 구글 버튼
-                // Container(
-                //   width: 327.w,
-                //   height: 54.h,
-                //   decoration: BoxDecoration(
-                //       color: ColorSystem.white,
-                //       borderRadius: BorderRadius.circular(6.r)),
-                //   child: GestureDetector(
-                //     onTap: _signInWithGoogle,
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       crossAxisAlignment: CrossAxisAlignment.center,
-                //       children: [
-                //         SvgPicture.asset('assets/icons/google_new.svg'),
-                //         SizedBox(width: 5.w),
-                //         Text('Google 계정으로 로그인',
-                //             style: FontSystem.Login16M.copyWith(
-                //                 color: ColorSystem.googleFont))
-                //       ],
-                //     ),
-                //   ),
-                // ),
-                // SizedBox(height: 10.h),
-
                 //버튼 클릭 효과 새로 지정
                 Container(
                   width: 327.w,
