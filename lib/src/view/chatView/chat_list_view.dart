@@ -69,6 +69,7 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
       case 'CHAT':
         final createdAt = DateTime.parse(message['createdAt']);
         timerViewModel.resetTimer(startTime: createdAt);
+
         break;
 
       case 'TIMING_BELL_REQ':
@@ -169,7 +170,6 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
                   chatViewModel: chatViewModel,
                 ),
         ),
-        if (_isTyping) TypingIndicator(),
       ],
     );
   }
@@ -200,6 +200,16 @@ class JoinerChatList extends StatelessWidget {
         final isMyMessage = message['userId'] == loginInfo.id;
         final chatMessage = message['command'] == 'CHAT';
         final notifyMessage = message['command'] == 'NOTIFY';
+
+        if (loginInfo.id == chatState.debateOwnerId) {
+          if (index == 3) {
+            chatState.lastUrl = message['userImageUrl'];
+          }
+        } else {
+          if (index == 2) {
+            chatState.lastUrl = message['userImageUrl'];
+          }
+        }
 
         final formattedTime = TimeOfDay.now().format(context);
 
@@ -335,9 +345,56 @@ class JoinerChatList extends StatelessWidget {
               Row(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 20.w),
-                    child: SvgPicture.asset(
-                      'assets/icons/chat_avatar.svg',
+                    padding: EdgeInsets.only(left: 10.w),
+                    child: IconButton(
+                      onPressed: () {
+                        chatViewModel.getProfile(message['userId'], context);
+                      },
+                      icon: CircleAvatar(
+                        backgroundImage: chatState.lastUrl != null
+                            ? NetworkImage(chatState.lastUrl)
+                            : null, // null일 경우
+                        radius: 20.r,
+                        child: chatState.lastUrl == null
+                            ? Icon(Icons.person,
+                                size: 20.r) // 기본 아이콘 또는 다른 대체 UI 요소
+                            : null,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 20.w),
+                  Text(
+                    '답변 작성중',
+                    style: FontSystem.KR16B.copyWith(color: ColorSystem.purple),
+                  ),
+                  SizedBox(width: 6.w),
+                  LoadingAnimationWidget.waveDots(
+                    color: ColorSystem.purple,
+                    size: 15.sp,
+                  ),
+                ],
+              )
+            else if (index == messages.length - 1 &&
+                message['content'] == '토론이 시작되었습니다.' &&
+                loginInfo.id == chatState.debateJoinerId)
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.w),
+                    child: IconButton(
+                      onPressed: () {
+                        chatViewModel.getProfile(message['userId'], context);
+                      },
+                      icon: CircleAvatar(
+                        backgroundImage: chatState.lastUrl != null
+                            ? NetworkImage(chatState.lastUrl)
+                            : null, // null일 경우
+                        radius: 20.r,
+                        child: chatState.lastUrl == null
+                            ? Icon(Icons.person,
+                                size: 20.r) // 기본 아이콘 또는 다른 대체 UI 요소
+                            : null,
+                      ),
                     ),
                   ),
                   SizedBox(width: 20.w),
@@ -478,30 +535,9 @@ class ParticipantsList extends StatelessWidget {
                       child: Center(child: Text(message['content'] ?? '')),
                     ),
             ),
-            if (isTyping && index == messages.length - 1)
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: TypingIndicator(),
-              ),
           ],
         );
       },
-    );
-  }
-}
-
-class TypingIndicator extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(Icons.more_horiz, color: ColorSystem.purple),
-        SizedBox(width: 8),
-        Text(
-          '답변 작성중...',
-          style: TextStyle(color: ColorSystem.purple),
-        ),
-      ],
     );
   }
 }
