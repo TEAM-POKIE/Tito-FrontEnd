@@ -26,11 +26,12 @@ class _LiveCommentState extends ConsumerState<LiveComment>
   Map<String, dynamic>? _firstMessage; // 첫 번째 메시지를 저장할 변수
 
   List<double> _positions = [];
-
+  int _messageCounter = 0; // 나중에 지우기
   @override
   void initState() {
     super.initState();
     Future.microtask(() {
+      _messageCounter = 0; // 나중에 지우기
       _fetchDebateInfo();
       _subscribeToMessages();
     });
@@ -60,6 +61,10 @@ class _LiveCommentState extends ConsumerState<LiveComment>
 
     _subscription = webSocketService.stream.listen((message) {
       if (chatState!.isVoteEnded) {
+        return;
+      }
+      _messageCounter++; // 새로운 메시지가 들어올 때마다 카운터 증가 나중에 지우면 돼
+      if (_messageCounter == 7 || _messageCounter == 8) {
         return;
       }
 

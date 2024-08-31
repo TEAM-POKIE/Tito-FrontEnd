@@ -131,7 +131,6 @@ class _HomeViewState extends ConsumerState<HomeView> {
                               ),
                               SizedBox(width: 10.w),
                               Expanded(
-                                // 동일하게 사용하여 텍스트가 넘치지 않게 합니다.
                                 child: Text(
                                   debate.debateJoinerOpinion,
                                   style: FontSystem.KR16B
