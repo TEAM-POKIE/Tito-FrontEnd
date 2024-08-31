@@ -64,10 +64,28 @@ class _LiveCommentState extends ConsumerState<LiveComment>
         return;
       }
       _messageCounter++; // 새로운 메시지가 들어올 때마다 카운터 증가 나중에 지우면 돼
-      if (_messageCounter == 7 || _messageCounter == 8) {
+      if (_messageCounter == 7 ||
+          _messageCounter == 8 ||
+          _messageCounter == 9 ||
+          _messageCounter == 10 ||
+          _messageCounter == 11 ||
+          _messageCounter == 12 ||
+          _messageCounter == 13 ||
+          _messageCounter == 14 ||
+          _messageCounter == 15 ||
+          _messageCounter == 16 ||
+          _messageCounter == 17 ||
+          _messageCounter == 18 ||
+          _messageCounter == 19) {
         return;
       }
+      if (message['command'] == "VOTE_RATE_RES") {
+        final newBlueVotes = message["ownerVoteRate"];
+        final newRedVotes = message["joinerVoteRate"];
 
+        // StateNotifier를 사용하여 상태를 업데이트합니다.
+        voteViewModel.updateVotes(newBlueVotes, newRedVotes);
+      }
       if (message.containsKey('content')) {
         if (_firstMessage == null) {
           // 첫 번째 메시지 설정
@@ -80,14 +98,6 @@ class _LiveCommentState extends ConsumerState<LiveComment>
           // 첫 번째 메시지와 다른 메시지인 경우에만 추가
           _addMessage(message);
         }
-      }
-
-      if (message['command'] == "VOTE_RATE_RES") {
-        final newBlueVotes = message["ownerVoteRate"];
-        final newRedVotes = message["joinerVoteRate"];
-
-        // StateNotifier를 사용하여 상태를 업데이트합니다.
-        voteViewModel.updateVotes(newBlueVotes, newRedVotes);
       }
     });
   }

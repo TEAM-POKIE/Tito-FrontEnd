@@ -6,8 +6,6 @@ import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/ai_provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:tito_app/core/provider/ai_response_provider.dart';
-import 'package:tito_app/core/provider/chat_view_provider.dart';
 
 class AiCreate extends ConsumerStatefulWidget {
   @override
@@ -126,7 +124,10 @@ class _AiCreateState extends ConsumerState<AiCreate> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   TextButton(
-                    onPressed: () => selectionNotifier.getWord(),
+                    onPressed: () {
+                      selectionNotifier.resetSelection(); // 인덱스 초기화
+                      selectionNotifier.getWord(); // 새로운 단어 가져오기
+                    },
                     child: Text(
                       '새로고침',
                       style: FontSystem.KR16SB
@@ -168,13 +169,10 @@ class _AiCreateState extends ConsumerState<AiCreate> {
                           }
                         : null,
                     style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.r),
-                      ),
-                      backgroundColor: selectionState.selectedItems.isNotEmpty
-                          ? ColorSystem.purple
-                          : ColorSystem.grey,
-                    ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.r),
+                        ),
+                        backgroundColor: ColorSystem.purple),
                     child: Text(
                       '다음',
                       style:

@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/constants/style.dart';
@@ -11,13 +10,10 @@ import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/userProfile_provider.dart';
-
 import 'package:tito_app/core/api/dio_client.dart';
-
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tito_app/src/data/models/login_info.dart';
 
 String selectedDebate = '';
 
@@ -214,7 +210,6 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
   Widget _oneButton(BuildContext context, WidgetRef ref) {
     final popupState = ref.watch(popupProvider);
     final popupViewModel = ref.watch(popupProvider.notifier);
-    final debateState = ref.watch(debateCreateProvider);
     final chatViewModel = ref.watch(chatInfoProvider.notifier);
 
 // 팝업창 보라색 버튼 부분
@@ -246,6 +241,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
             }
           } else if (popupState.title == '토론의 승자를 투표해주세요!') {
             chatViewModel.sendVote(selectedDebate);
+            context.pop();
           } else if (popupState.title == '토론 시작 시 알림을 보내드릴게요!') {
             context.pop();
           }
