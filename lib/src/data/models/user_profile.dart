@@ -3,7 +3,7 @@ class UserProfile {
   final String nickname;
   final String email;
   final String role;
-  String profilePicture;
+  String? profilePicture;
   final String createdAt;
   final String updatedAt;
   final bool tutorialCompleted;

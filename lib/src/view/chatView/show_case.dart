@@ -71,7 +71,9 @@ class _ShowCaseScreenState extends State<ShowCaseScreen> {
           backgroundColor: Colors.white,
           leading: IconButton(
             icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
-            onPressed: () {},
+            onPressed: () {
+              context.pop();
+            },
           ),
           title: Padding(
             padding: const EdgeInsets.all(8.0),

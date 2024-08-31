@@ -9,6 +9,7 @@ import 'package:tito_app/core/constants/style.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
+import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/userProfile_provider.dart';
 
 import 'package:tito_app/core/api/dio_client.dart';
@@ -16,6 +17,7 @@ import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tito_app/src/data/models/login_info.dart';
 
 String selectedDebate = '';
 
@@ -228,15 +230,20 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
           ),
         ),
         onPressed: () async {
+          final loginInfo = ref.read(loginInfoProvider);
           if (popupState.title == '토론에 참여하시겠습니까?') {
-            ref.read(popupProvider.notifier).state = popupState.copyWith(
-              buttonStyle: 0,
-              title: '토론이 시작 됐어요! 🎵',
-              content: '서로 존중하는 토론을 부탁드려요!',
-            );
-            context.pop();
-            await Future.delayed(Duration(milliseconds: 100));
-            popupViewModel.showDebatePopup(context);
+            if (loginInfo!.tutorialCompleted == true) {
+              ref.read(popupProvider.notifier).state = popupState.copyWith(
+                buttonStyle: 0,
+                title: '토론이 시작 됐어요! 🎵',
+                content: '서로 존중하는 토론을 부탁드려요!',
+              );
+              context.pop();
+              await Future.delayed(Duration(milliseconds: 100));
+              popupViewModel.showDebatePopup(context);
+            } else {
+              context.pop();
+            }
           } else if (popupState.title == '토론의 승자를 투표해주세요!') {
             chatViewModel.sendVote(selectedDebate);
           } else if (popupState.title == '토론 시작 시 알림을 보내드릴게요!') {

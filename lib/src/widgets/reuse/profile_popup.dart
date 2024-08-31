@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
@@ -23,6 +22,7 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
   List<DebateUsermade> debateList = [];
 
   OverlayEntry? _overlayEntry;
+
   @override
   void initState() {
     super.initState();
@@ -33,14 +33,11 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
     final chatState = ref.read(chatInfoProvider);
     final userState = ref.read(userProfileProvider);
     try {
-      // Map<String, dynamic> 타입으로 응답을 받아옴
       final Map<String, dynamic> debateResponse =
           await ApiService(DioClient.dio).getOtherDebate(userState!.id);
 
-      // 응답에서 'data' 필드를 추출하여 List<dynamic>로 변환
       final List<dynamic> data = debateResponse['data'];
 
-      // 'data' 리스트의 각 항목을 'DebateUsermade' 객체로 변환
       final List<DebateUsermade> debates = data.map((item) {
         if (item is DebateUsermade) {
           return item; // 이미 DebateUsermade 객체라면 그대로 사용
@@ -58,7 +55,6 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
   }
 
   void _showOverlay(BuildContext context) {
-    final RenderBox renderBox = context.findRenderObject() as RenderBox;
     final popupViewModel = ref.read(popupProvider.notifier);
     _overlayEntry = OverlayEntry(
       builder: (context) => GestureDetector(
@@ -183,52 +179,59 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
             children: [
               CircleAvatar(
                 radius: 35.r, // 아이콘 크기
-                backgroundImage: NetworkImage(userState!.profilePicture),
-                onBackgroundImageError: (_, __) {
-                  // 이미지 로드 오류 처리
-                },
+                backgroundImage: userState?.profilePicture != null &&
+                        userState!.profilePicture!.isNotEmpty
+                    ? NetworkImage(userState!.profilePicture!)
+                    : null,
+                child: userState?.profilePicture == null ||
+                        userState!.profilePicture?.isEmpty == true
+                    ? Icon(Icons.person, size: 35.r) // 기본 아이콘 또는 대체 아이콘
+                    : null,
+                onBackgroundImageError: userState?.profilePicture != null &&
+                        userState!.profilePicture!.isNotEmpty
+                    ? (_, __) {
+                        // 이미지 로드 오류 처리
+                        setState(() {
+                          userState!.profilePicture = '';
+                        });
+                      }
+                    : null, // backgroundImage가 null이면 onBackgroundImageError도 null로 설정
               ),
               SizedBox(width: 15.w),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Stack(
+                  Row(
                     children: [
-                      Row(
+                      Text('${userState!.nickname}', style: FontSystem.KR24B),
+                      SizedBox(width: 5.w),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: ColorSystem.lightPurple,
+                            borderRadius: BorderRadius.circular(10.r),
+                            border: Border.all(
+                              color: ColorSystem.purple,
+                            )),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 6.h, vertical: 6.h),
+                          child: Text('승률 ${userState.winningRate}%',
+                              textAlign: TextAlign.center,
+                              style: FontSystem.KR14B
+                                  .copyWith(color: ColorSystem.purple)),
+                        ),
+                      ),
+                      Stack(
                         children: [
-                          Text('${userState!.nickname}',
-                              style: FontSystem.KR24B),
-                          SizedBox(width: 5.w),
-                          Container(
-                            decoration: BoxDecoration(
-                                color: ColorSystem.lightPurple,
-                                borderRadius: BorderRadius.circular(10.r),
-                                border: Border.all(
-                                  color: ColorSystem.purple,
-                                )),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 6.h, vertical: 6.h),
-                              child: Text('승률 ${userState.winningRate}%',
-                                  textAlign: TextAlign.center,
-                                  style: FontSystem.KR14B
-                                      .copyWith(color: ColorSystem.purple)),
-                            ),
-                          ),
-                          //SizedBox(width: 24.w),
-                          Stack(
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  if (_overlayEntry == null) {
-                                    _showOverlay(context);
-                                  } else {
-                                    _removeOverlay();
-                                  }
-                                },
-                                icon: Icon(Icons.more_vert),
-                              ),
-                            ],
+                          IconButton(
+                            onPressed: () {
+                              if (_overlayEntry == null) {
+                                _showOverlay(context);
+                              } else {
+                                _removeOverlay();
+                              }
+                            },
+                            icon: Icon(Icons.more_vert),
                           ),
                         ],
                       ),

@@ -68,6 +68,8 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
                         borderRadius: BorderRadius.circular(10.r)),
                     child: TextFormField(
                       controller: _contentController,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
                       autocorrect: false,
                       decoration: InputDecoration(
                         hintText: '입력하세요',

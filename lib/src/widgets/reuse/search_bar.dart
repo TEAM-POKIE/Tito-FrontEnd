@@ -188,7 +188,7 @@ class SearchResultList extends StatelessWidget {
                                       ),
                                       SizedBox(height: 4.h),
                                       Text(
-                                        '승률 ${result.searchedDebateOwnerWinningRate}% 토론러 대기중',
+                                        '승률 ${result.searchedDebateOwnerWinningRate}대기중',
                                         style: FontSystem.KR16M.copyWith(
                                             color: ColorSystem.purple),
                                         maxLines: 1,

@@ -62,6 +62,7 @@ class _AiCreateState extends ConsumerState<AiCreate> {
                 leading: IconButton(
                   onPressed: () {
                     context.pop();
+                    selectionNotifier.resetSelection();
                   },
                   icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
                 ),
@@ -120,35 +121,25 @@ class _AiCreateState extends ConsumerState<AiCreate> {
                       )
                     : Container(),
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 30.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.w),
-                      child: TextButton(
-                        onPressed: () => selectionNotifier.getWord(),
-                        child: Text(
-                          '새로고침',
-                          style: FontSystem.KR16SB
-                              .copyWith(decoration: TextDecoration.underline),
-                        ),
-                      ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  TextButton(
+                    onPressed: () => selectionNotifier.getWord(),
+                    child: Text(
+                      '새로고침',
+                      style: FontSystem.KR16SB
+                          .copyWith(decoration: TextDecoration.underline),
                     ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20.h),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  child: Container(
+                  ),
+                  Container(
                     width: 350.w,
-                    height: 258.h,
+                    height: 330.h,
                     child: GridView.count(
                       crossAxisCount: 3,
                       childAspectRatio: 1.3 / 1,
+                      physics: NeverScrollableScrollPhysics(), // 스크롤 비활성화
                       children: List.generate(9, (index) {
                         String word = selectionState.randomWord != null &&
                                 selectionState.randomWord.length > index
@@ -158,8 +149,9 @@ class _AiCreateState extends ConsumerState<AiCreate> {
                       }),
                     ),
                   ),
-                ),
+                ],
               ),
+              const Spacer(),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
                 child: SizedBox(
@@ -170,6 +162,7 @@ class _AiCreateState extends ConsumerState<AiCreate> {
                         ? () async {
                             await selectionNotifier.createSelection();
                             if (!selectionState.isLoading) {
+                              selectionNotifier.resetSelection();
                               context.push('/ai_select');
                             }
                           }
@@ -241,7 +234,7 @@ class _AiCreateState extends ConsumerState<AiCreate> {
             size: 20,
           ),
           onDeleted: () {
-            selectionNotifier.toggleSelection(index); // 항목 삭제
+            selectionNotifier.toggleSelection(index);
           },
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.r),

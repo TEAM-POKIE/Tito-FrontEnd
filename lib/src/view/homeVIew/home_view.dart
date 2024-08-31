@@ -52,7 +52,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
     return Column(
       children: [
         SizedBox(
-          height: 200.h, // PageView의 높이를 조정
+          height: 200.h,
           child: PageView.builder(
             controller: _pageController, // PageController 연결
             itemCount: homeState.debateBanners.length,
@@ -85,7 +85,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                             children: [
                               Text(
                                 '불 붙은 실시간 토론 🔥',
-                                style: FontSystem.KR16M.copyWith(
+                                style: FontSystem.KR14M.copyWith(
                                   color: ColorSystem.white,
                                 ),
                               ),
@@ -97,7 +97,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                   borderRadius: BorderRadius.circular(20.r),
                                 ),
                                 child: Text(
-                                  debate.debateStatus,
+                                  '실시간 토론 중',
                                   style: FontSystem.KR14SB.copyWith(
                                     color: ColorSystem.white,
                                   ),
@@ -108,7 +108,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                           SizedBox(height: 12.h),
                           Text(
                             debate.debateTitle,
-                            style: FontSystem.KR18B
+                            style: FontSystem.KR16B
                                 .copyWith(color: ColorSystem.white),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -118,28 +118,26 @@ class _HomeViewState extends ConsumerState<HomeView> {
                             children: [
                               Text(
                                 debate.debateMakerOpinion,
-                                style: FontSystem.KR18B
+                                style: FontSystem.KR16B
                                     .copyWith(color: ColorSystem.white),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              SizedBox(
-                                width: 10.w,
-                              ),
+                              SizedBox(width: 10.w),
                               Text(
                                 'vs',
-                                style: FontSystem.KR18B
+                                style: FontSystem.KR16B
                                     .copyWith(color: ColorSystem.white),
                               ),
-                              SizedBox(
-                                width: 10.w,
-                              ),
-                              Text(
-                                debate.debateJoinerOpinion,
-                                style: FontSystem.KR18B
-                                    .copyWith(color: ColorSystem.white),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                              SizedBox(width: 10.w),
+                              Expanded(
+                                child: Text(
+                                  debate.debateJoinerOpinion,
+                                  style: FontSystem.KR16B
+                                      .copyWith(color: ColorSystem.white),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ],
                           ),

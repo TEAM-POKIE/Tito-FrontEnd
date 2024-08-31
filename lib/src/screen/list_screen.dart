@@ -329,13 +329,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                             horizontal: 20.h, vertical: 5.w),
                         child: Container(
                           decoration: BoxDecoration(
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Color(0x669795A3),
-                                spreadRadius: 0,
-                                blurRadius: 4,
-                              )
-                            ],
                             color: ColorSystem.white,
                             borderRadius: BorderRadius.circular(20.r),
                           ),
@@ -383,10 +376,8 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                         SizedBox(height: 10.h),
                                         Text(
                                           debate.debateTitle ?? 'No title',
-                                          style: FontSystem.KR16M.copyWith(
-                                            height: 1,
-                                          ),
-                                          maxLines: 2,
+                                          style: FontSystem.KR16M
+                                              .copyWith(height: 1.2),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         SizedBox(height: 4.h),
@@ -452,9 +443,9 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   String _getSubText(Debate debate) {
     switch (debate.debateStatus) {
       case 'CREATED':
-        return '승률 ${debate.debateOwnerWinningRate}% 토론러 대기중';
+        return '${debate.debateOwnerNickname}님이 대기 중';
       case 'IN_PROGRESS':
-        return '${debate.debateOwnerNickname} VS ${debate.debateJoinerNickname}';
+        return '${debate.debateOwnerNickname}님과 ${debate.debateJoinerNickname}님이 토론 중';
       case 'VOTING':
         return '나도 투표 참여하러 가기';
       case 'ENDED':
@@ -467,7 +458,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   Color _getSubTextColor(Debate debate) {
     switch (debate.debateStatus) {
       case 'CREATED':
-        return ColorSystem.purple;
+        return ColorSystem.white;
       case 'IN_PROGRESS':
         return ColorSystem.purple;
       case 'VOTING':
@@ -483,7 +474,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 Color _getStatusColor(String? status) {
   switch (status) {
     case 'CREATED':
-      return ColorSystem.lightPurple; // CREATED 상태의 배경색
+      return ColorSystem.lightPurple2; // CREATED 상태의 배경색
     case 'IN_PROGRESS':
       return ColorSystem.lightPurple; // IN_PROGRESS 상태의 배경색
     case 'VOTING':

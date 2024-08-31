@@ -46,7 +46,7 @@ class _ChatState extends ConsumerState<Chat> {
     final webSocketService = ref.read(webSocketProvider);
     final loginInfo = ref.watch(loginInfoProvider);
     final debateInfo = ref.read(chatInfoProvider);
-
+    chatViewModel.connectWebSocket();
     if (loginInfo != null) {
       final message = jsonEncode({
         "command": "ENTER",

@@ -14,6 +14,8 @@ final webSocketProvider = Provider<WebSocketService>((ref) {
 class WebSocketService {
   late WebSocketChannel channel;
   final _controller = StreamController<Map<String, dynamic>>.broadcast();
+  bool _isConnected = false;
+  Timer? _reconnectTimer;
 
   WebSocketService() {
     _connect();
@@ -24,6 +26,7 @@ class WebSocketService {
       channel =
           WebSocketChannel.connect(Uri.parse('wss://dev.tito.lat/ws/debate'));
       print('WebSocket connection established');
+      _isConnected = true;
 
       channel.stream.listen((message) {
         try {
@@ -35,34 +38,50 @@ class WebSocketService {
         }
       }, onError: (error) {
         print('Error in websocket connection: $error');
-        // _reconnect();
+        _reconnect();
       }, onDone: () {
         print('WebSocket connection closed');
-        // _reconnect();
+        _reconnect();
       });
     } catch (e) {
       print('Error establishing WebSocket connection: $e');
-      // _reconnect();
+      _reconnect();
+    }
+  }
+
+  void _reconnect() {
+    if (_isConnected) {
+      _isConnected = false;
+      channel.sink.close();
+      print('Attempting to reconnect in 5 seconds...');
+      _reconnectTimer?.cancel();
+      _reconnectTimer = Timer(Duration(seconds: 5), () {
+        _connect();
+      });
     }
   }
 
   Stream<Map<String, dynamic>> get stream => _controller.stream;
 
-  // messageStream 게터 추가
   Stream<List<types.Message>> get messageStream =>
       _controller.stream.map((data) {
-        // 데이터를 Message 객체로 변환하는 로직 추가
         return (data['messages'] as List)
             .map((json) => types.Message.fromJson(json))
             .toList();
       });
 
   void sendMessage(String message) {
-    print('Sending message: $message');
-    channel.sink.add(message);
+    if (_isConnected) {
+      print('Sending message: $message');
+      channel.sink.add(message);
+    } else {
+      print('Cannot send message, WebSocket is not connected.');
+    }
   }
 
   void dispose() {
+    _reconnectTimer?.cancel();
+    _isConnected = false;
     channel.sink.close(status.goingAway);
     _controller.close();
   }

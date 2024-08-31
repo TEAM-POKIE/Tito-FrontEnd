@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/home_state_provider.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HotLists extends ConsumerStatefulWidget {
   const HotLists({super.key});
@@ -32,7 +32,7 @@ class _HotListState extends ConsumerState<HotLists> {
       children: [
         SizedBox(height: 30.h),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.h),
+          padding: EdgeInsets.symmetric(horizontal: 10.w),
           child: Row(
             children: [
               Text(
@@ -50,89 +50,98 @@ class _HotListState extends ConsumerState<HotLists> {
         ),
         SizedBox(height: 10.h),
         Container(
-          height: 300.h,
           child: homeState.isLoading
-              ? Center(child: CircularProgressIndicator())
+              ? const Center(child: CircularProgressIndicator())
               : homeState.hotlist.isEmpty
-                  ? Center(child: Text('No debates available'))
-                  : ListView.builder(
-                      itemCount: homeState.hotlist.length,
-                      itemBuilder: (context, index) {
-                        final debate = homeState.hotlist[index];
+                  ? const Center(child: Text('No debates available'))
+                  : Column(
+                      // ListView 대신 Column을 사용합니다.
+                      children: homeState.hotlist.map((debate) {
                         return Padding(
                           padding: EdgeInsets.symmetric(
                               vertical: 5.h, horizontal: 10.w),
                           child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 14.w, vertical: 10.h),
                             width: 350.w,
                             height: 100.h,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(20.r),
-                              boxShadow: [
+                              boxShadow: const [
                                 BoxShadow(
-                                  color: const Color(0x669795A3),
+                                  color: Color(0x669795A3),
                                   spreadRadius: 0,
-                                  blurRadius: 4,
-                                )
+                                  blurRadius: 3,
+                                ),
                               ],
                             ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 5.h, horizontal: 5.w),
-                              child: ListTile(
-                                trailing: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20.r),
-                                  child: (debate.debateImageUrl != null &&
-                                          debate.debateImageUrl!.isNotEmpty)
-                                      ? Image.network(
-                                          debate.debateImageUrl!,
-                                          width: 100.w,
-                                          height: 100.h,
-                                          fit: BoxFit.cover,
-                                        )
-                                      : SvgPicture.asset(
-                                          'assets/icons/list_real_null.svg',
-                                          width: 100.w,
-                                          height: 100.h,
-                                        ),
-                                ),
-                                title: Text(
-                                  debate.debateTitle,
-                                  style: FontSystem.KR18SB,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(height: 3.h),
-                                    Text(
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        debate.debateTitle,
+                                        style: FontSystem.KR18SB,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      SizedBox(height: 3.h),
+                                      Text(
                                         '${debate.debateMakerOpinion} VS ${debate.debateJoinerOpinion}',
                                         style: FontSystem.KR16M,
                                         maxLines: 1,
-                                        overflow: TextOverflow.ellipsis),
-                                    SizedBox(height: 3.h),
-                                    Row(
-                                      children: [
-                                        SvgPicture.asset(
-                                            'assets/icons/fire.svg'),
-                                        SizedBox(width: 4.w),
-                                        Text(
-                                          '${debate.debateFireCount}',
-                                          style: FontSystem.KR16M.copyWith(
-                                              color: ColorSystem.grey),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 5.h),
-                                    // 추가: DebateHotdebate의 toString 결과를 표시
-                                  ],
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      SizedBox(height: 3.h),
+                                      Row(
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/icons/fire.svg',
+                                          ),
+                                          SizedBox(width: 4.w),
+                                          Text(
+                                            '${debate.debateFireCount}',
+                                            style: FontSystem.KR16M.copyWith(
+                                              color: ColorSystem.grey,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
+                                SizedBox(
+                                  width: 8.w,
+                                ),
+                                Container(
+                                  width: 70.w,
+                                  height: 70.h,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20.r),
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.r),
+                                    child: (debate.debateImageUrl != null &&
+                                            debate.debateImageUrl!.isNotEmpty)
+                                        ? Image.network(
+                                            debate.debateImageUrl!,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : SvgPicture.asset(
+                                            'assets/icons/list_real_null.svg',
+                                            fit: BoxFit.cover,
+                                          ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         );
-                      },
+                      }).toList(),
                     ),
         ),
       ],

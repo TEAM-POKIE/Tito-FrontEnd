@@ -23,7 +23,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
   TimerNotifier? timerNotifier;
 
   ChatViewModel(this.ref) : super(null) {
-    _connectWebSocket();
+    connectWebSocket();
   }
 
   late WebSocketChannel _channel;
@@ -49,7 +49,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     }
   }
 
-  void _connectWebSocket() {
+  void connectWebSocket() {
     _channel = WebSocketChannel.connect(
       Uri.parse('wss://dev.tito.lat/ws/debate'),
     );
@@ -189,7 +189,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     final message = controller.text;
 
     if (message.isEmpty) return;
-
+    state = state?.copyWith(isVoteEnded: false);
     final jsonMessage = json.encode({
       "command": "CHAT",
       "userId": loginInfo?.id ?? '',
@@ -243,12 +243,12 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
 
     if (id == state!.debateOwnerId) {
       state!.debateOwnerNick = userInfo.nickname;
-      state!.debateOwnerPicture = userInfo.profilePicture;
+      state!.debateOwnerPicture = userInfo.profilePicture ?? '';
 
       print(state!.debateOwnerPicture);
     } else if (id == state!.debateJoinerId) {
       state!.debateJoinerNick = userInfo.nickname;
-      state!.debateJoinerPicture = userInfo.profilePicture;
+      state!.debateJoinerPicture = userInfo.profilePicture ?? '';
       print(state!.debateJoinerPicture);
     }
   }
