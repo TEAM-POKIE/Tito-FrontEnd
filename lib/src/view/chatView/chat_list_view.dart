@@ -310,7 +310,8 @@ class JoinerChatList extends StatelessWidget {
                   )
                 : notifyMessage
                     ? Container(
-                        padding: EdgeInsets.only(top: 5.h, bottom: 5.h),
+                        padding: EdgeInsets.only(
+                            top: index == 0 ? 5.h : 0.h, bottom: 0.h),
                         child: Center(child: Text(message['content'] ?? '')),
                       )
                     : SizedBox(width: 0),

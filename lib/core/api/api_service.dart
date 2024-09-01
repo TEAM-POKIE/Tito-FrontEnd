@@ -70,7 +70,7 @@ abstract class ApiService {
   Future<String> getBlockedUser();
 
   @GET('users/{id}/debates')
-  Future<Map<String, String>> getOtherDebate(@Path("id") int debateId);
+  Future<String> getOtherDebate(@Path("id") int debateId);
   @POST('debates/generate-topic')
   Future<String> postGenerateTopic(@Body() Map<String, Object> requestBody);
 
@@ -106,5 +106,5 @@ abstract class ApiService {
   @MultiPart()
   Future<DebateCreateInfo> postDebate(@Body() FormData formData);
   @POST("user-block-list/block")
-  Future<void> postUserBlock(@Body() Map<String, String> userId);
+  Future<void> postUserBlock(@Body() Map<String, int> userId);
 }

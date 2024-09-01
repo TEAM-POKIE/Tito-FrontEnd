@@ -578,12 +578,12 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<Map<String, String>> getOtherDebate(int debateId) async {
+  Future<String> getOtherDebate(int debateId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<Map<String, String>>(Options(
+    final _options = _setStreamType<String>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -599,10 +599,10 @@ class _ApiService implements ApiService {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late Map<String, String> _value;
+    final _result = await _dio.fetch<String>(_options);
+    late String _value;
     try {
-      _value = _result.data!.cast<String, String>();
+      _value = _result.data!;
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -973,7 +973,7 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<void> postUserBlock(Map<String, String> userId) async {
+  Future<void> postUserBlock(Map<String, int> userId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
