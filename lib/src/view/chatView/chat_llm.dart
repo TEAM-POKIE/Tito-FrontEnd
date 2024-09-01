@@ -129,7 +129,7 @@ class _ChatLlmState extends ConsumerState<ChatLlm> {
                 width: 6.w,
               ),
               Text(
-                '티토가 수정해봤어요!',
+                '이렇게 생각해서 말해봤어요 ...',
                 style: FontSystem.KR16B.copyWith(color: ColorSystem.purple),
               ),
             ],

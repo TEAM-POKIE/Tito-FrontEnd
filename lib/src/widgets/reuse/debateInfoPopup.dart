@@ -17,7 +17,7 @@ class Debateinfopopup extends ConsumerStatefulWidget {
 class _DebateinfoState extends ConsumerState<Debateinfopopup> {
   @override
   Widget build(BuildContext context) {
-    final chatState = ref.read(chatInfoProvider); 
+    final chatState = ref.read(chatInfoProvider);
 
     return Dialog(
       backgroundColor: ColorSystem.white,
@@ -26,23 +26,33 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
       ),
       child: Container(
         width: 350.w,
-        height: 420.h,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(chatState!.debateTitle, style: FontSystem.KR18SB),
-                IconButton(
-                  icon: Icon(Icons.close),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                    child: Text(
+                      chatState!.debateTitle,
+                      style: FontSystem.KR18SB,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.w),
@@ -84,6 +94,7 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
         Padding(
           padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 30.w),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SvgPicture.asset('assets/icons/popup_face.svg'),
               SizedBox(width: 10),

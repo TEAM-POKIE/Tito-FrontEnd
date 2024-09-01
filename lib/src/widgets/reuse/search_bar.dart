@@ -39,6 +39,66 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
     }
   }
 
+  String _getStatusText(String debateStatus) {
+    switch (debateStatus) {
+      case 'CREATED':
+        return '상대 찾는 중';
+      case 'IN_PROGRESS':
+        return '토론 진행중';
+      case 'VOTING':
+        return '투표 중';
+      case 'ENDED':
+        return '투표 종료';
+      default:
+        return '상태 없음';
+    }
+  }
+
+  String _getSubText(SearchData debate) {
+    switch (debate.searchedDebateStatus) {
+      case 'CREATED':
+        return '\'종만\'님이 대기 중';
+      case 'IN_PROGRESS':
+        return '\'조조\'님과 \'뚜미둡\'님이 토론 중';
+      case 'VOTING':
+        return '나도 투표 참여하러 가기';
+      case 'ENDED':
+        return '토론 결과 확인하러가기';
+      default:
+        return '';
+    }
+  }
+
+  Color _getSubTextColor(SearchData debate) {
+    switch (debate.searchedDebateStatus) {
+      case 'CREATED':
+        return ColorSystem.white;
+      case 'IN_PROGRESS':
+        return ColorSystem.purple;
+      case 'VOTING':
+        return ColorSystem.grey1;
+      case 'ENDED':
+        return ColorSystem.grey1;
+      default:
+        return ColorSystem.purple;
+    }
+  }
+
+  Color _getStatusColor(String? status) {
+    switch (status) {
+      case 'CREATED':
+        return ColorSystem.lightPurple2; // CREATED 상태의 배경색
+      case 'IN_PROGRESS':
+        return ColorSystem.lightPurple; // IN_PROGRESS 상태의 배경색
+      case 'VOTING':
+        return ColorSystem.lightYellow; // VOTING 상태의 배경색
+      case 'ENDED':
+        return ColorSystem.turquoise; // ENDED 상태의 배경색
+      default:
+        return ColorSystem.lightPurple; // 기본 배경색
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -105,6 +165,66 @@ class SearchResultList extends StatelessWidget {
     _refreshController.loadComplete();
   }
 
+  Color _getSubTextColor(SearchData debate) {
+    switch (debate.searchedDebateStatus) {
+      case 'CREATED':
+        return ColorSystem.white;
+      case 'IN_PROGRESS':
+        return ColorSystem.purple;
+      case 'VOTING':
+        return ColorSystem.grey1;
+      case 'ENDED':
+        return ColorSystem.grey1;
+      default:
+        return ColorSystem.purple;
+    }
+  }
+
+  Color _getStatusColor(String? status) {
+    switch (status) {
+      case 'CREATED':
+        return ColorSystem.lightPurple2; // CREATED 상태의 배경색
+      case 'IN_PROGRESS':
+        return ColorSystem.lightPurple; // IN_PROGRESS 상태의 배경색
+      case 'VOTING':
+        return ColorSystem.lightYellow; // VOTING 상태의 배경색
+      case 'ENDED':
+        return ColorSystem.turquoise; // ENDED 상태의 배경색
+      default:
+        return ColorSystem.lightPurple; // 기본 배경색
+    }
+  }
+
+  String _getStatusText(String debateStatus) {
+    switch (debateStatus) {
+      case 'CREATED':
+        return '상대 찾는 중';
+      case 'IN_PROGRESS':
+        return '토론 진행중';
+      case 'VOTING':
+        return '투표 중';
+      case 'ENDED':
+        return '투표 종료';
+      default:
+        return '상태 없음';
+    }
+  }
+
+  String _getSubText(SearchData debate) {
+    switch (debate.searchedDebateStatus) {
+      case 'CREATED':
+        return '\'종만\'님이 대기 중';
+      case 'IN_PROGRESS':
+        return '\'조조\'님과 \'뚜미둡\'님이 토론 중';
+      case 'VOTING':
+        return '나도 투표 참여하러 가기';
+      case 'ENDED':
+        return '토론 결과 확인하러가기';
+      default:
+        return '';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -155,18 +275,16 @@ class SearchResultList extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 6.w, vertical: 2.h),
                                   decoration: BoxDecoration(
-                                    color: result.searchedDebateStatus == '실시간'
-                                        ? ColorSystem.lightPurple
-                                        : ColorSystem.lightPurple,
+                                    color: _getStatusColor(
+                                        result.searchedDebateStatus),
                                     borderRadius: BorderRadius.circular(10.r),
                                   ),
                                   child: Text(
-                                    result.searchedDebateStatus ?? '상태 없음',
+                                    _getStatusText(
+                                        result.searchedDebateStatus ??
+                                            'UNKNOWN'),
                                     style: FontSystem.KR14SB.copyWith(
-                                      color:
-                                          result.searchedDebateStatus == '실시간'
-                                              ? ColorSystem.purple
-                                              : ColorSystem.purple,
+                                      color: _getSubTextColor(result),
                                     ),
                                   ),
                                 ),
@@ -179,7 +297,7 @@ class SearchResultList extends StatelessWidget {
                                 ),
                                 SizedBox(height: 4.h),
                                 Text(
-                                  '승률 ${result.searchedDebateOwnerWinningRate}대기중',
+                                  _getSubText(result),
                                   style: FontSystem.KR16M
                                       .copyWith(color: ColorSystem.purple),
                                   maxLines: 1,
