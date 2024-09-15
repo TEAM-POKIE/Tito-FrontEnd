@@ -63,22 +63,7 @@ class _LiveCommentState extends ConsumerState<LiveComment>
       if (chatState!.isVoteEnded) {
         return;
       }
-      _messageCounter++; // 새로운 메시지가 들어올 때마다 카운터 증가 나중에 지우면 돼
-      if (_messageCounter == 7 ||
-          _messageCounter == 8 ||
-          _messageCounter == 9 ||
-          _messageCounter == 10 ||
-          _messageCounter == 11 ||
-          _messageCounter == 12 ||
-          _messageCounter == 13 ||
-          _messageCounter == 14 ||
-          _messageCounter == 15 ||
-          _messageCounter == 16 ||
-          _messageCounter == 17 ||
-          _messageCounter == 18 ||
-          _messageCounter == 19) {
-        return;
-      }
+
       if (message['command'] == "VOTE_RATE_RES") {
         final newBlueVotes = message["ownerVoteRate"];
         final newRedVotes = message["joinerVoteRate"];
