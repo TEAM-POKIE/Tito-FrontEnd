@@ -61,6 +61,7 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
   }
 
   void _handlePopupIfNeeded(Map<String, dynamic> message, LoginInfo loginInfo) {
+    if (!mounted) return;
     final chatState = ref.read(chatInfoProvider);
     final popupViewModel = ref.read(popupProvider.notifier);
     final timerViewModel = ref.read(timerProvider.notifier);

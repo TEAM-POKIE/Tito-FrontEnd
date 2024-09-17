@@ -14,15 +14,19 @@ final liveWebSocketProvider = Provider<WebSocketService>((ref) {
 class WebSocketService {
   late WebSocketChannel channel;
   final _controller = StreamController<Map<String, dynamic>>.broadcast();
+  bool _isConnected = false;
+  Timer? _reconnectTimer;
 
   WebSocketService() {
     _connect();
   }
 
   void _connect() {
+    if (_isConnected) return; // 중복 연결 방지
     try {
       channel = WebSocketChannel.connect(
           Uri.parse('wss://dev.tito.lat/ws/debate/realtime'));
+      _isConnected = true;
       print('WebSocket connection established');
 
       channel.stream.listen((message) {
@@ -32,18 +36,32 @@ class WebSocketService {
           _controller.sink.add(decodedMessage);
         } catch (e) {
           print('Error decoding message: $e');
+          _controller.addError('Error decoding message: $e');
         }
       }, onError: (error) {
         print('Error in websocket connection: $error');
-        // _reconnect();
+        _controller.addError('WebSocket error: $error');
+        _scheduleReconnect(); // 재연결 시도
       }, onDone: () {
         print('WebSocket connection closed');
-        // _reconnect();
+        _isConnected = false;
+        _scheduleReconnect(); // 재연결 시도
       });
     } catch (e) {
       print('Error establishing WebSocket connection: $e');
-      // _reconnect();
+      _controller.addError('Error establishing WebSocket connection: $e');
+      _scheduleReconnect(); // 재연결 시도
     }
+  }
+
+  void _scheduleReconnect() {
+    if (_reconnectTimer != null && _reconnectTimer!.isActive) return;
+
+    // 5초 후에 재연결 시도
+    _reconnectTimer = Timer(Duration(seconds: 5), () {
+      print('Attempting to reconnect WebSocket...');
+      _connect();
+    });
   }
 
   Stream<Map<String, dynamic>> get stream => _controller.stream;
@@ -58,12 +76,19 @@ class WebSocketService {
       });
 
   void sendMessage(String message) {
-    print('Sending message: $message');
-    channel.sink.add(message);
+    if (_isConnected) {
+      print('Sending message: $message');
+      channel.sink.add(message);
+    } else {
+      print('WebSocket not connected. Cannot send message.');
+    }
   }
 
   void dispose() {
-    channel.sink.close(status.goingAway);
+    _reconnectTimer?.cancel(); // 재연결 타이머 취소
+    if (_isConnected) {
+      channel.sink.close(status.goingAway);
+    }
     _controller.close();
   }
 }

@@ -1,6 +1,5 @@
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
-import 'package:tito_app/src/data/models/ai_word.dart';
 import 'package:tito_app/src/data/models/debate_crate.dart';
 import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:tito_app/src/data/models/ended_chat.dart';

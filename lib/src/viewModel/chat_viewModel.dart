@@ -53,6 +53,12 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     _channel = WebSocketChannel.connect(
       Uri.parse('wss://dev.tito.lat/ws/debate'),
     );
+
+    // _liveChannel 초기화 추가
+    _liveChannel = WebSocketChannel.connect(
+      Uri.parse('wss://dev.tito.lat/ws/debate/realtime'), // 여기에 적절한 경로 설정
+    );
+
     _channel.stream.listen((message) {
       if (message is String && message.startsWith('{')) {
         final decodedMessage = json.decode(message) as Map<String, dynamic>;
@@ -66,21 +72,14 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     }, onDone: () {
       print('WebSocket connection closed');
     });
-    _liveChannel = WebSocketChannel.connect(
-      Uri.parse('wss://dev.tito.lat/ws/debate/realtime'),
-    );
+
+    // _liveChannel 스트림에 대한 리스너 추가
     _liveChannel.stream.listen((message) {
-      if (message is String && message.startsWith('{')) {
-        final decodedMessage = json.decode(message) as Map<String, dynamic>;
-        _messages.add(decodedMessage);
-        _messageController.sink.add(decodedMessage);
-      } else {
-        print('Invalid message format or non-JSON string received: $message');
-      }
+      print('Live Channel Message: $message');
     }, onError: (error) {
-      print('WebSocket error: $error');
+      print('Error in live channel: $error');
     }, onDone: () {
-      print('WebSocket connection closed');
+      print('Live channel connection closed');
     });
   }
 
@@ -337,6 +336,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
   @override
   void dispose() {
     _channel.sink.close(status.goingAway);
+    _liveChannel.sink.close(status.goingAway);
     _messageController.close();
     controller.dispose();
     focusNode.dispose();
