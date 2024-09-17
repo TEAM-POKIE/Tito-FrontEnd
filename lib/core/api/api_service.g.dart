@@ -784,6 +784,39 @@ class _ApiService implements ApiService {
   }
 
   @override
+  Future<DebateInfo> getEndedDebateInfo(int debateId) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<DebateInfo>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'debates/ended/{debate_id}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late DebateInfo _value;
+    try {
+      _value = DebateInfo.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<AuthResponse> oAuthGoogle(Map<String, String> loginData) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

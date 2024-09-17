@@ -5,6 +5,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/constants/style.dart';
+import 'package:tito_app/src/data/models/debate_list.dart';
 import 'package:tito_app/src/data/models/search_data.dart';
 
 class CustomSearchBar extends StatefulWidget {
@@ -213,9 +214,9 @@ class SearchResultList extends StatelessWidget {
   String _getSubText(SearchData debate) {
     switch (debate.searchedDebateStatus) {
       case 'CREATED':
-        return '\'종만\'님이 대기 중';
+        return '${debate.searchedDebateOwnerNickname}님이 대기 중';
       case 'IN_PROGRESS':
-        return '\'조조\'님과 \'뚜미둡\'님이 토론 중';
+        return '${debate.searchedDebateOwnerNickname}님과 ${debate.searchedDebateJoinerNickname}님이 토론 중';
       case 'VOTING':
         return '나도 투표 참여하러 가기';
       case 'ENDED':

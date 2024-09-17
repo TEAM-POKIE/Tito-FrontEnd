@@ -85,6 +85,8 @@ abstract class ApiService {
 
   @GET("debates/{id}")
   Future<DebateInfo> getDebateInfo(@Path("id") int debateId);
+  @GET("debates/ended/{debate_id}")
+  Future<DebateInfo> getEndedDebateInfo(@Path("id") int debateId);
 
   @POST("oauth2/google")
   Future<AuthResponse> oAuthGoogle(@Body() Map<String, String> loginData);

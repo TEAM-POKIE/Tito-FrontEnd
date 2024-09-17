@@ -49,6 +49,18 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     }
   }
 
+  // Debate 정보를 가져오는 메소드
+  Future<void> fetchEndedDebateInfo(int id) async {
+    try {
+      final debateInfo = await ApiService(DioClient.dio).getEndedDebateInfo(id);
+
+      state = debateInfo;
+    } catch (error) {
+      print('Error fetching debate info: $error');
+      state = null;
+    }
+  }
+
   void connectWebSocket() {
     _channel = WebSocketChannel.connect(
       Uri.parse('wss://dev.tito.lat/ws/debate'),
