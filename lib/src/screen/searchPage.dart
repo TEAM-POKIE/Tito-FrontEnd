@@ -21,10 +21,12 @@ class _SearchpageState extends ConsumerState<Searchpage> {
     return Scaffold(
       backgroundColor: ColorSystem.white,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(100.h),
+        preferredSize: Size.fromHeight(120.h),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
                 child: CustomSearchBar(
@@ -35,15 +37,17 @@ class _SearchpageState extends ConsumerState<Searchpage> {
                   },
                 ),
               ),
-              SizedBox(width: 10.w), // SearchBar와 취소 버튼 사이의 간격 조정
-              TextButton(
-                onPressed: () {
-                  context.pop();
-                },
-                child: Text(
-                  '취소',
-                  style: FontSystem.KR16M,
-                  textAlign: TextAlign.start,
+              Padding(
+                padding: EdgeInsets.only(bottom: 17.h),
+                child: TextButton(
+                  onPressed: () {
+                    context.pop();
+                  },
+                  child: Text(
+                    '취소',
+                    style: FontSystem.KR16M,
+                    textAlign: TextAlign.start,
+                  ),
                 ),
               ),
             ],

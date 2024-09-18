@@ -64,7 +64,6 @@ class _HotListState extends ConsumerState<HotLists> {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 14.w, vertical: 10.h),
                             width: 350.w,
-                            height: 100.h,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(20.r),

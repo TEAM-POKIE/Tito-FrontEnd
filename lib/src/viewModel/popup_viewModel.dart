@@ -39,6 +39,8 @@ class PopupViewmodel extends StateNotifier<PopupState> {
   }
 
   void postBlock(id) async {
+    print('실행');
+    print(id);
     await ApiService(DioClient.dio).postUserBlock({
       'blockUserId': id,
     });
@@ -97,7 +99,6 @@ class PopupViewmodel extends StateNotifier<PopupState> {
     return result ?? false; // return false if result is null
   }
 
-
 // Future<bool> showLogoutPopup(BuildContext context) async {
 //     state = state.copyWith(
 //       title: '정말로 로그아웃 하시겠어요?',
@@ -116,7 +117,6 @@ class PopupViewmodel extends StateNotifier<PopupState> {
 
 //     return result ?? false; // return false if result is null
 //   }
-
 
   // 타이밍 팝업 띄우기
   Future<bool> showTimingReceive(BuildContext context) async {
@@ -236,5 +236,4 @@ class PopupViewmodel extends StateNotifier<PopupState> {
 
     return result ?? false; // return false if result is null
   }
-
 }
