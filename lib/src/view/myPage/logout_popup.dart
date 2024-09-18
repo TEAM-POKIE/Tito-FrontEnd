@@ -53,7 +53,6 @@ class LogoutPopup extends ConsumerWidget {
             SizedBox(height: 20.h),
             Container(
               width: 248.w,
-              height: 100.h,
               decoration: BoxDecoration(
                 color: ColorSystem.grey3,
                 borderRadius: BorderRadius.circular(12.r),

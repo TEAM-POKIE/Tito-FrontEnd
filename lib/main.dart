@@ -50,31 +50,31 @@ void initializeNotification() async {
   // $ Handler 1. Background 등록
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  // $ Handler 2. Foreground 등록
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-    RemoteNotification? notification = message.notification;
-    if (notification != null) {
-      FlutterLocalNotificationsPlugin().show(
-        notification.hashCode,
-        notification.title,
-        notification.body,
-        const NotificationDetails(
-          android: AndroidNotificationDetails(
-            'high_importance_channel',
-            'high_importance_notification',
-            importance: Importance.max,
-          ),
-          iOS: DarwinNotificationDetails(
-            presentAlert: true,
-            presentBadge: true,
-            presentSound: true,
-          ),
-        ),
-      );
-    } else {
-      debugPrint("DEV: 비어있는 알림이 수신됨. 코드 확인 필요");
-    }
-  });
+  // // $ Handler 2. Foreground 등록
+  // FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+  //   RemoteNotification? notification = message.notification;
+  //   if (notification != null) {
+  //     FlutterLocalNotificationsPlugin().show(
+  //       notification.hashCode,
+  //       notification.title,
+  //       notification.body,
+  //       const NotificationDetails(
+  //         android: AndroidNotificationDetails(
+  //           'high_importance_channel',
+  //           'high_importance_notification',
+  //           importance: Importance.max,
+  //         ),
+  //         iOS: DarwinNotificationDetails(
+  //           presentAlert: true,
+  //           presentBadge: true,
+  //           presentSound: true,
+  //         ),
+  //       ),
+  //     );
+  //   } else {
+  //     debugPrint("DEV: 비어있는 알림이 수신됨. 코드 확인 필요");
+  //   }
+  // });
 
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,19 +34,23 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
   void _fetchList() async {
     final chatState = ref.read(chatInfoProvider);
     final userState = ref.read(userProfileProvider);
+
     try {
-      final Map<String, dynamic> debateResponse =
+      // API에서 원시 JSON 문자열을 받아옴
+      final String debateResponse =
           await ApiService(DioClient.dio).getOtherDebate(userState!.id);
 
-      final List<dynamic> data = debateResponse['data'];
+      // JSON 문자열을 Map<String, dynamic>으로 디코딩
+      final Map<String, dynamic> decodedResponse =
+          json.decode(debateResponse) as Map<String, dynamic>;
 
-      final List<DebateUsermade> debates = data.map((item) {
-        if (item is DebateUsermade) {
-          return item; // 이미 DebateUsermade 객체라면 그대로 사용
-        } else {
-          return DebateUsermade.fromJson(item as Map<String, dynamic>);
-        }
-      }).toList();
+      // 응답에서 'data' 키의 값을 추출하여 List<dynamic>으로 변환
+      final List<dynamic> dataList = decodedResponse['data'] as List<dynamic>;
+
+      // List<Map<String, dynamic>>를 List<DebateUsermade>로 변환
+      final List<DebateUsermade> debates = dataList
+          .map((item) => DebateUsermade.fromJson(item as Map<String, dynamic>))
+          .toList();
 
       setState(() {
         debateList = debates; // 변환된 리스트를 상태에 저장

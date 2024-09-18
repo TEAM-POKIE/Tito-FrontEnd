@@ -39,7 +39,8 @@ class LoginMain extends StatelessWidget {
     }
 
     void goSignUp() {
-      context.push('/signup');
+      // context.push('/signup');
+      context.push('/home');
     }
 
     Future<void> _signInWithGoogle() async {

@@ -107,79 +107,86 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
                   Divider(color: ColorSystem.grey),
                   Row(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 0.w),
-                            child: Text(
-                              '${debate.debateTitle}',
-                              style: FontSystem.KR15B,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          SizedBox(height: 4.h),
-                          Padding(
-                            padding: EdgeInsets.only(left: 0.w),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${debate.debateMakerOpinion}',
-                                  style: FontSystem.KR14R
-                                      .copyWith(color: ColorSystem.grey),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 0.w),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      if (debate.isWinOrLoose == true)
-                                        Text(
-                                          '결과: 승',
-                                          style: FontSystem.KR14R.copyWith(
-                                              color: ColorSystem.purple),
-                                        )
-                                      else if (debate.isWinOrLoose == null)
-                                        Text(
-                                          '결과: 패',
-                                          style: FontSystem.KR14R.copyWith(
-                                              color: ColorSystem.purple),
-                                        )
-                                      else
-                                        Text(
-                                          '결과: 무',
-                                          style: FontSystem.KR14R.copyWith(
-                                              color: ColorSystem.purple),
-                                        )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      Spacer(),
-                      debate.debateImageUrl == ''
-                          ? SvgPicture.asset(
-                              'assets/icons/list_real_null.svg',
-                              width: 70.w, // 원하는 너비 설정
-                              fit: BoxFit.contain,
-                            )
-                          : ClipRRect(
-                              borderRadius:
-                                  BorderRadius.circular(12.r), // 둥근 모서리 설정
-                              child: Image.network(
-                                debate.debateImageUrl ?? '',
-                                width: 60.w, // 원하는 너비 설정
-                                height: 60.h,
-                                fit: BoxFit.cover, // 이미지가 잘리지 않도록 맞춤 설정
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: 0.w),
+                              child: Text(
+                                maxLines: 1,
+                                '${debate.debateTitle}',
+                                style: FontSystem.KR15B,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
+                            SizedBox(height: 4.h),
+                            Container(
+                              width: 100.w,
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 0.w),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${debate.debateMakerOpinion}',
+                                      style: FontSystem.KR14R
+                                          .copyWith(color: ColorSystem.grey),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 0.w),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          if (debate.isWinOrLoose == true)
+                                            Text(
+                                              '결과: 승',
+                                              style: FontSystem.KR14R.copyWith(
+                                                  color: ColorSystem.purple),
+                                            )
+                                          else if (debate.isWinOrLoose == null)
+                                            Text(
+                                              '결과: 패',
+                                              style: FontSystem.KR14R.copyWith(
+                                                  color: ColorSystem.purple),
+                                            )
+                                          else
+                                            Text(
+                                              '결과: 무',
+                                              style: FontSystem.KR14R.copyWith(
+                                                  color: ColorSystem.purple),
+                                            )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        child: debate.debateImageUrl == ''
+                            ? SvgPicture.asset(
+                                'assets/icons/list_real_null.svg',
+                                width: 70.w, // 원하는 너비 설정
+                                fit: BoxFit.contain,
+                              )
+                            : ClipRRect(
+                                borderRadius:
+                                    BorderRadius.circular(12.r), // 둥근 모서리 설정
+                                child: Image.network(
+                                  debate.debateImageUrl ?? '',
+                                  width: 60.w, // 원하는 너비 설정
+                                  height: 60.h,
+                                  fit: BoxFit.cover, // 이미지가 잘리지 않도록 맞춤 설정
+                                ),
+                              ),
+                      ),
                     ],
                   ),
                 ],

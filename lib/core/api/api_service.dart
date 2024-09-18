@@ -1,6 +1,5 @@
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
-import 'package:tito_app/src/data/models/ai_word.dart';
 import 'package:tito_app/src/data/models/debate_crate.dart';
 import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:tito_app/src/data/models/ended_chat.dart';
@@ -70,7 +69,7 @@ abstract class ApiService {
   Future<String> getBlockedUser();
 
   @GET('users/{id}/debates')
-  Future<Map<String, String>> getOtherDebate(@Path("id") int debateId);
+  Future<String> getOtherDebate(@Path("id") int debateId);
   @POST('debates/generate-topic')
   Future<String> postGenerateTopic(@Body() Map<String, Object> requestBody);
 
@@ -86,6 +85,8 @@ abstract class ApiService {
 
   @GET("debates/{id}")
   Future<DebateInfo> getDebateInfo(@Path("id") int debateId);
+  @GET("debates/ended/{debate_id}")
+  Future<DebateInfo> getEndedDebateInfo(@Path("id") int debateId);
 
   @POST("oauth2/google")
   Future<AuthResponse> oAuthGoogle(@Body() Map<String, String> loginData);
@@ -106,5 +107,5 @@ abstract class ApiService {
   @MultiPart()
   Future<DebateCreateInfo> postDebate(@Body() FormData formData);
   @POST("user-block-list/block")
-  Future<void> postUserBlock(@Body() Map<String, String> userId);
+  Future<void> postUserBlock(@Body() Map<String, int> userId);
 }
