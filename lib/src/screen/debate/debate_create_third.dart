@@ -62,7 +62,7 @@ class _DebateCreateThirdState extends ConsumerState<DebateCreateThird> {
                   SizedBox(height: 20.h),
                   Container(
                     width: 350.w,
-                    height: 240.h,
+                    height: 200.h,
                     decoration: BoxDecoration(
                         color: ColorSystem.ligthGrey,
                         borderRadius: BorderRadius.circular(10.r)),

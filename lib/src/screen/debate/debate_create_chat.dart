@@ -41,10 +41,7 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: 200.0,
-                ),
+              Flexible(
                 child: Text(
                   debateState.debateTitle,
                   overflow: TextOverflow.ellipsis,

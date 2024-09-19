@@ -6,7 +6,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
-import 'package:tito_app/core/provider/nav_provider.dart'; 
+import 'package:tito_app/core/provider/nav_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:overflow_text_animated/overflow_text_animated.dart';
@@ -66,14 +66,10 @@ class DebateAppbar extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: 150.0.w,
-            ),
+          Flexible(
             child: Text(
               title,
               style: FontSystem.KR16SB,
-              maxLines: 1, // 텍스트를 한 줄로 제한
               overflow: TextOverflow.ellipsis,
             ),
           ),

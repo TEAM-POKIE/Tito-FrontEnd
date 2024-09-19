@@ -31,8 +31,7 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -40,9 +39,10 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
                   Flexible(
                     child: Text(
                       chatState!.debateTitle,
-                      style: FontSystem.KR18SB,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
+                      style: FontSystem.KR16SB,
+                      //overflow: TextOverflow.ellipsis,
+                      //maxLines: 2,
+                      textAlign: TextAlign.justify,
                     ),
                   ),
                   IconButton(
@@ -55,10 +55,10 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.w),
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
               child: const Divider(
                 color: ColorSystem.grey3,
-                thickness: 2,
+                thickness: 1,
               ),
             ),
             _buildProfileHeader(ref),
@@ -97,7 +97,7 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SvgPicture.asset('assets/icons/popup_face.svg'),
-              SizedBox(width: 10),
+              SizedBox(width: 5.w),
               Expanded(
                 child: Text(chatState!.debateContent, style: FontSystem.KR14SB),
               ),

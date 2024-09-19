@@ -160,6 +160,7 @@ class _DebateBodyState extends ConsumerState<DebateCreateScreen> {
                     child: TextFormField(
                       controller: _titleController,
                       autocorrect: false,
+                      maxLines: null,
                       decoration: InputDecoration(
                         hintText: '입력하세요',
                         fillColor: ColorSystem.ligthGrey,
