@@ -25,7 +25,6 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
         borderRadius: BorderRadius.circular(20.r),
       ),
       child: Container(
-        width: 350.w,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,23 +33,25 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
+                //mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment:
+                    MainAxisAlignment.spaceBetween, // 제목과 버튼을 양쪽 끝에 배치
                 children: [
                   Flexible(
-                    child: Text(
-                      chatState!.debateTitle,
-                      style: FontSystem.KR16SB,
-                      //overflow: TextOverflow.ellipsis,
-                      //maxLines: 2,
-                      textAlign: TextAlign.justify,
-                    ),
+                    child: Text(chatState!.debateTitle,
+                        style: FontSystem.KR16SB,
+                        //overflow: TextOverflow.ellipsis,
+                        //maxLines: 2,
+                        textAlign: TextAlign.start,
+                        softWrap: true,
+                        overflow: TextOverflow.visible),
                   ),
-                  IconButton(
-                    icon: Icon(Icons.close),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
+                  // IconButton(
+                  //   icon: Icon(Icons.close),
+                  //   onPressed: () {
+                  //     Navigator.of(context).pop();
+                  //   },
+                  // ),
                 ],
               ),
             ),
@@ -63,21 +64,23 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
             ),
             _buildProfileHeader(ref),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: chatState.debateImageUrl == ''
-                  ? SvgPicture.asset(
-                      'assets/icons/list_real_null.svg',
-                      fit: BoxFit.contain,
-                    )
-                  : ClipRRect(
-                      borderRadius: BorderRadius.circular(12.r), // 둥근 모서리 설정
-                      child: Image.network(
-                        chatState.debateImageUrl,
-                        width: 260.w, // 원하는 너비 설정
-                        height: 250.h,
-                        fit: BoxFit.cover, // 이미지가 잘리지 않도록 맞춤 설정
+              padding: EdgeInsets.symmetric(horizontal: 50.w),
+              child: Center(
+                child: chatState.debateImageUrl == ''
+                    ? SvgPicture.asset(
+                        'assets/icons/list_real_null.svg',
+                        fit: BoxFit.contain,
+                      )
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(12.r), // 둥근 모서리 설정
+                        child: Image.network(
+                          chatState.debateImageUrl,
+                          width: 260.w, // 원하는 너비 설정
+                          height: 250.h,
+                          fit: BoxFit.cover, // 이미지가 잘리지 않도록 맞춤 설정
+                        ),
                       ),
-                    ),
+              ),
             ),
             SizedBox(height: 10.h),
           ],
@@ -89,7 +92,7 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
   Widget _buildProfileHeader(WidgetRef ref) {
     final chatState = ref.read(chatInfoProvider);
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
           padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 30.w),
@@ -97,7 +100,7 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SvgPicture.asset('assets/icons/popup_face.svg'),
-              SizedBox(width: 5.w),
+              SizedBox(width: 20.w),
               Expanded(
                 child: Text(chatState!.debateContent, style: FontSystem.KR14SB),
               ),
