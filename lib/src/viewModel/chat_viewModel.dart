@@ -17,6 +17,7 @@ import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:tito_app/src/viewModel/timer_viewModel.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ChatViewModel extends StateNotifier<DebateInfo?> {
   final Ref ref;
@@ -191,7 +192,15 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     _liveChannel.sink.add(jsonMessage);
     controller.clear();
     focusNode.requestFocus();
-    // Reset the timer to 8 minutes
+
+    Fluttertoast.showToast(
+        msg: "${selectedDebate}님을 투표하셨습니다.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 
   void sendChatMessage() {
