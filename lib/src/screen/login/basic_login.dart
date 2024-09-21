@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:go_router/go_router.dart';
@@ -35,35 +37,44 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
     _formKey.currentState!.save();
 
     try {
-      // & Phase 1. 백엔드에 로그인 요청
       final authResponse = await ApiService(DioClient.dio).signIn({
         'email': _enteredEmail,
         'password': _enteredPassword,
         'fcmToken': await FirebaseMessaging.instance.getToken() ?? '',
       });
 
-      // & Phase 2. 수신한 Access, Refresh Token 시큐어 스토리지에 저장
       await DioClient.setToken(authResponse.accessToken.token);
       await secureStorage.write(
           key: 'API_ACCESS_TOKEN', value: authResponse.accessToken.token);
       await secureStorage.write(
           key: 'API_REFRESH_TOKEN', value: authResponse.refreshToken.token);
 
-      // & Phase 3. 해당 토큰으로 사용자 Detail Data 요청
       final userInfoResponse = await ApiService(DioClient.dio).getUserInfo();
 
       final loginInfoNotifier = ref.read(loginInfoProvider.notifier);
       loginInfoNotifier.setLoginInfo(userInfoResponse);
 
-      // & Phase 4. HomeScreen으로 이동
       if (!context.mounted) return;
       context.go('/home');
     } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error occurred: $error'),
-        ),
-      );
+      if (error is DioError && error.response?.statusCode == 400) {
+        // Show a toast when the error is a 400 error (password mismatch)
+        Fluttertoast.showToast(
+          msg: "${error.response!.data['message']}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: ColorSystem.black,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error occurred: $error'),
+          ),
+        );
+      }
     }
   }
 
@@ -149,8 +160,7 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
                   height: 10.h,
                 ),
                 TextFormField(
-                  //maxLength: 20,
-                  obscureText: _obscureText, // 비밀번호 입력처럼 텍스트를 숨길지 여부
+                  obscureText: _obscureText,
                   decoration: InputDecoration(
                     hintText: '비밀번호 (영문, 숫자 조합 8자 이상)',
                     hintStyle:
