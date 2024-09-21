@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
+import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/home_state_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -25,6 +26,7 @@ class _HotFighterState extends ConsumerState<HotFighter> {
   @override
   Widget build(BuildContext context) {
     final homeState = ref.watch(homeViewModelProvider);
+    final chatviewModel = ref.watch(chatInfoProvider.notifier);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,14 +65,20 @@ class _HotFighterState extends ConsumerState<HotFighter> {
                 margin: EdgeInsets.symmetric(horizontal: 8.w),
                 child: Column(
                   children: [
-                    CircleAvatar(
-                      radius: 35.w,
-                      // 아바타의 크기를 키움
-                      backgroundColor: ColorSystem.purple,
-                      backgroundImage: fighter.profilePicture != null
-                          ? NetworkImage(fighter.profilePicture!)
-                          : AssetImage('assets/images/hot_fighter.png')
-                              as ImageProvider, // 프로필 이미지 경로
+                    InkWell(
+                      onTap: () {
+                        chatviewModel.getProfile(fighter.userId, context);
+                      },
+                      borderRadius: BorderRadius.circular(
+                          35.w), // CircleAvatar와 동일한 반경 설정
+                      child: CircleAvatar(
+                        radius: 35.w, // 아바타의 크기
+                        backgroundColor: ColorSystem.purple,
+                        backgroundImage: fighter.profilePicture != null
+                            ? NetworkImage(fighter.profilePicture!)
+                            : AssetImage('assets/images/hot_fighter.png')
+                                as ImageProvider, // 프로필 이미지 경로
+                      ),
                     ),
                     SizedBox(height: 10.h), // 간격을 조금 더 넓힘
                     Container(
