@@ -3,10 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
-import 'package:tito_app/core/provider/live_webSocket_provider.dart';
-import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/voting_provider.dart';
-import 'dart:convert';
 
 class VotingBar extends ConsumerStatefulWidget {
   const VotingBar({super.key});

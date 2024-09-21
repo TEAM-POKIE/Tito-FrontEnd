@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
-import 'package:tito_app/core/provider/login_provider.dart';
-import 'package:tito_app/src/widgets/reuse/purple_button.dart';
+
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,13 +14,12 @@ class ChangePassword extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loginInfo = ref.watch(loginInfoProvider);
     InputTextFieldController _currentController = InputTextFieldController();
     InputTextFieldController _newPasswordController =
         InputTextFieldController();
     InputTextFieldController();
     void changePassWord() async {
-      final response = await ApiService(DioClient.dio).putPassword({
+      await ApiService(DioClient.dio).putPassword({
         "currentPassword": _currentController.text,
         "newPassword": _newPasswordController.text,
       });

@@ -5,7 +5,6 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/constants/style.dart';
-import 'package:tito_app/src/data/models/debate_list.dart';
 import 'package:tito_app/src/data/models/search_data.dart';
 
 class CustomSearchBar extends StatefulWidget {

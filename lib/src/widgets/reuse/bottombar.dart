@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/home_state_provider.dart';
@@ -22,7 +21,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
     final notifier = ref.read(selectedIndexProvider.notifier);
     if (index == 0) {
       final homeViewModel = ref.read(homeViewModelProvider.notifier);
-      homeViewModel.fetchHotDebates(); // 초기화 시 호출될 메소드
+      homeViewModel.fetchHotDebates();
       homeViewModel.fetchHotfighter();
       homeViewModel.hotList();
     }
@@ -38,9 +37,9 @@ class _BottomBarState extends ConsumerState<BottomBar> {
               bottom: 100.h,
             ),
             decoration: BoxDecoration(
-              color: Colors.white, // 모달 배경색
+              color: Colors.white,
               borderRadius: BorderRadius.all(
-                Radius.circular(20.r), // 모달 전체 라운딩 처리
+                Radius.circular(20.r),
               ),
             ),
             child: Stack(

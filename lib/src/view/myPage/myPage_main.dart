@@ -1,12 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:tito_app/core/api/dio_client.dart';
-import 'package:tito_app/core/api/multpart_file_with_to_json.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
-import 'package:tito_app/src/data/models/login_info.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -17,9 +13,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tito_app/src/view/myPage/exit_popup.dart';
 import 'package:tito_app/src/view/myPage/logout_popup.dart';
-import 'package:tito_app/src/widgets/reuse/bottombar.dart';
-import 'package:tito_app/src/widgets/reuse/profile_popup.dart';
-import 'package:tito_app/src/viewModel/popup_viewModel.dart';
 
 class MypageMain extends ConsumerStatefulWidget {
   const MypageMain({super.key});
@@ -148,22 +141,6 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                         width: 80,
                         height: 80,
                       ),
-
-                // CircleAvatar(
-                //   radius: 35.r,
-                //   backgroundImage: _image != null
-                //       ? FileImage(File(_image!.path)) as ImageProvider
-                //       : loginInfo?.profilePicture == null
-                //           ? null
-                //           : NetworkImage(loginInfo!.profilePicture!)
-                //               as ImageProvider,
-                //   child: _image == null && loginInfo?.profilePicture == null
-                //       ? SvgPicture.asset(
-                //           'assets/icons/circle_profile.svg',
-                //           fit: BoxFit.cover,
-                //         )
-                //       : null,
-                // ),
                 Positioned(
                   bottom: -15,
                   right: -15,
@@ -181,8 +158,8 @@ class _MypageMainState extends ConsumerState<MypageMain> {
             SizedBox(height: 8.h),
 
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(width: 175.w),
                 Text(
                   '${loginInfo.nickname}',
                   style: FontSystem.KR24B,

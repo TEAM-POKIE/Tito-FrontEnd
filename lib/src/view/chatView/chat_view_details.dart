@@ -1,8 +1,6 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
@@ -156,7 +154,7 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
                 opponentNick: chatState.debateJoinerNick,
                 opponentImage: chatState.debateJoinerPicture);
           } else {
-            return SizedBox(
+            return const SizedBox(
               width: 0,
             );
           }
@@ -274,14 +272,15 @@ class ProfileVsWidget extends StatelessWidget {
               Text(opponentNick),
             ],
           ),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                 decoration: BoxDecoration(
-                  color: Color(0xffE8DAFE),
+                  color: const Color(0xffE8DAFE),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -289,7 +288,7 @@ class ProfileVsWidget extends StatelessWidget {
                   style: FontSystem.KR14B.copyWith(color: ColorSystem.purple),
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Container(
                 constraints: const BoxConstraints(maxWidth: 250),
                 padding:
@@ -305,7 +304,7 @@ class ProfileVsWidget extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -371,7 +370,6 @@ class _EndedProfileVsWidgetState extends State<EndedProfileVsWidget> {
               ),
               ConfettiWidget(
                 confettiController: _confettiController,
-                // blastDirectionality: BlastDirectionality.explosive,
                 blastDirection: -pi / 2,
                 maxBlastForce: 10,
                 minBlastForce: 5,
@@ -388,14 +386,15 @@ class _EndedProfileVsWidgetState extends State<EndedProfileVsWidget> {
               ),
             ],
           ),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                 decoration: BoxDecoration(
-                  color: Color(0xffE8DAFE),
+                  color: const Color(0xffE8DAFE),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -403,7 +402,7 @@ class _EndedProfileVsWidgetState extends State<EndedProfileVsWidget> {
                   style: FontSystem.KR14B.copyWith(color: ColorSystem.purple),
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Container(
                 constraints: const BoxConstraints(maxWidth: 250),
                 padding:
@@ -419,7 +418,7 @@ class _EndedProfileVsWidgetState extends State<EndedProfileVsWidget> {
               ),
             ],
           ),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [

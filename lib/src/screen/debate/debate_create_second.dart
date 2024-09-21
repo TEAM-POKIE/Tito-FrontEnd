@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class DebateCreateSecond extends ConsumerStatefulWidget {
   const DebateCreateSecond({super.key});
@@ -20,9 +17,6 @@ class _DebateCreateSecondState extends ConsumerState<DebateCreateSecond> {
   late TextEditingController _bController;
   String aArgument = '';
   String bArgument = '';
-  int _currentPage = 1;
-  final int _totalPages = 3;
-  double _progress = 0.0;
 
   @override
   void initState() {

@@ -8,8 +8,6 @@ import 'package:tito_app/src/screen/debate/debate_create_screen.dart';
 import 'package:tito_app/src/screen/debate/debate_create_second.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/src/screen/debate/debate_create_third.dart';
-import 'package:tito_app/src/widgets/ai/ai_select.dart';
-
 import 'package:go_router/go_router.dart';
 
 class DebateBody extends ConsumerStatefulWidget {
@@ -30,14 +28,14 @@ class _DebateBodyState extends ConsumerState<DebateBody> {
 
     switch (progress) {
       case 0.33:
-        displayedWidget = DebateCreateScreen();
+        displayedWidget = const DebateCreateScreen();
         break;
       case 0.66:
-        displayedWidget = DebateCreateSecond();
+        displayedWidget = const DebateCreateSecond();
         break;
-      // 필요한 경우 추가적으로 다른 progress 값에 따라 다른 위젯을 추가할 수 있습니다.
+
       default:
-        displayedWidget = DebateCreateThird(); // 기본값으로 첫 화면을 보여줌
+        displayedWidget = const DebateCreateThird();
     }
 
     return Scaffold(

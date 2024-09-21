@@ -375,7 +375,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                         ),
                                         SizedBox(height: 10.h),
                                         Text(
-                                          debate.debateTitle ?? 'No title',
+                                          debate.debateTitle,
                                           style: FontSystem.KR16M
                                               .copyWith(height: 1.2),
                                           overflow: TextOverflow.ellipsis,

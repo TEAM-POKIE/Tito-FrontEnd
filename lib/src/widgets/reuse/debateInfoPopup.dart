@@ -97,7 +97,7 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SvgPicture.asset('assets/icons/popup_face.svg'),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Expanded(
                 child: Text(chatState!.debateContent, style: FontSystem.KR14SB),
               ),

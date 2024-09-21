@@ -1,11 +1,5 @@
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tito_app/core/provider/login_provider.dart';
-import 'dart:io';
-import 'package:tito_app/src/view/myPage/pick_image.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -32,16 +26,16 @@ class MyContact extends StatelessWidget {
       ),
       body: Center(
         child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: 40.h, bottom: 20.h),
-                child: Text('portunecookiess@gmail.com', style: FontSystem.KR20SB),
-              ),
-              Text('로 연락주시기 바랍니다.', style: FontSystem.KR20SB)
-            ],
-          ),
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: 40.h, bottom: 20.h),
+              child:
+                  Text('portunecookiess@gmail.com', style: FontSystem.KR20SB),
+            ),
+            Text('로 연락주시기 바랍니다.', style: FontSystem.KR20SB)
+          ],
+        ),
       ),
-      
     );
   }
 }

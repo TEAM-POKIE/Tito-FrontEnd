@@ -145,8 +145,6 @@ class _LiveCommentState extends ConsumerState<LiveComment>
 
   @override
   Widget build(BuildContext context) {
-    final loginInfo = ref.read(loginInfoProvider);
-
     return Stack(
       children: [
         Container(
@@ -165,11 +163,11 @@ class _LiveCommentState extends ConsumerState<LiveComment>
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.person,
                             color: ColorSystem.purple,
                           ),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           Text('${_messages.length}명 관전중',
                               style: FontSystem.KR14R
                                   .copyWith(color: ColorSystem.purple)),
@@ -199,7 +197,7 @@ class _LiveCommentState extends ConsumerState<LiveComment>
                         itemBuilder: (context, index) {
                           final message = _messages[index];
                           return Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 16.0, vertical: 8.0),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -207,16 +205,17 @@ class _LiveCommentState extends ConsumerState<LiveComment>
                                 CircleAvatar(
                                   backgroundImage: message['userImgUrl'] != ''
                                       ? NetworkImage(message['userImgUrl'])
-                                      : AssetImage('assets/images/default.png'),
+                                      : const AssetImage(
+                                          'assets/images/default.png'),
                                   radius: 12.r,
                                 ),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 Text(
                                   message['userNickName'] ?? '',
                                   style: FontSystem.KR14R
                                       .copyWith(color: ColorSystem.grey1),
                                 ),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 Expanded(
                                   child: Text(
                                     message['content'] ?? '',
@@ -230,7 +229,7 @@ class _LiveCommentState extends ConsumerState<LiveComment>
                           );
                         },
                       )
-                    : SizedBox.shrink(),
+                    : const SizedBox.shrink(),
               ),
             ],
           ),
@@ -263,7 +262,7 @@ class _LiveCommentState extends ConsumerState<LiveComment>
                   elevation: 2,
                 ),
               )
-            : SizedBox(width: 0),
+            : const SizedBox(width: 0),
       ],
     );
   }

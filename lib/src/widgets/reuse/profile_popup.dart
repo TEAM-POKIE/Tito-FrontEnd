@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +7,7 @@ import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:tito_app/src/data/models/debate_usermade.dart';
-import 'package:tito_app/core/provider/chat_view_provider.dart';
+
 import 'package:tito_app/core/provider/userProfile_provider.dart';
 
 class ProfilePopup extends ConsumerStatefulWidget {
@@ -28,32 +27,27 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
   @override
   void initState() {
     super.initState();
-    _fetchList(); // 토론 목록을 가져오는 함수 호출
+    _fetchList();
   }
 
   void _fetchList() async {
-    final chatState = ref.read(chatInfoProvider);
     final userState = ref.read(userProfileProvider);
 
     try {
-      // API에서 원시 JSON 문자열을 받아옴
       final String debateResponse =
           await ApiService(DioClient.dio).getOtherDebate(userState!.id);
 
-      // JSON 문자열을 Map<String, dynamic>으로 디코딩
       final Map<String, dynamic> decodedResponse =
           json.decode(debateResponse) as Map<String, dynamic>;
 
-      // 응답에서 'data' 키의 값을 추출하여 List<dynamic>으로 변환
       final List<dynamic> dataList = decodedResponse['data'] as List<dynamic>;
 
-      // List<Map<String, dynamic>>를 List<DebateUsermade>로 변환
       final List<DebateUsermade> debates = dataList
           .map((item) => DebateUsermade.fromJson(item as Map<String, dynamic>))
           .toList();
 
       setState(() {
-        debateList = debates; // 변환된 리스트를 상태에 저장
+        debateList = debates;
       });
     } catch (error) {
       print('Error fetching debate list: $error');
@@ -237,7 +231,7 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
                                 _removeOverlay();
                               }
                             },
-                            icon: Icon(Icons.more_vert),
+                            icon: const Icon(Icons.more_vert),
                           ),
                         ],
                       ),
