@@ -2,13 +2,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
+import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:tito_app/src/data/models/debate_usermade.dart';
-
 import 'package:tito_app/core/provider/userProfile_provider.dart';
+import 'package:collection/collection.dart';
 
 class ProfilePopup extends ConsumerStatefulWidget {
   const ProfilePopup({super.key});
@@ -156,7 +158,7 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
               child: ListView.builder(
                 itemCount: debateList.length,
                 itemBuilder: (context, index) {
-                  return _buildListItem(debateList[index]);
+                  return _buildListItem(debateList[index], context);
                 },
               ),
             ),
@@ -249,52 +251,74 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
     );
   }
 
-  Widget _buildListItem(DebateUsermade debate) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 20.w),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20.r),
-          boxShadow: const [
-            BoxShadow(
-              color: Color(0x669795A3),
-              spreadRadius: 0,
-              blurRadius: 4,
-            )
-          ],
-        ),
-        child: ListTile(
-          title: Text(
-            debate.debateTitle,
-            style: FontSystem.KR15B,
-            overflow: TextOverflow.ellipsis,
-          ),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '의견: ${debate.debateMakerOpinion}',
-                style: FontSystem.KR14R.copyWith(color: ColorSystem.grey),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-              ),
-              if (debate.isWinOrLoose == true)
-                Text(
-                  '결과: 승',
-                  style: FontSystem.KR14R.copyWith(color: ColorSystem.purple),
-                )
-              else if (debate.isWinOrLoose == null)
-                Text(
-                  '결과: 패',
-                  style: FontSystem.KR14R.copyWith(color: ColorSystem.purple),
-                )
-              else
-                Text(
-                  '결과: 무',
-                  style: FontSystem.KR14R.copyWith(color: ColorSystem.purple),
-                )
+  Widget _buildListItem(DebateUsermade debate, BuildContext context) {
+    final chatViewModel = ref.watch(chatInfoProvider.notifier);
+
+    final chatRoute = GoRouter.of(context)
+        .routerDelegate
+        .currentConfiguration
+        .matches
+        .firstWhereOrNull(
+          (match) =>
+              match.route is GoRoute &&
+              (match.route as GoRoute).path.contains('/chat'),
+        );
+    GoRoute? goRoute =
+        (chatRoute?.route is GoRoute) ? chatRoute?.route as GoRoute : null;
+
+    bool isChatRouter = goRoute?.path.contains('/chat') ?? false;
+    return GestureDetector(
+      onTap: isChatRouter
+          ? null
+          : () {
+              chatViewModel.enterChat(debate.id, debate.debateStatus, context);
+            },
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 20.w),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20.r),
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0x669795A3),
+                spreadRadius: 0,
+                blurRadius: 4,
+              )
             ],
+          ),
+          child: ListTile(
+            title: Text(
+              debate.debateTitle,
+              style: FontSystem.KR15B,
+              overflow: TextOverflow.ellipsis,
+            ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '의견: ${debate.debateMakerOpinion}',
+                  style: FontSystem.KR14R.copyWith(color: ColorSystem.grey),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+                if (debate.isWinOrLoose == true)
+                  Text(
+                    '결과: 승',
+                    style: FontSystem.KR14R.copyWith(color: ColorSystem.purple),
+                  )
+                else if (debate.isWinOrLoose == null)
+                  Text(
+                    '결과: 패',
+                    style: FontSystem.KR14R.copyWith(color: ColorSystem.purple),
+                  )
+                else
+                  Text(
+                    '결과: 무',
+                    style: FontSystem.KR14R.copyWith(color: ColorSystem.purple),
+                  )
+              ],
+            ),
           ),
         ),
       ),
