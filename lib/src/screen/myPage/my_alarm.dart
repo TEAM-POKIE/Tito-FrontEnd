@@ -1,12 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/src/view/myPage/my_alarm_appbar.dart';
 import 'package:tito_app/src/view/myPage/my_alarm_scrollbody.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:tito_app/core/constants/style.dart';
-import 'package:tito_app/src/widgets/reuse/bottombar.dart';
 
 class MyAlarm extends ConsumerWidget {
   const MyAlarm({super.key});
@@ -17,7 +13,7 @@ class MyAlarm extends ConsumerWidget {
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(80.h),
-          child: MyAlarmAppbar(),
+          child: const MyAlarmAppbar(),
         ),
         body: MyAlarmScrollBody(),
       ),

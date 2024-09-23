@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tito_app/core/provider/ai_response_provider.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:tito_app/core/provider/timer_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
-import 'package:tito_app/src/view/chatView/chat_speech_bubble.dart';
 
 class ChatBottomDetail extends ConsumerStatefulWidget {
   final int id;
@@ -73,8 +71,7 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
       chatViewModel.sendChatMessage();
     }
 
-    // chatState.explanation이 업데이트될 때까지 대기
-    await Future.delayed(Duration(seconds: 2)); // 응답 지연을 시뮬레이션
+    await Future.delayed(Duration(seconds: 2));
 
     if (popupState.title == '토론이 시작 됐어요! 🎵') {
       if (mounted) {

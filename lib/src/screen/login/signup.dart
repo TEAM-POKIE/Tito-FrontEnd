@@ -64,6 +64,7 @@ class _SignUpState extends State<Signup> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: ColorSystem.white,
         leading: IconButton(
           onPressed: () {

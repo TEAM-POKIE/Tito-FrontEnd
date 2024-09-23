@@ -1,35 +1,19 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tito_app/core/api/api_client.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
-
 import 'package:tito_app/core/provider/login_provider.dart';
-import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:tito_app/src/data/models/popup_state.dart';
-import 'package:tito_app/src/view/myPage/logout_popup.dart';
 import 'package:tito_app/src/widgets/reuse/debateInfoPopup.dart';
 import 'package:tito_app/src/widgets/reuse/debate_popup.dart';
 import 'package:tito_app/src/widgets/reuse/profile_popup.dart';
 import 'package:tito_app/src/widgets/reuse/rule_pop_up.dart';
 
-// PopupState 클래스 정의
-
-// PopupViewmodel 클래스 정의
 class PopupViewmodel extends StateNotifier<PopupState> {
   final Ref ref;
 
-  PopupViewmodel(this.ref) : super(PopupState()) {
-    // 웹소켓 서비스 초기화
-    // webSocketService = ref.read(webSocketProvider);
-    // webSocketService.listen((message) {
-    //   _handleWebSocketMessage(message);
-    // });
-  }
+  PopupViewmodel(this.ref) : super(PopupState()) {}
 
-  // 웹소켓 메시지 처리
   void _handleWebSocketMessage(String message) {
     state = state.copyWith(
       title: '알림',
@@ -39,8 +23,6 @@ class PopupViewmodel extends StateNotifier<PopupState> {
   }
 
   void postBlock(id) async {
-    print('실행');
-    print(id);
     await ApiService(DioClient.dio).postUserBlock({
       'blockUserId': id,
     });
@@ -118,7 +100,6 @@ class PopupViewmodel extends StateNotifier<PopupState> {
 //     return result ?? false; // return false if result is null
 //   }
 
-  // 타이밍 팝업 띄우기
   Future<bool> showTimingReceive(BuildContext context) async {
     state = state.copyWith(
       title: '상대방이 타이밍 벨을 울렸어요!',
@@ -137,7 +118,7 @@ class PopupViewmodel extends StateNotifier<PopupState> {
       },
     );
 
-    return result ?? false; // return false if result is null
+    return result ?? false;
   }
 
   Future<bool> showEndPopup(BuildContext context) async {
@@ -155,7 +136,7 @@ class PopupViewmodel extends StateNotifier<PopupState> {
       },
     );
 
-    return result ?? false; // return false if result is null
+    return result ?? false;
   }
 
   // 토론 팝업 띄우기
@@ -172,7 +153,7 @@ class PopupViewmodel extends StateNotifier<PopupState> {
       },
     );
 
-    return result ?? false; // return false if result is null
+    return result ?? false;
   }
 
   Future<bool> showDeletePopup(BuildContext context) async {
@@ -195,7 +176,7 @@ class PopupViewmodel extends StateNotifier<PopupState> {
       },
     );
 
-    return result ?? false; // return false if result is null
+    return result ?? false;
   }
 
   // 토론 팝업 띄우기
@@ -207,7 +188,7 @@ class PopupViewmodel extends StateNotifier<PopupState> {
       },
     );
 
-    return result ?? false; // return false if result is null
+    return result ?? false;
   }
 
   Future<bool> showUserPopup(BuildContext context) async {
@@ -218,7 +199,7 @@ class PopupViewmodel extends StateNotifier<PopupState> {
       },
     );
 
-    return result ?? false; // return false if result is null
+    return result ?? false;
   }
 
   Future<bool> showRulePopup(BuildContext context) async {
@@ -234,6 +215,6 @@ class PopupViewmodel extends StateNotifier<PopupState> {
       },
     );
 
-    return result ?? false; // return false if result is null
+    return result ?? false;
   }
 }

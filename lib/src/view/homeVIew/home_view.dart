@@ -65,7 +65,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 },
                 child: Padding(
                   padding:
-                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
                   child: Container(
                     width: 352.w,
                     height: 140.h,

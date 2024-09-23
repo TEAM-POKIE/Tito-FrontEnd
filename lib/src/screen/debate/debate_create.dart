@@ -62,6 +62,7 @@ class _DebateCreateState extends ConsumerState<DebateCreate> {
       },
       child: Scaffold(
         appBar: AppBar(
+          scrolledUnderElevation: 0,
           backgroundColor: ColorSystem.white,
           leading: IconButton(
             onPressed: () {

@@ -23,28 +23,24 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
   @override
   void initState() {
     super.initState();
-    _madeInDebate(); // 위젯 초기화 시 _madeInDebate 호출
+    _madeInDebate();
   }
 
   Future<void> _madeInDebate({bool isRefresh = false}) async {
     try {
-      // API에서 원시 JSON 문자열을 받아옴
       final String response = await ApiService(DioClient.dio).getUserDebate();
 
-      // JSON 문자열을 Map<String, dynamic>으로 디코딩
       final Map<String, dynamic> decodedResponse =
           json.decode(response) as Map<String, dynamic>;
 
-      // 응답에서 'data' 키의 값을 추출하여 List<dynamic>으로 변환
       final List<dynamic> dataList = decodedResponse['data'] as List<dynamic>;
 
-      // List<Map<String, dynamic>>를 List<DebateUsermade>로 변환
       final List<DebateUsermade> debates = dataList
           .map((item) => DebateUsermade.fromJson(item as Map<String, dynamic>))
           .toList();
 
       setState(() {
-        debateList = debates; // 변환된 리스트를 할당
+        debateList = debates;
       });
     } catch (error) {
       print('Error fetching debate list: $error');
@@ -64,7 +60,6 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
         final debate = debateList[index];
         return GestureDetector(
           onTap: () {
-            // 배너 클릭 시 해당 debateId로 페이지 이동
             context.push('/chat/${debate.id}');
           },
           child: _buildItem(context, debate),
@@ -104,7 +99,7 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
                           TextStyle(fontSize: 14.sp, color: ColorSystem.grey),
                     ),
                   ),
-                  Divider(color: ColorSystem.grey),
+                  const Divider(color: ColorSystem.grey),
                   Row(
                     children: [
                       Expanded(

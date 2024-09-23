@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
@@ -17,6 +15,7 @@ import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:tito_app/src/viewModel/timer_viewModel.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ChatViewModel extends StateNotifier<DebateInfo?> {
   final Ref ref;
@@ -191,7 +190,15 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     _liveChannel.sink.add(jsonMessage);
     controller.clear();
     focusNode.requestFocus();
-    // Reset the timer to 8 minutes
+
+    Fluttertoast.showToast(
+        msg: "${selectedDebate}님을 투표하셨습니다.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 
   void sendChatMessage() {
@@ -343,6 +350,16 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
   void clear() {
     state = null;
     _messages.clear();
+  }
+
+  void enterChat(debateId, String debateStatus, BuildContext context) {
+    if (debateStatus == 'ENDED') {
+      context.push('/endedChat/${debateId}');
+    } else {
+      final chatViewModel = ref.read(chatInfoProvider.notifier);
+      chatViewModel.resetText();
+      context.push('/chat/${debateId}');
+    }
   }
 
   @override

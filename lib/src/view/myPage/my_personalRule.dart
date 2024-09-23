@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/constants/style.dart';
 
-
 class MyPersonalrule extends StatelessWidget {
   const MyPersonalrule({super.key});
 
@@ -10,6 +9,7 @@ class MyPersonalrule extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: ColorSystem.white,
         leading: IconButton(
           onPressed: () {
