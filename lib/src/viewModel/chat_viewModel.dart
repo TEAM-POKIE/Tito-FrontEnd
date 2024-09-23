@@ -352,6 +352,16 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     _messages.clear();
   }
 
+  void enterChat(debateId, String debateStatus, BuildContext context) {
+    if (debateStatus == 'ENDED') {
+      context.push('/endedChat/${debateId}');
+    } else {
+      final chatViewModel = ref.read(chatInfoProvider.notifier);
+      chatViewModel.resetText();
+      context.push('/chat/${debateId}');
+    }
+  }
+
   @override
   void dispose() {
     _channel.sink.close(status.goingAway);

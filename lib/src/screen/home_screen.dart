@@ -40,7 +40,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
       ),
       body: ListView(
-        padding: EdgeInsets.all(16.w),
+        padding: EdgeInsets.all(20.w),
         children: [
           const HomeView(),
           SizedBox(height: 20.h),
