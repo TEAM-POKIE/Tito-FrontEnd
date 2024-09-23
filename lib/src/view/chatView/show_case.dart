@@ -67,6 +67,7 @@ class _ShowCaseScreenState extends State<ShowCaseScreen> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60.h),
         child: AppBar(
+          scrolledUnderElevation: 0,
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           leading: IconButton(

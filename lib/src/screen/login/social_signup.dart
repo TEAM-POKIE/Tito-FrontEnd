@@ -44,6 +44,7 @@ class _SocialSignUpState extends State<SocialSignup> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: ColorSystem.white,
         leading: IconButton(
           onPressed: () {
@@ -52,7 +53,7 @@ class _SocialSignUpState extends State<SocialSignup> {
           icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
         ),
         title: const Text('회원가입'),
-        titleTextStyle: FontSystem.KR16SB,  
+        titleTextStyle: FontSystem.KR16SB,
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -92,7 +93,6 @@ class _SocialSignUpState extends State<SocialSignup> {
                     _nickname = value!;
                   },
                 ),
-                
                 SizedBox(
                   height: 50.h,
                 ),

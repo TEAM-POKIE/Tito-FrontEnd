@@ -11,6 +11,7 @@ class MyDebateAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      scrolledUnderElevation: 0,
       backgroundColor: ColorSystem.white,
       leading: IconButton(
         onPressed: () {

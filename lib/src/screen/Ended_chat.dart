@@ -47,6 +47,7 @@ class _EndedChatState extends ConsumerState<EndedChat> {
     if (debateInfo == null) {
       return Scaffold(
         appBar: AppBar(
+          scrolledUnderElevation: 0,
           automaticallyImplyLeading: false,
         ),
         body: Center(

@@ -58,16 +58,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
     _refreshController.loadComplete();
   }
 
-  void _enterChat(debateId, String debateStatus) {
-    if (debateStatus == 'ENDED') {
-      context.push('/endedChat/${debateId}');
-    } else {
-      final chatViewModel = ref.read(chatInfoProvider.notifier);
-      chatViewModel.resetText();
-      context.push('/chat/${debateId}');
-    }
-  }
-
 // 데이터 fetch 로직 : 새로고침 시 기존데이터를 대체하고 리스트 끝에서 다시 렌더링시키기
   Future<void> _fetchDebateList({bool isRefresh = false}) async {
     try {
@@ -146,12 +136,14 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final chatViewModel = ref.watch(chatInfoProvider.notifier);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(80.0),
         child: Padding(
           padding: EdgeInsets.only(top: 10.w),
           child: AppBar(
+            scrolledUnderElevation: 0,
             backgroundColor: ColorSystem.white,
             centerTitle: false,
             title: Padding(
@@ -334,7 +326,8 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                           ),
                           child: GestureDetector(
                             onTap: () {
-                              _enterChat(debate.id, debate.debateStatus);
+                              chatViewModel.enterChat(
+                                  debate.id, debate.debateStatus, context);
                             },
                             child: Container(
                               padding: EdgeInsets.symmetric(
@@ -375,7 +368,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                         ),
                                         SizedBox(height: 10.h),
                                         Text(
-                                          debate.debateTitle ?? 'No title',
+                                          debate.debateTitle,
                                           style: FontSystem.KR16M
                                               .copyWith(height: 1.2),
                                           overflow: TextOverflow.ellipsis,

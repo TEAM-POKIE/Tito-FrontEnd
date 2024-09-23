@@ -54,9 +54,7 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
       final chatViewModel = ref.read(chatInfoProvider.notifier);
       await chatViewModel.fetchDebateInfo(widget.id);
     } catch (e) {
-      // 예외 처리
       print("Error fetching debate info: $e");
-      // 사용자에게 에러 알림 또는 UI 처리
     }
   }
 
@@ -124,7 +122,7 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
           });
         }
         _typingTimer?.cancel();
-        _typingTimer = Timer(Duration(seconds: 2), () {
+        _typingTimer = Timer(const Duration(seconds: 2), () {
           if (mounted) {
             setState(() {
               _isTyping = false;
@@ -142,7 +140,7 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
     final chatViewModel = ref.read(chatInfoProvider.notifier);
 
     if (chatState == null || loginInfo == null) {
-      return Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }
 
     return Column(
@@ -315,7 +313,7 @@ class JoinerChatList extends StatelessWidget {
                             top: index == 0 ? 5.h : 0.h, bottom: 0.h),
                         child: Center(child: Text(message['content'] ?? '')),
                       )
-                    : SizedBox(width: 0),
+                    : const SizedBox(width: 0),
             if (messages.length == 3 && index == messages.length - 1)
               Row(
                 children: [

@@ -1,15 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:percent_indicator/percent_indicator.dart';
+
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tito_app/src/data/models/debate_list.dart';
 
 class DebateCreateScreen extends ConsumerStatefulWidget {
   const DebateCreateScreen({super.key});
@@ -21,8 +18,7 @@ class DebateCreateScreen extends ConsumerStatefulWidget {
 class _DebateBodyState extends ConsumerState<DebateCreateScreen> {
   final _formKey = GlobalKey<FormState>();
   int categorySelectedIndex = 0;
-  int _currentPage = 0;
-  final int _totalPages = 3;
+
   late TextEditingController _cateController;
   late TextEditingController _titleController;
   void _goNextCreate() async {
@@ -60,7 +56,7 @@ class _DebateBodyState extends ConsumerState<DebateCreateScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = ref.read(debateCreateProvider.notifier);
-    double _progress = (_currentPage + 1) / _totalPages;
+
     // 현재 페이지를 기준으로 진행 상황을 계산하는 코드
 
     final List<String> labels = ['연애', '정치', '연예', '자유', '스포츠'];

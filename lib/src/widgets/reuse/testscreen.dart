@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class Testscreen extends StatelessWidget {
@@ -12,6 +11,7 @@ class Testscreen extends StatelessWidget {
       data: themeData,
       child: Scaffold(
         appBar: AppBar(
+          scrolledUnderElevation: 0,
           title: const Text('Search Bar Sample'),
         ),
         body: const Column(
@@ -19,12 +19,14 @@ class Testscreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(10.0),
               child: SearchBar(
-                leading: Icon(Icons.search,
-                color: Colors.grey,),
+                leading: Icon(
+                  Icons.search,
+                  color: Colors.grey,
+                ),
                 constraints: BoxConstraints(
                   maxWidth: 200,
                   maxHeight: 150,
-                  ),
+                ),
                 hintText: "검색어를 입력하세요",
               ),
             ),

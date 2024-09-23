@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:speech_balloon/speech_balloon.dart';
 import 'package:tito_app/core/constants/style.dart';
-import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/debate_create_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,10 +30,10 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
   Widget build(BuildContext context) {
     final debateState = ref.watch(debateCreateProvider);
     final debateViewModel = ref.read(debateCreateProvider.notifier);
-    final chatViewModel = ref.read(chatInfoProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: ColorSystem.white,
         title: Center(
           child: Row(
@@ -68,8 +67,8 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
         actions: [
           IconButton(
             padding: EdgeInsets.zero, // 아이콘 버튼 간 패딩 없애기 1
-            constraints: BoxConstraints(), // 아이콘 버튼 간 패딩 없애기 2
-            icon: Icon(Icons.more_vert),
+            constraints: const BoxConstraints(), // 아이콘 버튼 간 패딩 없애기 2
+            icon: const Icon(Icons.more_vert),
             onPressed: () {
               debateViewModel.showRulePopup(context);
             },
@@ -96,7 +95,7 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
                             .copyWith(color: ColorSystem.purple)),
                   ],
                 ),
-                Text('입론을 잘성해주세요 !',
+                Text('입론을 작성해주세요!',
                     style:
                         FontSystem.KR14SB.copyWith(color: ColorSystem.purple)),
               ],
@@ -114,7 +113,7 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
               ),
             ),
             SizedBox(height: 20.h),
-            ChatBottom(),
+            const ChatBottom(),
           ],
         ),
       ),
@@ -125,10 +124,14 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
 class AnimatedTextBubble extends StatefulWidget {
   final String title;
   final double width;
-
   final double height;
-  const AnimatedTextBubble(
-      {required this.title, required this.width, required this.height});
+
+  const AnimatedTextBubble({
+    Key? key,
+    required this.title,
+    required this.width,
+    required this.height,
+  }) : super(key: key);
 
   @override
   _AnimatedTextBubbleState createState() => _AnimatedTextBubbleState();
@@ -149,8 +152,8 @@ class _AnimatedTextBubbleState extends State<AnimatedTextBubble>
     )..repeat(reverse: true);
 
     _animation = Tween<Offset>(
-      begin: Offset(0, 0),
-      end: Offset(0, 0.1), // 위아래로 움직이는 범위 설정
+      begin: const Offset(0, 0),
+      end: const Offset(0, 0.1), // 위아래로 움직이는 범위 설정
     ).animate(CurvedAnimation(
       parent: _controller,
       curve: Curves.easeInOut,
@@ -177,7 +180,7 @@ class _AnimatedTextBubbleState extends State<AnimatedTextBubble>
           nipLocation: NipLocation.bottom,
           color: ColorSystem.purple,
           child: Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Text(
               widget.title,
               textAlign: TextAlign.center,
@@ -250,7 +253,7 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottom> {
                   minLines: 1,
                   maxLines: 3,
                   decoration: InputDecoration(
-                    hintText: '첫 입론을 입력해주세요 !',
+                    hintText: '첫 입론을 입력해주세요!',
                     hintStyle:
                         FontSystem.KR16M.copyWith(color: ColorSystem.grey),
                     fillColor: ColorSystem.ligthGrey,

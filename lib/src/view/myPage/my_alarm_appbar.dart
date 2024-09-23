@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tito_app/core/constants/style.dart';
-import 'package:flutter_svg/svg.dart';
 
 class MyAlarmAppbar extends StatelessWidget {
   const MyAlarmAppbar({super.key});
@@ -11,6 +7,7 @@ class MyAlarmAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      scrolledUnderElevation: 0,
       backgroundColor: ColorSystem.white,
       title: Text(
         '알림',

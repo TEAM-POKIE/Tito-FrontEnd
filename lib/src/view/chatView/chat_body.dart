@@ -6,7 +6,6 @@ import 'package:tito_app/src/view/chatView/chat_bottom_detail.dart';
 import 'package:tito_app/src/view/chatView/chat_list_view.dart';
 import 'package:tito_app/src/view/chatView/chat_speech_bubble.dart';
 import 'package:tito_app/src/view/chatView/chat_view_details.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatBody extends ConsumerWidget {
   final int id;
@@ -24,17 +23,17 @@ class ChatBody extends ConsumerWidget {
         ChatViewDetails(id: id),
         Expanded(
           child: Container(
-              decoration: BoxDecoration(color: ColorSystem.grey3),
+              decoration: const BoxDecoration(color: ColorSystem.grey3),
               child: ChatListView(id: id)), // id 전달
         ),
         chatState!.isFirstClick
-            ? ChatSpeechBubble()
-            : SizedBox(
+            ? const ChatSpeechBubble()
+            : const SizedBox(
                 width: 0,
               ),
         chatState.isFirstClick
             ? ChatBottomDetail(id: id)
-            : SizedBox(
+            : const SizedBox(
                 width: 0,
               )
       ],

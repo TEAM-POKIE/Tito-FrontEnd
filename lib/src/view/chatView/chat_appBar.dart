@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -9,7 +8,6 @@ import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/nav_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:overflow_text_animated/overflow_text_animated.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ChatAppbar extends ConsumerWidget {
@@ -35,13 +33,11 @@ class ChatAppbar extends ConsumerWidget {
 }
 
 class DebateAppbar extends ConsumerWidget {
-  // final ChatViewModel? chatViewModel;
   final String title;
   final String? notiIcon;
 
   const DebateAppbar({
     super.key,
-    // this.chatViewModel,
     required this.title,
     this.notiIcon,
   });
@@ -61,6 +57,7 @@ class DebateAppbar extends ConsumerWidget {
             : ['토론룰 보기', '신고하기'];
 
     return AppBar(
+      scrolledUnderElevation: 0,
       backgroundColor: ColorSystem.white,
       title: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,6 +67,7 @@ class DebateAppbar extends ConsumerWidget {
             child: Text(
               title,
               style: FontSystem.KR16SB,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
           ),
