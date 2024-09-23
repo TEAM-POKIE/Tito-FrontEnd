@@ -8,6 +8,7 @@ class MypageAppbar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AppBar(
+      scrolledUnderElevation: 0,
       backgroundColor: ColorSystem.white,
       automaticallyImplyLeading: false,
       title: Text('마이페이지', style: FontSystem.KR16SB),
