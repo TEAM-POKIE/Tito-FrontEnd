@@ -143,6 +143,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
         child: Padding(
           padding: EdgeInsets.only(top: 10.w),
           child: AppBar(
+            scrolledUnderElevation: 0,
             backgroundColor: ColorSystem.white,
             centerTitle: false,
             title: Padding(

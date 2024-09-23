@@ -43,6 +43,7 @@ class _DebateBodyState extends ConsumerState<DebateBody> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60.h),
         child: AppBar(
+          scrolledUnderElevation: 0,
           backgroundColor: ColorSystem.white,
           leading: IconButton(
             onPressed: () {

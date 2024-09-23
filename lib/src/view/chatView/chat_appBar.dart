@@ -57,6 +57,7 @@ class DebateAppbar extends ConsumerWidget {
             : ['토론룰 보기', '신고하기'];
 
     return AppBar(
+      scrolledUnderElevation: 0,
       backgroundColor: ColorSystem.white,
       title: Row(
         crossAxisAlignment: CrossAxisAlignment.center,

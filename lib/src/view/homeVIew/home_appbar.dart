@@ -14,8 +14,6 @@ class HomeAppbar extends ConsumerWidget {
     return Padding(
       padding: EdgeInsets.only(top: 10.h),
       child: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
         scrolledUnderElevation: 0,
         leading: Image.asset('assets/images/logo.png'),
         leadingWidth: 69.41.w,

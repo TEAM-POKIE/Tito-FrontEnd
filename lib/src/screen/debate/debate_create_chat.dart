@@ -33,6 +33,7 @@ class _DebateCreateChatState extends ConsumerState<DebateCreateChat> {
 
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: ColorSystem.white,
         title: Center(
           child: Row(

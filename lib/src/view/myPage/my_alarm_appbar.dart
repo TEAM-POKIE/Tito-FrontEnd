@@ -7,6 +7,7 @@ class MyAlarmAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      scrolledUnderElevation: 0,
       backgroundColor: ColorSystem.white,
       title: Text(
         '알림',

@@ -86,6 +86,7 @@ class _BasicLoginState extends ConsumerState<BasicLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: ColorSystem.white,
         leading: IconButton(
           onPressed: () {

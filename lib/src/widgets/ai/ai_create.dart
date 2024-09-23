@@ -56,6 +56,7 @@ class _AiCreateState extends ConsumerState<AiCreate> {
           Column(
             children: [
               AppBar(
+                scrolledUnderElevation: 0,
                 backgroundColor: ColorSystem.white,
                 leading: IconButton(
                   onPressed: () {

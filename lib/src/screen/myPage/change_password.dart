@@ -29,6 +29,7 @@ class ChangePassword extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: ColorSystem.white,
         leading: IconButton(
           onPressed: () {
