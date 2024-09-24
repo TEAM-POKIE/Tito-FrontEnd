@@ -67,10 +67,7 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
               padding: EdgeInsets.symmetric(horizontal: 50.w),
               child: Center(
                 child: chatState.debateImageUrl == ''
-                    ? SvgPicture.asset(
-                        'assets/icons/list_real_null.svg',
-                        fit: BoxFit.contain,
-                      )
+                    ? SizedBox(width: 0.w) // 이미지 없을 때 회색 이미지도 없애기
                     : ClipRRect(
                         borderRadius: BorderRadius.circular(12.r), // 둥근 모서리 설정
                         child: Image.network(
@@ -95,12 +92,12 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 30.w),
+          padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 40.w),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SvgPicture.asset('assets/icons/popup_face.svg'),
-              SizedBox(width: 20.w),
+              SizedBox(width:10.w),
               Expanded(
                 child: Text(chatState!.debateContent, style: FontSystem.KR14SB),
               ),
