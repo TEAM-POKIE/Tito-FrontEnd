@@ -5,6 +5,8 @@ import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'package:flutter/material.dart'; //text painter 사용하려고 import 함
+
 class Debateinfopopup extends ConsumerStatefulWidget {
   const Debateinfopopup({super.key});
 
@@ -18,6 +20,26 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
   @override
   Widget build(BuildContext context) {
     final chatState = ref.read(chatInfoProvider);
+    // final String text=chatState!.debateTitle;
+
+    // bool isTextOverflowing(String text, TextStyle style, double maxWidth) {
+    //   final textPainter = TextPainter(
+    //     //Flutter에서 텍스트를 그리기 전에 레이아웃을 계산하는 도구
+    //     text: TextSpan(text: text, style: style),
+    //     maxLines: 1,
+    //     textDirection: TextDirection.ltr,
+    //   );
+    //   textPainter.layout(maxWidth: maxWidth);
+    //   return textPainter.didExceedMaxLines;
+    // }
+    // // 화면의 가로 길이를 가져옴
+    // final screenWidth = MediaQuery.of(context).size.width;
+    // // 텍스트가 한 줄을 넘기는지 확인
+    // final isOverflowing = isTextOverflowing(
+    //   text,
+    //   FontSystem.KR16SB, // KR16SB 스타일
+    //   screenWidth,
+    // );
 
     return Dialog(
       backgroundColor: ColorSystem.white,
@@ -31,27 +53,36 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
           children: <Widget>[
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                //mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween, // 제목과 버튼을 양쪽 끝에 배치
+              child: Stack(
                 children: [
-                  Flexible(
-                    child: Text(chatState!.debateTitle,
-                        style: FontSystem.KR16SB,
-                        //overflow: TextOverflow.ellipsis,
-                        //maxLines: 2,
-                        textAlign: TextAlign.start,
-                        softWrap: true,
-                        overflow: TextOverflow.visible),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 20.h, bottom:0.h, right: 25.w, left: 25.w),
+                          child: Text(chatState!.debateTitle,
+                              style: FontSystem.KR16SB,
+                              //overflow: TextOverflow.ellipsis,
+                              //maxLines: 2,
+                              textAlign: TextAlign.start,
+                              softWrap: true, //자연스러운 줄바꿈
+                              overflow: TextOverflow.visible),
+                        ),
+                      ),
+                    ],
                   ),
-                  // IconButton(
-                  //   icon: Icon(Icons.close),
-                  //   onPressed: () {
-                  //     Navigator.of(context).pop();
-                  //   },
-                  // ),
+                  Positioned(
+                    top: -12.h,
+                    right: -10.w,
+                    child: IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -97,7 +128,7 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SvgPicture.asset('assets/icons/popup_face.svg'),
-              SizedBox(width:10.w),
+              SizedBox(width: 10.w),
               Expanded(
                 child: Text(chatState!.debateContent, style: FontSystem.KR14SB),
               ),
