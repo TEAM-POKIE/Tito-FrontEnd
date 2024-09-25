@@ -63,10 +63,7 @@ class DebateAppbar extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: 150.0.w,
-            ),
+          Flexible(
             child: Text(
               title,
               style: FontSystem.KR16SB,

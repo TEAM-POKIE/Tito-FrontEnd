@@ -313,7 +313,6 @@ class LoginMain extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SvgPicture.asset('assets/icons/apple_new.svg'),
                           Text('이메일로 로그인', style: FontSystem.Login16M),
                         ],
                       ),
