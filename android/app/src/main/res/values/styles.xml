@@ -9,6 +9,14 @@
     </style>
 
   <!-- 스플래시 화면 테마 -->
+        <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- 앱의 기본 테마 설정 -->
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
+    <!-- 스플래시 화면 테마 -->
     <style name="SplashTheme" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/purple_500</item> <!-- 보라색 배경 -->
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item> <!-- 애니메이션 아이콘 -->
