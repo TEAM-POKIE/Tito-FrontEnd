@@ -8,13 +8,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:src="@drawable/your_logo" />
+        android:src="@mipmap/ic_launcher" />
 
     <!-- 앱 설명 텍스트 -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/your_logo"
+        android:layout_below="@mipmap/ic_launcher"
         android:layout_centerHorizontal="true"
         android:text="티키타카 토론 대결"
         android:textColor="@android:color/black"

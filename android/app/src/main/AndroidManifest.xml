@@ -72,16 +72,7 @@
                 <data android:scheme="kakaoc870921283580d2570a3181455092d77" android:host="oauth" />
             </intent-filter>
         </activity>
-   <activity
-    android:name=".SplashActivity"
-    android:theme="@style/SplashTheme"
-    android:exported="true"
-    android:label="Tito">
-    <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.LAUNCHER" />
-    </intent-filter>
-</activity>
+  
         <receiver
             android:exported="false"
             android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
