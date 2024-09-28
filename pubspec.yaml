@@ -141,6 +141,7 @@ flutter:
     - assets/icons/timingBell.svg
     - assets/icons/debatePopUpAlarm.svg
     - assets/icons/voting.svg
+    - assets/icons/basicProfile.svg
     - assets/icons/sendArrow.svg
     - assets/icons/popUpBell.svg
     - assets/icons/whiteLLM.svg

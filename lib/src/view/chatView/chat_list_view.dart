@@ -214,7 +214,7 @@ class JoinerChatList extends StatelessWidget {
                       horizontal: 10.w,
                     ),
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: isMyMessage
                           ? MainAxisAlignment.end
                           : MainAxisAlignment.start,
@@ -234,11 +234,12 @@ class JoinerChatList extends StatelessWidget {
                               radius: 20.r,
                               child: message['userImageUrl'] == null ||
                                       message['userImageUrl']!.isEmpty
-                                  ? Icon(Icons.person, size: 20.r)
+                                  ? SvgPicture.asset(
+                                      'assets/icons/basicProfile.svg')
                                   : null,
                             ),
                           ),
-                        SizedBox(width: 8.w),
+                        SizedBox(width: 5.w),
                         Column(
                           crossAxisAlignment: isMyMessage
                               ? CrossAxisAlignment.end
@@ -258,7 +259,10 @@ class JoinerChatList extends StatelessWidget {
                                     bottomLeft: Radius.circular(4.r),
                                   ),
                                 ),
-                                child: Text(message['content'] ?? ''),
+                                child: Text(
+                                  message['content'] ?? '',
+                                  style: FontSystem.KR16R,
+                                ),
                               ),
                             if (isMyMessage)
                               Container(
@@ -266,7 +270,7 @@ class JoinerChatList extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(
                                     vertical: 10.h, horizontal: 12.w),
                                 decoration: BoxDecoration(
-                                  color: ColorSystem.white,
+                                  color: ColorSystem.purple,
                                   borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(16.r),
                                     topRight: Radius.circular(16.r),
@@ -274,7 +278,11 @@ class JoinerChatList extends StatelessWidget {
                                     bottomLeft: Radius.circular(16.r),
                                   ),
                                 ),
-                                child: Text(message['content'] ?? ''),
+                                child: Text(
+                                  message['content'] ?? '',
+                                  style: FontSystem.KR16R
+                                      .copyWith(color: ColorSystem.white),
+                                ),
                               ),
                             SizedBox(height: 8.h),
                             Text(
@@ -284,7 +292,7 @@ class JoinerChatList extends StatelessWidget {
                             ),
                           ],
                         ),
-                        if (isMyMessage) SizedBox(width: 8.w),
+                        if (isMyMessage) SizedBox(width: 5.w),
                         if (isMyMessage)
                           IconButton(
                             onPressed: () {
@@ -300,7 +308,8 @@ class JoinerChatList extends StatelessWidget {
                               radius: 20.r,
                               child: message['userImageUrl'] == null ||
                                       message['userImageUrl']!.isEmpty
-                                  ? Icon(Icons.person, size: 20.r)
+                                  ? SvgPicture.asset(
+                                      'assets/icons/basicProfile.svg')
                                   : null,
                             ),
                           ),
@@ -317,11 +326,12 @@ class JoinerChatList extends StatelessWidget {
             if (messages.length == 3 && index == messages.length - 1)
               Row(
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 20.w),
-                    child: SvgPicture.asset(
-                      'assets/icons/chat_avatar.svg',
-                    ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: CircleAvatar(
+                        radius: 20.r,
+                        child:
+                            SvgPicture.asset('assets/icons/basicProfile.svg')),
                   ),
                   SizedBox(width: 20.w),
                   Text(
@@ -360,7 +370,7 @@ class JoinerChatList extends StatelessWidget {
                         radius: 20.r,
                         child: chatState.lastUrl == null ||
                                 chatState.lastUrl.isEmpty
-                            ? Icon(Icons.person, size: 20.r)
+                            ? SvgPicture.asset('assets/icons/basicProfile.svg')
                             : null,
                       ),
                     ),
@@ -402,7 +412,7 @@ class JoinerChatList extends StatelessWidget {
                         radius: 20.r,
                         child: chatState.lastUrl == null ||
                                 chatState.lastUrl.isEmpty
-                            ? Icon(Icons.person, size: 20.r)
+                            ? SvgPicture.asset('assets/icons/basicProfile.svg')
                             : null,
                       ),
                     ),
@@ -468,9 +478,9 @@ class ParticipantsList extends StatelessWidget {
               child: chatMessage
                   ? Padding(
                       padding: EdgeInsets.symmetric(
-                          vertical: 20.h, horizontal: 20.w),
+                          vertical: 12.h, horizontal: 20.w),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: isMyMessage && messages.length != 3
                             ? MainAxisAlignment.end
                             : MainAxisAlignment.start,
@@ -485,43 +495,71 @@ class ParticipantsList extends StatelessWidget {
                               icon: CircleAvatar(
                                 backgroundImage:
                                     message['userImageUrl'] != null &&
-                                            message['userImageUrl'].isNotEmpty
+                                            message['userImageUrl']!.isNotEmpty
                                         ? NetworkImage(message['userImageUrl']!)
-                                        : null, // null일 경우
+                                        : null,
                                 radius: 20.r,
                                 child: message['userImageUrl'] == null ||
                                         message['userImageUrl']!.isEmpty
-                                    ? Icon(Icons.person,
-                                        size: 20.r) // 기본 아이콘 또는 다른 대체 UI 요소
+                                    ? SvgPicture.asset(
+                                        'assets/icons/basicProfile.svg')
                                     : null,
                               ),
                             ),
-                          const SizedBox(width: 8),
+                          SizedBox(width: 5.w),
                           Column(
                             crossAxisAlignment: isMyMessage
                                 ? CrossAxisAlignment.end
                                 : CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                constraints:
-                                    const BoxConstraints(maxWidth: 250),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 8.0, horizontal: 16.0),
-                                decoration: BoxDecoration(
-                                  color: ColorSystem.white,
-                                  borderRadius: BorderRadius.circular(12.0),
+                              if (!isMyMessage)
+                                Container(
+                                  constraints: BoxConstraints(maxWidth: 250.w),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 8.h, horizontal: 12.w),
+                                  decoration: BoxDecoration(
+                                    color: ColorSystem.white,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(16.r),
+                                      topRight: Radius.circular(16.r),
+                                      bottomRight: Radius.circular(16.r),
+                                      bottomLeft: Radius.circular(4.r),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    message['content'] ?? '',
+                                    style: FontSystem.KR16R,
+                                  ),
                                 ),
-                                child: Text(message['content'] ?? ''),
-                              ),
-                              const SizedBox(height: 5),
+                              if (isMyMessage)
+                                Container(
+                                  constraints: BoxConstraints(maxWidth: 250.w),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 8.h, horizontal: 12.w),
+                                  decoration: BoxDecoration(
+                                    color: ColorSystem.purple,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(16.r),
+                                      topRight: Radius.circular(16.r),
+                                      bottomRight: Radius.circular(4.r),
+                                      bottomLeft: Radius.circular(16.r),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    message['content'] ?? '',
+                                    style: FontSystem.KR16R
+                                        .copyWith(color: ColorSystem.white),
+                                  ),
+                                ),
+                              SizedBox(height: 8.h),
                               Text(
                                 formattedTime,
-                                style: const TextStyle(
-                                    fontSize: 10, color: Colors.black54),
+                                style: FontSystem.KR12R
+                                    .copyWith(color: ColorSystem.grey1),
                               ),
                             ],
                           ),
-                          if (isMyMessage) const SizedBox(width: 8),
+                          if (isMyMessage) SizedBox(width: 5.w),
                           if (isMyMessage && messages.length != 3)
                             IconButton(
                               onPressed: () {
@@ -531,14 +569,14 @@ class ParticipantsList extends StatelessWidget {
                               icon: CircleAvatar(
                                 backgroundImage:
                                     message['userImageUrl'] != null &&
-                                            message['userImageUrl'].isNotEmpty
+                                            message['userImageUrl']!.isNotEmpty
                                         ? NetworkImage(message['userImageUrl']!)
-                                        : null, // null일 경우
+                                        : null,
                                 radius: 20.r,
                                 child: message['userImageUrl'] == null ||
                                         message['userImageUrl']!.isEmpty
-                                    ? Icon(Icons.person,
-                                        size: 20.r) // 기본 아이콘 또는 다른 대체 UI 요소
+                                    ? SvgPicture.asset(
+                                        'assets/icons/basicProfile.svg')
                                     : null,
                               ),
                             ),
