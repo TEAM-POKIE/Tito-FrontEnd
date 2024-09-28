@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/api/api_service.dart';
@@ -187,12 +188,11 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
                     : null,
                 child: userState?.profilePicture == null ||
                         userState!.profilePicture?.isEmpty == true
-                    ? Icon(Icons.person, size: 35.r) // 기본 아이콘 또는 대체 아이콘
+                    ? SvgPicture.asset('assets/icons/basicProfile.svg')
                     : null,
                 onBackgroundImageError: userState?.profilePicture != null &&
                         userState!.profilePicture!.isNotEmpty
                     ? (_, __) {
-                        // 이미지 로드 오류 처리
                         setState(() {
                           userState!.profilePicture = '';
                         });
