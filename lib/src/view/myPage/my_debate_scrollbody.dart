@@ -75,7 +75,7 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
         children: [
           Container(
             width: 350.w,
-            height: 120.h,
+            height: 130.h,
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -91,12 +91,9 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 0.w),
-                    child: Text(
-                      _formatDate(debate.createdAt),
-                      style: FontSystem.KR14M.copyWith(color: ColorSystem.grey),
-                    ),
+                  Text(
+                    _formatDate(debate.createdAt),
+                    style: FontSystem.KR12R.copyWith(color: ColorSystem.grey),
                   ),
                   const Divider(
                     color: ColorSystem.grey,
@@ -107,8 +104,9 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: EdgeInsets.only(left: 0.w),
+                            // 토론 제목이 사진을 겹치지 않도록 너비 조절함
+                            Container(
+                              width: 240.w,
                               child: Text(
                                 maxLines: 1,
                                 '${debate.debateTitle}',
@@ -118,7 +116,7 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
                             ),
                             SizedBox(height: 4.h),
                             Container(
-                              width: 100.w,
+                              width: 240.w,
                               child: Padding(
                                 padding: EdgeInsets.only(left: 0.w),
                                 child: Column(
@@ -131,32 +129,30 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 0.w),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          if (debate.isWinOrLoose == true)
-                                            Text(
-                                              '결과: 승',
-                                              style: FontSystem.KR14R.copyWith(
-                                                  color: ColorSystem.purple),
-                                            )
-                                          else if (debate.isWinOrLoose == null)
-                                            Text(
-                                              '결과: 패',
-                                              style: FontSystem.KR14R.copyWith(
-                                                  color: ColorSystem.purple),
-                                            )
-                                          else
-                                            Text(
-                                              '결과: 무',
-                                              style: FontSystem.KR14R.copyWith(
-                                                  color: ColorSystem.purple),
-                                            )
-                                        ],
-                                      ),
+                                    SizedBox(height: 4.h),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        if (debate.isWinOrLoose == true)
+                                          Text(
+                                            '결과: 승',
+                                            style: FontSystem.KR14R.copyWith(
+                                                color: ColorSystem.purple),
+                                          )
+                                        else if (debate.isWinOrLoose == null)
+                                          Text(
+                                            '결과: 패',
+                                            style: FontSystem.KR14R.copyWith(
+                                                color: ColorSystem.purple),
+                                          )
+                                        else
+                                          Text(
+                                            '결과: 무승부',
+                                            style: FontSystem.KR14R.copyWith(
+                                                color: ColorSystem.purple),
+                                          )
+                                      ],
                                     ),
                                   ],
                                 ),
