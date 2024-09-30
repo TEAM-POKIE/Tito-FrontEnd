@@ -70,7 +70,7 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
 
   Widget _buildItem(BuildContext context, DebateUsermade debate) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+      padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 20.w),
       child: Row(
         children: [
           Container(
@@ -95,11 +95,12 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
                     padding: EdgeInsets.only(left: 0.w),
                     child: Text(
                       _formatDate(debate.createdAt),
-                      style:
-                          TextStyle(fontSize: 14.sp, color: ColorSystem.grey),
+                      style: FontSystem.KR14M.copyWith(color: ColorSystem.grey),
                     ),
                   ),
-                  const Divider(color: ColorSystem.grey),
+                  const Divider(
+                    color: ColorSystem.grey,
+                  ),
                   Row(
                     children: [
                       Expanded(
