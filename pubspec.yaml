@@ -141,6 +141,7 @@ flutter:
     - assets/icons/timingBell.svg
     - assets/icons/debatePopUpAlarm.svg
     - assets/icons/voting.svg
+    - assets/icons/basicProfile.svg
     - assets/icons/sendArrow.svg
     - assets/icons/popUpBell.svg
     - assets/icons/whiteLLM.svg
@@ -179,10 +180,12 @@ flutter:
     - assets/icons/bottom_plus_create.svg
     - assets/icons/bottom_plus_ai.svg
     - assets/icons/close.svg
+    - assets/icons/spLogo.svg
     - assets/icons/kakao_new.svg
     - assets/icons/google_new.svg
     - assets/icons/apple_new.svg
     - assets/icons/fire.svg
+    - assets/icons/sp.svg
 
     - assets/images/logo.png
     - assets/images/hotlist.png
@@ -190,10 +193,13 @@ flutter:
 
     - assets/images/alarm_none.png
     - assets/images/alarm.png
+    - assets/images/anLogo.png
+    - assets/images/ansLogo.png
 
     - assets/images/like_btn.png
     - assets/images/liked_btn.png
     - assets/images/comment_btn.png
+    - assets/images/tito.png
     - assets/images/info.png
     - assets/images/chatprofile.png
     - assets/images/chatCuteIcon.svg

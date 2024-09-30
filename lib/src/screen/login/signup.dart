@@ -88,19 +88,19 @@ class _SignUpState extends State<Signup> {
                 Text('닉네임', style: FontSystem.KR20SB),
                 SizedBox(height: 10.h),
                 TextFormField(
-                  maxLength: 5,
+                  maxLength: 10,
                   decoration: InputDecoration(
-                    hintText: '닉네임을 입력해 주세요. (5글자 이하)',
+                    hintText: '닉네임을 입력해 주세요. (10글자 이하)',
                     hintStyle:
                         FontSystem.KR16M.copyWith(color: ColorSystem.grey),
-                    errorText: _nicknameError, // 닉네임 에러 메시지 표시
+                    errorText: _nicknameError,
                   ),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return '닉네임을 입력해 주세요.';
                     }
-                    if (value.length > 5) {
-                      return '닉네임은 5글자 이하로 적어주세요';
+                    if (value.length > 10) {
+                      return '닉네임은 10글자 이하로 적어주세요';
                     }
                     if (!RegExp(r'^[a-zA-Z0-9가-힣]+$').hasMatch(value)) {
                       return '닉네임은 영문, 숫자, 한글만 사용할 수 있습니다.';
