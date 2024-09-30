@@ -128,6 +128,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
           children: [
             SizedBox(height: 20.h),
             Stack(
+              clipBehavior: Clip.none, // 오버플로우 콘텐츠가 잘리지 않도록 설정 : 연필 수정 아이콘
               children: [
                 loginInfo!.profilePicture != null
                     ? CircleAvatar(
@@ -137,19 +138,21 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                         radius: 35.r,
                       )
                     : SvgPicture.asset(
-                        'assets/icons/null_profile.svg',
+                        'assets/icons/default_profile_1.svg',
                         width: 80,
                         height: 80,
                       ),
                 Positioned(
-                  bottom: -15,
-                  right: -15,
+                  bottom: -14,
+                  right: -12,
                   child: IconButton(
                     onPressed: () {
                       _showImagePickerOptions(context);
                     },
                     icon: SvgPicture.asset(
-                      'assets/icons/final_edit.svg',
+                      'assets/icons/final_edit_pen.svg',
+                      width: 25,
+                      height: 25
                     ),
                   ),
                 ),
@@ -162,16 +165,18 @@ class _MypageMainState extends ConsumerState<MypageMain> {
               children: [
                 Text(
                   '${loginInfo.nickname}',
-                  style: FontSystem.KR24B,
+                  style: FontSystem.KR22B,
                 ),
                 IconButton(
                   onPressed: () {
                     context.push('/nickname');
                   },
                   icon: Padding(
-                    padding: EdgeInsets.only(top: 8.h),
-                    child:
-                        SvgPicture.asset('assets/icons/mypage_final_arrow.svg'),
+                    padding: EdgeInsets.only(top: 6.h),
+                    child: SvgPicture.asset(
+                        'assets/icons/mypage_final_arrow.svg',
+                        width: 20,
+                        height: 20),
                   ),
                 ),
               ],

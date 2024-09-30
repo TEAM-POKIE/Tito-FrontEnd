@@ -186,6 +186,8 @@ flutter:
     - assets/icons/apple_new.svg
     - assets/icons/fire.svg
     - assets/icons/sp.svg
+    - assets/icons/default_profile_1.svg
+    - assets/icons/final_edit_pen.svg
 
     - assets/images/logo.png
     - assets/images/hotlist.png
