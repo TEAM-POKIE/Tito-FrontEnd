@@ -143,17 +143,14 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                         height: 80,
                       ),
                 Positioned(
-                  bottom: -14,
+                  bottom: -12,
                   right: -12,
                   child: IconButton(
                     onPressed: () {
                       _showImagePickerOptions(context);
                     },
-                    icon: SvgPicture.asset(
-                      'assets/icons/final_edit_pen.svg',
-                      width: 25,
-                      height: 25
-                    ),
+                    icon: SvgPicture.asset('assets/icons/final_edit_pen.svg',
+                        width: 30, height: 30),
                   ),
                 ),
               ],
@@ -165,7 +162,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
               children: [
                 Text(
                   '${loginInfo.nickname}',
-                  style: FontSystem.KR22B,
+                  style: FontSystem.KR24B,
                 ),
                 IconButton(
                   onPressed: () {
@@ -175,19 +172,20 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                     padding: EdgeInsets.only(top: 6.h),
                     child: SvgPicture.asset(
                         'assets/icons/mypage_final_arrow.svg',
-                        width: 20,
+                        //width: 20,
                         height: 20),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 8.h),
+
+            SizedBox(height: 10.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 6.w),
+                  padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
                   decoration: BoxDecoration(
                     color: ColorSystem.lightPurple,
                     borderRadius: BorderRadius.circular(10.r),
@@ -205,6 +203,12 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                         SizedBox(width: 5.w),
                         Text(
                           '${loginInfo.winningRate}',
+                          style: FontSystem.KR18B
+                              .copyWith(color: ColorSystem.purple),
+                        ),
+                        SizedBox(width: 2.w),
+                        Text(
+                          '%',
                           style: FontSystem.KR18B
                               .copyWith(color: ColorSystem.purple),
                         ),
