@@ -63,7 +63,7 @@ class _LiveCommentState extends ConsumerState<LiveComment>
       if (message['command'] == "VOTE_RATE_RES") {
         final newBlueVotes = message["ownerVoteRate"];
         final newRedVotes = message["joinerVoteRate"];
-        voteViewModel.updateVotes(newBlueVotes, newRedVotes);
+        voteViewModel.updateVotes(newRedVotes, newBlueVotes);
         return;
       }
 

@@ -13,10 +13,10 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
 
-    <application
-        android:label="tito"
-        android:showWhenLocked="true"
-    >
+  <application
+    android:label="tito"
+    android:showWhenLocked="true"
+    android:icon="@mipmap/ic_launcher">
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="high_importance_channel"
@@ -58,6 +58,7 @@
                 <data android:scheme="${appAuthRedirectScheme}" />
             </intent-filter>
         </activity>
+      
         <activity
             android:name="com.kakao.sdk.flutter.AuthCodeCustomTabsActivity"
             android:exported="true">
@@ -71,6 +72,7 @@
                 <data android:scheme="kakaoc870921283580d2570a3181455092d77" android:host="oauth" />
             </intent-filter>
         </activity>
+  
         <receiver
             android:exported="false"
             android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />

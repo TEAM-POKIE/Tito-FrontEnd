@@ -75,9 +75,15 @@ class _HotFighterState extends ConsumerState<HotFighter> {
                         radius: 35.w, // 아바타의 크기
                         backgroundColor: ColorSystem.purple,
                         backgroundImage: fighter.profilePicture != null
-                            ? NetworkImage(fighter.profilePicture!)
-                            : AssetImage('assets/images/hot_fighter.png')
-                                as ImageProvider, // 프로필 이미지 경로
+                            ? NetworkImage(
+                                fighter.profilePicture!) // 프로필 사진이 있을 경우
+                            : null, // 프로필 사진이 없을 경우
+                        child: fighter.profilePicture == null
+                            ? SvgPicture.asset(
+                                'assets/icons/basicProfile.svg',
+                                fit: BoxFit.cover, // SVG 아이콘을 적절히 맞춤
+                              )
+                            : null, // 프로필 사진이 있을 때는 아무것도 표시하지 않음
                       ),
                     ),
                     SizedBox(height: 10.h), // 간격을 조금 더 넓힘
