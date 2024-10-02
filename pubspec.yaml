@@ -92,6 +92,7 @@ dependencies:
   fluttertoast: ^8.2.8
   overflow_text_animated: ^0.0.6
   collection: ^1.18.0
+  url_launcher: ^6.3.0
 
 dev_dependencies:
   flutter_test:
