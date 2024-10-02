@@ -183,7 +183,7 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CircleAvatar(
-                radius: 35.r, // 아이콘 크기
+                radius: 30.r, // 아이콘 크기
                 backgroundImage: userState?.profilePicture != null &&
                         userState!.profilePicture!.isNotEmpty
                     ? NetworkImage(userState!.profilePicture!)
@@ -202,58 +202,63 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
                     : null,
               ),
               SizedBox(width: 15.w),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        '${userState!.nickname}',
-                        style: FontSystem.KR20B,
-                        softWrap: true,
-                        maxLines: 2,
-                      ),
-                      SizedBox(width: 5.w),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: ColorSystem.lightPurple,
-                            borderRadius: BorderRadius.circular(10.r),
-                            border: Border.all(
-                              color: ColorSystem.purple,
-                            )),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 6.h, vertical: 6.h),
-                          child: Text('승률 ${userState.winningRate}%',
-                              textAlign: TextAlign.center,
-                              style: FontSystem.KR14B
-                                  .copyWith(color: ColorSystem.purple)),
+              Container(
+                width: 220.w,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          '${userState!.nickname}',
+                          style: FontSystem.KR20B,
+                          softWrap: true,
+                          maxLines: 2,
                         ),
-                      ),
-                      userState.id != loginInfo!.id
-                          ? Stack(
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    if (_overlayEntry == null) {
-                                      _showOverlay(context);
-                                    } else {
-                                      _removeOverlay();
-                                    }
-                                  },
-                                  icon: const Icon(Icons.more_vert),
-                                ),
-                              ],
-                            )
-                          : const SizedBox(
-                              width: 0,
-                            )
-                    ],
-                  ),
-                  Text(
-                      '${userState.debateTotalCount}전 | ${userState.debateVictoryCount}승 | ${userState.debateDefeatCount}패',
-                      style: FontSystem.KR18R),
-                ],
+                        SizedBox(width: 5.w),
+                        userState.id != loginInfo!.id
+                            ? IconButton(
+                                onPressed: () {
+                                  if (_overlayEntry == null) {
+                                    _showOverlay(context);
+                                  } else {
+                                    _removeOverlay();
+                                  }
+                                },
+                                icon: const Icon(Icons.more_vert),
+                              )
+                            : const SizedBox(
+                                width: 0,
+                              )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              color: ColorSystem.lightPurple,
+                              borderRadius: BorderRadius.circular(10.r),
+                              border: Border.all(
+                                color: ColorSystem.purple,
+                              )),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 6.h, vertical: 4.h),
+                            child: Text('승률 ${userState.winningRate}%',
+                                textAlign: TextAlign.center,
+                                style: FontSystem.KR14B
+                                    .copyWith(color: ColorSystem.purple)),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 20.w,
+                        ),
+                        Text(
+                            '${userState.debateTotalCount}전 | ${userState.debateVictoryCount}승 | ${userState.debateDefeatCount}패',
+                            style: FontSystem.KR16R),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
