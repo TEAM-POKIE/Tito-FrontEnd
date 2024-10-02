@@ -7,7 +7,7 @@
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
-		<string>Tito App</string>
+		<string>tito</string>
 		<key>CFBundleExecutable</key>
 		<string>Runner</string>
 		<key>CFBundleIdentifier</key>
