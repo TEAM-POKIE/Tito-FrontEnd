@@ -33,13 +33,28 @@ class ExitPopup extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center, // 중앙에 배치되도록 설정
           crossAxisAlignment: CrossAxisAlignment.center, // 가로축에서 중앙 정렬
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SvgPicture.asset(
-                  'assets/icons/popup_face.svg',
-                  width: 40.w,
-                  height: 40.h,
+            Stack(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SvgPicture.asset(
+                      'assets/icons/popup_face.svg',
+                      width: 40.w,
+                      height: 40.h,
+                    ),
+                  ],
+                ),
+                Positioned(
+                  top: -18.h,
+                  right: 0.w,
+                  child: IconButton(
+                    iconSize: 20,
+                    icon: const Icon(Icons.close, color: ColorSystem.grey),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
                 ),
               ],
             ),

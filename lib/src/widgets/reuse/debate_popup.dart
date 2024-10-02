@@ -67,8 +67,8 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                   ],
                 ),
                 IconButton(
-                  iconSize: 25,
-                  icon: const Icon(Icons.close),
+                  iconSize: 20,
+                  icon: const Icon(Icons.close, color: ColorSystem.grey),
                   onPressed: () => context.pop(),
                 ),
               ],
@@ -89,7 +89,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                             GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  selectedDebate = chatState.debateOwnerNick;
+                                  selectedDebate = chatState.debateJoinerNick;
                                 });
                               },
                               child: Container(
@@ -98,7 +98,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                       color: selectedDebate ==
-                                              chatState!.debateOwnerNick
+                                              chatState!.debateJoinerNick
                                           ? ColorSystem.purple
                                           : ColorSystem.grey3,
                                       width: 2),
@@ -114,7 +114,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                                     ),
                                     const SizedBox(height: 8),
                                     Text(
-                                      chatState.debateOwnerNick,
+                                      chatState.debateJoinerNick,
                                       style: FontSystem.KR14M,
                                     ),
                                   ],
@@ -137,7 +137,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                             GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  selectedDebate = chatState.debateJoinerNick;
+                                  selectedDebate = chatState.debateOwnerNick;
                                 });
                               },
                               child: Container(
@@ -146,7 +146,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                       color: selectedDebate ==
-                                              chatState.debateJoinerNick
+                                              chatState.debateOwnerNick
                                           ? ColorSystem.purple
                                           : ColorSystem.grey3,
                                       width: 2),
@@ -162,7 +162,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                                     ),
                                     const SizedBox(height: 8),
                                     Text(
-                                      chatState.debateJoinerNick,
+                                      chatState.debateOwnerNick,
                                       style: FontSystem.KR14M,
                                     ),
                                   ],

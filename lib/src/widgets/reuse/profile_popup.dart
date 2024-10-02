@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
+import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:tito_app/src/data/models/debate_usermade.dart';
 import 'package:tito_app/core/provider/userProfile_provider.dart';
@@ -170,6 +172,7 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
 
   Widget _buildProfileHeader(WidgetRef ref) {
     final userState = ref.read(userProfileProvider);
+    final loginInfo = ref.read(loginInfoProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -187,17 +190,16 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
                     : null,
                 child: userState?.profilePicture == null ||
                         userState!.profilePicture?.isEmpty == true
-                    ? Icon(Icons.person, size: 35.r) // 기본 아이콘 또는 대체 아이콘
+                    ? SvgPicture.asset('assets/icons/basicProfile.svg')
                     : null,
                 onBackgroundImageError: userState?.profilePicture != null &&
                         userState!.profilePicture!.isNotEmpty
                     ? (_, __) {
-                        // 이미지 로드 오류 처리
                         setState(() {
                           userState!.profilePicture = '';
                         });
                       }
-                    : null, // backgroundImage가 null이면 onBackgroundImageError도 null로 설정
+                    : null,
               ),
               SizedBox(width: 15.w),
               Column(
@@ -205,7 +207,12 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
                 children: [
                   Row(
                     children: [
-                      Text('${userState!.nickname}', style: FontSystem.KR24B),
+                      Text(
+                        '${userState!.nickname}',
+                        style: FontSystem.KR20B,
+                        softWrap: true,
+                        maxLines: 2,
+                      ),
                       SizedBox(width: 5.w),
                       Container(
                         decoration: BoxDecoration(
@@ -223,20 +230,24 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
                                   .copyWith(color: ColorSystem.purple)),
                         ),
                       ),
-                      Stack(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              if (_overlayEntry == null) {
-                                _showOverlay(context);
-                              } else {
-                                _removeOverlay();
-                              }
-                            },
-                            icon: const Icon(Icons.more_vert),
-                          ),
-                        ],
-                      ),
+                      userState.id != loginInfo!.id
+                          ? Stack(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    if (_overlayEntry == null) {
+                                      _showOverlay(context);
+                                    } else {
+                                      _removeOverlay();
+                                    }
+                                  },
+                                  icon: const Icon(Icons.more_vert),
+                                ),
+                              ],
+                            )
+                          : const SizedBox(
+                              width: 0,
+                            )
                     ],
                   ),
                   Text(

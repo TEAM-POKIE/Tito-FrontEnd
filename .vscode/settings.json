@@ -1,9 +1,3 @@
 {
-  "java.configuration.updateBuildConfiguration": "automatic",
-  "workbench.colorCustomizations": {
-    "activityBar.background": "#4E1B38",
-    "titleBar.activeBackground": "#6D254F",
-    "titleBar.activeForeground": "#FEFCFD"
-  },
   "C_Cpp_Runner.msvcBatchPath": ""
 }

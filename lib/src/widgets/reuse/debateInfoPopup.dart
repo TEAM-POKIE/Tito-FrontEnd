@@ -61,7 +61,8 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
                     children: [
                       Flexible(
                         child: Padding(
-                          padding: EdgeInsets.only(top: 20.h, bottom:0.h, right: 25.w, left: 25.w),
+                          padding: EdgeInsets.only(
+                              top: 20.h, bottom: 0.h, right: 25.w, left: 25.w),
                           child: Text(chatState!.debateTitle,
                               style: FontSystem.KR16SB,
                               //overflow: TextOverflow.ellipsis,
@@ -77,7 +78,8 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
                     top: -12.h,
                     right: -10.w,
                     child: IconButton(
-                      icon: const Icon(Icons.close),
+                      iconSize: 20,
+                      icon: const Icon(Icons.close, color: ColorSystem.grey),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },

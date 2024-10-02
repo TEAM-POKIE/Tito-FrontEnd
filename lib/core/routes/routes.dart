@@ -31,7 +31,7 @@ final GoRouter router = GoRouter(
   //이 부분 없으니까 처음 화면 그냥 보라색으로 뜨는 경우도 있음. 초기화면 지정해 놓은 부분이야
   navigatorKey: rootNavigatorKey,
   refreshListenable: refreshNotifier,
-  initialLocation: '/',
+  initialLocation: '/login',
   routes: [
     StatefulShellRoute.indexedStack(
       builder: (context, state, child) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/core/constants/style.dart';
+import 'package:flutter_svg/svg.dart';
 
 class MyRule extends StatelessWidget {
   const MyRule({super.key});
@@ -13,9 +14,9 @@ class MyRule extends StatelessWidget {
         backgroundColor: ColorSystem.white,
         leading: IconButton(
           onPressed: () {
-            context.go('/mypage');
+            context.pop();
           },
-          icon: const Icon(Icons.arrow_back_ios),
+          icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
         ),
         centerTitle: true,
         title: Text('이용약관', style: FontSystem.KR16SB),
