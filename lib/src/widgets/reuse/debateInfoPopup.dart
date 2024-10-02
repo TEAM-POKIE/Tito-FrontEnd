@@ -97,17 +97,16 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
             ),
             _buildProfileHeader(ref),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 50.w),
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Center(
                 child: chatState.debateImageUrl == ''
                     ? SizedBox(width: 0.w) // 이미지 없을 때 회색 이미지도 없애기
                     : ClipRRect(
-                        borderRadius: BorderRadius.circular(12.r), // 둥근 모서리 설정
+                        borderRadius: BorderRadius.circular(12.r),
                         child: Image.network(
                           chatState.debateImageUrl,
-                          width: 260.w, // 원하는 너비 설정
                           height: 250.h,
-                          fit: BoxFit.cover, // 이미지가 잘리지 않도록 맞춤 설정
+                          fit: BoxFit.cover,
                         ),
                       ),
               ),
@@ -127,7 +126,7 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
         Padding(
           padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 40.w),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SvgPicture.asset('assets/icons/popup_face.svg'),
               SizedBox(width: 10.w),
@@ -136,7 +135,6 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
               ),
             ],
           ),
-          // Row(
         ),
       ],
     );
