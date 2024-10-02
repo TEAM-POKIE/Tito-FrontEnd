@@ -48,7 +48,7 @@ class _ChatState extends ConsumerState<Chat> {
     final webSocketService = ref.read(webSocketProvider);
     final loginInfo = ref.watch(loginInfoProvider);
     final debateInfo = ref.read(chatInfoProvider);
-    await ApiService(DioClient.dio).getChangeEnded(widget.id);
+
     chatViewModel.connectWebSocket();
     if (loginInfo != null) {
       final message = jsonEncode({

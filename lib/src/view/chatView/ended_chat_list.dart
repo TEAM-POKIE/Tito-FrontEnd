@@ -22,7 +22,8 @@ class EndedChatList extends ConsumerStatefulWidget {
 }
 
 class _EndedChatListState extends ConsumerState<EndedChatList> {
-  List<EndedChatingList> messages = []; // EndedChatInfo -> EndedChatingList로 변경
+  List<EndedChatingList> messages = [];
+  List<EndedChatingList> liveMessages = [];
   int? myUserId;
 
   @override
@@ -36,10 +37,12 @@ class _EndedChatListState extends ConsumerState<EndedChatList> {
       final endedViewModel = ref.read(endedProvider.notifier);
       await endedViewModel.fetchEndedDebateInfo(widget.id);
       final response = await endedViewModel.getChat(widget.id);
+      final liveResponse = await endedViewModel.getLiveChat(widget.id);
 
       if (response.isNotEmpty) {
         setState(() {
           messages = response;
+          liveMessages = liveResponse;
           myUserId = messages.first.userId;
         });
       }

@@ -36,6 +36,31 @@ class EndedViewModel extends StateNotifier<EndedChatInfo?> {
     }
   }
 
+  Future<List<EndedChatingList>> getLiveChat(int debateId) async {
+    try {
+      // API 호출
+      final response = await ApiService(DioClient.dio).getDebateChat(debateId);
+
+      // 응답을 Map<String, dynamic>으로 디코딩
+      final Map<String, dynamic> decodedResponse = json.decode(response);
+
+      // 'data' 필드에서 List<dynamic> 추출
+      final List<dynamic> dataList = decodedResponse['data'] as List<dynamic>;
+
+      // 데이터를 EndedChatingList 객체 리스트로 변환
+      final List<EndedChatingList> livemessage = dataList
+          .map(
+              (item) => EndedChatingList.fromJson(item as Map<String, dynamic>))
+          .toList();
+
+      // 제대로 된 리스트 반환
+      return livemessage;
+    } catch (e) {
+      print('Failed to load chat: $e');
+      return [];
+    }
+  }
+
   Future<void> fetchEndedDebateInfo(int id) async {
     try {
       final debateInfo = await ApiService(DioClient.dio).getEndedDebateInfo(id);

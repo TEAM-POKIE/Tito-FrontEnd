@@ -81,6 +81,9 @@ abstract class ApiService {
   @GET("debates/ended/{debate_id}/chat")
   Future<String> getDebateChat(@Path("debate_id") int debateId);
 
+  @GET("debates/ended/{debate_id}/real-time-comment")
+  Future<String> getEndedLiveChat(@Path("debate_id") int debateId);
+
   @POST('search')
   Future<List<SearchData>> postSearchData(
       @Body() Map<String, Object> requestBody);
