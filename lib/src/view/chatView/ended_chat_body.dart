@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tito_app/core/constants/style.dart';
+import 'package:tito_app/src/data/models/ended_chat.dart';
 
 import 'package:tito_app/src/view/chatView/chat_view_details.dart';
 import 'package:tito_app/src/view/chatView/ended_chat_list.dart';
+import 'package:tito_app/src/view/chatView/ended_votingbar.dart';
 import 'package:tito_app/src/view/chatView/votingbar.dart';
 
 class EndedChatBody extends ConsumerWidget {
@@ -19,7 +21,7 @@ class EndedChatBody extends ConsumerWidget {
     return Column(
       children: [
         ChatViewDetails(id: id),
-        const VotingBar(),
+        const EndedVotingbar(),
         Expanded(
           child: Container(
               decoration: const BoxDecoration(color: ColorSystem.grey3),

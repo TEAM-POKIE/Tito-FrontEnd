@@ -3,11 +3,13 @@ import 'package:dio/dio.dart';
 import 'package:tito_app/src/data/models/debate_crate.dart';
 import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:tito_app/src/data/models/ended_chat.dart';
+import 'package:tito_app/src/data/models/ended_chatList.dart';
 import 'package:tito_app/src/data/models/login_info.dart';
 import 'package:tito_app/src/data/models/auth_response.dart';
 import 'package:tito_app/src/data/models/debate_usermade.dart';
 import 'package:tito_app/src/data/models/search_data.dart';
 import 'package:tito_app/src/data/models/user_profile.dart';
+import 'package:tito_app/src/view/chatView/ended_chat_list.dart';
 
 part 'api_service.g.dart';
 
@@ -70,14 +72,14 @@ abstract class ApiService {
 
   @GET('users/{id}/debates')
   Future<String> getOtherDebate(@Path("id") int debateId);
-  @POST('debates/generate-topic')
+  @POST('debates/ai/generate-topic')
   Future<String> postGenerateTopic(@Body() Map<String, Object> requestBody);
 
-  @POST('debates/refine-argument')
+  @POST('debates/ai/refine-argument')
   Future<String> postRefineArgument(@Body() Map<String, Object> requestBody);
 
-  @GET("debates/{debate_id}/chat")
-  Future<List<EndedChatInfo>> getDebateChat(@Path("debate_id") int debateId);
+  @GET("debates/ended/{debate_id}/chat")
+  Future<String> getDebateChat(@Path("debate_id") int debateId);
 
   @POST('search')
   Future<List<SearchData>> postSearchData(
@@ -86,7 +88,13 @@ abstract class ApiService {
   @GET("debates/{id}")
   Future<DebateInfo> getDebateInfo(@Path("id") int debateId);
   @GET("debates/ended/{debate_id}")
-  Future<DebateInfo> getEndedDebateInfo(@Path("id") int debateId);
+  Future<EndedChatInfo> getEndedDebateInfo(@Path("debate_id") int debateId);
+
+  @GET("debates/forcing/{debate_id}/update-status-voting")
+  Future getChangeVoting(@Path("debate_id") int debateId);
+
+  @GET("debates/forcing/{debate_id}/update-status-ended")
+  Future getChangeEnded(@Path("debate_id") int debateId);
 
   @POST("oauth2/google")
   Future<AuthResponse> oAuthGoogle(@Body() Map<String, String> loginData);

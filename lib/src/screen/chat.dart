@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tito_app/core/api/api_service.dart';
+import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
@@ -46,6 +48,7 @@ class _ChatState extends ConsumerState<Chat> {
     final webSocketService = ref.read(webSocketProvider);
     final loginInfo = ref.watch(loginInfoProvider);
     final debateInfo = ref.read(chatInfoProvider);
+    await ApiService(DioClient.dio).getChangeEnded(widget.id);
     chatViewModel.connectWebSocket();
     if (loginInfo != null) {
       final message = jsonEncode({
