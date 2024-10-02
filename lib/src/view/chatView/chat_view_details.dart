@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
+import 'package:tito_app/core/provider/ended_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:confetti/confetti.dart';
@@ -38,6 +39,7 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
   Widget build(BuildContext context) {
     final loginInfo = ref.watch(loginInfoProvider);
     final chatState = ref.watch(chatInfoProvider);
+    final endedState = ref.watch(endedProvider);
     final timerState = ref.watch(timerProvider);
 
     if (loginInfo == null) {
@@ -54,10 +56,12 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
     String remainingTime = formatDuration(timerState.remainingTime);
     if (chatState!.debateStatus == 'ENDED') {
       return EndedProfileVsWidget(
-          myNick: chatState.debateOwnerNick,
-          myImage: chatState.debateOwnerPicture,
-          opponentNick: chatState.debateJoinerNick,
-          opponentImage: chatState.debateJoinerPicture);
+          myNick: endedState!.debateOwnerName,
+          myImage: endedState.debateOwnerImageUrl,
+          winner: endedState.debateJoinerWinOrLose,
+          ownerVoteRate: endedState.ownerVoteRate,
+          opponentNick: endedState.debateJoinerName,
+          opponentImage: endedState.debateJoinerImageUrl);
     } else if (chatState.debateJoinerId == loginInfo.id ||
         chatState.debateOwnerId == loginInfo.id) {
       if (chatState.debateJoinerId == loginInfo.id) {
@@ -261,30 +265,39 @@ class ProfileVsWidget extends StatelessWidget {
       color: ColorSystem.white,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CircleAvatar(
-                radius: 30.r,
-                backgroundImage: NetworkImage(opponentImage),
-              ),
-              Text(opponentNick),
-            ],
+          Container(
+            width: 120.w,
+            child: Column(
+              children: [
+                opponentImage == null || opponentImage.isEmpty
+                    ? SvgPicture.asset('assets/icons/basicProfile.svg')
+                    : CircleAvatar(
+                        radius: 30.r,
+                        backgroundImage: NetworkImage(opponentImage),
+                      ),
+                SizedBox(height: 5.h),
+                Text(
+                  opponentNick,
+                  style: FontSystem.KR12M,
+                ),
+                SizedBox(height: 20.h),
+              ],
+            ),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: 30.w),
           Column(
-            mainAxisSize: MainAxisSize.min,
             children: [
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0xffE8DAFE),
-                  borderRadius: BorderRadius.circular(12),
+                  color: ColorSystem.lightPurplevoting,
+                  borderRadius: BorderRadius.circular(15),
                 ),
                 child: Text(
-                  '투표 중',
+                  '투표 중...',
                   style: FontSystem.KR14B.copyWith(color: ColorSystem.purple),
                 ),
               ),
@@ -295,25 +308,30 @@ class ProfileVsWidget extends StatelessWidget {
                     const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                 decoration: BoxDecoration(
                   color: ColorSystem.black,
-                  borderRadius: BorderRadius.circular(12.0),
+                  borderRadius: BorderRadius.circular(17.0.r),
                 ),
                 child: Text(
                   'VS',
-                  style: FontSystem.KR16B.copyWith(color: ColorSystem.white),
+                  style: FontSystem.KR12M.copyWith(color: ColorSystem.white),
                 ),
               ),
             ],
           ),
-          const SizedBox(width: 16),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CircleAvatar(
-                radius: 30.r,
-                backgroundImage: NetworkImage(myImage),
-              ),
-              Text(myNick),
-            ],
+          SizedBox(width: 30.w),
+          Container(
+            width: 120.w,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircleAvatar(
+                  radius: 30.r,
+                  backgroundImage: NetworkImage(myImage),
+                ),
+                SizedBox(height: 5.h),
+                Text(myNick, style: FontSystem.KR12M),
+                SizedBox(height: 20.h),
+              ],
+            ),
           ),
         ],
       ),
@@ -326,12 +344,16 @@ class EndedProfileVsWidget extends StatefulWidget {
   final String myImage;
   final String opponentNick;
   final String opponentImage;
+  final bool winner;
+  final int ownerVoteRate;
 
   const EndedProfileVsWidget({
     required this.myNick,
     required this.myImage,
     required this.opponentNick,
     required this.opponentImage,
+    required this.winner,
+    required this.ownerVoteRate,
   });
 
   @override
@@ -346,7 +368,7 @@ class _EndedProfileVsWidgetState extends State<EndedProfileVsWidget> {
     super.initState();
     _confettiController =
         ConfettiController(duration: const Duration(seconds: 10));
-    _confettiController.play(); // 시작할 때 confetti를 재생합니다.
+    _confettiController.play();
   }
 
   @override
@@ -362,31 +384,31 @@ class _EndedProfileVsWidgetState extends State<EndedProfileVsWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Column(
-            children: [
-              CircleAvatar(
-                radius: 30.r,
-                backgroundImage: NetworkImage(widget.opponentImage),
-              ),
-              ConfettiWidget(
-                confettiController: _confettiController,
-                blastDirection: -pi / 2,
-                maxBlastForce: 10,
-                minBlastForce: 5,
-                emissionFrequency: 0.05,
-                numberOfParticles: 5,
-                gravity: 0.1,
-                colors: const [
-                  Colors.green,
-                  Colors.blue,
-                  Colors.pink,
-                  Colors.orange,
-                  Colors.purple
-                ],
-              ),
-            ],
+          Container(
+            width: 120.w,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                widget.opponentImage == null || widget.opponentImage.isEmpty
+                    ? SvgPicture.asset('assets/icons/basicProfile.svg')
+                    : CircleAvatar(
+                        radius: 30.r,
+                        backgroundImage: NetworkImage(widget.opponentImage),
+                      ),
+                SizedBox(
+                  height: 2.h,
+                ),
+                Text(
+                  widget.opponentNick,
+                  style: FontSystem.KR12M.copyWith(color: ColorSystem.black),
+                ),
+                SizedBox(
+                  height: 19.h,
+                )
+              ],
+            ),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: 30.w),
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -394,7 +416,7 @@ class _EndedProfileVsWidgetState extends State<EndedProfileVsWidget> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0xffE8DAFE),
+                  color: ColorSystem.lightPurplevoting,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -411,23 +433,92 @@ class _EndedProfileVsWidgetState extends State<EndedProfileVsWidget> {
                   color: ColorSystem.black,
                   borderRadius: BorderRadius.circular(12.0),
                 ),
-                child: Text(
-                  '승! VS 패',
-                  style: FontSystem.KR16B.copyWith(color: ColorSystem.white),
-                ),
+                child: widget.winner == true || widget.winner == null
+                    ? Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '승! ',
+                            style: FontSystem.KR16B
+                                .copyWith(color: ColorSystem.yellow),
+                          ),
+                          Text(
+                            'VS ',
+                            style: FontSystem.KR16B
+                                .copyWith(color: ColorSystem.white),
+                          ),
+                          Text(
+                            '패',
+                            style: FontSystem.KR16B
+                                .copyWith(color: ColorSystem.white),
+                          ),
+                        ],
+                      )
+                    : Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '패 ',
+                            style: FontSystem.KR16B
+                                .copyWith(color: ColorSystem.white),
+                          ),
+                          Text(
+                            'VS ',
+                            style: FontSystem.KR16B
+                                .copyWith(color: ColorSystem.white),
+                          ),
+                          Text(
+                            '승!',
+                            style: FontSystem.KR16B
+                                .copyWith(color: ColorSystem.yellow),
+                          ),
+                        ],
+                      ),
               ),
             ],
           ),
-          const SizedBox(width: 16),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CircleAvatar(
-                radius: 30.r,
-                backgroundImage: NetworkImage(widget.myImage),
-              ),
-              Text(widget.myNick),
-            ],
+          SizedBox(width: 30.w),
+          Container(
+            width: 120.w,
+            child: Column(
+              children: [
+                widget.myImage == null || widget.myImage.isEmpty
+                    ? SvgPicture.asset('assets/icons/basicProfile.svg')
+                    : CircleAvatar(
+                        radius: 30.r,
+                        backgroundImage: NetworkImage(widget.myImage),
+                      ),
+                SizedBox(
+                  height: 2.h,
+                ),
+                Text(
+                  widget.myNick,
+                  style: FontSystem.KR12M.copyWith(color: ColorSystem.black),
+                ),
+                SizedBox(
+                  height: 19.h,
+                ),
+                widget.winner == true || widget.winner == null
+                    ? ConfettiWidget(
+                        confettiController: _confettiController,
+                        blastDirection: -pi / 2,
+                        maxBlastForce: 10,
+                        minBlastForce: 5,
+                        emissionFrequency: 0.05,
+                        numberOfParticles: 5,
+                        gravity: 0.1,
+                        colors: const [
+                            Colors.green,
+                            Colors.blue,
+                            Colors.pink,
+                            Colors.orange,
+                            Colors.purple
+                          ])
+                    : SizedBox(
+                        width: 0,
+                      ),
+              ],
+            ),
           ),
         ],
       ),

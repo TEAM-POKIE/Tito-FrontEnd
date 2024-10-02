@@ -624,7 +624,7 @@ class _ApiService implements ApiService {
     )
         .compose(
           _dio.options,
-          'debates/generate-topic',
+          'debates/ai/generate-topic',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -658,7 +658,7 @@ class _ApiService implements ApiService {
     )
         .compose(
           _dio.options,
-          'debates/refine-argument',
+          'debates/ai/refine-argument',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -679,19 +679,19 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<List<EndedChatInfo>> getDebateChat(int debateId) async {
+  Future<String> getDebateChat(int debateId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<EndedChatInfo>>(Options(
+    final _options = _setStreamType<String>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          'debates/${debateId}/chat',
+          'debates/ended/${debateId}/chat',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -700,12 +700,43 @@ class _ApiService implements ApiService {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<EndedChatInfo> _value;
+    final _result = await _dio.fetch<String>(_options);
+    late String _value;
     try {
-      _value = _result.data!
-          .map((dynamic i) => EndedChatInfo.fromJson(i as Map<String, dynamic>))
-          .toList();
+      _value = _result.data!;
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<String> getEndedLiveChat(int debateId) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<String>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'debates/ended/${debateId}/real-time-comment',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<String>(_options);
+    late String _value;
+    try {
+      _value = _result.data!;
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -784,19 +815,19 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<DebateInfo> getEndedDebateInfo(int debateId) async {
+  Future<EndedChatInfo> getEndedDebateInfo(int debateId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<DebateInfo>(Options(
+    final _options = _setStreamType<EndedChatInfo>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          'debates/ended/{debate_id}',
+          'debates/ended/${debateId}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -806,13 +837,67 @@ class _ApiService implements ApiService {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late DebateInfo _value;
+    late EndedChatInfo _value;
     try {
-      _value = DebateInfo.fromJson(_result.data!);
+      _value = EndedChatInfo.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
     }
+    return _value;
+  }
+
+  @override
+  Future<dynamic> getChangeVoting(int debateId) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<dynamic>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'debates/forcing/${debateId}/update-status-voting',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch(_options);
+    final _value = _result.data;
+    return _value;
+  }
+
+  @override
+  Future<dynamic> getChangeEnded(int debateId) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<dynamic>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'debates/forcing/${debateId}/update-status-ended',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch(_options);
+    final _value = _result.data;
     return _value;
   }
 

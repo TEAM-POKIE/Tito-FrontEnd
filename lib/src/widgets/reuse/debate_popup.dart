@@ -93,6 +93,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                                 });
                               },
                               child: Container(
+                                width: 80.w,
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 5, vertical: 10),
                                 decoration: BoxDecoration(
@@ -115,7 +116,8 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                                     const SizedBox(height: 8),
                                     Text(
                                       chatState.debateJoinerNick,
-                                      style: FontSystem.KR14M,
+                                      style: FontSystem.KR16M,
+                                      textAlign: TextAlign.center,
                                     ),
                                   ],
                                 ),
@@ -141,6 +143,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                                 });
                               },
                               child: Container(
+                                width: 80.w,
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 5, vertical: 10),
                                 decoration: BoxDecoration(
@@ -163,7 +166,8 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                                     const SizedBox(height: 8),
                                     Text(
                                       chatState.debateOwnerNick,
-                                      style: FontSystem.KR14M,
+                                      style: FontSystem.KR16M,
+                                      textAlign: TextAlign.center,
                                     ),
                                   ],
                                 ),

@@ -25,4 +25,5 @@ class ColorSystem {
   static const Color googleFont = Color(0xFF757575);
   static const Color grey5 = Color(0xFFDFE0E2);
   static const Color popupLight = Color(0xFFE7DFFD);
+  static const Color lightPurplevoting = Color.fromARGB(50, 133, 93, 247);
 }
