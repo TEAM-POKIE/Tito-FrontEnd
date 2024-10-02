@@ -195,6 +195,8 @@ flutter:
     - assets/images/alarm.png
     - assets/images/anLogo.png
     - assets/images/ansLogo.png
+    - assets/images/basicLogoIcon.png
+    - assets/images/an12Logo.png
 
     - assets/images/like_btn.png
     - assets/images/liked_btn.png

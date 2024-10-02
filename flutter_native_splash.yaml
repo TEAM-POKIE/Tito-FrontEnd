@@ -2,17 +2,13 @@ flutter_native_splash:
   color: "#ffffff"
   image: "assets/images/anLogo.png"
   android_gravity: center
-  ios_content_mode: scaleAspectFit
-
-  # 다크 모드 설정
   color_dark: "#ffffff"
   image_dark: "assets/images/anLogo.png"
-  icon_background_color_dark: "#855DF7"
+  icon_background_color: "#855DF7"
   fullscreen: true
 
-  # Android 12에서의 설정
   android_12:
-    image: assets/images/LogoIcon.png
+    image: "assets/images/anLogo.png"
     color: "#ffffff"
     icon_background_color: "#855DF7"
     image_dark: "assets/images/anLogo.png"
@@ -21,3 +17,4 @@ flutter_native_splash:
     fullscreen: true
 
   ios: true
+  image_ios: assets/images/LogoIcon.png
