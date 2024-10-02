@@ -128,6 +128,7 @@ class _MypageMainState extends ConsumerState<MypageMain> {
           children: [
             SizedBox(height: 20.h),
             Stack(
+              clipBehavior: Clip.none, // 오버플로우 콘텐츠가 잘리지 않도록 설정 : 연필 수정 아이콘
               children: [
                 loginInfo!.profilePicture != null
                     ? CircleAvatar(
@@ -137,20 +138,19 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                         radius: 35.r,
                       )
                     : SvgPicture.asset(
-                        'assets/icons/null_profile.svg',
+                        'assets/icons/default_profile_1.svg',
                         width: 80,
                         height: 80,
                       ),
                 Positioned(
-                  bottom: -15,
-                  right: -15,
+                  bottom: -12,
+                  right: -12,
                   child: IconButton(
                     onPressed: () {
                       _showImagePickerOptions(context);
                     },
-                    icon: SvgPicture.asset(
-                      'assets/icons/final_edit.svg',
-                    ),
+                    icon: SvgPicture.asset('assets/icons/final_edit_pen.svg',
+                        width: 30, height: 30),
                   ),
                 ),
               ],
@@ -169,20 +169,23 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                     context.push('/nickname');
                   },
                   icon: Padding(
-                    padding: EdgeInsets.only(top: 8.h),
-                    child:
-                        SvgPicture.asset('assets/icons/mypage_final_arrow.svg'),
+                    padding: EdgeInsets.only(top: 6.h),
+                    child: SvgPicture.asset(
+                        'assets/icons/mypage_final_arrow.svg',
+                        //width: 20,
+                        height: 20),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 8.h),
+
+            SizedBox(height: 10.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 6.w),
+                  padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
                   decoration: BoxDecoration(
                     color: ColorSystem.lightPurple,
                     borderRadius: BorderRadius.circular(10.r),
@@ -200,6 +203,12 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                         SizedBox(width: 5.w),
                         Text(
                           '${loginInfo.winningRate}',
+                          style: FontSystem.KR18B
+                              .copyWith(color: ColorSystem.purple),
+                        ),
+                        SizedBox(width: 2.w),
+                        Text(
+                          '%',
                           style: FontSystem.KR18B
                               .copyWith(color: ColorSystem.purple),
                         ),

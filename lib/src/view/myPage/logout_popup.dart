@@ -32,43 +32,61 @@ class LogoutPopup extends ConsumerWidget {
         width: 280.w,
         height: 300.h,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center, // 중앙에 배치되도록 설정
+          crossAxisAlignment: CrossAxisAlignment.center, // 가로축에서 중앙 정렬
           children: <Widget>[
-            SizedBox(height: 10.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SvgPicture.asset(
-                  'assets/icons/popup_face.svg',
-                  width: 40.w,
-                  height: 40.h,
+            Stack(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SvgPicture.asset(
+                      'assets/icons/popup_face.svg',
+                      width: 40.w,
+                      height: 40.h,
+                    ),
+                  ],
+                ),
+                Positioned(
+                  top: -18.h,
+                  right: 0.w,
+                  child: IconButton(
+                    iconSize: 20,
+                    icon: const Icon(Icons.close, color: ColorSystem.grey),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
                 ),
               ],
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 4.h),
             Text(
               '정말로 로그아웃 하시겠습니까?',
-              style: FontSystem.KR18SB,
+              style: FontSystem.KR18B,
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 20.h),
-            Container(
-              width: 248.w,
-              decoration: BoxDecoration(
-                color: ColorSystem.grey3,
-                borderRadius: BorderRadius.circular(12.r),
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 25.h),
-                child: Text(
-                  '로그아웃 하시면\n추후 앱을 이용하실 때\n다시 로그인을 해야해요',
-                  style: FontSystem.KR14R,
-                  textAlign: TextAlign.center,
+            Center(
+              child: Container(
+                width: 248.w,
+                decoration: BoxDecoration(
+                  color: ColorSystem.grey3,
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 22.h),
+                  child: Text(
+                    '로그아웃 하시면\n추후 앱을 이용하실 때\n다시 로그인을 해야해요',
+                    style: FontSystem.KR14R,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
             ),
-            SizedBox(height: 25.h),
+            SizedBox(height: 20.h),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              padding: EdgeInsets.only(right: 20.w, left: 20.w),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: ColorSystem.purple,
@@ -82,8 +100,7 @@ class LogoutPopup extends ConsumerWidget {
                 child: Container(
                   width: 241.w,
                   height: 40.h,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 11.h),
+                  child: Center(
                     child: Text(
                       '로그아웃 하기',
                       style:

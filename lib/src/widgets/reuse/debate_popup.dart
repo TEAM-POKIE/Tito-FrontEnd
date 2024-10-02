@@ -67,8 +67,8 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                   ],
                 ),
                 IconButton(
-                  iconSize: 25,
-                  icon: const Icon(Icons.close),
+                  iconSize: 20,
+                  icon: const Icon(Icons.close, color: ColorSystem.grey),
                   onPressed: () => context.pop(),
                 ),
               ],
