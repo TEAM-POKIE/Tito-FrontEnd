@@ -17,20 +17,18 @@ class _VotingBarState extends ConsumerState<EndedVotingbar> {
   Widget build(BuildContext context) {
     final endedState = ref.watch(endedProvider);
 
-    // ownerVoteRate가 0일 때는 50%, 그렇지 않으면 원래 퍼센트 값 적용
     final percent = (endedState?.ownerVoteRate == 0)
         ? 0.5
-        : (endedState?.ownerVoteRate ?? 0) / 100.0;
+        : (endedState?.joinerVoteRate ?? 0) / 100.0;
 
     return LinearPercentIndicator(
       lineHeight: 30.0,
       animation: true,
       padding: EdgeInsets.zero,
       animationDuration: 500,
-      animateFromLastPercent: true, // 마지막 퍼센트에서 애니메이션 시작
-      percent: percent, // 최종 계산된 퍼센트 값 적용
+      animateFromLastPercent: true,
+      percent: percent,
       linearStrokeCap: LinearStrokeCap.roundAll,
-
       progressColor: ColorSystem.voteBlue,
       backgroundColor: ColorSystem.voteRed,
       center: Padding(

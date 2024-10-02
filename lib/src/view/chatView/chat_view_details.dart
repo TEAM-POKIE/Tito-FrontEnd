@@ -59,6 +59,7 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
           myNick: endedState!.debateOwnerName,
           myImage: endedState.debateOwnerImageUrl,
           winner: endedState.debateJoinerWinOrLose,
+          ownerVoteRate: endedState.ownerVoteRate,
           opponentNick: endedState.debateJoinerName,
           opponentImage: endedState.debateJoinerImageUrl);
     } else if (chatState.debateJoinerId == loginInfo.id ||
@@ -264,30 +265,39 @@ class ProfileVsWidget extends StatelessWidget {
       color: ColorSystem.white,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CircleAvatar(
-                radius: 30.r,
-                backgroundImage: NetworkImage(opponentImage),
-              ),
-              Text(opponentNick),
-            ],
+          Container(
+            width: 120.w,
+            child: Column(
+              children: [
+                opponentImage == null || opponentImage.isEmpty
+                    ? SvgPicture.asset('assets/icons/basicProfile.svg')
+                    : CircleAvatar(
+                        radius: 30.r,
+                        backgroundImage: NetworkImage(opponentImage),
+                      ),
+                SizedBox(height: 5.h),
+                Text(
+                  opponentNick,
+                  style: FontSystem.KR12M,
+                ),
+                SizedBox(height: 20.h),
+              ],
+            ),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: 30.w),
           Column(
-            mainAxisSize: MainAxisSize.min,
             children: [
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0xffE8DAFE),
-                  borderRadius: BorderRadius.circular(12),
+                  color: ColorSystem.lightPurplevoting,
+                  borderRadius: BorderRadius.circular(15),
                 ),
                 child: Text(
-                  '투표 중',
+                  '투표 중...',
                   style: FontSystem.KR14B.copyWith(color: ColorSystem.purple),
                 ),
               ),
@@ -298,25 +308,30 @@ class ProfileVsWidget extends StatelessWidget {
                     const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                 decoration: BoxDecoration(
                   color: ColorSystem.black,
-                  borderRadius: BorderRadius.circular(12.0),
+                  borderRadius: BorderRadius.circular(17.0.r),
                 ),
                 child: Text(
                   'VS',
-                  style: FontSystem.KR16B.copyWith(color: ColorSystem.white),
+                  style: FontSystem.KR12M.copyWith(color: ColorSystem.white),
                 ),
               ),
             ],
           ),
-          const SizedBox(width: 16),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CircleAvatar(
-                radius: 30.r,
-                backgroundImage: NetworkImage(myImage),
-              ),
-              Text(myNick),
-            ],
+          SizedBox(width: 30.w),
+          Container(
+            width: 120.w,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircleAvatar(
+                  radius: 30.r,
+                  backgroundImage: NetworkImage(myImage),
+                ),
+                SizedBox(height: 5.h),
+                Text(myNick, style: FontSystem.KR12M),
+                SizedBox(height: 20.h),
+              ],
+            ),
           ),
         ],
       ),
@@ -330,6 +345,7 @@ class EndedProfileVsWidget extends StatefulWidget {
   final String opponentNick;
   final String opponentImage;
   final bool winner;
+  final int ownerVoteRate;
 
   const EndedProfileVsWidget({
     required this.myNick,
@@ -337,6 +353,7 @@ class EndedProfileVsWidget extends StatefulWidget {
     required this.opponentNick,
     required this.opponentImage,
     required this.winner,
+    required this.ownerVoteRate,
   });
 
   @override
@@ -367,26 +384,29 @@ class _EndedProfileVsWidgetState extends State<EndedProfileVsWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              widget.opponentImage == null || widget.opponentImage.isEmpty
-                  ? SvgPicture.asset('assets/icons/basicProfile.svg')
-                  : CircleAvatar(
-                      radius: 30.r,
-                      backgroundImage: NetworkImage(widget.opponentImage),
-                    ),
-              SizedBox(
-                height: 2.h,
-              ),
-              Text(
-                widget.opponentNick,
-                style: FontSystem.KR12M.copyWith(color: ColorSystem.black),
-              ),
-              SizedBox(
-                height: 19.h,
-              )
-            ],
+          Container(
+            width: 120.w,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                widget.opponentImage == null || widget.opponentImage.isEmpty
+                    ? SvgPicture.asset('assets/icons/basicProfile.svg')
+                    : CircleAvatar(
+                        radius: 30.r,
+                        backgroundImage: NetworkImage(widget.opponentImage),
+                      ),
+                SizedBox(
+                  height: 2.h,
+                ),
+                Text(
+                  widget.opponentNick,
+                  style: FontSystem.KR12M.copyWith(color: ColorSystem.black),
+                ),
+                SizedBox(
+                  height: 19.h,
+                )
+              ],
+            ),
           ),
           SizedBox(width: 30.w),
           Column(
@@ -396,7 +416,7 @@ class _EndedProfileVsWidgetState extends State<EndedProfileVsWidget> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0xffE8DAFE),
+                  color: ColorSystem.lightPurplevoting,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -458,41 +478,47 @@ class _EndedProfileVsWidgetState extends State<EndedProfileVsWidget> {
             ],
           ),
           SizedBox(width: 30.w),
-          Column(
-            children: [
-              widget.myImage == null || widget.myImage.isEmpty
-                  ? SvgPicture.asset('assets/icons/basicProfile.svg')
-                  : CircleAvatar(
-                      radius: 30.r,
-                      backgroundImage: NetworkImage(widget.myImage),
-                    ),
-              SizedBox(
-                height: 2.h,
-              ),
-              Text(
-                widget.myNick,
-                style: FontSystem.KR12M.copyWith(color: ColorSystem.black),
-              ),
-              SizedBox(
-                height: 19.h,
-              ),
-              ConfettiWidget(
-                confettiController: _confettiController,
-                blastDirection: -pi / 2,
-                maxBlastForce: 10,
-                minBlastForce: 5,
-                emissionFrequency: 0.05,
-                numberOfParticles: 5,
-                gravity: 0.1,
-                colors: const [
-                  Colors.green,
-                  Colors.blue,
-                  Colors.pink,
-                  Colors.orange,
-                  Colors.purple
-                ],
-              ),
-            ],
+          Container(
+            width: 120.w,
+            child: Column(
+              children: [
+                widget.myImage == null || widget.myImage.isEmpty
+                    ? SvgPicture.asset('assets/icons/basicProfile.svg')
+                    : CircleAvatar(
+                        radius: 30.r,
+                        backgroundImage: NetworkImage(widget.myImage),
+                      ),
+                SizedBox(
+                  height: 2.h,
+                ),
+                Text(
+                  widget.myNick,
+                  style: FontSystem.KR12M.copyWith(color: ColorSystem.black),
+                ),
+                SizedBox(
+                  height: 19.h,
+                ),
+                widget.winner == true || widget.winner == null
+                    ? ConfettiWidget(
+                        confettiController: _confettiController,
+                        blastDirection: -pi / 2,
+                        maxBlastForce: 10,
+                        minBlastForce: 5,
+                        emissionFrequency: 0.05,
+                        numberOfParticles: 5,
+                        gravity: 0.1,
+                        colors: const [
+                            Colors.green,
+                            Colors.blue,
+                            Colors.pink,
+                            Colors.orange,
+                            Colors.purple
+                          ])
+                    : SizedBox(
+                        width: 0,
+                      ),
+              ],
+            ),
           ),
         ],
       ),
