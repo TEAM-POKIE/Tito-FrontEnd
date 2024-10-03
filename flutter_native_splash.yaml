@@ -17,4 +17,3 @@ flutter_native_splash:
     fullscreen: true
 
   ios: true
-  image_ios: assets/images/LogoIcon.png

@@ -12,6 +12,7 @@ import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
+import 'dart:io';
 
 const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
@@ -270,32 +271,33 @@ class LoginMain extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10.h),
+                  if (Platform.isIOS) SizedBox(height: 10.h),
                   // ! 애플 버튼
-                  Container(
-                    width: 327.w,
-                    height: 54.h,
-                    child: ElevatedButton(
-                      onPressed: _signInWithApple,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: ColorSystem.black, // 배경 색상
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.r), // 모서리 둥글기
+                  if (Platform.isIOS)
+                    Container(
+                      width: 327.w,
+                      height: 54.h,
+                      child: ElevatedButton(
+                        onPressed: _signInWithApple,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: ColorSystem.black, // 배경 색상
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6.r), // 모서리 둥글기
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset('assets/icons/apple_new.svg'),
+                            SizedBox(width: 5.w),
+                            Text('Apple로 로그인',
+                                style: FontSystem.Login16M.copyWith(
+                                    color: ColorSystem.white)),
+                          ],
                         ),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset('assets/icons/apple_new.svg'),
-                          SizedBox(width: 5.w),
-                          Text('Apple로 로그인',
-                              style: FontSystem.Login16M.copyWith(
-                                  color: ColorSystem.white)),
-                        ],
-                      ),
                     ),
-                  ),
                   SizedBox(height: 10.h),
                   // ! 이메일 버튼
                   Container(
