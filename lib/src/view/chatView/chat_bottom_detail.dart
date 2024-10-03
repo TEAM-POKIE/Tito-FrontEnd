@@ -73,10 +73,9 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
 
     await Future.delayed(Duration(seconds: 2));
 
-    if (popupState.title == '토론이 시작 됐어요! 🎵') {
-      if (mounted) {
-        ref.read(timerProvider.notifier).resetTimer();
-      }
+    // 여기서 mounted 체크 추가
+    if (mounted && popupState.title == '토론이 시작 됐어요! 🎵') {
+      ref.read(timerProvider.notifier).resetTimer();
     }
   }
 

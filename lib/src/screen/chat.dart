@@ -34,22 +34,30 @@ class Chat extends ConsumerStatefulWidget {
 
 class _ChatState extends ConsumerState<Chat> {
   List<Map<String, dynamic>> _messages = [];
-
+  late StreamSubscription _subscription;
   @override
   void initState() {
     super.initState();
     _fetchDebateInfo();
   }
 
+  @override
+  void dispose() {
+    // 스트림 구독 해제
+    _subscription?.cancel();
+    super.dispose();
+  }
+
   Future<void> _fetchDebateInfo() async {
     final chatViewModel = ref.read(chatInfoProvider.notifier);
-
     await chatViewModel.fetchDebateInfo(widget.id);
+
     final webSocketService = ref.read(webSocketProvider);
     final loginInfo = ref.watch(loginInfoProvider);
     final debateInfo = ref.read(chatInfoProvider);
 
     chatViewModel.connectWebSocket();
+
     if (loginInfo != null) {
       final message = jsonEncode({
         "command": "ENTER",
@@ -58,11 +66,14 @@ class _ChatState extends ConsumerState<Chat> {
       });
       webSocketService.sendMessage(message);
 
-      webSocketService.stream.listen((message) {
+      // 스트림 리스너 구독
+      _subscription = webSocketService.stream.listen((message) {
         if (message.containsKey('content')) {
-          setState(() {
-            _messages.add(message);
-          });
+          if (mounted) {
+            setState(() {
+              _messages.add(message);
+            });
+          }
         }
       });
     } else {
@@ -144,7 +155,7 @@ class _BasicDebate extends ConsumerWidget {
                   header: Container(
                     padding: EdgeInsets.only(top: 8.h),
                     width: MediaQuery.sizeOf(context).width,
-                    alignment: Alignment.center, // 컨테이너 내부에서 중앙 정렬
+                    alignment: Alignment.center,
                     child: SvgPicture.asset('assets/icons/panel_line.svg'),
                   ),
                   maxHeight: 762.h,
@@ -156,9 +167,7 @@ class _BasicDebate extends ConsumerWidget {
                   ),
                   boxShadow: [],
                 )
-              : SizedBox(
-                  width: 0,
-                ),
+              : Container(),
           chatState.explanation != null &&
                   chatState.explanation!.any((e) => e.isNotEmpty)
               ? Positioned(

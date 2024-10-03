@@ -107,12 +107,20 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                                 ),
                                 child: Column(
                                   children: [
-                                    CircleAvatar(
-                                      radius: 30,
-                                      backgroundImage: NetworkImage(
-                                        chatState.debateJoinerPicture,
-                                      ),
-                                    ),
+                                    chatState.debateJoinerPicture != null &&
+                                            chatState
+                                                .debateJoinerPicture.isNotEmpty
+                                        ? CircleAvatar(
+                                            radius: 30,
+                                            backgroundImage: NetworkImage(
+                                              chatState.debateJoinerPicture,
+                                            ),
+                                          )
+                                        : SvgPicture.asset(
+                                            'assets/icons/basicProfile.svg',
+                                            width: 60, // 아이콘 크기 조정
+                                            height: 60,
+                                          ),
                                     const SizedBox(height: 8),
                                     Text(
                                       chatState.debateJoinerNick,
@@ -157,12 +165,20 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                                 ),
                                 child: Column(
                                   children: [
-                                    CircleAvatar(
-                                      radius: 30,
-                                      backgroundImage: NetworkImage(
-                                        chatState.debateOwnerPicture,
-                                      ),
-                                    ),
+                                    chatState.debateOwnerPicture != null &&
+                                            chatState
+                                                .debateOwnerPicture.isNotEmpty
+                                        ? CircleAvatar(
+                                            radius: 30,
+                                            backgroundImage: NetworkImage(
+                                              chatState.debateOwnerPicture,
+                                            ),
+                                          )
+                                        : SvgPicture.asset(
+                                            'assets/icons/basicProfile.svg',
+                                            width: 60, // 아이콘 크기 조정
+                                            height: 60,
+                                          ),
                                     const SizedBox(height: 8),
                                     Text(
                                       chatState.debateOwnerNick,

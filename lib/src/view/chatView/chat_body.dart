@@ -21,13 +21,13 @@ class ChatBody extends ConsumerWidget {
     return Column(
       children: [
         ChatViewDetails(id: id),
-        Expanded(
-          child: Container(
-              decoration: const BoxDecoration(color: ColorSystem.grey3),
-              child: ChatListView(id: id)), // id 전달
-        ),
+        // Expanded(
+        //   child: Container(
+        //       decoration: const BoxDecoration(color: ColorSystem.grey3),
+        //       child: ChatListView(id: id)), // id 전달
+        // ),
         chatState!.isFirstClick
-            ? const ChatSpeechBubble()
+            ? ChatSpeechBubble()
             : const SizedBox(
                 width: 0,
               ),
