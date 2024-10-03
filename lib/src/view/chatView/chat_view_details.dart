@@ -339,10 +339,12 @@ class ProfileVsWidget extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                CircleAvatar(
-                  radius: 30.r,
-                  backgroundImage: NetworkImage(myImage),
-                ),
+                myImage == null || myImage.isEmpty
+                    ? SvgPicture.asset('assets/icons/basicProfile.svg')
+                    : CircleAvatar(
+                        radius: 30.r,
+                        backgroundImage: NetworkImage(myImage),
+                      ),
                 SizedBox(height: 5.h),
                 Text(myNick, style: FontSystem.KR12M),
                 SizedBox(height: 20.h),

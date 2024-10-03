@@ -252,20 +252,30 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
 
   void getInfo(id, context) async {
     if (!mounted) return;
-    final userInfo = await ApiService(DioClient.dio).getUserProfile(id);
-    final userProfileViewModel = ref.read(userProfileProvider.notifier);
 
-    userProfileViewModel.setUserInfo(userInfo);
+    if ((id == state!.debateOwnerId && state!.debateOwnerNick.isNotEmpty) ||
+        (id == state!.debateJoinerId && state!.debateJoinerNick.isNotEmpty)) {
+      return;
+    }
+    try {
+      final userInfo = await ApiService(DioClient.dio).getUserProfile(id);
+      final userProfileViewModel = ref.read(userProfileProvider.notifier);
 
-    if (id == state!.debateOwnerId) {
-      state!.debateOwnerNick = userInfo.nickname;
-      state!.debateOwnerPicture = userInfo.profilePicture ?? '';
+      userProfileViewModel.setUserInfo(userInfo);
 
-      print(state!.debateOwnerPicture);
-    } else if (id == state!.debateJoinerId) {
-      state!.debateJoinerNick = userInfo.nickname;
-      state!.debateJoinerPicture = userInfo.profilePicture ?? '';
-      print(state!.debateJoinerPicture);
+      if (id == state!.debateOwnerId) {
+        state = state!.copyWith(
+          debateOwnerNick: userInfo.nickname,
+          debateOwnerPicture: userInfo.profilePicture ?? '',
+        );
+      } else if (id == state!.debateJoinerId) {
+        state = state!.copyWith(
+          debateJoinerNick: userInfo.nickname,
+          debateJoinerPicture: userInfo.profilePicture ?? '',
+        );
+      }
+    } catch (error) {
+      print('Error fetching user info: $error');
     }
   }
 
