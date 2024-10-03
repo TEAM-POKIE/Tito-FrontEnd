@@ -8,8 +8,8 @@ import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:confetti/confetti.dart';
 import 'package:tito_app/core/provider/timer_provider.dart';
+import 'package:tito_app/core/provider/websocket_provider.dart';
 import 'dart:math';
-
 import 'package:tito_app/src/view/chatView/votingbar.dart';
 
 class ChatViewDetails extends ConsumerStatefulWidget {
@@ -30,8 +30,18 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
 
   @override
   void dispose() {
-    final timerViewModel = ref.read(timerProvider.notifier);
-    timerViewModel.stopTimer();
+    // 타이머 중지 및 WebSocket 연결 닫기
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        // 여기서 ref를 직접 접근하지 않고 안전하게 작업
+        final timerViewModel = ref.read(timerProvider.notifier);
+        timerViewModel.stopTimer();
+
+        final webSocketService = ref.read(webSocketProvider);
+        webSocketService.dispose(); // WebSocket을 안전하게 닫기
+      }
+    });
+
     super.dispose();
   }
 
@@ -54,14 +64,19 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
     }
 
     String remainingTime = formatDuration(timerState.remainingTime);
+
+    // mounted 확인을 통해 불필요한 상태 업데이트 방지
+    if (!mounted) return const SizedBox.shrink();
+
     if (chatState!.debateStatus == 'ENDED') {
       return EndedProfileVsWidget(
-          myNick: endedState!.debateOwnerName,
-          myImage: endedState.debateOwnerImageUrl,
-          winner: endedState.debateJoinerWinOrLose,
-          ownerVoteRate: endedState.ownerVoteRate,
-          opponentNick: endedState.debateJoinerName,
-          opponentImage: endedState.debateJoinerImageUrl);
+        myNick: endedState!.debateOwnerName,
+        myImage: endedState.debateOwnerImageUrl,
+        winner: endedState.debateJoinerWinOrLose,
+        ownerVoteRate: endedState.ownerVoteRate,
+        opponentNick: endedState.debateJoinerName,
+        opponentImage: endedState.debateJoinerImageUrl,
+      );
     } else if (chatState.debateJoinerId == loginInfo.id ||
         chatState.debateOwnerId == loginInfo.id) {
       if (chatState.debateJoinerId == loginInfo.id) {
@@ -153,10 +168,11 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
         default:
           if (chatState.debateStatus == 'VOTING') {
             return ProfileVsWidget(
-                myNick: chatState.debateOwnerNick,
-                myImage: chatState.debateOwnerPicture,
-                opponentNick: chatState.debateJoinerNick,
-                opponentImage: chatState.debateJoinerPicture);
+              myNick: chatState.debateOwnerNick,
+              myImage: chatState.debateOwnerPicture,
+              opponentNick: chatState.debateJoinerNick,
+              opponentImage: chatState.debateJoinerPicture,
+            );
           } else {
             return const SizedBox(
               width: 0,
@@ -323,10 +339,12 @@ class ProfileVsWidget extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                CircleAvatar(
-                  radius: 30.r,
-                  backgroundImage: NetworkImage(myImage),
-                ),
+                myImage == null || myImage.isEmpty
+                    ? SvgPicture.asset('assets/icons/basicProfile.svg')
+                    : CircleAvatar(
+                        radius: 30.r,
+                        backgroundImage: NetworkImage(myImage),
+                      ),
                 SizedBox(height: 5.h),
                 Text(myNick, style: FontSystem.KR12M),
                 SizedBox(height: 20.h),

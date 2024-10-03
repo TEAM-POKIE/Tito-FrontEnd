@@ -107,40 +107,42 @@ class _LiveCommentState extends ConsumerState<LiveComment>
     final chatViewModel = ref.read(chatInfoProvider.notifier);
     chatViewModel.sendFire();
 
-    setState(() {
-      final startPosition = Random().nextDouble() * 50;
+    if (mounted) {
+      setState(() {
+        final startPosition = Random().nextDouble() * 50;
 
-      final controller = AnimationController(
-        vsync: this,
-        duration: const Duration(milliseconds: 800), // 애니메이션 지속 시간
-      );
+        final controller = AnimationController(
+          vsync: this,
+          duration: const Duration(milliseconds: 800), // 애니메이션 지속 시간
+        );
 
-      final animation = Tween<double>(begin: 0, end: 400).animate(
-        CurvedAnimation(
-          parent: controller,
-          curve: Curves.easeOut,
-        ),
-      );
+        final animation = Tween<double>(begin: 0, end: 400).animate(
+          CurvedAnimation(
+            parent: controller,
+            curve: Curves.easeOut,
+          ),
+        );
 
-      _animationControllers.add(controller);
-      _animations.add(animation);
-      _positions.add(startPosition);
+        _animationControllers.add(controller);
+        _animations.add(animation);
+        _positions.add(startPosition);
 
-      controller.addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          setState(() {
-            final index = _animationControllers.indexOf(controller);
-            if (index != -1) {
-              _animationControllers.removeAt(index);
-              _animations.removeAt(index);
-              _positions.removeAt(index);
-            }
-          });
-        }
+        controller.addStatusListener((status) {
+          if (status == AnimationStatus.completed && mounted) {
+            setState(() {
+              final index = _animationControllers.indexOf(controller);
+              if (index != -1) {
+                _animationControllers.removeAt(index);
+                _animations.removeAt(index);
+                _positions.removeAt(index);
+              }
+            });
+          }
+        });
+
+        controller.forward();
       });
-
-      controller.forward();
-    });
+    }
   }
 
   @override

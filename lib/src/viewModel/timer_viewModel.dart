@@ -28,6 +28,8 @@ class TimerNotifier extends StateNotifier<TimerState> {
   }
 
   Future<void> _loadTimerState() async {
+    if (!mounted) return; // mounted 확인
+
     final prefs = await SharedPreferences.getInstance();
     final int? seconds = prefs.getInt(_prefsKeyRemainingTime);
     final int? startTimeMillis = prefs.getInt(_prefsKeyStartTime);
@@ -39,8 +41,10 @@ class TimerNotifier extends StateNotifier<TimerState> {
       final newRemainingTime = Duration(seconds: seconds - elapsed);
 
       if (newRemainingTime > Duration.zero) {
-        state = state.copyWith(remainingTime: newRemainingTime);
-        _updateChatState(newRemainingTime);
+        if (mounted) {
+          state = state.copyWith(remainingTime: newRemainingTime);
+          _updateChatState(newRemainingTime);
+        }
         startTimer(); // 타이머 시작
       } else {
         _clearSavedTimerState();
@@ -48,9 +52,9 @@ class TimerNotifier extends StateNotifier<TimerState> {
     }
   }
 
-  void _saveTimerState() async {
+  Future<void> _saveTimerState() async {
     final prefs = await SharedPreferences.getInstance();
-    if (!mounted) return;
+    if (!mounted) return; // mounted 확인
     await prefs.setInt(_prefsKeyRemainingTime, state.remainingTime.inSeconds);
     await prefs.setInt(
         _prefsKeyStartTime, DateTime.now().millisecondsSinceEpoch);
@@ -66,9 +70,13 @@ class TimerNotifier extends StateNotifier<TimerState> {
       final int elapsed = now.difference(startTime).inSeconds;
       final int remaining = debatedTimeLimit * 60 - elapsed;
       if (remaining > 0) {
-        state = state.copyWith(remainingTime: Duration(seconds: remaining));
+        if (mounted) {
+          state = state.copyWith(remainingTime: Duration(seconds: remaining));
+        }
       } else {
-        state = TimerState(remainingTime: Duration.zero);
+        if (mounted) {
+          state = TimerState(remainingTime: Duration.zero);
+        }
         _clearSavedTimerState();
         return;
       }
@@ -76,16 +84,15 @@ class TimerNotifier extends StateNotifier<TimerState> {
 
     _saveTimerState();
 
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (state.remainingTime.inSeconds > 0) {
-        final newRemainingTime = state.remainingTime - Duration(seconds: 1);
+        final newRemainingTime =
+            state.remainingTime - const Duration(seconds: 1);
         if (mounted) {
-          // mounted 확인 추가
           state = state.copyWith(remainingTime: newRemainingTime);
           _updateChatState(newRemainingTime);
         }
 
-        // 타이머 상태가 저장될 때마다 SharedPreferences를 업데이트하지 않도록 수정
         if (newRemainingTime.inSeconds % 10 == 0) {
           _saveTimerState(); // 주기적으로만 저장
         }
@@ -104,29 +111,30 @@ class TimerNotifier extends StateNotifier<TimerState> {
   void resetTimer({DateTime? startTime}) {
     stopTimer();
 
-    if (startTime != null) {
-      final DateTime now = DateTime.now();
-      final int elapsed = now.difference(startTime).inSeconds;
-      final int remaining = debatedTimeLimit * 60 - elapsed;
+    final DateTime now = DateTime.now();
+    final int elapsed =
+        startTime != null ? now.difference(startTime).inSeconds : 0;
+    final int remaining = debatedTimeLimit * 60 - elapsed;
 
-      if (remaining > 0) {
+    if (remaining > 0) {
+      if (mounted) {
         state = TimerState(remainingTime: Duration(seconds: remaining));
-      } else {
-        state = TimerState(remainingTime: Duration.zero);
-        _clearSavedTimerState();
-        return;
+        _updateChatState(state.remainingTime);
+        startTimer(); // 타이머를 다시 시작
       }
     } else {
-      state = TimerState(remainingTime: Duration(minutes: debatedTimeLimit));
+      _clearSavedTimerState();
+      if (mounted) {
+        state = TimerState(remainingTime: Duration.zero);
+      }
     }
-
-    _updateChatState(state.remainingTime);
-    startTimer();
   }
 
   void _updateChatState(Duration newRemainingTime) {
     final chatNotifier = ref.read(chatInfoProvider.notifier);
-    chatNotifier.updateRemainTimer(newRemainingTime);
+    if (mounted) {
+      chatNotifier.updateRemainTimer(newRemainingTime);
+    }
   }
 
   Future<void> _clearSavedTimerState() async {
@@ -138,6 +146,7 @@ class TimerNotifier extends StateNotifier<TimerState> {
   @override
   void dispose() {
     _timer?.cancel();
+    _timer = null;
     super.dispose();
   }
 }

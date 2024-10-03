@@ -27,7 +27,7 @@ class ChatBody extends ConsumerWidget {
               child: ChatListView(id: id)), // id 전달
         ),
         chatState!.isFirstClick
-            ? const ChatSpeechBubble()
+            ? ChatSpeechBubble()
             : const SizedBox(
                 width: 0,
               ),

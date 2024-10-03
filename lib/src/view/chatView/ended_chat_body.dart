@@ -22,7 +22,7 @@ class EndedChatBody extends ConsumerWidget {
     return Column(
       children: [
         ChatViewDetails(id: id),
-        const EndedVotingbar(),
+        EndedVotingbar(),
         Expanded(
           child: Container(
               decoration: const BoxDecoration(color: ColorSystem.grey3),

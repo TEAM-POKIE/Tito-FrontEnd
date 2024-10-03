@@ -41,28 +41,35 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     try {
       final debateInfo = await ApiService(DioClient.dio).getDebateInfo(id);
 
-      state = debateInfo;
+      if (mounted) {
+        state = debateInfo;
+      }
     } catch (error) {
       print('Error fetching debate info: $error');
-      state = null;
+      if (mounted) {
+        state = null;
+      }
     }
   }
 
   void connectWebSocket() {
+    if (!mounted) return; // mounted 상태 체크
+
     _channel = WebSocketChannel.connect(
       Uri.parse('wss://dev.tito.lat/ws/debate'),
     );
 
-    // _liveChannel 초기화 추가
     _liveChannel = WebSocketChannel.connect(
-      Uri.parse('wss://dev.tito.lat/ws/debate/realtime'), // 여기에 적절한 경로 설정
+      Uri.parse('wss://dev.tito.lat/ws/debate/realtime'),
     );
 
     _channel.stream.listen((message) {
       if (message is String && message.startsWith('{')) {
         final decodedMessage = json.decode(message) as Map<String, dynamic>;
-        _messages.add(decodedMessage);
-        _messageController.sink.add(decodedMessage);
+        if (mounted) {
+          _messages.add(decodedMessage);
+          _messageController.sink.add(decodedMessage);
+        }
       } else {
         print('Invalid message format or non-JSON string received: $message');
       }
@@ -72,7 +79,6 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
       print('WebSocket connection closed');
     });
 
-    // _liveChannel 스트림에 대한 리스너 추가
     _liveChannel.stream.listen((message) {
       print('Live Channel Message: $message');
     }, onError: (error) {
@@ -105,16 +111,23 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
   }
 
   void updateText() {
-    controller.text = state!.contentEdited;
+    if (mounted) {
+      controller.text = state!.contentEdited;
+    }
   }
 
   void resetText() {
-    controller.text = '';
+    if (mounted) {
+      controller.text = '';
+    }
   }
 
   Future<void> createLLM() async {
     final chatNotifier = ref.read(chatInfoProvider.notifier);
+    if (state == null || !mounted) return;
+
     state = state!.copyWith(isLoading: true);
+
     try {
       final message = controller.text;
       if (message.isEmpty) {
@@ -129,10 +142,11 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
       if (response.containsKey('data') &&
           response['data'] is Map<String, dynamic>) {
         final aiResponse = AiResponse.fromJson(response['data']);
-        ref.read(aiResponseProvider.notifier).setAiResponse(aiResponse);
-
-        chatNotifier.updateExplanation(
-            aiResponse.explanation, aiResponse.contentEdited);
+        if (mounted) {
+          ref.read(aiResponseProvider.notifier).setAiResponse(aiResponse);
+          chatNotifier.updateExplanation(
+              aiResponse.explanation, aiResponse.contentEdited);
+        }
       } else {
         throw Exception("Unexpected data format or missing 'data' key");
       }
@@ -142,8 +156,8 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
   }
 
   void sendMessage() {
+    if (!mounted) return;
     final loginInfo = ref.read(loginInfoProvider);
-
     final message = controller.text;
     resetExplanation();
     if (message.isEmpty) return;
@@ -154,18 +168,18 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
       "debateId": state?.id ?? 0,
       "content": message,
     });
+
     print(jsonMessage);
 
     _channel.sink.add(jsonMessage);
     controller.clear();
     focusNode.requestFocus();
-
-    // Reset the timer to 8 minutes
   }
 
   void sendVote(String selectedDebate) {
-    final loginInfo = ref.read(loginInfoProvider);
+    if (!mounted) return;
 
+    final loginInfo = ref.read(loginInfoProvider);
     final jsonMessage = json.encode({
       "command": "VOTE",
       "userId": loginInfo?.id ?? '',
@@ -173,6 +187,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
       "participantIsOwner":
           selectedDebate == state!.debateOwnerNick ? true : false,
     });
+
     print(jsonMessage);
 
     _liveChannel.sink.add(jsonMessage);
@@ -190,8 +205,8 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
   }
 
   void sendChatMessage() {
+    if (!mounted) return;
     final loginInfo = ref.read(loginInfoProvider);
-
     final message = controller.text;
 
     if (message.isEmpty) return;
@@ -204,62 +219,68 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
       "userImgUrl": loginInfo.profilePicture ?? "",
       "content": message,
     });
-    print(jsonMessage);
 
+    print(jsonMessage);
     _liveChannel.sink.add(jsonMessage);
     controller.clear();
     focusNode.requestFocus();
-    // Reset the timer to 8 minutes
   }
 
   void sendFire() {
+    if (!mounted) return;
+
     final jsonMessage = json.encode({
       "command": "FIRE",
       "debateId": state?.id ?? 0,
     });
-    print(jsonMessage);
 
+    print(jsonMessage);
     _liveChannel.sink.add(jsonMessage);
     controller.clear();
     focusNode.requestFocus();
-    // Reset the timer to 8 minutes
   }
 
-  void getProfile(
-    id,
-    context,
-  ) async {
+  void getProfile(id, context) async {
+    if (!mounted) return;
     final userInfo = await ApiService(DioClient.dio).getUserProfile(id);
     final popupViewModel = ref.read(popupProvider.notifier);
     final userProfileViewModel = ref.read(userProfileProvider.notifier);
 
     userProfileViewModel.setUserInfo(userInfo);
-
     popupViewModel.showUserPopup(context);
   }
 
-  void getInfo(
-    id,
-    context,
-  ) async {
-    final userInfo = await ApiService(DioClient.dio).getUserProfile(id);
-    final userProfileViewModel = ref.read(userProfileProvider.notifier);
+  void getInfo(id, context) async {
+    if (!mounted) return;
 
-    userProfileViewModel.setUserInfo(userInfo);
+    if ((id == state!.debateOwnerId && state!.debateOwnerNick.isNotEmpty) ||
+        (id == state!.debateJoinerId && state!.debateJoinerNick.isNotEmpty)) {
+      return;
+    }
+    try {
+      final userInfo = await ApiService(DioClient.dio).getUserProfile(id);
+      final userProfileViewModel = ref.read(userProfileProvider.notifier);
 
-    if (id == state!.debateOwnerId) {
-      state!.debateOwnerNick = userInfo.nickname;
-      state!.debateOwnerPicture = userInfo.profilePicture ?? '';
+      userProfileViewModel.setUserInfo(userInfo);
 
-      print(state!.debateOwnerPicture);
-    } else if (id == state!.debateJoinerId) {
-      state!.debateJoinerNick = userInfo.nickname;
-      state!.debateJoinerPicture = userInfo.profilePicture ?? '';
-      print(state!.debateJoinerPicture);
+      if (id == state!.debateOwnerId) {
+        state = state!.copyWith(
+          debateOwnerNick: userInfo.nickname,
+          debateOwnerPicture: userInfo.profilePicture ?? '',
+        );
+      } else if (id == state!.debateJoinerId) {
+        state = state!.copyWith(
+          debateJoinerNick: userInfo.nickname,
+          debateJoinerPicture: userInfo.profilePicture ?? '',
+        );
+      }
+    } catch (error) {
+      print('Error fetching user info: $error');
     }
   }
 
   void timingSend() {
+    if (!mounted) return;
     final loginInfo = ref.read(loginInfoProvider);
     final jsonMessage = json.encode({
       "command": "TIMING_BELL_REQ",
@@ -271,10 +292,13 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
   }
 
   void updateRemainTimer(Duration newRemainTimer) {
-    state!.remainingTime = newRemainTimer;
+    if (mounted) {
+      state!.remainingTime = newRemainTimer;
+    }
   }
 
   void timingOKResponse() {
+    if (!mounted) return;
     final loginInfo = ref.read(loginInfoProvider);
     final jsonMessage = json.encode({
       "command": "TIMING_BELL_RES",
@@ -287,6 +311,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
   }
 
   void timingNOResponse() {
+    if (!mounted) return;
     final loginInfo = ref.read(loginInfoProvider);
     final jsonMessage = json.encode({
       "command": "TIMING_BELL_RES",
@@ -299,6 +324,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
   }
 
   void alarmButton(BuildContext context) {
+    if (!mounted) return;
     final popupState = ref.read(popupProvider);
     final popupViewModel = ref.read(popupProvider.notifier);
 
@@ -313,6 +339,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
   }
 
   void sendJoinMessage(BuildContext context) {
+    if (!mounted) return;
     final loginInfo = ref.read(loginInfoProvider);
     final message = controller.text;
 
@@ -325,22 +352,24 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
       "content": message,
     });
     print(jsonMessage);
+
     if (loginInfo!.tutorialCompleted == false) {
       context.push("/showCase");
     }
 
     _channel.sink.add(jsonMessage);
-
     controller.clear();
     focusNode.requestFocus();
   }
 
   void clear() {
+    if (!mounted) return;
     state = null;
     _messages.clear();
   }
 
   void enterChat(debateId, String debateStatus, BuildContext context) {
+    if (!mounted) return;
     if (debateStatus == 'ENDED') {
       context.push('/endedChat/${debateId}');
     } else {
@@ -352,8 +381,12 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
 
   @override
   void dispose() {
-    _channel.sink.close(status.goingAway);
-    _liveChannel.sink.close(status.goingAway);
+    if (_channel != null) {
+      _channel.sink.close(status.goingAway);
+    }
+    if (_liveChannel != null) {
+      _liveChannel.sink.close(status.goingAway);
+    }
     _messageController.close();
     controller.dispose();
     focusNode.dispose();

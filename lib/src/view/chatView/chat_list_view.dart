@@ -37,8 +37,10 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      _fetchDebateInfo();
-      _subscribeToMessages();
+      if (mounted) {
+        _fetchDebateInfo();
+        _subscribeToMessages();
+      }
     });
   }
 
@@ -49,12 +51,14 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
     super.dispose();
   }
 
-  void _fetchDebateInfo() async {
+  Future<void> _fetchDebateInfo() async {
     try {
       final chatViewModel = ref.read(chatInfoProvider.notifier);
       await chatViewModel.fetchDebateInfo(widget.id);
     } catch (e) {
-      print("Error fetching debate info: $e");
+      if (mounted) {
+        print("Error fetching debate info: $e");
+      }
     }
   }
 
@@ -68,7 +72,6 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
       case 'CHAT':
         final createdAt = DateTime.parse(message['createdAt']);
         timerViewModel.resetTimer(startTime: createdAt);
-
         break;
 
       case 'TIMING_BELL_REQ':
@@ -97,7 +100,6 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
         break;
 
       default:
-        // 처리되지 않은 명령어에 대한 로깅 또는 기본 처리
         break;
     }
   }
