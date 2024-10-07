@@ -88,38 +88,31 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
                 upTitle: '상대 반론자를 찾는 중이예요 !',
                 downTitle: '⏳ 00:00 토론 시작 전');
           default:
-            if (chatState.debateJoinerTurnCount > 2) {
-              if (chatState.debateJoinerTurnCount ==
-                  chatState.debateOwnerTurnCount) {
-                return Column(
-                  children: [
-                    DetailState(
-                        upImage: 'assets/images/detailChatIcon.svg',
-                        upTitle: '상대 반론 타임이에요!',
-                        downTitle: '⏳ ${remainingTime} 남았어요!'),
-                    chatState.debateOwnerId == loginInfo.id
-                        ? VotingBar()
-                        : Joinervotingbar(),
-                  ],
-                );
-              } else {
-                return Column(
-                  children: [
-                    DetailState(
-                        upImage: 'assets/images/detailChatIcon.svg',
-                        upTitle: '${loginInfo.nickname}님의 반론 타임이에요!',
-                        downTitle: '⏳ ${remainingTime} 남았어요!'),
-                    chatState.debateOwnerId == loginInfo.id
-                        ? VotingBar()
-                        : Joinervotingbar(),
-                  ],
-                );
-              }
+            if (chatState.debateJoinerTurnCount ==
+                chatState.debateOwnerTurnCount) {
+              return Column(
+                children: [
+                  DetailState(
+                      upImage: 'assets/images/detailChatIcon.svg',
+                      upTitle: '상대 반론 타임이에요!',
+                      downTitle: '⏳ ${remainingTime} 남았어요!'),
+                  chatState.debateOwnerId == loginInfo.id
+                      ? VotingBar()
+                      : Joinervotingbar(),
+                ],
+              );
             } else {
-              return DetailState(
-                  upImage: 'assets/images/detailChatIcon.svg',
-                  upTitle: '상대 반론 타임이에요!',
-                  downTitle: '⏳ ${remainingTime} 남았어요!');
+              return Column(
+                children: [
+                  DetailState(
+                      upImage: 'assets/images/detailChatIcon.svg',
+                      upTitle: '${loginInfo.nickname}님의 반론 타임이에요!',
+                      downTitle: '⏳ ${remainingTime} 남았어요!'),
+                  chatState.debateOwnerId == loginInfo.id
+                      ? VotingBar()
+                      : Joinervotingbar(),
+                ],
+              );
             }
         }
       } else {
@@ -130,34 +123,27 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
                 upTitle: '상대 반론자를 찾는 중이예요 !',
                 downTitle: '⏳ 00:00 토론 시작 전');
           default:
-            if (chatState.debateJoinerTurnCount > 2) {
-              if (chatState.debateJoinerTurnCount <
-                  chatState.debateOwnerTurnCount) {
-                return Column(
-                  children: [
-                    DetailState(
-                        upImage: 'assets/images/detailChatIcon.svg',
-                        upTitle: '상대 반론 타임이에요!',
-                        downTitle: '⏳ ${remainingTime} 남았어요!'),
-                    VotingBar(),
-                  ],
-                );
-              } else {
-                return Column(
-                  children: [
-                    DetailState(
-                        upImage: 'assets/images/detailChatIcon.svg',
-                        upTitle: '${loginInfo.nickname}님의 반론 타임이에요!',
-                        downTitle: '⏳ ${remainingTime} 남았어요!'),
-                    VotingBar(),
-                  ],
-                );
-              }
+            if (chatState.debateJoinerTurnCount <
+                chatState.debateOwnerTurnCount) {
+              return Column(
+                children: [
+                  DetailState(
+                      upImage: 'assets/images/detailChatIcon.svg',
+                      upTitle: '상대 반론 타임이에요!',
+                      downTitle: '⏳ ${remainingTime} 남았어요!'),
+                  VotingBar(),
+                ],
+              );
             } else {
-              return DetailState(
-                  upImage: 'assets/images/detailChatIcon.svg',
-                  upTitle: '상대 반론 타임이에요!',
-                  downTitle: '⏳ ${remainingTime} 남았어요!');
+              return Column(
+                children: [
+                  DetailState(
+                      upImage: 'assets/images/detailChatIcon.svg',
+                      upTitle: '${loginInfo.nickname}님의 반론 타임이에요!',
+                      downTitle: '⏳ ${remainingTime} 남았어요!'),
+                  VotingBar(),
+                ],
+              );
             }
         }
       }
