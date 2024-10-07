@@ -8,6 +8,7 @@ import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:tito_app/core/provider/timer_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
+import 'package:tito_app/core/provider/userProfile_provider.dart';
 
 class ChatBottomDetail extends ConsumerStatefulWidget {
   final int id;
@@ -82,6 +83,7 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
   @override
   Widget build(BuildContext context) {
     final chatState = ref.watch(chatInfoProvider);
+    final loginInfo = ref.watch(loginInfoProvider);
 
     return Column(
       children: [
@@ -98,34 +100,157 @@ class _ChatBottomDetailState extends ConsumerState<ChatBottomDetail> {
                     onPressed: () {},
                     icon: SvgPicture.asset('assets/icons/plus.svg'),
                   ),
-                  Expanded(
-                    child: Container(
-                      width: 320.w,
-                      child: TextField(
-                        minLines: 1,
-                        maxLines: 3,
-                        controller: chatViewModel.controller,
-                        autocorrect: false,
-                        focusNode: chatViewModel.focusNode,
-                        decoration: InputDecoration(
-                          hintText: '상대 의견 작성 타임이에요!',
-                          hintStyle: FontSystem.KR16M
-                              .copyWith(color: ColorSystem.grey),
-                          fillColor: ColorSystem.ligthGrey,
-                          filled: true,
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 10.h, horizontal: 20.w),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16.r),
-                            borderSide: BorderSide.none,
+                  loginInfo!.nickname == chatState!.debateJoinerNick ||
+                          loginInfo.nickname == chatState.debateOwnerNick
+                      ? loginInfo.nickname == chatState.debateOwnerNick
+                          ? chatState.debateOwnerTurnCount ==
+                                  chatState.debateJoinerTurnCount
+                              ? Expanded(
+                                  child: Container(
+                                    width: 320.w,
+                                    child: TextField(
+                                      minLines: 1,
+                                      maxLines: 3,
+                                      controller: chatViewModel.controller,
+                                      autocorrect: false,
+                                      focusNode: chatViewModel.focusNode,
+                                      decoration: InputDecoration(
+                                        hintText: '당신의 의견 작성 타임이에요!',
+                                        hintStyle: FontSystem.KR16M
+                                            .copyWith(color: ColorSystem.grey),
+                                        fillColor: ColorSystem.ligthGrey,
+                                        filled: true,
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 10.h, horizontal: 20.w),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16.r),
+                                          borderSide: BorderSide.none,
+                                        ),
+                                      ),
+                                      onSubmitted: (value) {
+                                        handleSendMessage(context);
+                                      },
+                                    ),
+                                  ),
+                                )
+                              : Expanded(
+                                  child: Container(
+                                    width: 320.w,
+                                    child: TextField(
+                                      minLines: 1,
+                                      maxLines: 3,
+                                      controller: chatViewModel.controller,
+                                      autocorrect: false,
+                                      focusNode: chatViewModel.focusNode,
+                                      decoration: InputDecoration(
+                                        hintText: '상대 의견 작성 타임이에요!',
+                                        hintStyle: FontSystem.KR16M
+                                            .copyWith(color: ColorSystem.grey),
+                                        fillColor: ColorSystem.ligthGrey,
+                                        filled: true,
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 10.h, horizontal: 20.w),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16.r),
+                                          borderSide: BorderSide.none,
+                                        ),
+                                      ),
+                                      onSubmitted: (value) {
+                                        handleSendMessage(context);
+                                      },
+                                    ),
+                                  ),
+                                )
+                          : chatState.debateOwnerTurnCount >
+                                  chatState.debateJoinerTurnCount
+                              ? Expanded(
+                                  child: Container(
+                                    width: 320.w,
+                                    child: TextField(
+                                      minLines: 1,
+                                      maxLines: 3,
+                                      controller: chatViewModel.controller,
+                                      autocorrect: false,
+                                      focusNode: chatViewModel.focusNode,
+                                      decoration: InputDecoration(
+                                        hintText: '당신의 의견 작성 타임이에요!',
+                                        hintStyle: FontSystem.KR16M
+                                            .copyWith(color: ColorSystem.grey),
+                                        fillColor: ColorSystem.ligthGrey,
+                                        filled: true,
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 10.h, horizontal: 20.w),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16.r),
+                                          borderSide: BorderSide.none,
+                                        ),
+                                      ),
+                                      onSubmitted: (value) {
+                                        handleSendMessage(context);
+                                      },
+                                    ),
+                                  ),
+                                )
+                              : Expanded(
+                                  child: Container(
+                                    width: 320.w,
+                                    child: TextField(
+                                      minLines: 1,
+                                      maxLines: 3,
+                                      controller: chatViewModel.controller,
+                                      autocorrect: false,
+                                      focusNode: chatViewModel.focusNode,
+                                      decoration: InputDecoration(
+                                        hintText: '상대 의견 작성 타임이에요!',
+                                        hintStyle: FontSystem.KR16M
+                                            .copyWith(color: ColorSystem.grey),
+                                        fillColor: ColorSystem.ligthGrey,
+                                        filled: true,
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 10.h, horizontal: 20.w),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16.r),
+                                          borderSide: BorderSide.none,
+                                        ),
+                                      ),
+                                      onSubmitted: (value) {
+                                        handleSendMessage(context);
+                                      },
+                                    ),
+                                  ),
+                                )
+                      : Expanded(
+                          child: Container(
+                            width: 320.w,
+                            child: TextField(
+                              minLines: 1,
+                              maxLines: 3,
+                              controller: chatViewModel.controller,
+                              autocorrect: false,
+                              focusNode: chatViewModel.focusNode,
+                              decoration: InputDecoration(
+                                hintText: '댓글을 입력해주세요!',
+                                hintStyle: FontSystem.KR16M
+                                    .copyWith(color: ColorSystem.grey),
+                                fillColor: ColorSystem.ligthGrey,
+                                filled: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 10.h, horizontal: 20.w),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(16.r),
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
+                              onSubmitted: (value) {
+                                handleSendMessage(context);
+                              },
+                            ),
                           ),
                         ),
-                        onSubmitted: (value) {
-                          handleSendMessage(context);
-                        },
-                      ),
-                    ),
-                  ),
                   chatState!.isLoading
                       ? SpinKitRing(
                           color: ColorSystem.purple,
