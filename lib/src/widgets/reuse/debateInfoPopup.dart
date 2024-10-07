@@ -96,6 +96,36 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
               ),
             ),
             _buildProfileHeader(ref),
+            chatState.debateJoinerTurnCount == 0
+                ? SizedBox(
+                    width: 0,
+                  )
+                : Container(
+                    color: ColorSystem.ligthGrey,
+                    padding:
+                        EdgeInsets.symmetric(vertical: 14.h, horizontal: 20.w),
+                    child: Row(
+                      children: [
+                        Column(
+                          children: [
+                            chatState.debateOwnerPicture != null &&
+                                    chatState.debateJoinerPicture.isNotEmpty
+                                ? CircleAvatar(
+                                    radius: 30,
+                                    backgroundImage: NetworkImage(
+                                      chatState.debateJoinerPicture,
+                                    ),
+                                  )
+                                : SvgPicture.asset(
+                                    'assets/icons/basicProfile.svg',
+                                    width: 60, // 아이콘 크기 조정
+                                    height: 60,
+                                  ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Center(

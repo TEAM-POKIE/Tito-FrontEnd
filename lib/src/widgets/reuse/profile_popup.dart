@@ -192,14 +192,6 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
                         userState!.profilePicture?.isEmpty == true
                     ? SvgPicture.asset('assets/icons/basicProfile.svg')
                     : null,
-                onBackgroundImageError: userState?.profilePicture != null &&
-                        userState!.profilePicture!.isNotEmpty
-                    ? (_, __) {
-                        setState(() {
-                          userState!.profilePicture = '';
-                        });
-                      }
-                    : null,
               ),
               SizedBox(width: 15.w),
               Container(

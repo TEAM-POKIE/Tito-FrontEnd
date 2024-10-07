@@ -28,42 +28,17 @@ class _LiveCommentState extends ConsumerState<LiveComment>
   void initState() {
     super.initState();
     Future.microtask(() {
-      _fetchDebateInfo();
       _subscribeToMessages();
     });
   }
 
-  Future<void> _fetchDebateInfo() async {
-    final liveWebSocketService = ref.read(liveWebSocketProvider);
-    final loginInfo = ref.read(loginInfoProvider);
-    final debateInfo = ref.read(chatInfoProvider);
-
-    if (loginInfo != null && debateInfo != null) {
-      final message = jsonEncode({
-        "command": "ENTER",
-        "userId": loginInfo.id,
-        "debateId": debateInfo.id,
-      });
-      liveWebSocketService.sendMessage(message);
-    } else {
-      print("Error: Login info or Debate info is null.");
-    }
-  }
-
   void _subscribeToMessages() {
     final webSocketService = ref.read(liveWebSocketProvider);
-    final voteViewModel = ref.watch(voteProvider.notifier);
+
     final chatState = ref.watch(chatInfoProvider);
 
     _subscription = webSocketService.stream.listen((message) {
       if (chatState?.isVoteEnded ?? true) {
-        return;
-      }
-
-      if (message['command'] == "VOTE_RATE_RES") {
-        final newBlueVotes = message["ownerVoteRate"];
-        final newRedVotes = message["joinerVoteRate"];
-        voteViewModel.updateVotes(newRedVotes, newBlueVotes);
         return;
       }
 

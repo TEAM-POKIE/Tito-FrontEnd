@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:confetti/confetti.dart';
 import 'package:tito_app/core/provider/timer_provider.dart';
 import 'package:tito_app/core/provider/websocket_provider.dart';
+import 'package:tito_app/src/view/chatView/joinerVotingbar.dart';
 import 'dart:math';
 import 'package:tito_app/src/view/chatView/votingbar.dart';
 
@@ -96,7 +97,9 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
                         upImage: 'assets/images/detailChatIcon.svg',
                         upTitle: '상대 반론 타임이에요!',
                         downTitle: '⏳ ${remainingTime} 남았어요!'),
-                    VotingBar(),
+                    chatState.debateOwnerId == loginInfo.id
+                        ? VotingBar()
+                        : Joinervotingbar(),
                   ],
                 );
               } else {
@@ -106,7 +109,9 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
                         upImage: 'assets/images/detailChatIcon.svg',
                         upTitle: '${loginInfo.nickname}님의 반론 타임이에요!',
                         downTitle: '⏳ ${remainingTime} 남았어요!'),
-                    VotingBar(),
+                    chatState.debateOwnerId == loginInfo.id
+                        ? VotingBar()
+                        : Joinervotingbar(),
                   ],
                 );
               }
@@ -246,6 +251,7 @@ class DetailState extends StatelessWidget {
                   downImage != null && downImage!.isNotEmpty
                       ? SvgPicture.asset(downImage!)
                       : SizedBox(width: 0.w),
+                  SizedBox(width: 8.w),
                   Text(
                     downTitle ?? '',
                     style: downImage != null && downImage!.isNotEmpty
