@@ -31,23 +31,20 @@ class _HotFighterState extends ConsumerState<HotFighter> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Row(
-            children: [
-              Text(
-                'HOT한 토론러',
-                style: FontSystem.KR18SB,
-              ),
-              SizedBox(
-                width: 4.w,
-              ),
-              Container(
-                  width: 20.w,
-                  height: 20.h,
-                  child: SvgPicture.asset('assets/icons/star.svg')),
-            ],
-          ),
+        Row(
+          children: [
+            Text(
+              'HOT한 토론러',
+              style: FontSystem.KR18SB,
+            ),
+            SizedBox(
+              width: 4.w,
+            ),
+            Container(
+                width: 20.w,
+                height: 20.h,
+                child: SvgPicture.asset('assets/icons/star.svg')),
+          ],
         ),
         SizedBox(
           height: 20.h,

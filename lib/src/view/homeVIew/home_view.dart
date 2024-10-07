@@ -64,8 +64,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   context.push('/chat/${debate.id}');
                 },
                 child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
+                  padding: EdgeInsets.symmetric(vertical: 20.h),
                   child: Container(
                     width: 352.w,
                     height: 140.h,
