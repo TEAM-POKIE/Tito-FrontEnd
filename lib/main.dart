@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tito_app/firebase_options.dart';
@@ -12,7 +13,7 @@ import 'package:tito_app/core/constants/style.dart';
 
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
+import 'dart:async';
 import 'package:flutter/services.dart'; // 가로방향 막히기
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -148,10 +149,10 @@ Future main() async {
   final fcmToken = await FirebaseMessaging.instance.getToken();
   debugPrint('fcmToken $fcmToken');
 
-  // safeArea 적용했었어서 노치부분이랑 하단바 부분이 안 먹혔던 것
-  runApp(
-    const MyApp(),
-  );
+  Timer(Duration(milliseconds: 100), () {
+    FlutterNativeSplash.remove();
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
