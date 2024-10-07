@@ -8,14 +8,14 @@ import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/live_webSocket_provider.dart';
 import 'package:tito_app/core/provider/voting_provider.dart';
 
-class VotingBar extends ConsumerStatefulWidget {
-  const VotingBar({super.key});
+class Joinervotingbar extends ConsumerStatefulWidget {
+  const Joinervotingbar({super.key});
 
   @override
   _VotingBarState createState() => _VotingBarState();
 }
 
-class _VotingBarState extends ConsumerState<VotingBar> {
+class _VotingBarState extends ConsumerState<Joinervotingbar> {
   StreamSubscription<Map<String, dynamic>>? _subscription;
 
   @override
@@ -57,7 +57,7 @@ class _VotingBarState extends ConsumerState<VotingBar> {
       padding: EdgeInsets.zero,
       animationDuration: 500,
       animateFromLastPercent: true, // 마지막 퍼센트에서 애니메이션 시작
-      percent: chatState.bluePercent,
+      percent: 1.0 - chatState.bluePercent,
       linearStrokeCap: LinearStrokeCap.roundAll,
       progressColor: ColorSystem.voteBlue,
       backgroundColor: ColorSystem.voteRed,

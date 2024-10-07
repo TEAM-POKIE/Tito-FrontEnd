@@ -8,7 +8,9 @@ import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
+import 'package:tito_app/core/provider/live_webSocket_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/core/provider/voting_provider.dart';
 import 'package:tito_app/core/provider/websocket_provider.dart';
 import 'package:tito_app/src/view/chatView/chat_appBar.dart';
 import 'package:tito_app/src/view/chatView/chat_body.dart';
@@ -34,10 +36,12 @@ class Chat extends ConsumerStatefulWidget {
 
 class _ChatState extends ConsumerState<Chat> {
   List<Map<String, dynamic>> _messages = [];
+  List<Map<String, dynamic>> messages = [];
   late StreamSubscription _subscription;
   @override
   void initState() {
     super.initState();
+
     _fetchDebateInfo();
   }
 
@@ -57,7 +61,7 @@ class _ChatState extends ConsumerState<Chat> {
     final debateInfo = ref.read(chatInfoProvider);
 
     chatViewModel.connectWebSocket();
-
+    print('실행1');
     if (loginInfo != null) {
       final message = jsonEncode({
         "command": "ENTER",
@@ -72,6 +76,38 @@ class _ChatState extends ConsumerState<Chat> {
           if (mounted) {
             setState(() {
               _messages.add(message);
+            });
+          }
+        }
+      });
+      _fetchLiveDebateInfo();
+    } else {
+      print("Error: Login info or Debate info is null.");
+    }
+  }
+
+  Future<void> _fetchLiveDebateInfo() async {
+    final liveWebSocketService = ref.read(liveWebSocketProvider);
+    final loginInfo = ref.read(loginInfoProvider);
+    final debateInfo = ref.read(chatInfoProvider);
+
+    if (loginInfo != null && debateInfo != null) {
+      final message = jsonEncode({
+        "command": "ENTER",
+        "userId": loginInfo.id,
+        "debateId": debateInfo.id,
+      });
+      liveWebSocketService.sendMessage(message);
+      print('실행2');
+      _subscription = liveWebSocketService.stream.listen((message) {
+        if (debateInfo?.isVoteEnded ?? true) {
+          return;
+        }
+
+        if (message.containsKey('content')) {
+          if (mounted) {
+            setState(() {
+              messages.add(message);
             });
           }
         }

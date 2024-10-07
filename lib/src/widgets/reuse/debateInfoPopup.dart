@@ -5,7 +5,9 @@ import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:flutter/material.dart'; //text painter 사용하려고 import 함
+import 'package:flutter/material.dart';
+import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:tito_app/src/data/models/login_info.dart'; //text painter 사용하려고 import 함
 
 class Debateinfopopup extends ConsumerStatefulWidget {
   const Debateinfopopup({super.key});
@@ -20,6 +22,7 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
   @override
   Widget build(BuildContext context) {
     final chatState = ref.read(chatInfoProvider);
+    final loginInfo = ref.read(loginInfoProvider);
     // final String text=chatState!.debateTitle;
 
     // bool isTextOverflowing(String text, TextStyle style, double maxWidth) {
@@ -96,6 +99,253 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
               ),
             ),
             _buildProfileHeader(ref),
+            chatState.debateJoinerTurnCount == 0
+                ? SizedBox(
+                    width: 0,
+                  )
+                : Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 14.h,
+                        horizontal: 22.w,
+                      ),
+                      decoration: BoxDecoration(
+                        color: ColorSystem.ligthGrey,
+                        borderRadius: BorderRadius.circular(20.r),
+                      ),
+                      child: loginInfo!.nickname == chatState.debateJoinerNick
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  children: [
+                                    Container(
+                                      width: 64, // 필요에 따라 크기 조정
+                                      height: 64, // 필요에 따라 크기 조정
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: ColorSystem
+                                              .voteBlue, // 파란색 테두리 색상
+                                          width: 4.0, // 테두리 두께
+                                        ),
+                                      ),
+                                      child: chatState.debateOwnerPicture !=
+                                                  null &&
+                                              chatState
+                                                  .debateOwnerPicture.isNotEmpty
+                                          ? CircleAvatar(
+                                              backgroundColor: Colors
+                                                  .transparent, // 배경 투명하게 설정
+                                              radius: 30,
+                                              backgroundImage: NetworkImage(
+                                                chatState.debateOwnerPicture,
+                                              ),
+                                            )
+                                          : SvgPicture.asset(
+                                              'assets/icons/basicProfile.svg',
+                                              width: 60, // 아이콘 크기 조정
+                                              height: 60,
+                                            ),
+                                    ),
+                                    SizedBox(
+                                      height: 1.h,
+                                    ),
+                                    Text(
+                                      chatState.debateOwnerNick,
+                                      style: FontSystem.KR14SB,
+                                    ),
+                                    SizedBox(
+                                      height: 4.h,
+                                    ),
+                                    Text(
+                                      chatState.debateMakerOpinion,
+                                      style: FontSystem.KR14M,
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  constraints:
+                                      const BoxConstraints(maxWidth: 250),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 16.0),
+                                  decoration: BoxDecoration(
+                                    color: ColorSystem.black,
+                                    borderRadius: BorderRadius.circular(17.0.r),
+                                  ),
+                                  child: Text(
+                                    'VS',
+                                    style: FontSystem.KR12M
+                                        .copyWith(color: ColorSystem.white),
+                                  ),
+                                ),
+                                Column(
+                                  children: [
+                                    Container(
+                                      width: 64, // 필요에 따라 크기 조정
+                                      height: 64, // 필요에 따라 크기 조정
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color:
+                                              ColorSystem.voteRed, // 파란색 테두리 색상
+                                          width: 4.0, // 테두리 두께
+                                        ),
+                                      ),
+                                      child: chatState.debateJoinerPicture !=
+                                                  null &&
+                                              chatState.debateJoinerPicture
+                                                  .isNotEmpty
+                                          ? CircleAvatar(
+                                              backgroundColor: Colors
+                                                  .transparent, // 배경 투명하게 설정
+                                              radius: 30,
+                                              backgroundImage: NetworkImage(
+                                                chatState.debateJoinerPicture,
+                                              ),
+                                            )
+                                          : SvgPicture.asset(
+                                              'assets/icons/basicProfile.svg',
+                                              width: 60, // 아이콘 크기 조정
+                                              height: 60,
+                                            ),
+                                    ),
+                                    SizedBox(
+                                      height: 1.h,
+                                    ),
+                                    Text(
+                                      chatState.debateJoinerNick,
+                                      style: FontSystem.KR14SB,
+                                    ),
+                                    SizedBox(
+                                      height: 4.h,
+                                    ),
+                                    Text(
+                                      chatState.debateJoinerOpinion,
+                                      style: FontSystem.KR14M,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  children: [
+                                    Container(
+                                      width: 64, // 필요에 따라 크기 조정
+                                      height: 64, // 필요에 따라 크기 조정
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: ColorSystem
+                                              .voteBlue, // 파란색 테두리 색상
+                                          width: 4.0, // 테두리 두께
+                                        ),
+                                      ),
+                                      child: chatState.debateJoinerPicture !=
+                                                  null &&
+                                              chatState.debateJoinerPicture
+                                                  .isNotEmpty
+                                          ? CircleAvatar(
+                                              backgroundColor: Colors
+                                                  .transparent, // 배경 투명하게 설정
+                                              radius: 30,
+                                              backgroundImage: NetworkImage(
+                                                chatState.debateJoinerPicture,
+                                              ),
+                                            )
+                                          : SvgPicture.asset(
+                                              'assets/icons/basicProfile.svg',
+                                              width: 60, // 아이콘 크기 조정
+                                              height: 60,
+                                            ),
+                                    ),
+                                    SizedBox(
+                                      height: 1.h,
+                                    ),
+                                    Text(
+                                      chatState.debateJoinerNick,
+                                      style: FontSystem.KR14SB,
+                                    ),
+                                    SizedBox(
+                                      height: 4.h,
+                                    ),
+                                    Text(
+                                      chatState.debateJoinerOpinion,
+                                      style: FontSystem.KR14M,
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  constraints:
+                                      const BoxConstraints(maxWidth: 250),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 16.0),
+                                  decoration: BoxDecoration(
+                                    color: ColorSystem.black,
+                                    borderRadius: BorderRadius.circular(17.0.r),
+                                  ),
+                                  child: Text(
+                                    'VS',
+                                    style: FontSystem.KR12M
+                                        .copyWith(color: ColorSystem.white),
+                                  ),
+                                ),
+                                Column(
+                                  children: [
+                                    Container(
+                                      width: 64, // 필요에 따라 크기 조정
+                                      height: 64, // 필요에 따라 크기 조정
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color:
+                                              ColorSystem.voteRed, // 파란색 테두리 색상
+                                          width: 4.0, // 테두리 두께
+                                        ),
+                                      ),
+                                      child: chatState.debateOwnerPicture !=
+                                                  null &&
+                                              chatState
+                                                  .debateOwnerPicture.isNotEmpty
+                                          ? CircleAvatar(
+                                              backgroundColor: Colors
+                                                  .transparent, // 배경 투명하게 설정
+                                              radius: 30,
+                                              backgroundImage: NetworkImage(
+                                                chatState.debateOwnerPicture,
+                                              ),
+                                            )
+                                          : SvgPicture.asset(
+                                              'assets/icons/basicProfile.svg',
+                                              width: 60, // 아이콘 크기 조정
+                                              height: 60,
+                                            ),
+                                    ),
+                                    SizedBox(
+                                      height: 1.h,
+                                    ),
+                                    Text(
+                                      chatState.debateOwnerNick,
+                                      style: FontSystem.KR14SB,
+                                    ),
+                                    SizedBox(
+                                      height: 4.h,
+                                    ),
+                                    Text(
+                                      chatState.debateMakerOpinion,
+                                      style: FontSystem.KR14M,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                    ),
+                  ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Center(
