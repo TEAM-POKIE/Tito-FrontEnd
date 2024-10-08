@@ -363,14 +363,14 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                                 debate.debateImageUrl == ''
                                     ? SvgPicture.asset(
                                         'assets/icons/list_real_null.svg',
-                                        width: 70.w)
+                                        width: 100.w)
                                     : ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(12.r),
                                         child: Image.network(
                                           debate.debateImageUrl ?? '',
-                                          width: 70.w,
-                                          height: 70.h,
+                                          width: 100.w,
+                                          height: 80.h,
                                           fit: BoxFit.cover,
                                         ),
                                       ),

@@ -31,29 +31,25 @@ class _HotFighterState extends ConsumerState<HotFighter> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Row(
-            children: [
-              Text(
-                'HOT한 토론러',
-                style: FontSystem.KR18SB,
-              ),
-              SizedBox(
-                width: 4.w,
-              ),
-              Container(
-                  width: 20.w,
-                  height: 20.h,
-                  child: SvgPicture.asset('assets/icons/star.svg')),
-            ],
-          ),
+        Row(
+          children: [
+            Text(
+              'HOT한 토론러',
+              style: FontSystem.KR18SB,
+            ),
+            SizedBox(
+              width: 4.w,
+            ),
+            Container(
+                width: 20.w,
+                height: 20.h,
+                child: SvgPicture.asset('assets/icons/star.svg')),
+          ],
         ),
         SizedBox(
           height: 20.h,
         ),
         Container(
-          padding: EdgeInsets.only(left: 10.w),
           height: 110.h,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -62,7 +58,9 @@ class _HotFighterState extends ConsumerState<HotFighter> {
               final fighter = homeState.hotfighter[index];
 
               return Container(
-                margin: EdgeInsets.symmetric(horizontal: 8.w),
+                margin: index == 0
+                    ? EdgeInsets.only(right: 10.w)
+                    : EdgeInsets.symmetric(horizontal: 10.w),
                 child: Column(
                   children: [
                     InkWell(

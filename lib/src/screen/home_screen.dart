@@ -35,12 +35,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(80.0),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          padding: EdgeInsets.symmetric(horizontal: 15.w),
           child: const HomeAppbar(),
         ),
       ),
       body: ListView(
-        padding: EdgeInsets.all(20.w),
+        padding: EdgeInsets.symmetric(horizontal: 15.w),
         children: [
           const HomeView(),
           SizedBox(height: 20.h),

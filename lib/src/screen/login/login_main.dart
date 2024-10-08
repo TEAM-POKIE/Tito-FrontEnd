@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
@@ -13,14 +14,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'dart:io';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:tito_app/core/provider/login_provider.dart';
 
 const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
-class LoginMain extends StatelessWidget {
+class LoginMain extends ConsumerWidget {
   const LoginMain({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     DateTime? lastBackPressedTime;
 
     Future<bool> _onWillPop(BuildContext context) async {
@@ -40,74 +43,59 @@ class LoginMain extends StatelessWidget {
     }
 
     void goSignUp() {
-      // context.push('/signup');
-      context.push('/home');
+      context.push('/signup');
     }
 
     Future<void> _signInWithGoogle() async {
-      // ! Google OAUTH 설정 로드
-      const FlutterAppAuth appAuth = FlutterAppAuth();
-      // TODO: 추후 하드코딩 제거
-      // const FlutterSecureStorage secureStorage = FlutterSecureStorage();
-      final String clientId =
-          "964139724412-0ne5ikmk6o3s32jejsuhedohs128nek0.apps.googleusercontent.com";
-      // final String clientId = dotenv.env['OAUTH_GOOGLE_CLIENT_ID']!;
-      final String redirectUri =
-          "com.googleusercontent.apps.964139724412-0ne5ikmk6o3s32jejsuhedohs128nek0:/oauthredirect";
-      // final String redirectUri = dotenv.env['OAUTH_GOOGLE_REDIRECT_URI']!;
-
-      final AuthorizationServiceConfiguration serviceConfiguration =
-          AuthorizationServiceConfiguration(
-        authorizationEndpoint: "https://accounts.google.com/o/oauth2/auth",
-        tokenEndpoint: "https://oauth2.googleapis.com/token",
-        // tokenEndpoint: dotenv.env['OAUTH_GOOGLE_TOKEN_ENDPOINT']!,
-      );
-      const List<String> scopes = ['openid', 'email', 'profile'];
-      debugPrint("pushpush");
+      // GoogleSignIn 객체 생성
+      final _googleSignIn = GoogleSignIn();
 
       try {
-        // & Phase 1. 구글에서 Token 받아옴
-        final AuthorizationTokenResponse? result =
-            await appAuth.authorizeAndExchangeCode(
-          AuthorizationTokenRequest(
-            clientId,
-            redirectUri,
-            serviceConfiguration: serviceConfiguration,
-            scopes: scopes,
-          ),
-        );
-
-        if (result != null) {
-          final String accessToken = result.accessToken!;
-          final String idToken = result.idToken!;
-
-          // & Phase 2. SecureStorage에 token 저장
-          await secureStorage.write(key: 'access_token', value: accessToken);
-          await secureStorage.write(key: 'id_token', value: idToken);
-
-          // & Phase 3. Backend에 토큰 보내서 확인받음
-          final authResponse = await ApiService(DioClient.dio).oAuthGoogle({
-            "accessToken": accessToken,
-            'fcmToken': await FirebaseMessaging.instance.getToken() ?? ''
-          });
-
-          // & Phase 4. 성공한 경우 마이데이터 조회, nickname 유무 확인
-          await DioClient.setToken(authResponse.accessToken.token);
-          // Case 4.1. 마이데이터 조회 결과 nickname이 null인 경우 해당 페이지로 이동
-          final userInfo = await ApiService(DioClient.dio).getUserInfo();
-          if (userInfo.nickname == "") {
-            debugPrint('TODO: NEW : empty user nickname');
-          }
-          // Case 3.2. 기존 회원인 경우 메인 페이지로 리다이렉트
-          else {
-            debugPrint("TODO: OLD : go to main");
-          }
-          // & Phase 4. HomeScreen으로 이동
-          if (!context.mounted) return;
-          context.go('/home');
+        // Phase 1. 사용자 인증
+        final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+        if (googleUser == null) {
+          // 사용자가 로그인 취소한 경우
+          debugPrint('User canceled Google Sign-In');
+          return;
         }
+
+        // Phase 2. 인증 정보 가져오기
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
+        final String accessToken = googleAuth.accessToken!;
+        final String idToken = googleAuth.idToken!;
+
+        // Phase 3. SecureStorage에 token 저장
+        const FlutterSecureStorage secureStorage = FlutterSecureStorage();
+        await secureStorage.write(key: 'access_token', value: accessToken);
+        await secureStorage.write(key: 'id_token', value: idToken);
+
+        // Phase 4. Backend에 토큰 보내서 확인받음
+        final String fcmToken =
+            await FirebaseMessaging.instance.getToken() ?? '';
+        final authResponse = await ApiService(DioClient.dio).oAuthGoogle({
+          "accessToken": accessToken,
+          'fcmToken': fcmToken,
+        });
+
+        // Phase 5. 마이데이터 조회, nickname 유무 확인
+        await DioClient.setToken(authResponse.accessToken.token);
+        final userInfo = await ApiService(DioClient.dio).getUserInfo();
+        final loginInfoNotifier = ref.read(loginInfoProvider.notifier);
+        loginInfoNotifier.setLoginInfo(userInfo);
+        if (userInfo.nickname == "") {
+          debugPrint('TODO: NEW : empty user nickname');
+          // TODO: 닉네임 설정 페이지로 이동
+        } else {
+          debugPrint("TODO: OLD : go to main");
+          // TODO: 메인 페이지로 이동
+        }
+
+        // Phase 6. 홈 화면으로 이동
+        if (!context.mounted) return;
+        context.go('/home');
       } catch (e) {
-        debugPrint('Error during authentication: $e');
+        debugPrint('Error during Google Sign-In: $e');
       }
     }
 
@@ -334,7 +322,7 @@ class LoginMain extends StatelessWidget {
                     onPressed: goSignUp,
                     child: Text(
                       '회원가입',
-                      style: FontSystem.KR14B.copyWith(
+                      style: FontSystem.KR14SB.copyWith(
                         decoration: TextDecoration.underline,
                       ),
                     ),
