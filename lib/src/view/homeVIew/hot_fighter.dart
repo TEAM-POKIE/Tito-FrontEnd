@@ -50,7 +50,6 @@ class _HotFighterState extends ConsumerState<HotFighter> {
           height: 20.h,
         ),
         Container(
-          padding: EdgeInsets.only(left: 10.w),
           height: 110.h,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -59,7 +58,9 @@ class _HotFighterState extends ConsumerState<HotFighter> {
               final fighter = homeState.hotfighter[index];
 
               return Container(
-                margin: EdgeInsets.symmetric(horizontal: 8.w),
+                margin: index == 0
+                    ? EdgeInsets.only(right: 10.w)
+                    : EdgeInsets.symmetric(horizontal: 10.w),
                 child: Column(
                   children: [
                     InkWell(

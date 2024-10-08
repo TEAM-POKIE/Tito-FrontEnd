@@ -13,6 +13,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'dart:io';
+import 'package:google_sign_in/google_sign_in.dart';
 
 const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
@@ -40,8 +41,7 @@ class LoginMain extends StatelessWidget {
     }
 
     void goSignUp() {
-      // context.push('/signup');
-      context.push('/home');
+      context.push('/signup');
     }
 
     Future<void> _signInWithGoogle() async {
@@ -49,11 +49,14 @@ class LoginMain extends StatelessWidget {
       const FlutterAppAuth appAuth = FlutterAppAuth();
       // TODO: 추후 하드코딩 제거
       // const FlutterSecureStorage secureStorage = FlutterSecureStorage();
-      final String clientId =
-          "964139724412-0ne5ikmk6o3s32jejsuhedohs128nek0.apps.googleusercontent.com";
+      final String clientId = Platform.isAndroid
+          ? "964139724412-dts0nqbl9t1cvlrgrjd1jbl2dqhqhdq4.apps.googleusercontent.com"
+          : "964139724412-0ne5ikmk6o3s32jejsuhedohs128nek0.apps.googleusercontent.com";
       // final String clientId = dotenv.env['OAUTH_GOOGLE_CLIENT_ID']!;
-      final String redirectUri =
-          "com.googleusercontent.apps.964139724412-0ne5ikmk6o3s32jejsuhedohs128nek0:/oauthredirect";
+      final String redirectUri = Platform.isAndroid
+          ? "com.googleusercontent.apps.964139724412-dts0nqbl9t1cvlrgrjd1jbl2dqhqhdq4:/oauthredirect"
+          : "com.googleusercontent.apps.964139724412-0ne5ikmk6o3s32jejsuhedohs128nek0:/oauthredirect";
+
       // final String redirectUri = dotenv.env['OAUTH_GOOGLE_REDIRECT_URI']!;
 
       final AuthorizationServiceConfiguration serviceConfiguration =
@@ -334,7 +337,7 @@ class LoginMain extends StatelessWidget {
                     onPressed: goSignUp,
                     child: Text(
                       '회원가입',
-                      style: FontSystem.KR14B.copyWith(
+                      style: FontSystem.KR14SB.copyWith(
                         decoration: TextDecoration.underline,
                       ),
                     ),

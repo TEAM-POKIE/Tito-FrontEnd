@@ -1,4 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.portuncookie.tito_app">
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -13,14 +14,23 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
 
-  <application
-    android:label="tito"
-    android:showWhenLocked="true"
-    android:icon="@mipmap/ic_launcher">
+    <application
+        android:label="tito"
+        android:showWhenLocked="true"
+        android:icon="@mipmap/ic_launcher">
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="high_importance_channel"
         />
+        <activity android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="com.portuncookie.tito_app" android:host="oauth" />
+            </intent-filter>
+        </activity>
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
@@ -58,7 +68,7 @@
                 <data android:scheme="${appAuthRedirectScheme}" />
             </intent-filter>
         </activity>
-      
+
         <activity
             android:name="com.kakao.sdk.flutter.AuthCodeCustomTabsActivity"
             android:exported="true">
@@ -72,7 +82,7 @@
                 <data android:scheme="kakaoc870921283580d2570a3181455092d77" android:host="oauth" />
             </intent-filter>
         </activity>
-  
+
         <receiver
             android:exported="false"
             android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />

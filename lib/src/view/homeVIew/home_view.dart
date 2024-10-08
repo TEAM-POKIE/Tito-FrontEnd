@@ -97,7 +97,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                 ),
                                 child: Text(
                                   '실시간 토론 중',
-                                  style: FontSystem.KR14SB.copyWith(
+                                  style: FontSystem.KR14M.copyWith(
                                     color: ColorSystem.white,
                                   ),
                                 ),
