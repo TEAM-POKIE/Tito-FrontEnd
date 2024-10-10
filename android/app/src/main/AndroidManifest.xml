@@ -63,7 +63,10 @@
 
             <meta-data android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme" />
-
+            <intent-filter>
+                <data android:host="kakaolink"
+                    android:scheme="kakao01fe6631fc7787a553528a1b214e2bc5" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -86,7 +89,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- 카카오 로그인 리디렉션 설정 -->
-                <data android:scheme="kakaoc870921283580d2570a3181455092d77" android:host="oauth" />
+                <data android:scheme="kakao01fe6631fc7787a553528a1b214e2bc5" android:host="oauth" />
             </intent-filter>
         </activity>
 
