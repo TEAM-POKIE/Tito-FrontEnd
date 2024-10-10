@@ -32,22 +32,19 @@ class _HotListState extends ConsumerState<HotLists> {
     return Column(
       children: [
         SizedBox(height: 30.h),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
-          child: Row(
-            children: [
-              Text(
-                'HOT한 토론',
-                style: FontSystem.KR18SB,
-              ),
-              SizedBox(width: 6.w),
-              Container(
-                width: 39.5.w,
-                height: 29.06.h,
-                child: Image.asset('assets/images/hotlist.png'),
-              ),
-            ],
-          ),
+        Row(
+          children: [
+            Text(
+              'HOT한 토론',
+              style: FontSystem.KR18SB,
+            ),
+            SizedBox(width: 6.w),
+            Container(
+              width: 39.5.w,
+              height: 29.06.h,
+              child: Image.asset('assets/images/hotlist.png'),
+            ),
+          ],
         ),
         SizedBox(height: 10.h),
         Container(

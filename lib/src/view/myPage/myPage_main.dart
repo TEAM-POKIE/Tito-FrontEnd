@@ -13,6 +13,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tito_app/src/view/myPage/exit_popup.dart';
 import 'package:tito_app/src/view/myPage/logout_popup.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MypageMain extends ConsumerStatefulWidget {
   const MypageMain({super.key});
@@ -24,6 +25,12 @@ class MypageMain extends ConsumerStatefulWidget {
 class _MypageMainState extends ConsumerState<MypageMain> {
   File? _image;
   final ImagePicker picker = ImagePicker();
+  final Uri perseonalUri = Uri.parse(
+      'https://nine-grade-d65.notion.site/113b5a1edfe4804bb9aac7ff6d4bf34d?pvs=4');
+  final Uri ruleUri = Uri.parse(
+      'https://nine-grade-d65.notion.site/113b5a1edfe480df8ed6ec813a9b2c64?pvs=4');
+  final Uri contactUri = Uri.parse(
+      'https://nine-grade-d65.notion.site/Portunecookie-113b5a1edfe4807bac88cab4c83d229a?pvs=4');
 
   Future<void> requestPermissions() async {
     await [Permission.camera, Permission.photos].request();
@@ -170,10 +177,10 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                   },
                   icon: Padding(
                     padding: EdgeInsets.only(top: 6.h),
-                    child: SvgPicture.asset(
-                        'assets/icons/mypage_final_arrow.svg',
-                        //width: 20,
-                        height: 20),
+                    child:
+                        SvgPicture.asset('assets/icons/mypage_final_arrow.svg',
+                            //width: 20,
+                            height: 20),
                   ),
                 ),
               ],
@@ -316,7 +323,10 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                   height: 24.h,
                 ),
               ),
-              onTap: () => context.push('/contact'),
+              onTap: () async => await launchUrl(
+                contactUri,
+                mode: LaunchMode.inAppBrowserView,
+              ),
             ),
             _buildListTile(
               context,
@@ -329,7 +339,10 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                   height: 24.h,
                 ),
               ),
-              onTap: () => context.push('/personalRule'),
+              onTap: () async => await launchUrl(
+                perseonalUri,
+                mode: LaunchMode.inAppBrowserView,
+              ),
             ),
             _buildListTile(
               context,
@@ -342,7 +355,10 @@ class _MypageMainState extends ConsumerState<MypageMain> {
                   height: 24.h,
                 ),
               ),
-              onTap: () => context.push('/rule'),
+              onTap: () async => await launchUrl(
+                ruleUri,
+                mode: LaunchMode.inAppBrowserView,
+              ),
             ),
             SizedBox(height: 30.h),
             Row(

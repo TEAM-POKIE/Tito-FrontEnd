@@ -93,7 +93,7 @@ class _ChatSpeechBubbleState extends ConsumerState<ChatSpeechBubble> {
                   imgSrc: 'assets/icons/voting.svg',
                   content: '투표하기',
                 ),
-                const VotingBar(),
+                VotingBar(),
                 LiveComment(),
               ],
             );

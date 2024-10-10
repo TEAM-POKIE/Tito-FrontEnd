@@ -93,6 +93,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                                 });
                               },
                               child: Container(
+                                width: 80.w,
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 5, vertical: 10),
                                 decoration: BoxDecoration(
@@ -106,16 +107,40 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                                 ),
                                 child: Column(
                                   children: [
-                                    CircleAvatar(
-                                      radius: 30,
-                                      backgroundImage: NetworkImage(
-                                        chatState.debateJoinerPicture,
+                                    Container(
+                                      width: 64, // 필요에 따라 크기 조정
+                                      height: 64, // 필요에 따라 크기 조정
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: ColorSystem
+                                              .voteBlue, // 파란색 테두리 색상
+                                          width: 4.0, // 테두리 두께
+                                        ),
                                       ),
+                                      child: chatState.debateJoinerPicture !=
+                                                  null &&
+                                              chatState.debateJoinerPicture
+                                                  .isNotEmpty
+                                          ? CircleAvatar(
+                                              backgroundColor: Colors
+                                                  .transparent, // 배경 투명하게 설정
+                                              radius: 30,
+                                              backgroundImage: NetworkImage(
+                                                chatState.debateJoinerPicture,
+                                              ),
+                                            )
+                                          : SvgPicture.asset(
+                                              'assets/icons/basicProfile.svg',
+                                              width: 60, // 아이콘 크기 조정
+                                              height: 60,
+                                            ),
                                     ),
                                     const SizedBox(height: 8),
                                     Text(
                                       chatState.debateJoinerNick,
-                                      style: FontSystem.KR14M,
+                                      style: FontSystem.KR16M,
+                                      textAlign: TextAlign.center,
                                     ),
                                   ],
                                 ),
@@ -141,6 +166,7 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                                 });
                               },
                               child: Container(
+                                width: 80.w,
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 5, vertical: 10),
                                 decoration: BoxDecoration(
@@ -154,16 +180,40 @@ class _DebatePopupState extends ConsumerState<DebatePopup> {
                                 ),
                                 child: Column(
                                   children: [
-                                    CircleAvatar(
-                                      radius: 30,
-                                      backgroundImage: NetworkImage(
-                                        chatState.debateOwnerPicture,
+                                    Container(
+                                      width: 64, // 필요에 따라 크기 조정
+                                      height: 64, // 필요에 따라 크기 조정
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color:
+                                              ColorSystem.voteRed, // 파란색 테두리 색상
+                                          width: 4.0, // 테두리 두께
+                                        ),
                                       ),
+                                      child: chatState.debateOwnerPicture !=
+                                                  null &&
+                                              chatState
+                                                  .debateOwnerPicture.isNotEmpty
+                                          ? CircleAvatar(
+                                              backgroundColor: Colors
+                                                  .transparent, // 배경 투명하게 설정
+                                              radius: 30,
+                                              backgroundImage: NetworkImage(
+                                                chatState.debateOwnerPicture,
+                                              ),
+                                            )
+                                          : SvgPicture.asset(
+                                              'assets/icons/basicProfile.svg',
+                                              width: 60, // 아이콘 크기 조정
+                                              height: 60,
+                                            ),
                                     ),
                                     const SizedBox(height: 8),
                                     Text(
                                       chatState.debateOwnerNick,
-                                      style: FontSystem.KR14M,
+                                      style: FontSystem.KR16M,
+                                      textAlign: TextAlign.center,
                                     ),
                                   ],
                                 ),

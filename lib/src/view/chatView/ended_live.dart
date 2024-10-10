@@ -10,12 +10,12 @@ import 'package:tito_app/core/provider/live_webSocket_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/voting_provider.dart';
 
-class LiveComment extends ConsumerStatefulWidget {
+class EndedLive extends ConsumerStatefulWidget {
   @override
   _LiveCommentState createState() => _LiveCommentState();
 }
 
-class _LiveCommentState extends ConsumerState<LiveComment>
+class _LiveCommentState extends ConsumerState<EndedLive>
     with TickerProviderStateMixin {
   bool _isExpanded = false;
   List<Map<String, dynamic>> _messages = [];
@@ -28,17 +28,42 @@ class _LiveCommentState extends ConsumerState<LiveComment>
   void initState() {
     super.initState();
     Future.microtask(() {
+      _fetchDebateInfo();
       _subscribeToMessages();
     });
   }
 
+  Future<void> _fetchDebateInfo() async {
+    final liveWebSocketService = ref.read(liveWebSocketProvider);
+    final loginInfo = ref.read(loginInfoProvider);
+    final debateInfo = ref.read(chatInfoProvider);
+
+    if (loginInfo != null && debateInfo != null) {
+      final message = jsonEncode({
+        "command": "ENTER",
+        "userId": loginInfo.id,
+        "debateId": debateInfo.id,
+      });
+      liveWebSocketService.sendMessage(message);
+    } else {
+      print("Error: Login info or Debate info is null.");
+    }
+  }
+
   void _subscribeToMessages() {
     final webSocketService = ref.read(liveWebSocketProvider);
-
+    final voteViewModel = ref.watch(voteProvider.notifier);
     final chatState = ref.watch(chatInfoProvider);
 
     _subscription = webSocketService.stream.listen((message) {
       if (chatState?.isVoteEnded ?? true) {
+        return;
+      }
+
+      if (message['command'] == "VOTE_RATE_RES") {
+        final newBlueVotes = message["ownerVoteRate"];
+        final newRedVotes = message["joinerVoteRate"];
+        voteViewModel.updateVotes(newRedVotes, newBlueVotes);
         return;
       }
 
@@ -82,42 +107,40 @@ class _LiveCommentState extends ConsumerState<LiveComment>
     final chatViewModel = ref.read(chatInfoProvider.notifier);
     chatViewModel.sendFire();
 
-    if (mounted) {
-      setState(() {
-        final startPosition = Random().nextDouble() * 50;
+    setState(() {
+      final startPosition = Random().nextDouble() * 50;
 
-        final controller = AnimationController(
-          vsync: this,
-          duration: const Duration(milliseconds: 800), // 애니메이션 지속 시간
-        );
+      final controller = AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 800), // 애니메이션 지속 시간
+      );
 
-        final animation = Tween<double>(begin: 0, end: 400).animate(
-          CurvedAnimation(
-            parent: controller,
-            curve: Curves.easeOut,
-          ),
-        );
+      final animation = Tween<double>(begin: 0, end: 400).animate(
+        CurvedAnimation(
+          parent: controller,
+          curve: Curves.easeOut,
+        ),
+      );
 
-        _animationControllers.add(controller);
-        _animations.add(animation);
-        _positions.add(startPosition);
+      _animationControllers.add(controller);
+      _animations.add(animation);
+      _positions.add(startPosition);
 
-        controller.addStatusListener((status) {
-          if (status == AnimationStatus.completed && mounted) {
-            setState(() {
-              final index = _animationControllers.indexOf(controller);
-              if (index != -1) {
-                _animationControllers.removeAt(index);
-                _animations.removeAt(index);
-                _positions.removeAt(index);
-              }
-            });
-          }
-        });
-
-        controller.forward();
+      controller.addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          setState(() {
+            final index = _animationControllers.indexOf(controller);
+            if (index != -1) {
+              _animationControllers.removeAt(index);
+              _animations.removeAt(index);
+              _positions.removeAt(index);
+            }
+          });
+        }
       });
-    }
+
+      controller.forward();
+    });
   }
 
   @override
