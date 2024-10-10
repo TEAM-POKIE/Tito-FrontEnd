@@ -38,6 +38,12 @@ def flutterVersionName = localProperties.getProperty("flutter.versionName")
 if (flutterVersionName == null) {
     flutterVersionName = "1.0"
 }
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if(keystorePropertiesFile.exists()){
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 
 android {
     namespace = "com.portuncookie.tito_app"
@@ -65,10 +71,10 @@ android {
     }
  signingConfigs {
         release {
-            storeFile file("/Users/junha/release-key.jks")  
-            storePassword "123456" 
-            keyAlias "my-release-key"  
-            keyPassword "123456" 
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword keystoreProperties["storePassword"]
+            keyAlias keystoreProperties["keyAlias"]
+            keyPassword keystoreProperties['keyPassword']
         }
     }
 
