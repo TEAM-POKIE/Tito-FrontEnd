@@ -34,7 +34,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
             margin: EdgeInsets.only(
               left: 72.w,
               right: 72.w,
-              bottom: 100.h,
             ),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -44,42 +43,39 @@ class _BottomBarState extends ConsumerState<BottomBar> {
             ),
             child: Stack(
               children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 20.w),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          context.pop();
-                          context.push('/debate_create');
-                        },
-                        child: Row(
-                          children: [
-                            SvgPicture.asset('assets/icons/bottom_plus_ai.svg'),
-                            SizedBox(width: 10.w),
-                            Text('토론장 개설', style: FontSystem.KR16SB),
-                          ],
-                        ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        context.pop();
+                        context.push('/debate_create');
+                      },
+                      child: Row(
+                        children: [
+                          SvgPicture.asset('assets/icons/bottom_plus_ai.svg'),
+                          SizedBox(width: 10.w),
+                          Text('토론장 개설', style: FontSystem.KR16SB),
+                        ],
                       ),
-                      SizedBox(height: 10.h),
-                      TextButton(
-                        onPressed: () {
-                          context.pop();
-                          context.push('/ai_create');
-                        },
-                        child: Row(
-                          children: [
-                            SvgPicture.asset(
-                                'assets/icons/bottom_plus_create.svg'),
-                            SizedBox(width: 10.w),
-                            Text('AI 랜덤 주제 생성기', style: FontSystem.KR16SB),
-                          ],
-                        ),
+                    ),
+                    SizedBox(height: 10.h),
+                    TextButton(
+                      onPressed: () {
+                        context.pop();
+                        context.push('/ai_create');
+                      },
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                              'assets/icons/bottom_plus_create.svg'),
+                          SizedBox(width: 10.w),
+                          Text('AI 랜덤 주제 생성기', style: FontSystem.KR16SB),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 Positioned(
                   right: 0.h,
@@ -106,10 +102,10 @@ class _BottomBarState extends ConsumerState<BottomBar> {
           notifier.state = index;
           context.go('/list');
           break;
-        case 3:
-          notifier.state = index;
-          context.go('/myalarm');
-          break;
+        // case 3:
+        //   notifier.state = index;
+        //   context.go('/search');
+        //   break;
         case 4:
           notifier.state = index;
           context.go('/mypage');
@@ -155,10 +151,11 @@ class _BottomBarState extends ConsumerState<BottomBar> {
         ),
         BottomNavigationBarItem(
           icon: SvgPicture.asset(
-            'assets/icons/bottom_bell.svg',
-            color: selectedIndex == 3 ? Colors.black : Colors.grey,
+            'assets/icons/new_search.svg',
+            width: 21.w,
+            color: selectedIndex == 3 ? Colors.grey : Colors.grey,
           ),
-          label: '알림',
+          label: '검색',
         ),
         BottomNavigationBarItem(
           icon: Padding(

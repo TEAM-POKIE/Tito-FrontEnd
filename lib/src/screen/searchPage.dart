@@ -41,7 +41,7 @@ class _SearchpageState extends ConsumerState<Searchpage> {
                 padding: EdgeInsets.only(bottom: 17.h),
                 child: TextButton(
                   onPressed: () {
-                    context.pop();
+                    context.go('/home');
                   },
                   child: Text(
                     '취소',
