@@ -117,64 +117,86 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   @override
   Widget build(BuildContext context) {
     final selectedIndex = ref.watch(selectedIndexProvider);
-    return BottomNavigationBar(
-      backgroundColor: ColorSystem.white,
-      items: <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: SvgPicture.asset(
-            'assets/icons/bottom_home.svg',
-            width: 24.w,
-            height: 24.h,
-            color: selectedIndex == 0 ? Colors.black : Colors.grey,
-          ),
-          label: '홈',
+    return Container(
+      decoration: BoxDecoration(
+        color: ColorSystem.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30.r),
+          topRight: Radius.circular(30.r),
         ),
-        BottomNavigationBarItem(
-          icon: SvgPicture.asset(
-            'assets/icons/bottom_list.svg',
-            width: 25.w,
-            height: 25.h,
-            color: selectedIndex == 1 ? Colors.black : Colors.grey,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26, // 그림자 색상
+            spreadRadius: 0.1,
+            blurRadius: 0.1,
+            offset: Offset(0, -1), // 그림자 위치 조정 (위로 약간 이동)
           ),
-          label: '리스트',
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30.r),
+          topRight: Radius.circular(30.r),
         ),
-        BottomNavigationBarItem(
-          icon: Padding(
-            padding: EdgeInsets.only(top: 10.h),
-            child: SvgPicture.asset(
-              'assets/icons/bottom_round_purple.svg',
-              width: 60.w,
-              height: 60.h,
+        child: BottomNavigationBar(
+          backgroundColor: ColorSystem.white,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/icons/bottom_home.svg',
+                width: 30.w,
+                height: 30.h,
+                color: selectedIndex == 0 ? Colors.black : Colors.grey,
+              ),
+              label: '홈',
             ),
-          ),
-          label: '',
-        ),
-        BottomNavigationBarItem(
-          icon: SvgPicture.asset(
-            'assets/icons/new_search.svg',
-            width: 21.w,
-            color: selectedIndex == 3 ? Colors.grey : Colors.grey,
-          ),
-          label: '검색',
-        ),
-        BottomNavigationBarItem(
-          icon: Padding(
-            padding: EdgeInsets.only(top: 0.5.h),
-            child: SvgPicture.asset(
-              'assets/icons/bottom_my.svg',
-              width: 26.w,
-              height: 26.h,
-              color: selectedIndex == 4 ? Colors.black : Colors.grey,
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/icons/bottom_list.svg',
+                width: 30.w,
+                height: 30.h,
+                color: selectedIndex == 1 ? Colors.black : Colors.grey,
+              ),
+              label: '리스트',
             ),
-          ),
-          label: '마이',
+            BottomNavigationBarItem(
+              icon: Padding(
+                padding: EdgeInsets.only(top: 10.h),
+                child: SvgPicture.asset(
+                  'assets/icons/bottom_round_purple.svg',
+                  width: 42.w,
+                  height: 42.h,
+                ),
+              ),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/icons/bottom_bell.svg',
+                color: selectedIndex == 3 ? Colors.black : Colors.grey,
+              ),
+              label: '알림',
+            ),
+            BottomNavigationBarItem(
+              icon: Padding(
+                padding: EdgeInsets.only(top: 0.5.h),
+                child: SvgPicture.asset(
+                  'assets/icons/bottom_my.svg',
+                  width: 30.w,
+                  height: 30.h,
+                  color: selectedIndex == 4 ? Colors.black : Colors.grey,
+                ),
+              ),
+              label: '마이',
+            ),
+          ],
+          currentIndex: selectedIndex,
+          onTap: _onItemTapped,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: ColorSystem.black,
+          unselectedItemColor: ColorSystem.grey,
         ),
-      ],
-      currentIndex: selectedIndex,
-      onTap: _onItemTapped,
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: ColorSystem.black,
-      unselectedItemColor: ColorSystem.grey,
+      ),
     );
   }
 }

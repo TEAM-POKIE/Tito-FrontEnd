@@ -35,12 +35,13 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
-    //Widget tree의 초기화
     super.initState();
     final loginInfo = ref.read(loginInfoProvider);
-    print(loginInfo!.nickname);
+
     _fetchDebateList();
   }
 
@@ -148,10 +149,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
             centerTitle: false,
             title: Padding(
               padding: EdgeInsets.only(left: 10.w),
-              child: Text(
-                '토론 리스트',
-                style: FontSystem.KR22B,
-              ),
+              child: Text('토론 리스트', style: FontSystem.KR22B),
             ),
             leadingWidth: 69.41.w,
             actions: [
@@ -162,9 +160,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                 icon: SizedBox(
                   child: Padding(
                     padding: EdgeInsets.only(right: 24.w),
-                    child: SvgPicture.asset(
-                      'assets/icons/new_search.svg',
-                    ),
+                    child: SvgPicture.asset('assets/icons/new_search.svg'),
                   ),
                 ),
               ),
@@ -185,42 +181,34 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                   children: List.generate(labels.length, (index) {
                     return Padding(
                       padding: EdgeInsets.only(right: 8.w),
-                      child: Container(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              categorySelectedIndex = index;
-                              _fetchDebateList(isRefresh: true);
-                            });
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: categorySelectedIndex == index
-                                ? ColorSystem.black
-                                : ColorSystem.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16.r),
-                              side: BorderSide(
-                                color: categorySelectedIndex == index
-                                    ? ColorSystem.black
-                                    : ColorSystem.grey5,
-                                width: 1,
-                              ),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            categorySelectedIndex = index;
+                            _fetchDebateList(isRefresh: true);
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: categorySelectedIndex == index
+                              ? ColorSystem.black
+                              : ColorSystem.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.r),
+                            side: BorderSide(
+                              color: categorySelectedIndex == index
+                                  ? ColorSystem.black
+                                  : ColorSystem.grey5,
+                              width: 1,
                             ),
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                labels[index],
-                                style: categorySelectedIndex == index
-                                    ? FontSystem.KR16SB
-                                        .copyWith(color: ColorSystem.white)
-                                    : FontSystem.KR16M.copyWith(
-                                        color: ColorSystem.grey1,
-                                      ),
-                              ),
-                            ],
-                          ),
+                        ),
+                        child: Text(
+                          labels[index],
+                          style: categorySelectedIndex == index
+                              ? FontSystem.KR16SB
+                                  .copyWith(color: ColorSystem.white)
+                              : FontSystem.KR16M
+                                  .copyWith(color: ColorSystem.grey1),
                         ),
                       ),
                     );
@@ -252,9 +240,8 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                             style: textSelectedIndex == index
                                 ? FontSystem.KR16SB
                                     .copyWith(color: ColorSystem.black)
-                                : FontSystem.KR16M.copyWith(
-                                    color: ColorSystem.grey1,
-                                  ),
+                                : FontSystem.KR16M
+                                    .copyWith(color: ColorSystem.grey1),
                           ),
                         ),
                         if (index < statuses.length - 1)
@@ -280,18 +267,13 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                       sortOptions.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(
-                        value,
-                        style:
-                            FontSystem.KR14M.copyWith(color: ColorSystem.grey),
-                      ),
+                      child: Text(value,
+                          style: FontSystem.KR14M
+                              .copyWith(color: ColorSystem.grey)),
                     );
                   }).toList(),
-                  icon: Icon(
-                    Icons.keyboard_arrow_down,
-                    color: ColorSystem.grey,
-                    size: 20.sp,
-                  ),
+                  icon: Icon(Icons.keyboard_arrow_down,
+                      color: ColorSystem.grey, size: 20.sp),
                   underline: SizedBox.shrink(),
                   style: FontSystem.KR14M.copyWith(color: ColorSystem.grey),
                 ),
@@ -312,97 +294,87 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                   thumbVisibility: true,
                   thickness: 8.0,
                   radius: Radius.circular(20.r),
+                  controller: _scrollController,
                   child: ListView.builder(
+                    controller: _scrollController,
                     itemCount: debateList.length,
                     itemBuilder: (context, index) {
                       final debate = debateList[index];
                       return Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: 20.h, vertical: 5.w),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: ColorSystem.white,
-                            borderRadius: BorderRadius.circular(20.r),
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              chatViewModel.enterChat(
-                                  debate.id, debate.debateStatus, context);
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 10.h, horizontal: 10.w),
-                              decoration: BoxDecoration(
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color(0x669795A3),
-                                    spreadRadius: 0,
-                                    blurRadius: 4,
-                                  )
-                                ],
-                                color: ColorSystem.white,
-                                borderRadius: BorderRadius.circular(20.r),
-                              ),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 6.w, vertical: 2.h),
-                                          decoration: BoxDecoration(
-                                            color: _getStatusColor(
-                                                debate.debateStatus),
-                                            borderRadius:
-                                                BorderRadius.circular(10.r),
-                                          ),
-                                          child: Text(
-                                            _getStatusText(debate.debateStatus),
-                                            style: FontSystem.KR14SB.copyWith(
-                                              color: _getSubTextColor(debate),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(height: 10.h),
-                                        Text(
-                                          debate.debateTitle,
-                                          style: FontSystem.KR16M
-                                              .copyWith(height: 1.2),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        SizedBox(height: 4.h),
-                                        Text(
-                                          _getSubText(debate),
-                                          style: FontSystem.KR16M.copyWith(
-                                              color: ColorSystem.purple),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(width: 10.w),
-                                  debate.debateImageUrl == ''
-                                      ? SvgPicture.asset(
-                                          'assets/icons/list_real_null.svg',
-                                          width: 70.w,
-                                          fit: BoxFit.contain,
-                                        )
-                                      : ClipRRect(
+                        child: GestureDetector(
+                          onTap: () {
+                            chatViewModel.enterChat(
+                                debate.id, debate.debateStatus, context);
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10.h, horizontal: 10.w),
+                            decoration: BoxDecoration(
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: Color(0x669795A3), blurRadius: 4)
+                              ],
+                              color: ColorSystem.white,
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 6.w, vertical: 2.h),
+                                        decoration: BoxDecoration(
+                                          color: _getStatusColor(
+                                              debate.debateStatus),
                                           borderRadius:
-                                              BorderRadius.circular(12.r),
-                                          child: Image.network(
-                                            debate.debateImageUrl ?? '',
-                                            width: 70.w,
-                                            height: 70.h,
-                                            fit: BoxFit.cover,
-                                          ),
+                                              BorderRadius.circular(10.r),
                                         ),
-                                ],
-                              ),
+                                        child: Text(
+                                          _getStatusText(debate.debateStatus),
+                                          style: FontSystem.KR14SB.copyWith(
+                                              color: _getSubTextColor(debate)),
+                                        ),
+                                      ),
+                                      SizedBox(height: 10.h),
+                                      Text(
+                                        debate.debateTitle,
+                                        style: FontSystem.KR16M
+                                            .copyWith(height: 1.2),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      SizedBox(height: 4.h),
+                                      Text(
+                                        _getSubText(debate),
+                                        style: FontSystem.KR16M.copyWith(
+                                            color: ColorSystem.purple),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(width: 10.w),
+                                debate.debateImageUrl == ''
+                                    ? SvgPicture.asset(
+                                        'assets/icons/list_real_null.svg',
+                                        width: 100.w)
+                                    : ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(12.r),
+                                        child: Image.network(
+                                          debate.debateImageUrl ?? '',
+                                          width: 100.w,
+                                          height: 80.h,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                              ],
                             ),
                           ),
                         ),

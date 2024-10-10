@@ -1,4 +1,4 @@
-package com.example.tito_app
+package com.portuncookie.tito_app
 
 import io.flutter.embedding.android.FlutterActivity
 
