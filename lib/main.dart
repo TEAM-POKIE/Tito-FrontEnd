@@ -103,14 +103,10 @@ void initializeNotification() async {
 }
 
 Future main() async {
-  // ? Env 파일 로드
-  await dotenv.load(fileName: ".env");
-
   // ? 카카오 SDK 초기화
   KakaoSdk.init(
-    nativeAppKey: dotenv.env['OAUTH_KAKAO_NATIVE_APP_KEY'],
-    javaScriptAppKey: dotenv.env['OAUTH_KAKAO_JAVASCRIPT_APP_KEY'],
-  );
+      nativeAppKey: '01fe6631fc7787a553528a1b214e2bc5',
+      javaScriptAppKey: 'b3a30cb79cb258aee47056953e90bd7d');
 
   // ? 세로 모드 고정
   WidgetsFlutterBinding.ensureInitialized();
