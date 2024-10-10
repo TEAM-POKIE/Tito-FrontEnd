@@ -102,10 +102,10 @@ class _BottomBarState extends ConsumerState<BottomBar> {
           notifier.state = index;
           context.go('/list');
           break;
-        // case 3:
-        //   notifier.state = index;
-        //   context.go('/search');
-        //   break;
+        case 3:
+          notifier.state = index;
+          context.go('/search');
+          break;
         case 4:
           notifier.state = index;
           context.go('/mypage');
