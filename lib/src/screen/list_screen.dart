@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -45,21 +47,18 @@ class _ListScreenState extends ConsumerState<ListScreen> {
     _fetchDebateList();
   }
 
-// 아래로 내렸을 때 새로고침 되는 코드
   void _onRefresh() async {
     page = 0;
     await _fetchDebateList();
     _refreshController.refreshCompleted();
   }
 
-// 리스트 끝에 도달했을 때 호출되는 코드
   void _onLoading() async {
     page += 1;
     await _fetchDebateList();
     _refreshController.loadComplete();
   }
 
-// 데이터 fetch 로직 : 새로고침 시 기존데이터를 대체하고 리스트 끝에서 다시 렌더링시키기
   Future<void> _fetchDebateList({bool isRefresh = false}) async {
     try {
       String sortBy = _convertSortOption(selectedSortOption);
