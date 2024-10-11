@@ -78,7 +78,9 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
         if (loginInfo.id != message['userId'] &&
             message['content'] == 'timing bell request') {
           print("Timing Bell Request Received: ${message['content']}");
-          if (mounted && chatState!.canTiming) {
+          if (mounted &&
+              chatState!.canTiming &&
+              chatState.debateStatus == "IN_PROGRESS") {
             popupViewModel.showTimingReceive(context);
             chatState.canTiming = false;
           }
