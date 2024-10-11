@@ -31,7 +31,10 @@ class _BottomBarState extends ConsumerState<BottomBar> {
         builder: (BuildContext context) {
           return Container(
             height: 130.h,
-            margin: EdgeInsets.only(left: 72.w, right: 72.w, bottom: 100.h),
+            margin: EdgeInsets.only(
+              left: 72.w,
+              right: 72.w,
+            ),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(
@@ -89,8 +92,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
         },
         backgroundColor: Colors.transparent,
       );
-    } else if (index == 3) {
-      context.push('/search');
     } else {
       switch (index) {
         case 0:
@@ -100,6 +101,10 @@ class _BottomBarState extends ConsumerState<BottomBar> {
         case 1:
           notifier.state = index;
           context.go('/list');
+          break;
+        case 3:
+          notifier.state = index;
+          context.push('/search');
           break;
         case 4:
           notifier.state = index;
@@ -169,6 +174,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
               icon: SvgPicture.asset(
                 'assets/icons/navi_search.svg',
                 width: 30.w,
+                color: selectedIndex == 3 ? Colors.black : Colors.grey,
               ),
               label: '검색',
             ),

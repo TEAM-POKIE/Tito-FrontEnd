@@ -8,6 +8,7 @@ import 'package:tito_app/src/view/homeVIew/home_view.dart';
 import 'package:tito_app/src/view/homeVIew/hot_fighter.dart';
 import 'package:tito_app/src/view/homeVIew/hot_lists.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tito_app/src/widgets/reuse/bottombar.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -78,6 +79,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           const HotFighter(),
         ],
       ),
+      bottomNavigationBar: const BottomBar(),
     );
   }
 }

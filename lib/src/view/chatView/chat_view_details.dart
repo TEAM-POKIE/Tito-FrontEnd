@@ -191,7 +191,7 @@ class DetailState extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: 12, left: 10, right: 10),
       color: ColorSystem.white,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -199,6 +199,7 @@ class DetailState extends StatelessWidget {
         children: [
           Center(
             child: Container(
+              width: 380.w, // 전체 Row의 최대 너비를 설정
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -210,9 +211,13 @@ class DetailState extends StatelessWidget {
                     upImage,
                   ),
                   SizedBox(width: 8.w),
-                  Text(
-                    upTitle,
-                    style: FontSystem.KR16SB,
+                  Flexible(
+                    child: Text(
+                      upTitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: FontSystem.KR16SB,
+                    ),
                   ),
                 ],
               ),
@@ -221,7 +226,8 @@ class DetailState extends StatelessWidget {
           SizedBox(height: 3.h),
           Center(
             child: Container(
-              padding: const EdgeInsets.all(8.0),
+              width: 380.w, // 전체 Row의 최대 너비를 설정
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               decoration: BoxDecoration(
                 color: downImage == 'assets/images/chatCuteIconPurple.svg'
                     ? ColorSystem.lightPurple
@@ -238,11 +244,16 @@ class DetailState extends StatelessWidget {
                       ? SvgPicture.asset(downImage!)
                       : SizedBox(width: 0.w),
                   SizedBox(width: 8.w),
-                  Text(
-                    downTitle ?? '',
-                    style: downImage != null && downImage!.isNotEmpty
-                        ? FontSystem.KR16SB
-                        : FontSystem.KR16SB.copyWith(color: ColorSystem.purple),
+                  Flexible(
+                    child: Text(
+                      downTitle ?? '',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: downImage != null && downImage!.isNotEmpty
+                          ? FontSystem.KR16SB
+                          : FontSystem.KR16SB
+                              .copyWith(color: ColorSystem.purple),
+                    ),
                   ),
                 ],
               ),
