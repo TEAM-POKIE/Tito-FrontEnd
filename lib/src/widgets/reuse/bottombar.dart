@@ -32,6 +32,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
           return Container(
             height: 130.h,
             margin: EdgeInsets.only(
+              bottom: 100.h,
               left: 72.w,
               right: 72.w,
             ),
