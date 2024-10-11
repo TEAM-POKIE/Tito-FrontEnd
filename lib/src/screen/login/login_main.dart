@@ -100,37 +100,120 @@ class LoginMain extends ConsumerWidget {
     }
 
     Future<void> _signInWithKaKao() async {
-      try {
-        OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
-        debugPrint('카카오톡으로 로그인 성공 ${token.accessToken}');
-        // Phase 1. SecureStorage에 token 저장
-        await secureStorage.write(
-            key: 'access_token', value: token.accessToken);
-        await secureStorage.write(key: 'id_token', value: token.idToken);
-        debugPrint(token.accessToken);
+      if (await isKakaoTalkInstalled()) {
+        try {
+          OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
+          debugPrint('카카오톡으로 로그인 성공 ${token.accessToken}');
 
-        // & Phase 3. Backend에 토큰 보내서 확인받음
-        final authResponse = await ApiService(DioClient.dio).oAuthKakao({
-          "accessToken": token.accessToken,
-          'fcmToken': await FirebaseMessaging.instance.getToken() ?? ''
-        });
+          await secureStorage.write(
+              key: 'access_token', value: token.accessToken);
+          await secureStorage.write(key: 'id_token', value: token.idToken);
+          debugPrint(token.accessToken);
 
-        // & Phase 4. 성공한 경우 마이데이터 조회, nickname 유무 확인
-        await DioClient.setToken(authResponse.accessToken.token);
-        // Case 4.1. 마이데이터 조회 결과 nickname이 null인 경우 해당 페이지로 이동
-        final userInfo = await ApiService(DioClient.dio).getUserInfo();
-        if (userInfo.nickname == "") {
-          debugPrint('TODO: NEW : 카카오 empty user nickname');
+          // & Phase 3. Backend에 토큰 보내서 확인받음
+          final authResponse = await ApiService(DioClient.dio).oAuthKakao({
+            "accessToken": token.accessToken,
+            'fcmToken': await FirebaseMessaging.instance.getToken() ?? ''
+          });
+
+          // & Phase 4. 성공한 경우 마이데이터 조회, nickname 유무 확인
+          await DioClient.setToken(authResponse.accessToken.token);
+          // Case 4.1. 마이데이터 조회 결과 nickname이 null인 경우 해당 페이지로 이동
+          final userInfo = await ApiService(DioClient.dio).getUserInfo();
+
+          final loginInfoNotifier = ref.read(loginInfoProvider.notifier);
+          loginInfoNotifier.setLoginInfo(userInfo);
+          if (userInfo.nickname == "") {
+            debugPrint('TODO: NEW : 카카오 empty user nickname');
+          }
+          // Case 3.2. 기존 회원인 경우 메인 페이지로 리다이렉트
+          else {
+            debugPrint("TODO: OLD : 기존 go to main");
+          }
+          // & Phase 4. HomeScreen으로 이동
+          if (!context.mounted) return;
+          context.go('/home');
+        } catch (error) {
+          print('카카오톡으로 로그인 실패 $error');
+
+          // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
+          // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
+          if (error is PlatformException && error.code == 'CANCELED') {
+            return;
+          }
+          // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
+          try {
+            await UserApi.instance.loginWithKakaoAccount();
+            print('카카오계정으로 로그인 성공');
+            OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
+            debugPrint('카카오톡으로 로그인 성공 ${token.accessToken}');
+
+            await secureStorage.write(
+                key: 'access_token', value: token.accessToken);
+            await secureStorage.write(key: 'id_token', value: token.idToken);
+            debugPrint(token.accessToken);
+
+            // & Phase 3. Backend에 토큰 보내서 확인받음
+            final authResponse = await ApiService(DioClient.dio).oAuthKakao({
+              "accessToken": token.accessToken,
+              'fcmToken': await FirebaseMessaging.instance.getToken() ?? ''
+            });
+
+            // & Phase 4. 성공한 경우 마이데이터 조회, nickname 유무 확인
+            await DioClient.setToken(authResponse.accessToken.token);
+            // Case 4.1. 마이데이터 조회 결과 nickname이 null인 경우 해당 페이지로 이동
+            final userInfo = await ApiService(DioClient.dio).getUserInfo();
+            final loginInfoNotifier = ref.read(loginInfoProvider.notifier);
+            loginInfoNotifier.setLoginInfo(userInfo);
+            if (userInfo.nickname == "") {
+              debugPrint('TODO: NEW : 카카오 empty user nickname');
+            }
+            // Case 3.2. 기존 회원인 경우 메인 페이지로 리다이렉트
+            else {
+              debugPrint("TODO: OLD : 기존 go to main");
+            }
+            // & Phase 4. HomeScreen으로 이동
+            if (!context.mounted) return;
+            context.go('/home');
+          } catch (error) {
+            print('카카오계정으로 로그인 실패 $error');
+          }
         }
-        // Case 3.2. 기존 회원인 경우 메인 페이지로 리다이렉트
-        else {
-          debugPrint("TODO: OLD : 기존 go to main");
+      } else {
+        try {
+          OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
+          debugPrint('카카오톡으로 로그인 성공 ${token.accessToken}');
+
+          await secureStorage.write(
+              key: 'access_token', value: token.accessToken);
+          await secureStorage.write(key: 'id_token', value: token.idToken);
+          debugPrint(token.accessToken);
+
+          // & Phase 3. Backend에 토큰 보내서 확인받음
+          final authResponse = await ApiService(DioClient.dio).oAuthKakao({
+            "accessToken": token.accessToken,
+            'fcmToken': await FirebaseMessaging.instance.getToken() ?? ''
+          });
+
+          // & Phase 4. 성공한 경우 마이데이터 조회, nickname 유무 확인
+          await DioClient.setToken(authResponse.accessToken.token);
+          // Case 4.1. 마이데이터 조회 결과 nickname이 null인 경우 해당 페이지로 이동
+          final userInfo = await ApiService(DioClient.dio).getUserInfo();
+          final loginInfoNotifier = ref.read(loginInfoProvider.notifier);
+          loginInfoNotifier.setLoginInfo(userInfo);
+          if (userInfo.nickname == "") {
+            debugPrint('TODO: NEW : 카카오 empty user nickname');
+          }
+          // Case 3.2. 기존 회원인 경우 메인 페이지로 리다이렉트
+          else {
+            debugPrint("TODO: OLD : 기존 go to main");
+          }
+          // & Phase 4. HomeScreen으로 이동
+          if (!context.mounted) return;
+          context.go('/home');
+        } catch (error) {
+          print('카카오계정으로 로그인 실패 $error');
         }
-        // & Phase 4. HomeScreen으로 이동
-        if (!context.mounted) return;
-        context.go('/home');
-      } catch (error) {
-        debugPrint('카카오톡으로 로그인 실패 $error');
       }
     }
 
