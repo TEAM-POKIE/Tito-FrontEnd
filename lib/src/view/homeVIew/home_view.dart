@@ -4,7 +4,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/provider/home_state_provider.dart';
-
+import 'dart:async'; // Timer를 사용하기 위해 추가
 import 'package:go_router/go_router.dart'; // context.push를 사용하기 위해 추가
 
 class HomeView extends ConsumerStatefulWidget {
@@ -16,23 +16,37 @@ class HomeView extends ConsumerStatefulWidget {
 
 class _HomeViewState extends ConsumerState<HomeView> {
   late final PageController _pageController;
+  late final Timer _timer;
+  int _currentPage = 1; // 복제된 첫 번째 배너에서 시작
 
   @override
   void initState() {
     super.initState();
     // PageController 초기화
-    _pageController = PageController();
+    _pageController = PageController(initialPage: _currentPage);
 
     // 데이터를 가져옵니다.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final homeViewModel = ref.read(homeViewModelProvider.notifier);
       homeViewModel.hotList();
     });
+    
+
+// 2초마다 페이지 넘기기
+    _timer = Timer.periodic(Duration(seconds: 2), (timer) {
+      if (_pageController.hasClients) {
+        _pageController.nextPage(
+          duration: Duration(milliseconds: 1500),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
   }
 
   @override
   void dispose() {
     _pageController.dispose();
+    _timer.cancel(); // 타이머 해제
     super.dispose();
   }
 
@@ -49,22 +63,48 @@ class _HomeViewState extends ConsumerState<HomeView> {
       return Center(child: Text('데이터를 불러오는 중 오류가 발생했습니다.'));
     }
 
+    // 첫 번째와 마지막 배너를 복제하여 무한 루프처럼 보이도록 설정
+    final banners = homeState.debateBanners;
+    final infiniteBanners = [
+      banners.last, // 마지막 배너를 첫 번째로 복제
+      ...banners,
+      banners.first, // 첫 번째 배너를 마지막으로 복제
+    ];
+
     return Column(
       children: [
         SizedBox(
           height: 200.h,
           child: PageView.builder(
             controller: _pageController, // PageController 연결
-            itemCount: homeState.debateBanners.length,
+            itemCount: infiniteBanners.length,
+            onPageChanged: (index) {
+              setState(() {
+                _currentPage = index;
+              });
+              // 첫 번째 복제 페이지로 이동한 경우 실제 첫 번째 페이지로 점프
+              if (index == 0) {
+                Future.delayed(Duration(milliseconds: 300), () {
+                  _pageController.jumpToPage(banners.length);
+                });
+              }
+              // 마지막 복제 페이지로 이동한 경우 실제 첫 번째 페이지로 점프
+              else if (index == banners.length + 1) {
+                Future.delayed(Duration(milliseconds: 300), () {
+                  _pageController.jumpToPage(1);
+                });
+              }
+            },
             itemBuilder: (context, index) {
-              final debate = homeState.debateBanners[index];
+              final debate = infiniteBanners[index];
               return GestureDetector(
                 onTap: () {
                   // 배너 클릭 시 해당 아이디로 페이지 이동
                   context.push('/chat/${debate.id}');
                 },
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20.h),
+                  padding:
+                      EdgeInsets.symmetric(vertical: 20.h, horizontal: 5.w),
                   child: Container(
                     width: 352.w,
                     height: 140.h,
@@ -151,7 +191,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
         ),
         SmoothPageIndicator(
           controller: _pageController, // 동일한 PageController 사용
-          count: homeState.debateBanners.length,
+          count: banners.length,
           effect: WormEffect(
             dotWidth: 6.w,
             dotHeight: 6.h,
