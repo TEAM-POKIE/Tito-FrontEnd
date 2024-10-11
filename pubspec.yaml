@@ -160,6 +160,7 @@ flutter:
     - assets/icons/mypage_one.svg
     - assets/icons/mypage_two.svg
     - assets/icons/search_size_four.svg
+    - assets/icons/navi_search.svg
     - assets/icons/new_search.svg
     - assets/icons/bottom_round_purple.svg
     - assets/icons/null_profile.svg

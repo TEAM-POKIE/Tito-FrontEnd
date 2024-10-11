@@ -92,8 +92,8 @@ class _BottomBarState extends ConsumerState<BottomBar> {
         },
         backgroundColor: Colors.transparent,
       );
-    } else if (index == 2) {
-      
+    } else if (index == 3) {
+      context.go('/search');
     } else {
       switch (index) {
         case 0:
@@ -103,10 +103,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
         case 1:
           notifier.state = index;
           context.go('/list');
-          break;
-        case 3:
-          notifier.state = index;
-          context.go('/search');
           break;
         case 4:
           notifier.state = index;
@@ -174,10 +170,10 @@ class _BottomBarState extends ConsumerState<BottomBar> {
             ),
             BottomNavigationBarItem(
               icon: SvgPicture.asset(
-                'assets/icons/bottom_bell.svg',
-                color: selectedIndex == 3 ? Colors.black : Colors.grey,
+                'assets/icons/navi_search.svg',
+                width: 30.w,
               ),
-              label: '알림',
+              label: '검색',
             ),
             BottomNavigationBarItem(
               icon: Padding(
