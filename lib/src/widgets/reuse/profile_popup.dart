@@ -195,7 +195,7 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
               ),
               SizedBox(width: 15.w),
               Container(
-                width: 210.w,
+                width: 200.w,
                 child: Column(
                   children: [
                     Row(
