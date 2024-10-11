@@ -96,9 +96,9 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
                       upImage: 'assets/images/detailChatIcon.svg',
                       upTitle: '상대 반론 타임이에요!',
                       downTitle: '⏳ ${remainingTime} 남았어요!'),
-                  chatState.debateOwnerId == loginInfo.id
-                      ? VotingBar()
-                      : Joinervotingbar(),
+                  chatState.debateJoinerTurnCount >= 3
+                      ? Joinervotingbar()
+                      : SizedBox(width: 0)
                 ],
               );
             } else {
@@ -108,9 +108,9 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
                       upImage: 'assets/images/detailChatIcon.svg',
                       upTitle: '${loginInfo.nickname}님의 반론 타임이에요!',
                       downTitle: '⏳ ${remainingTime} 남았어요!'),
-                  chatState.debateOwnerId == loginInfo.id
-                      ? VotingBar()
-                      : Joinervotingbar(),
+                  chatState.debateJoinerTurnCount >= 3
+                      ? Joinervotingbar()
+                      : SizedBox(width: 0)
                 ],
               );
             }
@@ -131,7 +131,7 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
                       upImage: 'assets/images/detailChatIcon.svg',
                       upTitle: '상대 반론 타임이에요!',
                       downTitle: '⏳ ${remainingTime} 남았어요!'),
-                  VotingBar(),
+                  if (chatState.debateJoinerTurnCount >= 3) VotingBar(),
                 ],
               );
             } else {
@@ -141,7 +141,7 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
                       upImage: 'assets/images/detailChatIcon.svg',
                       upTitle: '${loginInfo.nickname}님의 반론 타임이에요!',
                       downTitle: '⏳ ${remainingTime} 남았어요!'),
-                  VotingBar(),
+                  if (chatState.debateJoinerTurnCount >= 3) VotingBar(),
                 ],
               );
             }
