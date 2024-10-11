@@ -41,27 +41,29 @@ class WebSocketService {
       }, onError: (error) {
         print('Error in websocket connection: $error');
         _controller.addError('WebSocket error: $error');
-        _scheduleReconnect(); // 재연결 시도
+        _reconnect(); // 재연결 시도
       }, onDone: () {
         print('WebSocket connection closed');
         _isConnected = false;
-        _scheduleReconnect(); // 재연결 시도
+        _reconnect(); // 재연결 시도
       });
     } catch (e) {
       print('Error establishing WebSocket connection: $e');
       _controller.addError('Error establishing WebSocket connection: $e');
-      _scheduleReconnect(); // 재연결 시도
+      _reconnect(); // 재연결 시도
     }
   }
 
-  void _scheduleReconnect() {
-    if (_reconnectTimer != null && _reconnectTimer!.isActive) return;
-
-    // 5초 후에 재연결 시도
-    _reconnectTimer = Timer(Duration(seconds: 5), () {
-      print('Attempting to reconnect WebSocket...');
-      _connect();
-    });
+  void _reconnect() {
+    if (_isConnected) {
+      _isConnected = false;
+      channel.sink.close();
+      print('Attempting to reconnect in 5 seconds...');
+      _reconnectTimer?.cancel();
+      _reconnectTimer = Timer(Duration(seconds: 5), () {
+        _connect();
+      });
+    }
   }
 
   Stream<Map<String, dynamic>> get stream => _controller.stream;

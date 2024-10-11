@@ -31,10 +31,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
         builder: (BuildContext context) {
           return Container(
             height: 130.h,
-            margin: EdgeInsets.only(
-              left: 72.w,
-              right: 72.w,
-            ),
+            margin: EdgeInsets.only(left: 72.w, right: 72.w, bottom: 100.h),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(
@@ -93,7 +90,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
         backgroundColor: Colors.transparent,
       );
     } else if (index == 3) {
-      context.go('/search');
+      context.push('/search');
     } else {
       switch (index) {
         case 0:
