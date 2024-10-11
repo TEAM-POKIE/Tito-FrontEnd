@@ -61,7 +61,7 @@ class _ChatState extends ConsumerState<Chat> {
     final debateInfo = ref.read(chatInfoProvider);
 
     chatViewModel.connectWebSocket();
-    print('실행1');
+
     if (loginInfo != null) {
       final message = jsonEncode({
         "command": "ENTER",
@@ -98,7 +98,7 @@ class _ChatState extends ConsumerState<Chat> {
         "debateId": debateInfo.id,
       });
       liveWebSocketService.sendMessage(message);
-      print('실행2');
+
       _subscription = liveWebSocketService.stream.listen((message) {
         if (debateInfo?.isVoteEnded ?? true) {
           return;
@@ -126,11 +126,13 @@ class _ChatState extends ConsumerState<Chat> {
     if (_messages.isNotEmpty) {
       if (_messages.length > 2) {
         chatState!.debateOwnerId = _messages[2]['userId'];
+
         chatViewModel.getInfo(chatState.debateOwnerId, context);
 
         if (_messages.length > 3) {
           chatState.debateJoinerId = _messages[3]['userId'];
-          chatViewModel.getInfo(_messages[3]['userId'], context);
+          if (chatState!.debateJoinerId != 0)
+            chatViewModel.getInfo(_messages[3]['userId'], context);
         }
       }
 
@@ -141,6 +143,7 @@ class _ChatState extends ConsumerState<Chat> {
         chatState.debateJoinerTurnCount = _messages.last['joinerTurnCount'];
       }
     }
+
     if (debateInfo == null) {
       return Scaffold(
         appBar: AppBar(

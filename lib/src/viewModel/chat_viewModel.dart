@@ -242,6 +242,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
 
   void getProfile(id, context) async {
     if (!mounted) return;
+
     final userInfo = await ApiService(DioClient.dio).getUserProfile(id);
     final popupViewModel = ref.read(popupProvider.notifier);
     final userProfileViewModel = ref.read(userProfileProvider.notifier);

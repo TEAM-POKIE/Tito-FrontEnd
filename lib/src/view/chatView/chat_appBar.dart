@@ -85,9 +85,11 @@ class DebateAppbar extends ConsumerWidget {
         icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
         onPressed: () {
           if (context.canPop()) {
+            print('dㅕ기');
             context.pop();
           } else {
             bottomState.state = 0;
+            print('저기');
             context.go('/home');
           }
         },

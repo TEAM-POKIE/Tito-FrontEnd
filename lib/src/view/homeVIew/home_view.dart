@@ -30,13 +30,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
       final homeViewModel = ref.read(homeViewModelProvider.notifier);
       homeViewModel.hotList();
     });
-    
 
-// 2초마다 페이지 넘기기
-    _timer = Timer.periodic(Duration(seconds: 2), (timer) {
+    // 2초마다 페이지 넘기기
+    _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
       if (_pageController.hasClients) {
         _pageController.nextPage(
-          duration: Duration(milliseconds: 1500),
+          duration: const Duration(milliseconds: 1500),
           curve: Curves.easeInOut,
         );
       }
@@ -55,12 +54,15 @@ class _HomeViewState extends ConsumerState<HomeView> {
     final homeState = ref.watch(homeViewModelProvider);
 
     if (homeState.isLoading) {
-      return Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }
-    print(homeState.debateBanners);
 
     if (homeState.hasError) {
-      return Center(child: Text('데이터를 불러오는 중 오류가 발생했습니다.'));
+      return const Center(child: Text('데이터를 불러오는 중 오류가 발생했습니다.'));
+    }
+
+    if (homeState.debateBanners.isEmpty) {
+      return const Center(child: Text('토론 데이터가 없습니다.'));
     }
 
     // 첫 번째와 마지막 배너를 복제하여 무한 루프처럼 보이도록 설정
@@ -82,15 +84,16 @@ class _HomeViewState extends ConsumerState<HomeView> {
               setState(() {
                 _currentPage = index;
               });
+
               // 첫 번째 복제 페이지로 이동한 경우 실제 첫 번째 페이지로 점프
               if (index == 0) {
-                Future.delayed(Duration(milliseconds: 300), () {
+                Future.delayed(const Duration(milliseconds: 300), () {
                   _pageController.jumpToPage(banners.length);
                 });
               }
               // 마지막 복제 페이지로 이동한 경우 실제 첫 번째 페이지로 점프
               else if (index == banners.length + 1) {
-                Future.delayed(Duration(milliseconds: 300), () {
+                Future.delayed(const Duration(milliseconds: 300), () {
                   _pageController.jumpToPage(1);
                 });
               }
@@ -124,9 +127,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
                             children: [
                               Text(
                                 '불 붙은 실시간 토론 🔥',
-                                style: FontSystem.KR14M.copyWith(
-                                  color: ColorSystem.white,
-                                ),
+                                style: FontSystem.KR14M
+                                    .copyWith(color: ColorSystem.white),
                               ),
                               Container(
                                 padding: EdgeInsets.symmetric(
@@ -137,9 +139,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                 ),
                                 child: Text(
                                   '실시간 토론 중',
-                                  style: FontSystem.KR14M.copyWith(
-                                    color: ColorSystem.white,
-                                  ),
+                                  style: FontSystem.KR14M
+                                      .copyWith(color: ColorSystem.white),
                                 ),
                               ),
                             ],
