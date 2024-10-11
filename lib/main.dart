@@ -162,39 +162,21 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   DateTime? currentBackPressTime;
-  Future<bool> onWillPop() {
-    print('onWill');
-    DateTime now = DateTime.now();
-
-    if (currentBackPressTime == null ||
-        now.difference(currentBackPressTime!) > Duration(seconds: 2)) {
-      currentBackPressTime = now;
-      final msg = "'뒤로'버튼을 한 번 더 누르면 종료됩니다.";
-
-      Fluttertoast.showToast(msg: msg);
-      return Future.value(false);
-    }
-
-    return Future.value(true);
-  }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: onWillPop, // WillPopScope에 콜백 함수 전달
-      child: ScreenUtilInit(
-        designSize: const Size(390, 844),
-        minTextAdapt: true,
-        splitScreenMode: true,
-        builder: (context, child) => ProviderScope(
-          child: MaterialApp.router(
-            debugShowCheckedModeBanner: false,
-            routerConfig: router,
-            title: 'Tito',
-            theme: ThemeData(
-              scaffoldBackgroundColor: ColorSystem.white,
-              primaryColor: ColorSystem.purple,
-            ),
+    return ScreenUtilInit(
+      designSize: const Size(390, 844),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) => ProviderScope(
+        child: MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          routerConfig: router,
+          title: 'Tito',
+          theme: ThemeData(
+            scaffoldBackgroundColor: ColorSystem.white,
+            primaryColor: ColorSystem.purple,
           ),
         ),
       ),
