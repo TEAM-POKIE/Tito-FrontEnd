@@ -56,10 +56,6 @@ class _LiveCommentState extends ConsumerState<EndedLive>
     final chatState = ref.watch(chatInfoProvider);
 
     _subscription = webSocketService.stream.listen((message) {
-      if (chatState?.isVoteEnded ?? true) {
-        return;
-      }
-
       if (message['command'] == "VOTE_RATE_RES") {
         final newBlueVotes = message["ownerVoteRate"];
         final newRedVotes = message["joinerVoteRate"];

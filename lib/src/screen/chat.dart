@@ -60,7 +60,7 @@ class _ChatState extends ConsumerState<Chat> {
     final loginInfo = ref.watch(loginInfoProvider);
     final debateInfo = ref.read(chatInfoProvider);
 
-    chatViewModel.connectWebSocket();
+    await chatViewModel.connectWebSocket();
 
     if (loginInfo != null) {
       final message = jsonEncode({
@@ -98,12 +98,8 @@ class _ChatState extends ConsumerState<Chat> {
         "debateId": debateInfo.id,
       });
       liveWebSocketService.sendMessage(message);
-
+      print('live enter');
       _subscription = liveWebSocketService.stream.listen((message) {
-        if (debateInfo?.isVoteEnded ?? true) {
-          return;
-        }
-
         if (message.containsKey('content')) {
           if (mounted) {
             setState(() {
@@ -125,14 +121,17 @@ class _ChatState extends ConsumerState<Chat> {
 
     if (_messages.isNotEmpty) {
       if (_messages.length > 2) {
-        chatState!.debateOwnerId = _messages[2]['userId'];
-
-        chatViewModel.getInfo(chatState.debateOwnerId, context);
-
         if (_messages.length > 3) {
+          chatState!.debateOwnerId = _messages[2]['userId'];
+
+          chatViewModel.getInfo(chatState.debateOwnerId, context);
           chatState.debateJoinerId = _messages[3]['userId'];
-          if (chatState!.debateJoinerId != 0)
+          if (chatState.debateJoinerId != 0)
             chatViewModel.getInfo(_messages[3]['userId'], context);
+        } else {
+          chatState!.debateOwnerId = _messages[2]['userId'];
+
+          chatViewModel.getInfo(chatState.debateOwnerId, context);
         }
       }
 

@@ -85,11 +85,10 @@ class DebateAppbar extends ConsumerWidget {
         icon: SvgPicture.asset('assets/icons/back_arrow.svg'),
         onPressed: () {
           if (context.canPop()) {
-            print('dㅕ기');
             context.pop();
           } else {
             bottomState.state = 0;
-            print('저기');
+
             context.go('/home');
           }
         },
@@ -114,7 +113,7 @@ class DebateAppbar extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      alignment: Alignment.center, // Align text to the left
+                      alignment: Alignment.center,
                       child: Text(item, style: FontSystem.KR14B),
                     ),
                     if (item != menuItems.last)
@@ -138,13 +137,13 @@ class DebateAppbar extends ConsumerWidget {
             buttonStyleData: const ButtonStyleData(
               padding: EdgeInsets.symmetric(horizontal: 16),
               height: 48,
-              width: 48, // Adjust this width
+              width: 48,
             ),
             dropdownStyleData: const DropdownStyleData(
               padding: EdgeInsets.all(10),
               maxHeight: 150,
-              width: 240, // Adjust this width for dropdown
-              offset: Offset(0, -5), // Adjust the offset if needed
+              width: 240,
+              offset: Offset(0, -5),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
                 color: ColorSystem.white,

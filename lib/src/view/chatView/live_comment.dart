@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
@@ -35,31 +36,25 @@ class _LiveCommentState extends ConsumerState<LiveComment>
   void _subscribeToMessages() {
     final webSocketService = ref.read(liveWebSocketProvider);
 
-    final chatState = ref.watch(chatInfoProvider);
-
     _subscription = webSocketService.stream.listen((message) {
-      if (chatState?.isVoteEnded ?? true) {
-        return;
-      }
-
-      // 일반 메시지(content가 포함된 경우)
       if (message.containsKey('content')) {
+        print('good? ${message}');
         _addMessage(message);
       }
     });
   }
 
   void _addMessage(Map<String, dynamic> message) {
-    // 중복 메시지 필터링
-    bool isDuplicate = _messages.any((existingMessage) =>
-        existingMessage['content'] == message['content'] &&
-        existingMessage['createdAt'] == message['createdAt']);
+    setState(() {
+      _messages.add(message);
+    });
+    // bool isDuplicate = _messages.any((existingMessage) =>
+    //     existingMessage['content'] == message['content'] &&
+    //     existingMessage['createdAt'] == message['createdAt']);
 
-    if (!isDuplicate && mounted) {
-      setState(() {
-        _messages.add(message);
-      });
-    }
+    // if (!isDuplicate && mounted) {
+
+    // }
   }
 
   void _toggleExpand() {
@@ -180,11 +175,17 @@ class _LiveCommentState extends ConsumerState<LiveComment>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CircleAvatar(
-                                  backgroundImage: message['userImgUrl'] != ''
-                                      ? NetworkImage(message['userImgUrl'])
-                                      : const AssetImage(
-                                          'assets/images/default.png'),
-                                  radius: 12.r,
+                                  backgroundImage: message['userImageUrl'] !=
+                                              null &&
+                                          message['userImageUrl']!.isNotEmpty
+                                      ? NetworkImage(message['userImageUrl']!)
+                                      : null,
+                                  radius: 20.r,
+                                  child: message['userImageUrl'] == null ||
+                                          message['userImageUrl']!.isEmpty
+                                      ? SvgPicture.asset(
+                                          'assets/icons/basicProfile.svg')
+                                      : null,
                                 ),
                                 const SizedBox(width: 10),
                                 Text(

@@ -52,7 +52,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     }
   }
 
-  void connectWebSocket() {
+  Future<void> connectWebSocket() async {
     if (!mounted) return; // mounted 상태 체크
 
     _channel = WebSocketChannel.connect(
@@ -62,30 +62,6 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     _liveChannel = WebSocketChannel.connect(
       Uri.parse('wss://dev.tito.lat/ws/debate/realtime'),
     );
-
-    _channel.stream.listen((message) {
-      if (message is String && message.startsWith('{')) {
-        final decodedMessage = json.decode(message) as Map<String, dynamic>;
-        if (mounted) {
-          _messages.add(decodedMessage);
-          _messageController.sink.add(decodedMessage);
-        }
-      } else {
-        print('Invalid message format or non-JSON string received: $message');
-      }
-    }, onError: (error) {
-      print('WebSocket error: $error');
-    }, onDone: () {
-      print('WebSocket connection closed');
-    });
-
-    _liveChannel.stream.listen((message) {
-      print('Live Channel Message: $message');
-    }, onError: (error) {
-      print('Error in live channel: $error');
-    }, onDone: () {
-      print('Live channel connection closed');
-    });
   }
 
   void updateExplanation(List<String>? explanation, String? contentEdited) {

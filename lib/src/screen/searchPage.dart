@@ -20,43 +20,56 @@ class _SearchpageState extends ConsumerState<Searchpage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorSystem.white,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(120.h),
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: CustomSearchBar(
-                  onSearchResults: (results) {
-                    setState(() {
-                      searchResults = results;
-                    });
-                  },
+      body: SafeArea(
+        // SafeArea 추가
+        child: Column(
+          children: [
+            PreferredSize(
+              preferredSize: Size.fromHeight(80.h),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: CustomSearchBar(
+                        onSearchResults: (results) {
+                          setState(() {
+                            searchResults = results;
+                          });
+                        },
+                      ),
+                    ),
+                    Column(
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            context.pop();
+                          },
+                          child: Text(
+                            '취소',
+                            style: FontSystem.KR16M,
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        )
+                      ],
+                    ),
+                  ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 17.h),
-                child: TextButton(
-                  onPressed: () {
-                    context.go('/home');
-                  },
-                  child: Text(
-                    '취소',
-                    style: FontSystem.KR16M,
-                    textAlign: TextAlign.start,
-                  ),
-                ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: SearchResultList(searchResults: searchResults),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
-        child: SearchResultList(searchResults: searchResults),
       ),
     );
   }

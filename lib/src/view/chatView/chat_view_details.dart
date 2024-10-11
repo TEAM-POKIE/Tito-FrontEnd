@@ -200,7 +200,7 @@ class DetailState extends StatelessWidget {
           Center(
             child: Container(
               width: 380.w, // 전체 Row의 최대 너비를 설정
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: (upImage == 'assets/images/chatCuteIcon.svg')
