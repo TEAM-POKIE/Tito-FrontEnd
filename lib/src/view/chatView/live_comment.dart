@@ -160,11 +160,13 @@ class _LiveCommentState extends ConsumerState<LiveComment>
                                           message['userImageUrl']!.isNotEmpty
                                       ? NetworkImage(message['userImageUrl']!)
                                       : null,
-                                  radius: 20.r,
+                                  radius: 10.r,
                                   child: message['userImageUrl'] == null ||
                                           message['userImageUrl']!.isEmpty
                                       ? SvgPicture.asset(
-                                          'assets/icons/basicProfile.svg')
+                                          'assets/icons/basicProfile.svg',
+                                          width: 20.r,
+                                        )
                                       : null,
                                 ),
                                 const SizedBox(width: 10),
