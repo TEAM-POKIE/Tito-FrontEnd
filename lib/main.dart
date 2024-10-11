@@ -165,23 +165,25 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-
+    // 뒤로 가기 버튼 인터셉터 등록
     BackButtonInterceptor.add(_interceptor);
   }
 
   @override
   void dispose() {
+    // 뒤로 가기 버튼 인터셉터 제거
     BackButtonInterceptor.remove(_interceptor);
     super.dispose();
   }
 
   bool _interceptor(bool stopDefaultButtonEvent, RouteInfo info) {
     DateTime now = DateTime.now();
-
+    // 2초 내에 두 번 눌렀을 때만 앱을 종료
     if (currentBackPressTime == null ||
         now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
       currentBackPressTime = now;
 
+      // 사용자에게 경고 메시지 표시
       Fluttertoast.showToast(
         msg: "뒤로 버튼을 한 번 더 누르시면 종료됩니다.",
         toastLength: Toast.LENGTH_SHORT,
