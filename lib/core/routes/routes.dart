@@ -1,3 +1,4 @@
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/src/screen/Ended_chat.dart';
 import 'package:tito_app/src/screen/debate/debate_body.dart';
@@ -27,17 +28,35 @@ import 'package:tito_app/src/screen/chat.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 final ValueNotifier<bool> refreshNotifier = ValueNotifier<bool>(false);
+
+DateTime? currentBackPressTime;
+
+Future<bool> _onWillPop(BuildContext context) async {
+  DateTime now = DateTime.now();
+
+  // 2초 이내로 다시 뒤로가기 버튼을 누르면 종료
+  if (currentBackPressTime == null ||
+      now.difference(currentBackPressTime!) > Duration(seconds: 2)) {
+    currentBackPressTime = now;
+    Fluttertoast.showToast(msg: "뒤로 버튼을 한 번 더 누르시면 종료됩니다.");
+    return false; // 앱을 종료하지 않음
+  }
+  return true; // 앱을 종료함
+}
+
 final GoRouter router = GoRouter(
-  //이 부분 없으니까 처음 화면 그냥 보라색으로 뜨는 경우도 있음. 초기화면 지정해 놓은 부분이야
   navigatorKey: rootNavigatorKey,
   refreshListenable: refreshNotifier,
   initialLocation: '/login',
   routes: [
     StatefulShellRoute.indexedStack(
       builder: (context, state, child) {
-        return Scaffold(
-          body: child,
-          bottomNavigationBar: const BottomBar(),
+        return WillPopScope(
+          onWillPop: () => _onWillPop(context),
+          child: Scaffold(
+            body: child,
+            bottomNavigationBar: const BottomBar(),
+          ),
         );
       },
       branches: [
