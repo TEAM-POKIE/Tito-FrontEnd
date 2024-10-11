@@ -18,10 +18,10 @@ class WebSocketService {
   Timer? _reconnectTimer;
 
   WebSocketService() {
-    _connect();
+    connect();
   }
 
-  void _connect() {
+  void connect() {
     try {
       channel =
           WebSocketChannel.connect(Uri.parse('wss://dev.tito.lat/ws/debate'));
@@ -56,7 +56,7 @@ class WebSocketService {
       print('Attempting to reconnect in 5 seconds...');
       _reconnectTimer?.cancel();
       _reconnectTimer = Timer(Duration(seconds: 5), () {
-        _connect();
+        connect();
       });
     }
   }

@@ -18,10 +18,10 @@ class WebSocketService {
   Timer? _reconnectTimer;
 
   WebSocketService() {
-    _connect();
+    connect();
   }
 
-  void _connect() {
+  void connect() {
     if (_isConnected) return; // 중복 연결 방지
     try {
       channel = WebSocketChannel.connect(
@@ -61,7 +61,7 @@ class WebSocketService {
       print('Attempting to reconnect in 5 seconds...');
       _reconnectTimer?.cancel();
       _reconnectTimer = Timer(Duration(seconds: 5), () {
-        _connect();
+        connect();
       });
     }
   }

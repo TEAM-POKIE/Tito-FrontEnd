@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
+import 'package:tito_app/core/provider/live_provider.dart';
 import 'package:tito_app/core/provider/live_webSocket_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/voting_provider.dart';
@@ -28,33 +29,7 @@ class _LiveCommentState extends ConsumerState<LiveComment>
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      _subscribeToMessages();
-    });
-  }
-
-  void _subscribeToMessages() {
-    final webSocketService = ref.read(liveWebSocketProvider);
-
-    _subscription = webSocketService.stream.listen((message) {
-      if (message.containsKey('content')) {
-        print('good? ${message}');
-        _addMessage(message);
-      }
-    });
-  }
-
-  void _addMessage(Map<String, dynamic> message) {
-    setState(() {
-      _messages.add(message);
-    });
-    // bool isDuplicate = _messages.any((existingMessage) =>
-    //     existingMessage['content'] == message['content'] &&
-    //     existingMessage['createdAt'] == message['createdAt']);
-
-    // if (!isDuplicate && mounted) {
-
-    // }
+    Future.microtask(() {});
   }
 
   void _toggleExpand() {
@@ -83,7 +58,7 @@ class _LiveCommentState extends ConsumerState<LiveComment>
 
         final controller = AnimationController(
           vsync: this,
-          duration: const Duration(milliseconds: 800), // 애니메이션 지속 시간
+          duration: const Duration(milliseconds: 800),
         );
 
         final animation = Tween<double>(begin: 0, end: 400).animate(
@@ -117,6 +92,11 @@ class _LiveCommentState extends ConsumerState<LiveComment>
 
   @override
   Widget build(BuildContext context) {
+    final messages = ref.watch(messagesProvider);
+    // 닉네임을 중복 없이 저장하기 위해 Set 사용
+    final uniqueNicknames =
+        messages.map((message) => message['userNickName']).toSet();
+
     return Stack(
       children: [
         Container(
@@ -140,7 +120,7 @@ class _LiveCommentState extends ConsumerState<LiveComment>
                             color: ColorSystem.purple,
                           ),
                           const SizedBox(width: 8),
-                          Text('${_messages.length}명 관전중',
+                          Text('${uniqueNicknames.length}명 관전중',
                               style: FontSystem.KR14R
                                   .copyWith(color: ColorSystem.purple)),
                         ],
@@ -165,9 +145,9 @@ class _LiveCommentState extends ConsumerState<LiveComment>
                     ? ListView.builder(
                         shrinkWrap: true,
                         controller: ScrollController(),
-                        itemCount: _messages.length,
+                        itemCount: messages.length,
                         itemBuilder: (context, index) {
-                          final message = _messages[index];
+                          final message = messages[index];
                           return Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16.0, vertical: 8.0),

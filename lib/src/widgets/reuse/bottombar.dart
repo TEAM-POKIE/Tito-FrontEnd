@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tito_app/core/api/api_service.dart';
+import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/home_state_provider.dart';
+import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/nav_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,7 +20,8 @@ class BottomBar extends ConsumerStatefulWidget {
 }
 
 class _BottomBarState extends ConsumerState<BottomBar> {
-  void _onItemTapped(int index) {
+  // _onItemTapped을 비동기 함수로 변경
+  Future<void> _onItemTapped(int index) async {
     final notifier = ref.read(selectedIndexProvider.notifier);
     if (index == 0) {
       final homeViewModel = ref.read(homeViewModelProvider.notifier);
@@ -108,6 +112,10 @@ class _BottomBarState extends ConsumerState<BottomBar> {
           break;
         case 4:
           notifier.state = index;
+          // 비동기 호출을 위해 await 추가
+          final userInfo = await ApiService(DioClient.dio).getUserInfo();
+          final loginInfoNotifier = ref.read(loginInfoProvider.notifier);
+          loginInfoNotifier.setLoginInfo(userInfo);
           context.go('/mypage');
           break;
       }
@@ -192,7 +200,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
             ),
           ],
           currentIndex: selectedIndex,
-          onTap: _onItemTapped,
+          onTap: _onItemTapped, // 수정된 _onItemTapped 사용
           type: BottomNavigationBarType.fixed,
           selectedItemColor: ColorSystem.black,
           unselectedItemColor: ColorSystem.grey,

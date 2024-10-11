@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/home_state_provider.dart';
 import 'dart:async'; // Timer를 사용하기 위해 추가
 import 'package:go_router/go_router.dart'; // context.push를 사용하기 위해 추가
@@ -49,6 +50,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    final chatViewModel = ref.watch(chatInfoProvider.notifier);
     final homeState = ref.watch(homeViewModelProvider);
 
     if (homeState.isLoading) {
@@ -100,8 +102,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
               final debate = infiniteBanners[index];
               return GestureDetector(
                 onTap: () {
-                  // 배너 클릭 시 해당 아이디로 페이지 이동
-                  context.push('/chat/${debate.id}');
+                  chatViewModel.enterChat(
+                      debate.id, debate.debateStatus, context);
                 },
                 child: Padding(
                   padding:

@@ -6,6 +6,7 @@ import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:flutter/material.dart';
+import 'package:tito_app/core/provider/ended_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:tito_app/src/data/models/login_info.dart';
@@ -87,13 +88,22 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
                   thickness: 1,
                 ),
                 _buildProfileHeader(ref),
-                chatState.debateJoinerTurnCount == 0
-                    ? const SizedBox(width: 0)
-                    : Padding(
+                chatState.debateStatus == "ENDED"
+                    ? Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 15.w, vertical: 10.h),
+                        child:
+                            _buildEndedDebateInfo(ref, loginInfo!, chatState),
+                      )
+                    : const SizedBox(width: 0),
+                chatState.debateJoinerTurnCount != 0 &&
+                        chatState.debateStatus != "ENDED"
+                    ? Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: 15.w, vertical: 10.h),
                         child: _buildDebateInfo(ref, loginInfo!, chatState),
-                      ),
+                      )
+                    : const SizedBox(width: 0),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: Center(
@@ -144,6 +154,37 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
             ),
           ),
           _buildProfileRow(chatState, true),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEndedDebateInfo(
+      WidgetRef ref, LoginInfo loginInfo, DebateInfo chatState) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 22.w),
+      decoration: BoxDecoration(
+        color: ColorSystem.ligthGrey,
+        borderRadius: BorderRadius.circular(20.r),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          _buildEndedProfileRow(chatState, false),
+          Container(
+            constraints: const BoxConstraints(maxWidth: 250),
+            padding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            decoration: BoxDecoration(
+              color: ColorSystem.black,
+              borderRadius: BorderRadius.circular(17.0.r),
+            ),
+            child: Text(
+              'VS',
+              style: FontSystem.KR12M.copyWith(color: ColorSystem.white),
+            ),
+          ),
+          _buildEndedProfileRow(chatState, true),
         ],
       ),
     );
@@ -215,6 +256,66 @@ class _DebateinfoState extends ConsumerState<Debateinfopopup> {
                     chatState.debateJoinerNick == loginInfo.nickname
                         ? chatState.debateJoinerNick
                         : chatState.debateOwnerNick,
+                    style: FontSystem.KR14SB,
+                  ),
+                ],
+              ),
+            ],
+          );
+  }
+
+  Widget _buildEndedProfileRow(DebateInfo chatState, bool isOwner) {
+    final endedInfo = ref.read(endedProvider);
+    return isOwner
+        ? Row(
+            children: [
+              Column(
+                children: [
+                  _buildProfileImage(
+                      endedInfo!.debateJoinerImageUrl, ColorSystem.voteBlue),
+                  SizedBox(height: 1.h),
+                  Text(
+                    endedInfo.debateJoinerName,
+                    style: FontSystem.KR14SB,
+                  ),
+                ],
+              ),
+              SizedBox(
+                width: 8.w,
+              ),
+              Container(
+                width: 140.w,
+                child: Text(
+                  endedInfo.debateJoinerOpinion,
+                  style: FontSystem.KR14M,
+                  maxLines: null,
+                  softWrap: true,
+                ),
+              ),
+            ],
+          )
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Expanded(
+                child: Text(
+                  endedInfo!.debateMakerOpinion,
+                  style: FontSystem.KR14M,
+                  textAlign: TextAlign.end,
+                  maxLines: null,
+                  softWrap: true,
+                ),
+              ),
+              SizedBox(
+                width: 8.w,
+              ),
+              Column(
+                children: [
+                  _buildProfileImage(
+                      endedInfo.debateOwnerImageUrl, ColorSystem.voteRed),
+                  SizedBox(height: 1.h),
+                  Text(
+                    endedInfo.debateOwnerName,
                     style: FontSystem.KR14SB,
                   ),
                 ],
