@@ -94,6 +94,7 @@ dependencies:
   collection: ^1.18.0
   url_launcher: ^6.3.0
   google_sign_in: ^6.2.1
+  back_button_interceptor: ^7.0.3
 
 dev_dependencies:
   flutter_test:
