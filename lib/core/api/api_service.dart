@@ -3,13 +3,12 @@ import 'package:dio/dio.dart';
 import 'package:tito_app/src/data/models/debate_crate.dart';
 import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:tito_app/src/data/models/ended_chat.dart';
-import 'package:tito_app/src/data/models/ended_chatList.dart';
+
 import 'package:tito_app/src/data/models/login_info.dart';
 import 'package:tito_app/src/data/models/auth_response.dart';
 import 'package:tito_app/src/data/models/debate_usermade.dart';
 import 'package:tito_app/src/data/models/search_data.dart';
 import 'package:tito_app/src/data/models/user_profile.dart';
-import 'package:tito_app/src/view/chatView/ended_chat_list.dart';
 
 part 'api_service.g.dart';
 
