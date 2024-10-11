@@ -92,6 +92,8 @@ class _BottomBarState extends ConsumerState<BottomBar> {
         },
         backgroundColor: Colors.transparent,
       );
+    } else if (index == 2) {
+      
     } else {
       switch (index) {
         case 0:
