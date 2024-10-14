@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/src/data/models/debate_usermade.dart';
 import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
@@ -54,13 +55,14 @@ class _MyDebateScrollbodyState extends ConsumerState<MyDebateScrollbody> {
 
   @override
   Widget build(BuildContext context) {
+    final chatViewModel = ref.watch(chatInfoProvider.notifier);
     return ListView.builder(
       itemCount: debateList.length,
       itemBuilder: (context, index) {
         final debate = debateList[index];
         return GestureDetector(
           onTap: () {
-            context.push('/chat/${debate.id}');
+            chatViewModel.enterChat(debate.id, debate.debateStatus, context);
           },
           child: _buildItem(context, debate),
         );

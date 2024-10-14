@@ -16,6 +16,7 @@ import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   RemoteNotification? notification = message.notification;
@@ -163,49 +164,15 @@ class _MyAppState extends State<MyApp> {
   DateTime? currentBackPressTime;
 
   @override
-  void initState() {
-    super.initState();
-    // 뒤로 가기 버튼 인터셉터 등록
-    BackButtonInterceptor.add(_interceptor);
-  }
-
-  @override
-  void dispose() {
-    // 뒤로 가기 버튼 인터셉터 제거
-    BackButtonInterceptor.remove(_interceptor);
-    super.dispose();
-  }
-
-  bool _interceptor(bool stopDefaultButtonEvent, RouteInfo info) {
-    DateTime now = DateTime.now();
-    // 2초 내에 두 번 눌렀을 때만 앱을 종료
-    if (currentBackPressTime == null ||
-        now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
-      currentBackPressTime = now;
-
-      // 사용자에게 경고 메시지 표시
-      Fluttertoast.showToast(
-        msg: "뒤로 버튼을 한 번 더 누르시면 종료됩니다.",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.black54,
-        textColor: Colors.white,
-      );
-      return true; // 기본 동작을 막음
-    }
-    return false; // 앱 종료 허용
-  }
-
-  @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(390, 844), // 피그마에 맞춘 사이즈
-      minTextAdapt: true, // 텍스트 크기 자동 조정
-      splitScreenMode: true, // 분할 화면 모드 활성화
+      designSize: const Size(390, 844),
+      minTextAdapt: true,
+      splitScreenMode: true,
       builder: (context, child) => ProviderScope(
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
-          routerConfig: router, // GoRouter 설정
+          routerConfig: router,
           title: 'Tito',
           theme: ThemeData(
             scaffoldBackgroundColor: ColorSystem.white,

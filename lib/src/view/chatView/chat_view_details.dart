@@ -96,9 +96,9 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
                       upImage: 'assets/images/detailChatIcon.svg',
                       upTitle: '상대 반론 타임이에요!',
                       downTitle: '⏳ ${remainingTime} 남았어요!'),
-                  chatState.debateOwnerId == loginInfo.id
-                      ? VotingBar()
-                      : Joinervotingbar(),
+                  chatState.debateJoinerTurnCount >= 3
+                      ? Joinervotingbar()
+                      : SizedBox(width: 0)
                 ],
               );
             } else {
@@ -108,9 +108,9 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
                       upImage: 'assets/images/detailChatIcon.svg',
                       upTitle: '${loginInfo.nickname}님의 반론 타임이에요!',
                       downTitle: '⏳ ${remainingTime} 남았어요!'),
-                  chatState.debateOwnerId == loginInfo.id
-                      ? VotingBar()
-                      : Joinervotingbar(),
+                  chatState.debateJoinerTurnCount >= 3
+                      ? Joinervotingbar()
+                      : SizedBox(width: 0)
                 ],
               );
             }
@@ -131,7 +131,7 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
                       upImage: 'assets/images/detailChatIcon.svg',
                       upTitle: '상대 반론 타임이에요!',
                       downTitle: '⏳ ${remainingTime} 남았어요!'),
-                  VotingBar(),
+                  if (chatState.debateJoinerTurnCount >= 3) VotingBar(),
                 ],
               );
             } else {
@@ -141,7 +141,7 @@ class _ChatViewDetailsState extends ConsumerState<ChatViewDetails> {
                       upImage: 'assets/images/detailChatIcon.svg',
                       upTitle: '${loginInfo.nickname}님의 반론 타임이에요!',
                       downTitle: '⏳ ${remainingTime} 남았어요!'),
-                  VotingBar(),
+                  if (chatState.debateJoinerTurnCount >= 3) VotingBar(),
                 ],
               );
             }
@@ -191,7 +191,7 @@ class DetailState extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: 12, left: 10, right: 10),
       color: ColorSystem.white,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -199,7 +199,8 @@ class DetailState extends StatelessWidget {
         children: [
           Center(
             child: Container(
-              padding: const EdgeInsets.all(8.0),
+              width: 380.w, // 전체 Row의 최대 너비를 설정
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: (upImage == 'assets/images/chatCuteIcon.svg')
@@ -210,9 +211,13 @@ class DetailState extends StatelessWidget {
                     upImage,
                   ),
                   SizedBox(width: 8.w),
-                  Text(
-                    upTitle,
-                    style: FontSystem.KR16SB,
+                  Flexible(
+                    child: Text(
+                      upTitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: FontSystem.KR16SB,
+                    ),
                   ),
                 ],
               ),
@@ -221,7 +226,8 @@ class DetailState extends StatelessWidget {
           SizedBox(height: 3.h),
           Center(
             child: Container(
-              padding: const EdgeInsets.all(8.0),
+              width: 380.w, // 전체 Row의 최대 너비를 설정
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               decoration: BoxDecoration(
                 color: downImage == 'assets/images/chatCuteIconPurple.svg'
                     ? ColorSystem.lightPurple
@@ -238,11 +244,16 @@ class DetailState extends StatelessWidget {
                       ? SvgPicture.asset(downImage!)
                       : SizedBox(width: 0.w),
                   SizedBox(width: 8.w),
-                  Text(
-                    downTitle ?? '',
-                    style: downImage != null && downImage!.isNotEmpty
-                        ? FontSystem.KR16SB
-                        : FontSystem.KR16SB.copyWith(color: ColorSystem.purple),
+                  Flexible(
+                    child: Text(
+                      downTitle ?? '',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: downImage != null && downImage!.isNotEmpty
+                          ? FontSystem.KR16SB
+                          : FontSystem.KR16SB
+                              .copyWith(color: ColorSystem.purple),
+                    ),
                   ),
                 ],
               ),

@@ -1,11 +1,14 @@
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tito_app/src/view/homeVIew/home_appbar.dart';
 import 'package:tito_app/src/view/homeVIew/home_view.dart';
 import 'package:tito_app/src/view/homeVIew/hot_fighter.dart';
 import 'package:tito_app/src/view/homeVIew/hot_lists.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tito_app/src/widgets/reuse/bottombar.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -29,6 +32,33 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   //   }
   // }
 
+  DateTime? currentBackPressTime;
+
+  @override
+  void dispose() {
+    BackButtonInterceptor.remove(_interceptor);
+    super.dispose();
+  }
+
+  bool _interceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+    DateTime now = DateTime.now();
+
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
+      currentBackPressTime = now;
+
+      Fluttertoast.showToast(
+        msg: "뒤로 버튼을 한 번 더 누르시면 종료됩니다.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black54,
+        textColor: Colors.white,
+      );
+      return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,6 +79,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           const HotFighter(),
         ],
       ),
+      bottomNavigationBar: const BottomBar(),
     );
   }
 }

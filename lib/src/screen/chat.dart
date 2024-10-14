@@ -8,6 +8,7 @@ import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
+import 'package:tito_app/core/provider/live_provider.dart';
 import 'package:tito_app/core/provider/live_webSocket_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/voting_provider.dart';
@@ -55,13 +56,12 @@ class _ChatState extends ConsumerState<Chat> {
   Future<void> _fetchDebateInfo() async {
     final chatViewModel = ref.read(chatInfoProvider.notifier);
     await chatViewModel.fetchDebateInfo(widget.id);
-
+    _fetchLiveDebateInfo();
     final webSocketService = ref.read(webSocketProvider);
     final loginInfo = ref.watch(loginInfoProvider);
     final debateInfo = ref.read(chatInfoProvider);
+    webSocketService.connect();
 
-    chatViewModel.connectWebSocket();
-    print('실행1');
     if (loginInfo != null) {
       final message = jsonEncode({
         "command": "ENTER",
@@ -80,7 +80,6 @@ class _ChatState extends ConsumerState<Chat> {
           }
         }
       });
-      _fetchLiveDebateInfo();
     } else {
       print("Error: Login info or Debate info is null.");
     }
@@ -88,9 +87,10 @@ class _ChatState extends ConsumerState<Chat> {
 
   Future<void> _fetchLiveDebateInfo() async {
     final liveWebSocketService = ref.read(liveWebSocketProvider);
+    ref.read(messagesProvider.notifier).clearMessages();
     final loginInfo = ref.read(loginInfoProvider);
     final debateInfo = ref.read(chatInfoProvider);
-
+    liveWebSocketService.connect();
     if (loginInfo != null && debateInfo != null) {
       final message = jsonEncode({
         "command": "ENTER",
@@ -98,17 +98,14 @@ class _ChatState extends ConsumerState<Chat> {
         "debateId": debateInfo.id,
       });
       liveWebSocketService.sendMessage(message);
-      print('실행2');
       _subscription = liveWebSocketService.stream.listen((message) {
-        if (debateInfo?.isVoteEnded ?? true) {
-          return;
-        }
-
         if (message.containsKey('content')) {
-          if (mounted) {
-            setState(() {
-              messages.add(message);
-            });
+          bool isDuplicate = _messages.any((existingMessage) =>
+              existingMessage['content'] == message['content'] &&
+              existingMessage['createdAt'] == message['createdAt']);
+
+          if (!isDuplicate && mounted) {
+            ref.read(messagesProvider.notifier).addMessage(message);
           }
         }
       });
@@ -125,12 +122,17 @@ class _ChatState extends ConsumerState<Chat> {
 
     if (_messages.isNotEmpty) {
       if (_messages.length > 2) {
-        chatState!.debateOwnerId = _messages[2]['userId'];
-        chatViewModel.getInfo(chatState.debateOwnerId, context);
-
         if (_messages.length > 3) {
+          chatState!.debateOwnerId = _messages[2]['userId'];
+
+          chatViewModel.getInfo(chatState.debateOwnerId, context);
           chatState.debateJoinerId = _messages[3]['userId'];
-          chatViewModel.getInfo(_messages[3]['userId'], context);
+          if (chatState.debateJoinerId != 0)
+            chatViewModel.getInfo(_messages[3]['userId'], context);
+        } else {
+          chatState!.debateOwnerId = _messages[2]['userId'];
+
+          chatViewModel.getInfo(chatState.debateOwnerId, context);
         }
       }
 
@@ -141,6 +143,7 @@ class _ChatState extends ConsumerState<Chat> {
         chatState.debateJoinerTurnCount = _messages.last['joinerTurnCount'];
       }
     }
+
     if (debateInfo == null) {
       return Scaffold(
         appBar: AppBar(

@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
+import 'package:tito_app/core/provider/live_provider.dart';
 import 'package:tito_app/core/provider/live_webSocket_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/voting_provider.dart';
@@ -27,39 +29,7 @@ class _LiveCommentState extends ConsumerState<LiveComment>
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      _subscribeToMessages();
-    });
-  }
-
-  void _subscribeToMessages() {
-    final webSocketService = ref.read(liveWebSocketProvider);
-
-    final chatState = ref.watch(chatInfoProvider);
-
-    _subscription = webSocketService.stream.listen((message) {
-      if (chatState?.isVoteEnded ?? true) {
-        return;
-      }
-
-      // 일반 메시지(content가 포함된 경우)
-      if (message.containsKey('content')) {
-        _addMessage(message);
-      }
-    });
-  }
-
-  void _addMessage(Map<String, dynamic> message) {
-    // 중복 메시지 필터링
-    bool isDuplicate = _messages.any((existingMessage) =>
-        existingMessage['content'] == message['content'] &&
-        existingMessage['createdAt'] == message['createdAt']);
-
-    if (!isDuplicate && mounted) {
-      setState(() {
-        _messages.add(message);
-      });
-    }
+    Future.microtask(() {});
   }
 
   void _toggleExpand() {
@@ -88,7 +58,7 @@ class _LiveCommentState extends ConsumerState<LiveComment>
 
         final controller = AnimationController(
           vsync: this,
-          duration: const Duration(milliseconds: 800), // 애니메이션 지속 시간
+          duration: const Duration(milliseconds: 800),
         );
 
         final animation = Tween<double>(begin: 0, end: 400).animate(
@@ -122,6 +92,11 @@ class _LiveCommentState extends ConsumerState<LiveComment>
 
   @override
   Widget build(BuildContext context) {
+    final messages = ref.watch(messagesProvider);
+    // 닉네임을 중복 없이 저장하기 위해 Set 사용
+    final uniqueNicknames =
+        messages.map((message) => message['userNickName']).toSet();
+
     return Stack(
       children: [
         Container(
@@ -145,7 +120,7 @@ class _LiveCommentState extends ConsumerState<LiveComment>
                             color: ColorSystem.purple,
                           ),
                           const SizedBox(width: 8),
-                          Text('${_messages.length}명 관전중',
+                          Text('${uniqueNicknames.length}명 관전중',
                               style: FontSystem.KR14R
                                   .copyWith(color: ColorSystem.purple)),
                         ],
@@ -170,9 +145,9 @@ class _LiveCommentState extends ConsumerState<LiveComment>
                     ? ListView.builder(
                         shrinkWrap: true,
                         controller: ScrollController(),
-                        itemCount: _messages.length,
+                        itemCount: messages.length,
                         itemBuilder: (context, index) {
-                          final message = _messages[index];
+                          final message = messages[index];
                           return Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16.0, vertical: 8.0),
@@ -180,11 +155,19 @@ class _LiveCommentState extends ConsumerState<LiveComment>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CircleAvatar(
-                                  backgroundImage: message['userImgUrl'] != ''
-                                      ? NetworkImage(message['userImgUrl'])
-                                      : const AssetImage(
-                                          'assets/images/default.png'),
-                                  radius: 12.r,
+                                  backgroundImage: message['userImageUrl'] !=
+                                              null &&
+                                          message['userImageUrl']!.isNotEmpty
+                                      ? NetworkImage(message['userImageUrl']!)
+                                      : null,
+                                  radius: 10.r,
+                                  child: message['userImageUrl'] == null ||
+                                          message['userImageUrl']!.isEmpty
+                                      ? SvgPicture.asset(
+                                          'assets/icons/basicProfile.svg',
+                                          width: 20.r,
+                                        )
+                                      : null,
                                 ),
                                 const SizedBox(width: 10),
                                 Text(

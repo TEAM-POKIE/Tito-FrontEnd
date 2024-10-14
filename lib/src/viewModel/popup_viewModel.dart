@@ -160,7 +160,7 @@ class PopupViewmodel extends StateNotifier<PopupState> {
     final loginInfo = ref.read(loginInfoProvider);
     state = state.copyWith(
       title: '토론을 삭제 하시겠어요?',
-      content: '진짜루~',
+      content: '토론을 삭제하면 돌이킬 수 없습니다.',
       buttonStyle: 2,
       buttonContentLeft: "취소",
       buttonContentRight: '확인',

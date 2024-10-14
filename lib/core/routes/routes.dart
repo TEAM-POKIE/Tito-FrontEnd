@@ -1,3 +1,4 @@
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tito_app/src/screen/Ended_chat.dart';
 import 'package:tito_app/src/screen/debate/debate_body.dart';
@@ -27,22 +28,37 @@ import 'package:tito_app/src/screen/chat.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 final ValueNotifier<bool> refreshNotifier = ValueNotifier<bool>(false);
+
+DateTime? currentBackPressTime;
+
+Future<bool> _onWillPop(BuildContext context) async {
+  DateTime now = DateTime.now();
+
+  if (currentBackPressTime == null ||
+      now.difference(currentBackPressTime!) > Duration(seconds: 2)) {
+    currentBackPressTime = now;
+    Fluttertoast.showToast(msg: "뒤로 버튼을 한 번 더 누르시면 종료됩니다.");
+    return false;
+  }
+  return true;
+}
+
 final GoRouter router = GoRouter(
-  //이 부분 없으니까 처음 화면 그냥 보라색으로 뜨는 경우도 있음. 초기화면 지정해 놓은 부분이야
   navigatorKey: rootNavigatorKey,
   refreshListenable: refreshNotifier,
   initialLocation: '/login',
   routes: [
+    // BottomBar를 포함한 경로
     StatefulShellRoute.indexedStack(
       builder: (context, state, child) {
-        return Scaffold(
-          body: child,
-          bottomNavigationBar: const BottomBar(),
+        return WillPopScope(
+          onWillPop: () => _onWillPop(context),
+          child: Scaffold(
+            body: child,
+          ),
         );
       },
       branches: [
-        //여러 개의 StatefulShellBranch를 포함
-        //각 브랜치는 하나의 경로 집합
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -78,11 +94,11 @@ final GoRouter router = GoRouter(
       ],
     ),
 
+    // BottomBar가 필요 없는 경로들
     GoRoute(
       path: '/mydebate',
       builder: (context, state) => const MyDebate(),
     ),
-
     GoRoute(
       path: '/myblock',
       builder: (context, state) => const MyBlock(),
@@ -111,7 +127,6 @@ final GoRouter router = GoRouter(
       path: '/debate_create',
       builder: (context, state) => DebateBody(),
     ),
-
     GoRoute(
       path: '/debate_create_chat',
       builder: (context, state) => const DebateCreateChat(),
@@ -119,24 +134,17 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/chat/:id',
       builder: (context, state) {
-        // 'id'를 String에서 int로 변환
         final int id = int.parse(state.pathParameters['id']!);
-        return Chat(
-          id: id,
-        );
+        return Chat(id: id);
       },
     ),
     GoRoute(
       path: '/endedChat/:id',
       builder: (context, state) {
-        // 'id'를 String에서 int로 변환
         final int id = int.parse(state.pathParameters['id']!);
-        return EndedChat(
-          id: id,
-        );
+        return EndedChat(id: id);
       },
     ),
-    //초기화면 지정하는 부분
     GoRoute(
       path: '/',
       builder: (context, state) => const SplashScreen(),

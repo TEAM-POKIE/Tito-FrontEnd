@@ -227,109 +227,106 @@ class SearchResultList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: SmartRefresher(
-        controller: _refreshController,
-        enablePullDown: true,
-        enablePullUp: true,
-        onRefresh: _onRefresh,
-        onLoading: _onLoading,
-        child: Padding(
-          padding: EdgeInsets.only(right: 0.0.w),
-          child: ListView.builder(
-            itemCount: searchResults.length,
-            itemBuilder: (context, index) {
-              final result = searchResults[index];
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 5.w),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: ColorSystem.white,
-                    borderRadius: BorderRadius.circular(20.r),
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
-                      // Implement onTap logic here
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 10.h, horizontal: 10.w),
-                      decoration: BoxDecoration(
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color(0x669795A3),
-                            spreadRadius: 0,
-                            blurRadius: 4,
-                          )
-                        ],
-                        color: ColorSystem.white,
-                        borderRadius: BorderRadius.circular(20.r),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 6.w, vertical: 2.h),
-                                  decoration: BoxDecoration(
-                                    color: _getStatusColor(
-                                        result.searchedDebateStatus),
-                                    borderRadius: BorderRadius.circular(10.r),
-                                  ),
-                                  child: Text(
-                                    _getStatusText(
-                                        result.searchedDebateStatus ??
-                                            'UNKNOWN'),
-                                    style: FontSystem.KR14SB.copyWith(
-                                      color: _getSubTextColor(result),
-                                    ),
+    return SmartRefresher(
+      controller: _refreshController,
+      enablePullDown: true,
+      enablePullUp: true,
+      onRefresh: _onRefresh,
+      onLoading: _onLoading,
+      child: Padding(
+        padding: EdgeInsets.only(right: 0.0.w),
+        child: ListView.builder(
+          itemCount: searchResults.length,
+          itemBuilder: (context, index) {
+            final result = searchResults[index];
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 10.h),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: ColorSystem.white,
+                  borderRadius: BorderRadius.circular(20.r),
+                ),
+                child: GestureDetector(
+                  onTap: () {
+                    // Implement onTap logic here
+                  },
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+                    decoration: BoxDecoration(
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x669795A3),
+                          spreadRadius: 0,
+                          blurRadius: 4,
+                        )
+                      ],
+                      color: ColorSystem.white,
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 6.w, vertical: 2.h),
+                                decoration: BoxDecoration(
+                                  color: _getStatusColor(
+                                      result.searchedDebateStatus),
+                                  borderRadius: BorderRadius.circular(10.r),
+                                ),
+                                child: Text(
+                                  _getStatusText(
+                                      result.searchedDebateStatus ?? 'UNKNOWN'),
+                                  style: FontSystem.KR14SB.copyWith(
+                                    color: _getSubTextColor(result),
                                   ),
                                 ),
-                                SizedBox(height: 10.h),
-                                Text(
-                                  result.searchedDebateTitle ?? 'No title',
-                                  style: FontSystem.KR18M.copyWith(height: 1),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                SizedBox(height: 4.h),
-                                Text(
-                                  _getSubText(result),
-                                  style: FontSystem.KR16M
-                                      .copyWith(color: ColorSystem.purple),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
+                              ),
+                              SizedBox(height: 10.h),
+                              Text(
+                                result.searchedDebateTitle ?? 'No title',
+                                style: FontSystem.KR18M.copyWith(height: 1),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              SizedBox(height: 4.h),
+                              Text(
+                                _getSubText(result),
+                                style: FontSystem.KR16M
+                                    .copyWith(color: ColorSystem.purple),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
                           ),
-                          SizedBox(width: 10.w),
-                          result.searchedDebateImageUrl == ''
-                              ? SvgPicture.asset(
-                                  'assets/icons/list_real_null.svg',
+                        ),
+                        SizedBox(width: 10.w),
+                        result.searchedDebateImageUrl == ''
+                            ? SvgPicture.asset(
+                                'assets/icons/list_real_null.svg',
+                                width: 70.w,
+                                fit: BoxFit.contain,
+                              )
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(12.r),
+                                child: Image.network(
+                                  result.searchedDebateImageUrl ?? '',
                                   width: 70.w,
-                                  fit: BoxFit.contain,
-                                )
-                              : ClipRRect(
-                                  borderRadius: BorderRadius.circular(12.r),
-                                  child: Image.network(
-                                    result.searchedDebateImageUrl ?? '',
-                                    width: 70.w,
-                                    height: 70.h,
-                                    fit: BoxFit.cover,
-                                  ),
+                                  height: 70.h,
+                                  fit: BoxFit.cover,
                                 ),
-                        ],
-                      ),
+                              ),
+                      ],
                     ),
                   ),
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       ),
     );

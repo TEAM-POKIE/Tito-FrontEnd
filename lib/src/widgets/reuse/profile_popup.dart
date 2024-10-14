@@ -177,7 +177,7 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 25.h),
+          padding: EdgeInsets.only(left: 20.w, top: 25.h, bottom: 25.h),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -195,7 +195,7 @@ class _ProfilePopupState extends ConsumerState<ProfilePopup> {
               ),
               SizedBox(width: 15.w),
               Container(
-                width: 220.w,
+                width: 200.w,
                 child: Column(
                   children: [
                     Row(

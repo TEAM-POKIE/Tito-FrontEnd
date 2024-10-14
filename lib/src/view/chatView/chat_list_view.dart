@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
@@ -78,7 +79,9 @@ class _ChatListViewState extends ConsumerState<ChatListView> {
         if (loginInfo.id != message['userId'] &&
             message['content'] == 'timing bell request') {
           print("Timing Bell Request Received: ${message['content']}");
-          if (mounted && chatState!.canTiming) {
+          if (mounted &&
+              chatState!.canTiming &&
+              chatState.debateStatus == "IN_PROGRESS") {
             popupViewModel.showTimingReceive(context);
             chatState.canTiming = false;
           }
@@ -205,8 +208,8 @@ class JoinerChatList extends StatelessWidget {
           }
         }
 
-        final formattedTime = TimeOfDay.now().format(context);
-
+        final DateTime parsedDate = DateTime.parse(message['createdAt']);
+        final String formattedTime = DateFormat('a h:mm').format(parsedDate);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -471,8 +474,8 @@ class ParticipantsList extends StatelessWidget {
         final isMyMessage =
             messages.length > 2 && message['userId'] == messages[2]['userId'];
         final chatMessage = message['command'] == 'CHAT';
-        final formattedTime = TimeOfDay.now().format(context);
-
+        final DateTime parsedDate = DateTime.parse(message['createdAt']);
+        final String formattedTime = DateFormat('a h:mm').format(parsedDate);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
