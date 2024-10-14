@@ -18,10 +18,10 @@ class WebSocketService {
   Timer? _reconnectTimer;
 
   WebSocketService() {
-    _connect();
+    connect();
   }
 
-  void _connect() {
+  void connect() {
     if (_isConnected) return; // 중복 연결 방지
     try {
       channel = WebSocketChannel.connect(
@@ -44,7 +44,7 @@ class WebSocketService {
         _reconnect(); // 재연결 시도
       }, onDone: () {
         print('WebSocket connection closed');
-        _isConnected = false;
+
         _reconnect(); // 재연결 시도
       });
     } catch (e) {
@@ -61,7 +61,7 @@ class WebSocketService {
       print('Attempting to reconnect in 5 seconds...');
       _reconnectTimer?.cancel();
       _reconnectTimer = Timer(Duration(seconds: 5), () {
-        _connect();
+        connect();
       });
     }
   }
@@ -87,10 +87,11 @@ class WebSocketService {
   }
 
   void dispose() {
-    _reconnectTimer?.cancel(); // 재연결 타이머 취소
-    if (_isConnected) {
-      channel.sink.close(status.goingAway);
-    }
+    _reconnectTimer?.cancel();
+    _isConnected = false;
+
+    channel.sink.close(status.goingAway);
+
     _controller.close();
   }
 }

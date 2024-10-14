@@ -240,7 +240,7 @@ class SearchResultList extends StatelessWidget {
           itemBuilder: (context, index) {
             final result = searchResults[index];
             return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 5.w),
+              padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 10.h),
               child: Container(
                 decoration: BoxDecoration(
                   color: ColorSystem.white,

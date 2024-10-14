@@ -97,6 +97,9 @@ class _HotFighterState extends ConsumerState<HotFighter> {
             },
           ),
         ),
+        SizedBox(
+          height: 20.h,
+        ),
       ],
     );
   }

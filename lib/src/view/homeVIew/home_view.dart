@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tito_app/core/provider/chat_view_provider.dart';
 import 'package:tito_app/core/provider/home_state_provider.dart';
 import 'dart:async'; // Timer를 사용하기 위해 추가
 import 'package:go_router/go_router.dart'; // context.push를 사용하기 위해 추가
@@ -17,21 +18,19 @@ class HomeView extends ConsumerStatefulWidget {
 class _HomeViewState extends ConsumerState<HomeView> {
   late final PageController _pageController;
   late final Timer _timer;
-  int _currentPage = 1; // 복제된 첫 번째 배너에서 시작
+  int _currentPage = 1;
 
   @override
   void initState() {
     super.initState();
-    // PageController 초기화
+
     _pageController = PageController(initialPage: _currentPage);
 
-    // 데이터를 가져옵니다.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final homeViewModel = ref.read(homeViewModelProvider.notifier);
       homeViewModel.hotList();
     });
 
-    // 2초마다 페이지 넘기기
     _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
       if (_pageController.hasClients) {
         _pageController.nextPage(
@@ -51,6 +50,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    final chatViewModel = ref.watch(chatInfoProvider.notifier);
     final homeState = ref.watch(homeViewModelProvider);
 
     if (homeState.isLoading) {
@@ -102,8 +102,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
               final debate = infiniteBanners[index];
               return GestureDetector(
                 onTap: () {
-                  // 배너 클릭 시 해당 아이디로 페이지 이동
-                  context.push('/chat/${debate.id}');
+                  chatViewModel.enterChat(
+                      debate.id, debate.debateStatus, context);
                 },
                 child: Padding(
                   padding:
@@ -156,21 +156,24 @@ class _HomeViewState extends ConsumerState<HomeView> {
                           SizedBox(height: 4.h),
                           Row(
                             children: [
-                              Text(
-                                debate.debateMakerOpinion,
-                                style: FontSystem.KR16B
-                                    .copyWith(color: ColorSystem.white),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                              Container(
+                                width: 120.w,
+                                child: Text(
+                                  debate.debateMakerOpinion,
+                                  style: FontSystem.KR16B
+                                      .copyWith(color: ColorSystem.white),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
-                              SizedBox(width: 10.w),
                               Text(
                                 'vs',
                                 style: FontSystem.KR16B
                                     .copyWith(color: ColorSystem.white),
                               ),
                               SizedBox(width: 10.w),
-                              Expanded(
+                              Container(
+                                width: 120.w,
                                 child: Text(
                                   debate.debateJoinerOpinion,
                                   style: FontSystem.KR16B

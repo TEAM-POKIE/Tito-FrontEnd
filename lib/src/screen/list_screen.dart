@@ -54,12 +54,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
     _refreshController.refreshCompleted();
   }
 
-  void _onLoading() async {
-    page += 1;
-    await _fetchDebateList();
-    _refreshController.loadComplete();
-  }
-
   Future<void> _fetchDebateList({bool isRefresh = false}) async {
     try {
       String sortBy = _convertSortOption(selectedSortOption);
@@ -287,7 +281,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
               enablePullDown: true,
               enablePullUp: true,
               onRefresh: _onRefresh,
-              onLoading: _onLoading,
               child: Padding(
                 padding: EdgeInsets.only(right: 0.0.w),
                 child: Scrollbar(
@@ -302,7 +295,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                       final debate = debateList[index];
                       return Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: 20.h, vertical: 5.w),
+                            horizontal: 20.w, vertical: 7.h),
                         child: GestureDetector(
                           onTap: () {
                             chatViewModel.enterChat(
@@ -384,6 +377,9 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                 ),
               ),
             ),
+          ),
+          SizedBox(
+            height: 20.h,
           ),
         ],
       ),

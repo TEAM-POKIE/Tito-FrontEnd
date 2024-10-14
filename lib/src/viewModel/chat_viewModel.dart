@@ -7,9 +7,11 @@ import 'package:tito_app/core/api/api_service.dart';
 import 'package:tito_app/core/api/dio_client.dart';
 import 'package:tito_app/core/provider/ai_Response_Provider.dart';
 import 'package:tito_app/core/provider/chat_view_provider.dart';
+import 'package:tito_app/core/provider/live_webSocket_provider.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
 import 'package:tito_app/core/provider/popup_provider.dart';
 import 'package:tito_app/core/provider/userProfile_provider.dart';
+import 'package:tito_app/core/provider/websocket_provider.dart';
 import 'package:tito_app/src/data/models/api_response.dart';
 import 'package:tito_app/src/data/models/debate_info.dart';
 import 'package:tito_app/src/viewModel/timer_viewModel.dart';
@@ -21,12 +23,8 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
   final Ref ref;
   TimerNotifier? timerNotifier;
 
-  ChatViewModel(this.ref) : super(null) {
-    connectWebSocket();
-  }
+  ChatViewModel(this.ref) : super(null) {}
 
-  late WebSocketChannel _channel;
-  late WebSocketChannel _liveChannel;
   final _messageController = StreamController<Map<String, dynamic>>.broadcast();
   final TextEditingController controller = TextEditingController();
   final FocusNode focusNode = FocusNode();
@@ -50,42 +48,6 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
         state = null;
       }
     }
-  }
-
-  void connectWebSocket() {
-    if (!mounted) return; // mounted 상태 체크
-
-    _channel = WebSocketChannel.connect(
-      Uri.parse('wss://dev.tito.lat/ws/debate'),
-    );
-
-    _liveChannel = WebSocketChannel.connect(
-      Uri.parse('wss://dev.tito.lat/ws/debate/realtime'),
-    );
-
-    _channel.stream.listen((message) {
-      if (message is String && message.startsWith('{')) {
-        final decodedMessage = json.decode(message) as Map<String, dynamic>;
-        if (mounted) {
-          _messages.add(decodedMessage);
-          _messageController.sink.add(decodedMessage);
-        }
-      } else {
-        print('Invalid message format or non-JSON string received: $message');
-      }
-    }, onError: (error) {
-      print('WebSocket error: $error');
-    }, onDone: () {
-      print('WebSocket connection closed');
-    });
-
-    _liveChannel.stream.listen((message) {
-      print('Live Channel Message: $message');
-    }, onError: (error) {
-      print('Error in live channel: $error');
-    }, onDone: () {
-      print('Live channel connection closed');
-    });
   }
 
   void updateExplanation(List<String>? explanation, String? contentEdited) {
@@ -156,6 +118,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
   }
 
   void sendMessage() {
+    final channel = ref.read(webSocketProvider);
     if (!mounted) return;
     final loginInfo = ref.read(loginInfoProvider);
     final message = controller.text;
@@ -171,14 +134,14 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
 
     print(jsonMessage);
 
-    _channel.sink.add(jsonMessage);
+    channel.sendMessage(jsonMessage);
     controller.clear();
     focusNode.requestFocus();
   }
 
   void sendVote(String selectedDebate) {
     if (!mounted) return;
-
+    final livechannel = ref.read(liveWebSocketProvider);
     final loginInfo = ref.read(loginInfoProvider);
     final jsonMessage = json.encode({
       "command": "VOTE",
@@ -190,7 +153,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
 
     print(jsonMessage);
 
-    _liveChannel.sink.add(jsonMessage);
+    livechannel.sendMessage(jsonMessage);
     controller.clear();
     focusNode.requestFocus();
 
@@ -205,6 +168,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
   }
 
   void sendChatMessage() {
+    final livechannel = ref.read(liveWebSocketProvider);
     if (!mounted) return;
     final loginInfo = ref.read(loginInfoProvider);
     final message = controller.text;
@@ -221,12 +185,13 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     });
 
     print(jsonMessage);
-    _liveChannel.sink.add(jsonMessage);
+    livechannel.sendMessage(jsonMessage);
     controller.clear();
     focusNode.requestFocus();
   }
 
   void sendFire() {
+    final livechannel = ref.read(liveWebSocketProvider);
     if (!mounted) return;
 
     final jsonMessage = json.encode({
@@ -235,7 +200,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     });
 
     print(jsonMessage);
-    _liveChannel.sink.add(jsonMessage);
+    livechannel.sendMessage(jsonMessage);
     controller.clear();
     focusNode.requestFocus();
   }
@@ -281,6 +246,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
   }
 
   void timingSend() {
+    final channel = ref.read(webSocketProvider);
     if (!mounted) return;
     final loginInfo = ref.read(loginInfoProvider);
     final jsonMessage = json.encode({
@@ -289,7 +255,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
       "debateId": state?.id ?? 0,
     });
 
-    _channel.sink.add(jsonMessage);
+    channel.sendMessage(jsonMessage);
   }
 
   void updateRemainTimer(Duration newRemainTimer) {
@@ -299,6 +265,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
   }
 
   void timingOKResponse() {
+    final channel = ref.read(webSocketProvider);
     if (!mounted) return;
     final loginInfo = ref.read(loginInfoProvider);
     final jsonMessage = json.encode({
@@ -308,10 +275,11 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
       "content": 'OK',
     });
 
-    _channel.sink.add(jsonMessage);
+    channel.sendMessage(jsonMessage);
   }
 
   void timingNOResponse() {
+    final channel = ref.read(webSocketProvider);
     if (!mounted) return;
     final loginInfo = ref.read(loginInfoProvider);
     final jsonMessage = json.encode({
@@ -321,7 +289,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
       "content": 'REJ',
     });
 
-    _channel.sink.add(jsonMessage);
+    channel.sendMessage(jsonMessage);
   }
 
   void alarmButton(BuildContext context) {
@@ -343,6 +311,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
     if (!mounted) return;
     final loginInfo = ref.read(loginInfoProvider);
     final message = controller.text;
+    final channel = ref.read(webSocketProvider);
 
     if (message.isEmpty) return;
 
@@ -358,7 +327,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
       context.push("/showCase");
     }
 
-    _channel.sink.add(jsonMessage);
+    channel.sendMessage(jsonMessage);
     controller.clear();
     focusNode.requestFocus();
   }
@@ -375,6 +344,7 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
       context.push('/endedChat/${debateId}');
     } else {
       final chatViewModel = ref.read(chatInfoProvider.notifier);
+
       chatViewModel.resetText();
       context.push('/chat/${debateId}');
     }
@@ -382,11 +352,13 @@ class ChatViewModel extends StateNotifier<DebateInfo?> {
 
   @override
   void dispose() {
-    if (_channel != null) {
-      _channel.sink.close(status.goingAway);
+    final channel = ref.read(webSocketProvider);
+    final livechannel = ref.read(liveWebSocketProvider);
+    if (channel != null) {
+      channel.dispose();
     }
-    if (_liveChannel != null) {
-      _liveChannel.sink.close(status.goingAway);
+    if (livechannel != null) {
+      livechannel.dispose();
     }
     _messageController.close();
     controller.dispose();
