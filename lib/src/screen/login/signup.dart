@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -22,12 +23,13 @@ class _SignUpState extends State<Signup> {
   var _nickname = '';
   var _password = '';
   final _formKey = GlobalKey<FormState>();
+  final Uri perseonalUri = Uri.parse(
+      'https://nine-grade-d65.notion.site/113b5a1edfe4804bb9aac7ff6d4bf34d?pvs=4');
   bool _obscureText = true;
   String? _emailError; // 이메일 에러 메시지
   String? _nicknameError; // 닉네임 에러 메시지
   bool _isChecked = false;
   bool _checkBoxError = false; // 체크박스 에러 상태
-  final TextEditingController _controller = TextEditingController();
 
   void _onSignUp() async {
     final isValid = _formKey.currentState!.validate();
@@ -198,7 +200,27 @@ class _SignUpState extends State<Signup> {
                 ),
                 Row(
                   children: [
-                    Text('개인정보 처리방침에 동의하시겠습니까?(필수)'),
+                    InkWell(
+                      onTap: () {
+                        launchUrl(
+                          perseonalUri,
+                          mode: LaunchMode.inAppBrowserView,
+                        );
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          '개인정보 처리방침',
+                          style: FontSystem.KR12B.copyWith(
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      '에 동의하시겠습니까?(필수)',
+                      style: FontSystem.KR12B,
+                    ),
                     Checkbox(
                       value: _isChecked,
                       onChanged: (bool? value) {
