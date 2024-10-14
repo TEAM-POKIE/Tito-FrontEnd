@@ -342,33 +342,34 @@ class LoginMain extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  if (Platform.isIOS) SizedBox(height: 10.h),
+
                   // ! 애플 버튼
-                  if (Platform.isIOS)
-                    Container(
-                      width: 327.w,
-                      height: 54.h,
-                      child: ElevatedButton(
-                        onPressed: _signInWithApple,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: ColorSystem.black, // 배경 색상
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6.r), // 모서리 둥글기
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset('assets/icons/apple_new.svg'),
-                            SizedBox(width: 5.w),
-                            Text('Apple로 로그인',
-                                style: FontSystem.Login16M.copyWith(
-                                    color: ColorSystem.white)),
-                          ],
-                        ),
-                      ),
-                    ),
+                  // if (Platform.isIOS)
+                  //   Container(
+                  //     width: 327.w,
+                  //     height: 54.h,
+                  //     child: ElevatedButton(
+                  //       onPressed: _signInWithApple,
+                  //       style: ElevatedButton.styleFrom(
+                  //         backgroundColor: ColorSystem.black, // 배경 색상
+                  //         shape: RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.circular(6.r), // 모서리 둥글기
+                  //         ),
+                  //       ),
+                  //       child: Row(
+                  //         mainAxisAlignment: MainAxisAlignment.center,
+                  //         crossAxisAlignment: CrossAxisAlignment.center,
+                  //         children: [
+                  //           SvgPicture.asset('assets/icons/apple_new.svg'),
+                  //           SizedBox(width: 5.w),
+                  //           Text('Apple로 로그인',
+                  //               style: FontSystem.Login16M.copyWith(
+                  //                   color: ColorSystem.white)),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+
                   SizedBox(height: 10.h),
                   // ! 이메일 버튼
                   Container(
@@ -393,26 +394,61 @@ class LoginMain extends ConsumerWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 64.h), // 버튼들 간의 간격 추가
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              SizedBox(height: 50.h), // 버튼들 간의 간격 추가
+              Column(
                 children: [
-                  Text(
-                    '아직 회원이 아니신가요?',
-                    style: FontSystem.KR14R,
-                  ),
-                  TextButton(
-                    onPressed: goSignUp,
-                    child: Text(
-                      '회원가입',
-                      style: FontSystem.KR14SB.copyWith(
-                        decoration: TextDecoration.underline,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '아직 회원이 아니신가요?',
+                        style: FontSystem.KR14R,
                       ),
-                    ),
+                      SizedBox(
+                        width: 3.w,
+                      ),
+                      InkWell(
+                        onTap: goSignUp,
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            '회원가입',
+                            style: FontSystem.KR14SB.copyWith(
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: <Widget>[
+                      Text(
+                        '소셜로그인으로 진행 시,',
+                        style: FontSystem.KR12R,
+                      ),
+                      InkWell(
+                        onTap: () => {},
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text('개인정보처리방침',
+                              style: FontSystem.KR12B.copyWith(
+                                decoration: TextDecoration.underline,
+                              )),
+                        ),
+                      ),
+                      Text(
+                        '에 동의한 것으로 취급됩니다.',
+                        style: FontSystem.KR12R,
+                      )
+                    ],
                   ),
                 ],
               ),
-              SizedBox(height: 16.h)
             ],
           ),
         ),
