@@ -16,6 +16,7 @@ import 'package:tito_app/core/api/dio_client.dart';
 import 'dart:io';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tito_app/core/provider/login_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
@@ -432,7 +433,16 @@ class LoginMain extends ConsumerWidget {
                         style: FontSystem.KR12R,
                       ),
                       InkWell(
-                        onTap: () => {},
+                        onTap: () async {
+                          final url = Uri.parse(
+                              'https://www.notion.so/113b5a1edfe4804bb9aac7ff6d4bf34d'); // 이동할 URL을 입력
+                          if (await canLaunchUrl(url)) {
+                            await launchUrl(url,
+                                mode: LaunchMode.externalApplication);
+                          } else {
+                            throw 'Could not launch $url';
+                          }
+                        },
                         child: Container(
                           alignment: Alignment.center,
                           child: Text('개인정보처리방침',
