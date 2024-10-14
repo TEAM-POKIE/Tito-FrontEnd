@@ -6,6 +6,7 @@ import 'package:tito_app/core/api/dio_client.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -22,14 +23,29 @@ class _SignUpState extends State<Signup> {
   var _password = '';
   final _formKey = GlobalKey<FormState>();
   bool _obscureText = true;
-
   String? _emailError; // 이메일 에러 메시지
   String? _nicknameError; // 닉네임 에러 메시지
+  bool _isChecked = false;
+  bool _checkBoxError = false; // 체크박스 에러 상태
+  final TextEditingController _controller = TextEditingController();
 
   void _onSignUp() async {
-    final isVaild = _formKey.currentState!.validate();
+    final isValid = _formKey.currentState!.validate();
     _formKey.currentState!.save();
-    if (isVaild) {
+
+    // 체크박스 상태 확인
+    if (!_isChecked) {
+      setState(() {
+        _checkBoxError = true; // 체크박스 에러 상태를 true로 설정
+      });
+      return;
+    } else {
+      setState(() {
+        _checkBoxError = false; // 체크박스 에러 상태를 false로 설정
+      });
+    }
+
+    if (isValid) {
       final signUpData = {
         'nickname': _nickname,
         'email': _email,
@@ -54,7 +70,7 @@ class _SignUpState extends State<Signup> {
           });
         } else {
           print('Failed to sign up: $e');
-          // Handle other errors here
+          // 다른 에러 처리
         }
       }
     }
@@ -180,6 +196,24 @@ class _SignUpState extends State<Signup> {
                     _password = value!;
                   },
                 ),
+                Row(
+                  children: [
+                    Text('개인정보 처리방침에 동의하시겠습니까?(필수)'),
+                    Checkbox(
+                      value: _isChecked,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          _isChecked = value ?? false;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                if (_checkBoxError)
+                  Text(
+                    '개인정보 처리방침에 동의하셔야 합니다.',
+                    style: TextStyle(color: Colors.red, fontSize: 12.sp),
+                  ),
                 SizedBox(height: 60.h),
                 Container(
                   width: 350.w,
