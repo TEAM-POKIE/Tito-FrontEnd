@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tito_app/firebase_options.dart';
-import 'package:back_button_interceptor/back_button_interceptor.dart';
+
 import 'core/routes/routes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tito_app/core/constants/style.dart';
@@ -16,7 +16,6 @@ import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 
 import 'dart:async';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   RemoteNotification? notification = message.notification;
@@ -144,8 +143,12 @@ Future main() async {
   );
   [Permission.notification].request();
 
-  final fcmToken = await FirebaseMessaging.instance.getToken();
-  debugPrint('fcmToken $fcmToken');
+  try {
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    debugPrint('fcmToken: $fcmToken');
+  } catch (e) {
+    debugPrint('Error getting FCM token: $e');
+  }
 
   Timer(Duration(milliseconds: 100), () {
     FlutterNativeSplash.remove();
