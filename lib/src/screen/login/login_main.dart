@@ -379,7 +379,7 @@ class LoginMain extends ConsumerWidget {
                     child: ElevatedButton(
                       onPressed: goBasicLogin,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: ColorSystem.white, // 배경 색상
+                        backgroundColor: ColorSystem.black, // 배경 색상
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(6.r), // 모서리 둥글기
                         ),
@@ -388,7 +388,9 @@ class LoginMain extends ConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text('이메일로 로그인', style: FontSystem.Login16M),
+                          Text('이메일로 로그인',
+                              style: FontSystem.Login16M.copyWith(
+                                  color: ColorSystem.white)),
                         ],
                       ),
                     ),
