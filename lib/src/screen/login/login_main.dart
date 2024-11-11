@@ -305,16 +305,19 @@ class LoginMain extends ConsumerWidget {
                         ),
                       ),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SvgPicture.asset('assets/icons/google_new.svg'),
-                          SizedBox(width: 5.w),
+                          SvgPicture.asset(
+                            'assets/icons/google_new.svg',
+                            width: 18.w,
+                          ),
                           Text(
                             'Google 계정으로 로그인',
                             style: FontSystem.Login16M.copyWith(
                                 color: ColorSystem.googleFont),
                           ),
+                          Container(),
                         ],
                       ),
                     ),
@@ -344,32 +347,33 @@ class LoginMain extends ConsumerWidget {
                   //   ),
                   // ),
 
-                  // ! 애플 버튼
-                  // if (Platform.isIOS)
-                  //   Container(
-                  //     width: 327.w,
-                  //     height: 54.h,
-                  //     child: ElevatedButton(
-                  //       onPressed: _signInWithApple,
-                  //       style: ElevatedButton.styleFrom(
-                  //         backgroundColor: ColorSystem.black, // 배경 색상
-                  //         shape: RoundedRectangleBorder(
-                  //           borderRadius: BorderRadius.circular(6.r), // 모서리 둥글기
-                  //         ),
-                  //       ),
-                  //       child: Row(
-                  //         mainAxisAlignment: MainAxisAlignment.center,
-                  //         crossAxisAlignment: CrossAxisAlignment.center,
-                  //         children: [
-                  //           SvgPicture.asset('assets/icons/apple_new.svg'),
-                  //           SizedBox(width: 5.w),
-                  //           Text('Apple로 로그인',
-                  //               style: FontSystem.Login16M.copyWith(
-                  //                   color: ColorSystem.white)),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ),
+                  if (Platform.isIOS)
+                    Container(
+                      width: 327.w,
+                      height: 54.h,
+                      child: ElevatedButton(
+                        onPressed: _signInWithApple,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: ColorSystem.black, // 배경 색상
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6.r), // 모서리 둥글기
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SvgPicture.asset(
+                              'assets/icons/apple_new.svg',
+                              width: 18.w,
+                            ),
+                            Text('Apple로 로그인',
+                                style: FontSystem.Login16M.copyWith(
+                                    color: ColorSystem.white)),
+                            Container(),
+                          ],
+                        ),
+                      ),
+                    ),
 
                   SizedBox(height: 10.h),
                   // ! 이메일 버튼

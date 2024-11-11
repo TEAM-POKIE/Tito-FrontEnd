@@ -46,9 +46,9 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>We need access to the camera to take pictures.</string>
+	<string>프로필(사진 첨부) 설정을 위한 카메라 사용 권한을 허용 하시겠습니까?</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We need access to the photo library to select pictures.</string>
+	<string>프로필(사진 첨부) 설정을 위한 앨범 사용 권한을 허용 하시겠습니까?</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
