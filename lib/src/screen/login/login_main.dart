@@ -244,6 +244,8 @@ class LoginMain extends ConsumerWidget {
           await DioClient.setToken(authResponse.accessToken.token);
           // Case 4.1. 마이데이터 조회 결과 nickname이 null인 경우 해당 페이지로 이동
           final userInfo = await ApiService(DioClient.dio).getUserInfo();
+          final loginInfoNotifier = ref.read(loginInfoProvider.notifier);
+          loginInfoNotifier.setLoginInfo(userInfo);
           if (userInfo.nickname == "") {
             debugPrint('TODO: NEW : APPLE empty user nickname');
           }
@@ -323,30 +325,30 @@ class LoginMain extends ConsumerWidget {
                     ),
                   ),
                   SizedBox(height: 10.h),
-                  // // ! 카카오 버튼
-                  // Container(
-                  //   width: 327.w,
-                  //   height: 54.h,
-                  //   child: ElevatedButton(
-                  //     onPressed: _signInWithKaKao,
-                  //     style: ElevatedButton.styleFrom(
-                  //       backgroundColor: ColorSystem.kakao, // 배경 색상
-                  //       shape: RoundedRectangleBorder(
-                  //         borderRadius: BorderRadius.circular(6.r), // 모서리 둥글기
-                  //       ),
-                  //     ),
-                  //     child: Row(
-                  //       mainAxisAlignment: MainAxisAlignment.center,
-                  //       crossAxisAlignment: CrossAxisAlignment.center,
-                  //       children: [
-                  //         SvgPicture.asset('assets/icons/kakao_new.svg'),
-                  //         SizedBox(width: 5.w),
-                  //         Text('카카오계정으로 로그인', style: FontSystem.Login16M),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-
+                  // ! 카카오 버튼
+                  Container(
+                    width: 327.w,
+                    height: 54.h,
+                    child: ElevatedButton(
+                      onPressed: _signInWithKaKao,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ColorSystem.kakao, // 배경 색상
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.r), // 모서리 둥글기
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset('assets/icons/kakao_new.svg'),
+                          SizedBox(width: 5.w),
+                          Text('카카오계정으로 로그인', style: FontSystem.Login16M),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10.h),
                   if (Platform.isIOS)
                     Container(
                       width: 327.w,

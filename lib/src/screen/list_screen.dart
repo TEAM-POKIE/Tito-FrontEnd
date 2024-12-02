@@ -383,7 +383,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomBar(),
+      bottomNavigationBar: const BottomBar(),
     );
   }
 
@@ -396,7 +396,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
       case 'VOTING':
         return '투표 중';
       case 'ENDED':
-        return '투표 종료';
+        return ' 투표 종료';
       default:
         return '상태 없음';
     }
